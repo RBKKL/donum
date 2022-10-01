@@ -1,8 +1,29 @@
-import "../styles/globals.css";
+import "@styles/globals.css";
 import type { AppProps } from "next/app";
+import { WagmiConfig, createClient, chain } from "wagmi";
+import { ConnectKitProvider, getDefaultClient } from "connectkit";
+import { APP_NAME, INFURA_ID } from "@lib/constants";
+
+const client = createClient(
+  getDefaultClient({
+    appName: APP_NAME,
+    infuraId: INFURA_ID,
+    autoConnect: true,
+    chains: [
+      chain.mainnet,
+      // chain.polygon
+    ],
+  })
+);
+
+console.log(INFURA_ID);
 
 const MyApp = ({ Component, pageProps }: AppProps) => (
-  <Component {...pageProps} />
+  <WagmiConfig client={client}>
+    <ConnectKitProvider mode="dark" theme="midnight">
+      <Component {...pageProps} />
+    </ConnectKitProvider>
+  </WagmiConfig>
 );
 
 export default MyApp;
