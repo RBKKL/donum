@@ -10,8 +10,8 @@ const client = createClient(
     infuraId: INFURA_ID,
     autoConnect: true,
     chains: [
-      chain.mainnet,
-      // chain.polygon
+      chain.goerli, // Ethereum's Goerli Testnet
+      chain.hardhat, // Ethereum's Hardhat Default Network
     ],
   })
 );
