@@ -3,18 +3,38 @@ import Head from "next/head";
 import { APP_NAME } from "@lib/constants";
 import { ConnectKitButton } from "connectkit";
 import { Account } from "@components/Account";
+import {TextField} from "../components/TextField";
+import {Button} from "../components/Button";
+import {ProfileData} from "../components/ProfileData";
+import {Input} from "../components/Input";
 
 const Home: NextPage = () => {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-2">
+    <div className="flex min-h-screen flex-col items-center py-3 px-2">
       <Head>
         <title>{APP_NAME}</title>
       </Head>
 
-      <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
-        <h1 className="text-6xl font-bold">{APP_NAME}</h1>
-        <ConnectKitButton />
-        <Account />
+      <main className="w-full">
+        <h1 className="font-inter px-10 text-3xl">{APP_NAME}</h1>
+        <div className="flex flex-col items-center text-center pt-16">
+          <ProfileData
+            avatarPath="shelban.png"
+            nickname="Nix"
+            address="0xdB4c373FA35630F0E1d5bA1182f6c65a14FeF27b"
+          />
+          <div className="flex flex-col w-full min-w-0 max-w-136 pt-12">
+            <Input/>
+            <div className="py-4">
+              <TextField/>
+            </div>
+            <div className="flex flex-row-reverse">
+              <Button>
+                Send
+              </Button>
+            </div>
+          </div>
+        </div>
       </main>
     </div>
   );
