@@ -6,12 +6,6 @@ module.exports = {
   ],
   theme: {
     extend: {
-      maxWidth: {
-        '136': '34rem'
-      },
-      height: {
-        '76': '19rem'
-      },
       fontFamily: {
         inter: ['Inter', 'sans-serif'],
       },

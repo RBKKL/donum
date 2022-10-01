@@ -5,7 +5,7 @@ import { ConnectKitButton } from "connectkit";
 import { Account } from "@components/Account";
 import {TextField} from "../components/TextField";
 import {Button} from "../components/Button";
-import {ProfileData} from "../components/ProfileData";
+import {RecipientProfile} from "@components/RecipientProfile";
 import {Input} from "../components/Input";
 
 const Home: NextPage = () => {
@@ -16,14 +16,14 @@ const Home: NextPage = () => {
       </Head>
 
       <main className="w-full">
-        <h1 className="font-inter px-10 text-3xl">{APP_NAME}</h1>
+        <h1 className="px-10 text-3xl">{APP_NAME}</h1>
         <div className="flex flex-col items-center text-center pt-16">
-          <ProfileData
-            avatarPath="shelban.png"
+          <RecipientProfile
+            avatarPath="/shelban.png"
             nickname="Nix"
             address="0xdB4c373FA35630F0E1d5bA1182f6c65a14FeF27b"
           />
-          <div className="flex flex-col w-full min-w-0 max-w-136 pt-12">
+          <div className="flex flex-col w-full min-w-0 max-w-lg pt-12">
             <Input/>
             <div className="py-4">
               <TextField/>

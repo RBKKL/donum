@@ -16,7 +16,7 @@ export const Button: FC<ButtonProps> = ({
       disabled={disabled}
       onClick={onClick}
     >
-      <p className="font-inter font-semibold text-3xl">
+      <p className="font-semibold text-3xl">
         {children}
       </p>
     </button>
