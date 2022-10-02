@@ -3,10 +3,10 @@ import Head from "next/head";
 import { APP_NAME } from "@lib/constants";
 import { ConnectKitButton } from "connectkit";
 import { Account } from "@components/Account";
-import {TextField} from "../components/TextField";
-import {Button} from "../components/Button";
+import {TextField} from "@components/TextField";
+import {Button} from "@components/Button";
 import {RecipientProfile} from "@components/RecipientProfile";
-import {Input} from "../components/Input";
+import {Input} from "@components/Input";
 
 const Home: NextPage = () => {
   return (
