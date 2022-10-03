@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+    font-family: 'Inter';
+    src: url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
+}
+
+@font-face {
+	font-family: 'jeju-gothic';
+	src: url('/assets/fonts/jeju-gothic/JejuGothic-Regular.ttf') format('truetype');
+	src: local('☺'), url('/assets/fonts/jeju-gothic/JejuGothic-Regular.woff') format('woff'), url('/assets/fonts/jeju-gothic/JejuGothic-Regular.eot') format('eot'), url('/assets/fonts/jeju-gothic/JejuGothic-Regular.svg') format('svg'), url('/assets/fonts/jeju-gothic/JejuGothic-Regular.woff2') format('woff2'), url('/assets/fonts/jeju-gothic/JejuGothic-Regular.otf') format('otf');
+	font-weight: 400;
+	font-style: normal;
+}
