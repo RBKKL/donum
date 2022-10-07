@@ -11,12 +11,10 @@ const client = createClient(
     autoConnect: true,
     chains: [
       chain.goerli, // Ethereum's Goerli Testnet
-      chain.hardhat, // Ethereum's Hardhat Default Network
+      chain.localhost, // Hardhat localhost network
     ],
   })
 );
-
-console.log(INFURA_ID);
 
 const MyApp = ({ Component, pageProps }: AppProps) => (
   <WagmiConfig client={client}>
