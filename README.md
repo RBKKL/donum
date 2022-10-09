@@ -5,16 +5,17 @@ Make donations to streamers with cryptocurrency
 ## Getting Started
 
 - `npm i`
+- `npm run compile`
 - `npm run dev`
 
 ## Some smart contart related tasks
 
 - Get help with Hardhat CLI `npx hardhat help`
-- Compile `npx hardhat compile`
-- Deploy `npx hardhat run scripts/deploy.ts`
-- Run tests `npx hardhat test`
-- Run tests with gas report `REPORT_GAS=true npx hardhat test`
+- Compile `npm run compile`
+- Run tests `npm test`
+- Run tests with gas report `REPORT_GAS=true npm test`
 - Start localhost node `npx hardhat node`
+- Deploy to localhost node `npx hardhat run scripts/deploy.ts --network localhost`
 
 ## Learn More
 
