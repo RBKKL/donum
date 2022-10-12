@@ -1,18 +1,19 @@
-import Image from "next/image";
+import { FC, ReactNode } from "react";
+interface InputProps {
+  value?: string;
+  onChange?: (value: string) => void;
+  rightCorner?: ReactNode;
+}
 
-export const Input = () => {
+export const Input: FC<InputProps> = ({ onChange, rightCorner, ...props }) => {
   return (
-    <div className="flex h-14 px-8 justify-between rounded-2xl bg-zinc-700">
-      <input className="flex h-full w-full bg-transparent outline-none font-medium text-2xl"/>
-      <div className="flex flex-auto flex-row items-center">
-        <Image
-          src="/eth.svg"
-          layout="fixed"
-          width={32}
-          height={32}
-        />
-        <p className="font-medium text-xl pl-2">ETH</p>
-      </div>
+    <div className="flex justify-between items-center px-4 py-2 rounded-2xl bg-zinc-700">
+      <input
+        className="flex h-full w-full bg-transparent outline-none font-medium text-xl"
+        onChange={(e) => onChange?.(e.target.value)}
+        {...props}
+      />
+      {rightCorner}
     </div>
   );
-}
+};
