@@ -14,8 +14,8 @@ Make donations to streamers with cryptocurrency
 - Compile `npm run compile`
 - Run tests `npm test`
 - Run tests with gas report `REPORT_GAS=true npm test`
+- Deploy to some network `npx hardhat deploy --network <networkName>`
 - Start localhost node `npx hardhat node`
-- Deploy to localhost node `npx hardhat run scripts/deploy.ts --network localhost`
 
 ## Learn More
 
