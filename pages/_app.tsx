@@ -6,7 +6,7 @@ import { WagmiConfig, configureChains, createClient, chain } from "wagmi";
 import { infuraProvider } from "wagmi/providers/infura";
 import { publicProvider } from "wagmi/providers/public";
 import { APP_NAME, INFURA_ID } from "@lib/constants";
-import { Layout } from "@components/Layout";
+import { Layout } from "@components";
 
 const usedChains = [
   // chain.mainnet,
