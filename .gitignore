@@ -44,6 +44,8 @@ typechain-types
 # hardhat 
 cache
 artifacts
+contractsInfo.json
+deployments/**/solcinputs
 
 # IDE
 .idea

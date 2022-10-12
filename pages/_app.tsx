@@ -1,6 +1,7 @@
 import "@styles/globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
 import type { AppProps } from "next/app";
+import Head from "next/head";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { WagmiConfig, configureChains, createClient, chain } from "wagmi";
 import { infuraProvider } from "wagmi/providers/infura";
@@ -35,6 +36,9 @@ const MyApp = ({ Component, pageProps }: AppProps) => (
   <WagmiConfig client={wagmiClient}>
     <RainbowKitProvider chains={chains}>
       <Layout>
+        <Head>
+          <title>{APP_NAME}</title>
+        </Head>
         <Component {...pageProps} />
       </Layout>
     </RainbowKitProvider>
