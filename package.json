@@ -9,7 +9,7 @@
     "test": "hardhat test"
   },
   "dependencies": {
-    "connectkit": "^0.0.2",
+    "@rainbow-me/rainbowkit": "^0.7.1",
     "ethers": "^5.7.1",
     "next": "latest",
     "react": "18.1.0",
