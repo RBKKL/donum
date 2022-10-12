@@ -6,8 +6,10 @@ import {
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
-import { CONTRACT_ABI } from "@lib/constants";
-import { getContractAddressByChainId } from "@lib/helpers";
+import {
+  CONTRACT_ABI,
+  getContractAddressByChainId,
+} from "@lib/smartContractsData";
 
 export const useDonateContractFn = (
   recipientAddress: string,
