@@ -36,7 +36,7 @@ const SendDonationPage: NextPage = () => {
         nickname="Nix"
         address={recipientAddress}
       />
-      <div className="flex flex-col w-full sm:max-w-lg pt-8 gap-4">
+      <div className="flex flex-col w-full sm:max-w-lg pt-12 gap-4">
         <Input
           value={donationAmount}
           onChange={onDonationAmountChange}
