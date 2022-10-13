@@ -21,9 +21,10 @@ Make donations to streamers with cryptocurrency
 
 To learn more about the components of this repo:
 
-- [Ethers Documentation](https://docs.ethers.io/v5/) - learn about Ethers features and API.
-- [Hardhat Documentation](https://hardhat.org/docs) - learn about Hardhat features and API.
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs/) - learn about Tailwind, and browse through the included classes.
-- [wagmi Documentation](https://wagmi.sh/) - learn about wagmi features and API.
-- [ConnectKit Documentation](https://docs.family.co/connectkit) - learn about ConnectKit features and API.
+- [Ethereum Developers Documentation](https://ethereum.org/en/developers/docs/) - learn about Ethereum blockchain
+- [Solidity Documentation](https://docs.soliditylang.org/en/v0.8.17/) - learn about Solidity
+- [Ethers.js Documentation](https://docs.ethers.io/v5/) - learn about Ethers.js
+- [Hardhat Documentation](https://hardhat.org/docs) - learn about Hardhat
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs/) - learn about Tailwind
+- [wagmi Documentation](https://wagmi.sh/) - learn about wagmi
