@@ -27,6 +27,10 @@ contract DonationsStore {
     // TODO: change to logs for gas saving? https://consensys.net/blog/developers/guide-to-events-and-logs-in-ethereum-smart-contracts/
     mapping(address => RecipientInfo) recipients;
 
+    function getAllDonations(address _recipient) public view returns (Donation[] memory) {
+        return recipients[_recipient].donations;
+    }
+
     // TODO: should be only for recipient?
     function getDonation(address _recipient, uint _index) public view returns (Donation memory) {
         // TODO: should check for index existance?
