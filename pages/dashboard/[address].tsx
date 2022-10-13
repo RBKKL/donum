@@ -1,7 +1,7 @@
 import { NextPage } from "next";
-import { useGetAllDonations } from "@hooks/useGetAllDonations";
 import { useRouter } from "next/router";
-import { DonationCard } from "@components/DonationCard";
+import { DonationCard } from "@components";
+import { useGetAllDonations } from "@hooks/useGetAllDonations";
 import { reverseArray } from "@lib/helpers";
 
 const DashboardPage: NextPage = () => {
