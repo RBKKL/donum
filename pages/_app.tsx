@@ -1,28 +1,47 @@
 import "@styles/globals.css";
+import "@rainbow-me/rainbowkit/styles.css";
 import type { AppProps } from "next/app";
-import { WagmiConfig, createClient, chain } from "wagmi";
-import { ConnectKitProvider, getDefaultClient } from "connectkit";
+import Head from "next/head";
+import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { WagmiConfig, configureChains, createClient, chain } from "wagmi";
+import { infuraProvider } from "wagmi/providers/infura";
+import { publicProvider } from "wagmi/providers/public";
 import { APP_NAME, INFURA_ID } from "@lib/constants";
+import { Layout } from "@components";
 
-const client = createClient(
-  getDefaultClient({
-    appName: APP_NAME,
-    infuraId: INFURA_ID,
-    autoConnect: true,
-    chains: [
-      chain.goerli, // Ethereum's Goerli Testnet
-      chain.hardhat, // Ethereum's Hardhat Default Network
-    ],
-  })
-);
+const usedChains = [
+  // chain.mainnet,
+  // chain.polygon,
+  chain.goerli, // Ethereum's Goerli Testnet
+  chain.localhost, // Hardhat localhost network
+];
 
-console.log(INFURA_ID);
+const { chains, provider } = configureChains(usedChains, [
+  infuraProvider({ apiKey: INFURA_ID }),
+  publicProvider(),
+]);
+
+const { connectors } = getDefaultWallets({
+  appName: APP_NAME,
+  chains,
+});
+
+const wagmiClient = createClient({
+  autoConnect: true,
+  connectors,
+  provider,
+});
 
 const MyApp = ({ Component, pageProps }: AppProps) => (
-  <WagmiConfig client={client}>
-    <ConnectKitProvider mode="dark" theme="midnight">
-      <Component {...pageProps} />
-    </ConnectKitProvider>
+  <WagmiConfig client={wagmiClient}>
+    <RainbowKitProvider chains={chains}>
+      <Layout>
+        <Head>
+          <title>{APP_NAME}</title>
+        </Head>
+        <Component {...pageProps} />
+      </Layout>
+    </RainbowKitProvider>
   </WagmiConfig>
 );
 
