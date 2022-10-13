@@ -83,4 +83,21 @@ describe(CONTRACT_NAME, async () => {
 
     expect(await contract.connect(sender).withdrawDonations()).to.be.reverted;
   });
+
+  it("Should get all donations", async () => {
+    const { recipient } = await makeDonation();
+    await makeDonation();
+
+    const donations = await contract.connect(recipient).getAllDonations(recipient.address);
+    expect(donations.length).to.equal(2);
+  });
+
+  it("Should get donations in right order", async () => {
+    const { message: messageA, recipient } = await makeDonation();
+    const { message: messageB } = await makeDonation();
+
+    const donations = await contract.getAllDonations(recipient.address);
+    expect(donations[0].message).to.equal(messageA);
+    expect(donations[1].message).to.equal(messageB);
+  });
 });
