@@ -9,7 +9,7 @@ Make donations to streamers with cryptocurrency
 - `npm run compile`
 - `npm run dev`
 
-## Some smart contart related tasks
+## Some smart-contract related tasks
 
 - Get help with Hardhat CLI `npx hardhat help`
 - Compile `npm run compile`
