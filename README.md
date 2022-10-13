@@ -6,16 +6,15 @@ Make donations to streamers with cryptocurrency
 
 - Create `.env` file from `.env.example` and fill all fields
 - `npm i`
-- `npm run compile`
 - `npm run dev`
 
 ## Some smart-contract related tasks
 
-- Get help with Hardhat CLI `npx hardhat help`
 - Compile `npm run compile`
 - Run tests `npm test`
 - Run tests with gas report `REPORT_GAS=true npm test`
-- Deploy to some network `npx hardhat deploy --network <networkName>`
+- Deploy to Goerli testnet `npm run deploy:goerli`
+- Get help with Hardhat CLI `npx hardhat help`
 - Start localhost node `npx hardhat node`
 
 ## Learn More
