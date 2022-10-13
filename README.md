@@ -4,6 +4,7 @@ Make donations to streamers with cryptocurrency
 
 ## Getting Started
 
+- Create `.env` file from `.env.example` and fill all fields
 - `npm i`
 - `npm run compile`
 - `npm run dev`
