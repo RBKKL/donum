@@ -8,7 +8,7 @@ interface ButtonProps {
 
 export const Button: FC<ButtonProps> = ({ disabled, onClick, text }) => (
   <button
-    className="rounded-full back bg-yellow-500 w-fit px-8 py-2"
+    className="rounded-full bg-yellow-500 px-8 py-2 w-full sm:w-fit"
     disabled={disabled}
     onClick={onClick}
   >

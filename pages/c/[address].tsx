@@ -32,11 +32,11 @@ const SendDonationPage: NextPage = () => {
   return (
     <div className="flex flex-col items-center text-center">
       <RecipientProfile
-        avatarPath="/shelban.png"
+        avatarPath="/assets/images/default_avatar.gif"
         nickname="Nix"
         address={recipientAddress}
       />
-      <div className="flex flex-col w-full max-w-lg pt-8 gap-4">
+      <div className="flex flex-col w-full sm:max-w-lg pt-8 gap-4">
         <Input
           value={donationAmount}
           onChange={onDonationAmountChange}

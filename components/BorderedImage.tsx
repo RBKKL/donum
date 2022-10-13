@@ -1,4 +1,4 @@
-import {FC} from "react";
+import { FC } from "react";
 import Image from "next/image";
 
 interface BorderedImageProps {
@@ -12,12 +12,7 @@ export const BorderedImage: FC<BorderedImageProps> = ({
   height,
   width,
 }) => (
-  <div className="flex border-2 rounded-2xl">
-    <Image
-      className="rounded-2xl"
-      src={src}
-      height={height}
-      width={width}
-    />
+  <div className="flex border-3 rounded-2xl">
+    <Image className="rounded-2xl" src={src} height={height} width={width} />
   </div>
-)
+);
