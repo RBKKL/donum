@@ -6,7 +6,10 @@
     "start": "next start",
     "lint": "next lint",
     "compile": "hardhat compile",
-    "test": "hardhat test"
+    "test": "hardhat test",
+    "clean": "hardhat clean",
+    "deploy:goerli": "hardhat deploy --network goerli",
+    "postinstall": "npm run compile"
   },
   "dependencies": {
     "@rainbow-me/rainbowkit": "^0.7.1",

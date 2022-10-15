@@ -5,3 +5,4 @@ export { RecipientProfile } from "./RecipientProfile";
 export { TextField } from "./TextField";
 export { Layout } from "./Layout";
 export { Header } from "./Header";
+export { DonationCard } from "./DonationCard";
