@@ -11,3 +11,7 @@ export const CHAIN_IDS = {
   goerli: 5,
   hardhat: 1337,
 };
+
+export const ADDRESS_LENGTH = 42;
+export const ADDRESS_START_SYMBOLS_SHOW_AMOUNT = 6;
+export const ADDRESS_END_SYMBOLS_SHOW_AMOUNT = 4;

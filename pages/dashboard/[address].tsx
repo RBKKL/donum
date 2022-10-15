@@ -11,7 +11,7 @@ const DashboardPage: NextPage = () => {
   const { donations } = useGetAllDonations(recipientAddress);
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col flew-wrap justify-start items-start gap-2.5">
       {reverseArray(donations).map((donation, index) => (
         <DonationCard
           key={index}
