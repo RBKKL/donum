@@ -61,34 +61,18 @@ describe(CONTRACT_NAME, async () => {
   });
 
   it("Should payout donations to recipients", async () => {
-    const { recipient, amount } = await makeDonation();
+    const { recipient, amount, txn } = await makeDonation();
 
-    await expect(
-      contract.connect(recipient).withdrawDonations()
-    ).to.changeEtherBalance(recipient, amount);
-  });
-
-  it("Should set paid out donations to paid", async () => {
-    const { recipient } = await makeDonation();
-    await contract.connect(recipient).withdrawDonations();
-
-    const unpaidAmount = await contract.getUnpaidAmount(recipient.address);
-
-    expect(unpaidAmount).to.equal(0);
-    // TODO: add more assertions
-  });
-
-  it("Should payout donations only to recipients", async () => {
-    const { sender } = await makeDonation();
-
-    expect(await contract.connect(sender).withdrawDonations()).to.be.reverted;
+    await expect(txn).to.changeEtherBalance(recipient, amount);
   });
 
   it("Should get all donations", async () => {
     const { recipient } = await makeDonation();
     await makeDonation();
 
-    const donations = await contract.connect(recipient).getAllDonations(recipient.address);
+    const donations = await contract
+      .connect(recipient)
+      .getAllDonations(recipient.address);
     expect(donations.length).to.equal(2);
   });
 
