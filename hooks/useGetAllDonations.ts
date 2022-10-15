@@ -10,9 +10,9 @@ export const useGetAllDonations = (recipientAddress: string) => {
   const [donations, setDonations] = useState<Donation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  let provider = new ethers.providers.InfuraProvider("goerli", INFURA_ID);
-  let contractAddress = getContractAddressByChainId(chain?.id);
-  let contract = new ethers.Contract(contractAddress, CONTRACT_ABI, provider);
+  const provider = new ethers.providers.InfuraProvider("goerli", INFURA_ID);
+  const contractAddress = getContractAddressByChainId(chain?.id);
+  const contract = new ethers.Contract(contractAddress, CONTRACT_ABI, provider);
 
   useEffect(() => {
     if (recipientAddress) {
