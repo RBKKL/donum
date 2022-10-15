@@ -1,29 +1,29 @@
-import { useContractRead, useNetwork } from "wagmi";
-import {
-  CONTRACT_ABI,
-  getContractAddressByChainId,
-} from "@lib/smartContractsData";
-import { useEffect } from "react";
-import { DonationsStore } from "typechain-types";
+import { useNetwork } from "wagmi";
+import { ethers } from "ethers";
+import { INFURA_ID } from "@lib/constants";
+import { CONTRACT_ABI, getContractAddressByChainId } from "@lib/smartContractsData";
+import { useEffect, useState } from "react";
+import { Donation } from "../types/Donation";
 
 export const useGetAllDonations = (recipientAddress: string) => {
   const { chain } = useNetwork();
+  const [donations, setDonations] = useState<Donation[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const { data, isLoading, isError, error } = useContractRead({
-    addressOrName: getContractAddressByChainId(chain?.id),
-    contractInterface: CONTRACT_ABI,
-    functionName: "getAllDonations",
-    args: [recipientAddress],
-  });
-  const donations = data as DonationsStore.DonationStructOutput[] | undefined;
+  let provider = new ethers.providers.InfuraProvider("goerli", INFURA_ID);
+  let contractAddress = getContractAddressByChainId(chain?.id);
+  let contract = new ethers.Contract(contractAddress, CONTRACT_ABI, provider);
 
   useEffect(() => {
-    console.log("isLoading:", isLoading);
-    console.log("isError", isError);
-    console.log("error:", error);
-    console.log("data:", data);
-    console.log("___________");
-  }, [isLoading, isError, error, data]);
+    if (recipientAddress) {
+      const filter = contract.filters.NewDonation(null, recipientAddress);
+      contract.queryFilter(filter).then((events) => {
+        const donations = events.map((event) => event.args) as unknown as Donation[];
+        setDonations(donations);
+        setIsLoading(false);
+      });
+    }
+  }, [recipientAddress]);
 
-  return { donations, isError, isLoading, error };
+  return { donations, isLoading };
 };

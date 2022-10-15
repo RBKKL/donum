@@ -9,7 +9,7 @@ contract DonationsStore {
 
     event NewDonation(
         address from,
-        address to,
+        address indexed to,
         uint amount,
         uint timestamp,
         string message
