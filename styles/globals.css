@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@layer components {
+    #__next {
+        @apply h-full;
+    }
+    html,
+    body {
+        @apply h-full;
+    }
+}
+
+.text-border-1 {
+  text-shadow: 1px 0 #000, -1px 0 #000, 0 1px #000, 0 -1px #000,
+    0.7px 0.7px #000, -0.7px -0.7px #000, 0.7px -0.7px #000, -0.7px 0.7px #000;
+}
+
+.text-border-2 {
+    text-shadow: 2px 0 #000, -2px 0 #000, 0 2px #000, 0 -2px #000,
+      1.4px 1.4px #000, -1.4px -1.4px #000, 1.4px -1.4px #000, -1.4px 1.4px #000;
+}

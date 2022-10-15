@@ -32,17 +32,23 @@ const wagmiClient = createClient({
   provider,
 });
 
-const MyApp = ({ Component, pageProps }: AppProps) => (
-  <WagmiConfig client={wagmiClient}>
-    <RainbowKitProvider chains={chains}>
-      <Layout>
-        <Head>
-          <title>{APP_NAME}</title>
-        </Head>
-        <Component {...pageProps} />
-      </Layout>
-    </RainbowKitProvider>
-  </WagmiConfig>
-);
+const MyApp = ({ Component, pageProps, router }: AppProps) => {
+  if (router.pathname.includes("/alert")) {
+    return <Component {...pageProps} />;
+  }
+
+  return (
+    <WagmiConfig client={wagmiClient}>
+      <RainbowKitProvider chains={chains}>
+        <Layout>
+          <Head>
+            <title>{APP_NAME}</title>
+          </Head>
+          <Component {...pageProps} />
+        </Layout>
+      </RainbowKitProvider>
+    </WagmiConfig>
+  );
+};
 
 export default MyApp;
