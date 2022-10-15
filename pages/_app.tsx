@@ -6,7 +6,7 @@ import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { WagmiConfig, configureChains, createClient, chain } from "wagmi";
 import { infuraProvider } from "wagmi/providers/infura";
 import { publicProvider } from "wagmi/providers/public";
-import { APP_NAME, INFURA_ID } from "@lib/constants";
+import { ALERT_PAGE_PATH, APP_NAME, INFURA_ID } from "@lib/constants";
 import { Layout } from "@components";
 
 const usedChains = [
@@ -33,7 +33,7 @@ const wagmiClient = createClient({
 });
 
 const MyApp = ({ Component, pageProps, router }: AppProps) => {
-  if (router.pathname.includes("/alert")) {
+  if (router.pathname.includes(ALERT_PAGE_PATH)) {
     return <Component {...pageProps} />;
   }
 
