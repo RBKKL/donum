@@ -13,5 +13,3 @@ export const CHAIN_IDS = {
 };
 
 export const ADDRESS_LENGTH = 42;
-export const ADDRESS_START_SYMBOLS_SHOW_AMOUNT = 6;
-export const ADDRESS_END_SYMBOLS_SHOW_AMOUNT = 4;
