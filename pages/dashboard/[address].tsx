@@ -5,7 +5,7 @@ import { useGetAllDonations } from "@hooks/useGetAllDonations";
 import {formatAddress, reverseArray} from "@lib/helpers";
 import Image from "next/image";
 import {BigNumber, ethers} from "ethers";
-import {useContractEvent} from "wagmi";
+import {useContractEvent, useNetwork} from "wagmi";
 import {CONTRACT_ABI, getContractAddressByChainId} from "@lib/smartContractsData";
 
 const editProfileButtonHandler = () => {
@@ -17,7 +17,14 @@ const DashboardPage: NextPage = () => {
   const recipientAddress = router.query.address as string;
 
   const { donations } = useGetAllDonations(recipientAddress);
-  // const { newDonations } = useContractEvent(getContractAddressByChainId(1), CONTRACT_ABI, )
+  const { chain } = useNetwork();
+  useContractEvent({
+    addressOrName: getContractAddressByChainId(chain?.id),
+    contractInterface: CONTRACT_ABI,
+    eventName: "NewDonation",
+    listener(from, amount, timestamp, message) {
+      console.log("пипи кака");
+  }});
 
   return (
     <div className="flex flex-row flex-wrap justify-evenly">
