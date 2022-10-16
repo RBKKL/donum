@@ -19,7 +19,7 @@ export const DonationCard: FC<DonationCardProps> = ({
   <div className="rounded-2xl bg-zinc-700 px-4 py-2 text-sm my-3">
     <div className="flex mb-2.5 font-roboto justify-between text-white">
       <p className="font-inter font-medium">
-        {formatAddress(from, 6, 4)}
+        {formatAddress(from, 4, 4)}
         <span className="font-normal"> sent </span>
         {ethers.utils.formatEther(amount)} ETH
       </p>

@@ -30,7 +30,7 @@ export const RecipientProfile: FC<RecipientProfileProps> = ({
       ) : <p className="text-2xl font-semibold py-2">{nickname}</p>
     }
     <p className="text-sm text-ellipsis overflow-hidden align-center">
-      {shortenedAddress ? formatAddress(address, 6, 5) : address}
+      {shortenedAddress ? formatAddress(address, 4, 4) : address}
     </p>
   </div>
 );

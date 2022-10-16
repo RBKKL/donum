@@ -51,8 +51,8 @@ const DashboardPage: NextPage = () => {
 
   return (
     <div className="flex flex-row flex-wrap justify-evenly">
-      <div className="flex flex-col items-center  grow-0">
-        <RecipientProfile  avatarPath="/assets/images/default_avatar.gif"
+      <div className="flex flex-col items-center grow-0">
+        <RecipientProfile avatarPath="/assets/images/default_avatar.gif"
                            nickname="Nix"
                            address={recipientAddress}
                            editable={true}
