@@ -16,7 +16,16 @@ const DashboardPage: NextPage = () => {
   const router = useRouter();
   const recipientAddress = router.query.address as string;
 
-  const { donations } = useGetAllDonations(recipientAddress);
+  const { donations, isLoading, isError, error } =
+    useGetAllDonations(recipientAddress);
+
+  if (isLoading) return <div>Loading...</div>;
+
+  if (isError) {
+    console.error(error);
+    return <div>Error!</div>;
+  }
+
   const { chain } = useNetwork();
   useContractEvent({
     addressOrName: getContractAddressByChainId(chain?.id),
@@ -24,7 +33,7 @@ const DashboardPage: NextPage = () => {
     eventName: "NewDonation",
     listener(from, amount, timestamp, message) {
       console.log("пипи кака");
-  }});
+    }});
 
   return (
     <div className="flex flex-row flex-wrap justify-evenly">
