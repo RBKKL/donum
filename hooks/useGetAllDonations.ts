@@ -1,29 +1,67 @@
-import { useNetwork } from "wagmi";
-import { ethers } from "ethers";
-import { INFURA_ID } from "@lib/constants";
-import { CONTRACT_ABI, getContractAddressByChainId } from "@lib/smartContractsData";
 import { useEffect, useState } from "react";
-import { Donation } from "../types/Donation";
+import { useContract, useNetwork, useProvider } from "wagmi";
+import {
+  CONTRACT_ABI,
+  getContractAddressByChainId,
+} from "@lib/smartContractsData";
+import type {
+  DonationsStore,
+  NewDonationEventObject,
+} from "../typechain-types/DonationsStore";
+import { ethers } from "ethers";
 
 export const useGetAllDonations = (recipientAddress: string) => {
   const { chain } = useNetwork();
-  const [donations, setDonations] = useState<Donation[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const provider = useProvider({ chainId: chain?.id });
+  const donationsStore = useContract<DonationsStore>({
+    addressOrName: getContractAddressByChainId(chain?.id),
+    contractInterface: CONTRACT_ABI,
+    signerOrProvider: provider,
+  });
 
-  const provider = new ethers.providers.InfuraProvider("goerli", INFURA_ID);
-  const contractAddress = getContractAddressByChainId(chain?.id);
-  const contract = new ethers.Contract(contractAddress, CONTRACT_ABI, provider);
+  const [donations, setDonations] = useState<NewDonationEventObject[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const [error, setError] = useState<any>(undefined);
 
   useEffect(() => {
-    if (recipientAddress) {
-      const filter = contract.filters.NewDonation(null, recipientAddress);
-      contract.queryFilter(filter).then((events) => {
-        const donations = events.map((event) => event.args) as unknown as Donation[];
-        setDonations(donations);
-        setIsLoading(false);
-      });
+    setIsLoading(true);
+    setIsError(false);
+    setError(undefined);
+
+    if (!recipientAddress) {
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      if (!ethers.utils.isAddress(recipientAddress)) {
+        throw new Error("Invalid address");
+      }
+
+      const donationsFilter = donationsStore.filters.NewDonation(
+        null,
+        recipientAddress
+      );
+
+      donationsStore
+        .queryFilter(donationsFilter)
+        .then((events) => {
+          const donations = events.map((event) => event.args);
+          setDonations(donations);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          setIsLoading(false);
+          setIsError(true);
+          setError(error);
+        });
+    } catch (error) {
+      setIsLoading(false);
+      setIsError(true);
+      setError(error);
     }
   }, [recipientAddress]);
 
-  return { donations, isLoading };
+  return { donations, isLoading, isError, error };
 };
