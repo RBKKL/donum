@@ -8,7 +8,15 @@ const DashboardPage: NextPage = () => {
   const router = useRouter();
   const recipientAddress = router.query.address as string;
 
-  const { donations } = useGetAllDonations(recipientAddress);
+  const { donations, isLoading, isError, error } =
+    useGetAllDonations(recipientAddress);
+
+  if (isLoading) return <div>Loading...</div>;
+
+  if (isError) {
+    console.error(error);
+    return <div>Error!</div>;
+  }
 
   return (
     <div className="flex flex-col gap-3">
