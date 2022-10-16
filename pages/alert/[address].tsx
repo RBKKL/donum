@@ -4,11 +4,7 @@ import { ResponsiveImage } from "@components/ResponsiveImage";
 const AlertPage: NextPage = () => {
   return (
     <div className="w-full h-full flex flex-col items-center bg-green-screen">
-      <ResponsiveImage
-        src="/assets/images/default_avatar.gif"
-        percentWidth={100}
-        percentHeight={100}
-      />
+      <ResponsiveImage src="/assets/images/default_avatar.gif" />
       <h1 className="text-center pt-2.5 text-yellow-500 text-3xl font-bold text-border-2">
         0x5F...0aa3 sent 0.001 ETH
       </h1>
