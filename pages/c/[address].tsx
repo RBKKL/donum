@@ -54,7 +54,7 @@ const SendDonationPage: NextPage = () => {
           }
         />
         <div className="flex flex-row-reverse">
-          <Button text="Send" disabled={!isAvailable} onClick={donate} />
+          <Button text="Send" disabled={!isAvailable || Number(donationAmount) === 0} onClick={donate} />
         </div>
       </div>
     </div>

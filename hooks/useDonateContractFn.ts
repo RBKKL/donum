@@ -24,7 +24,7 @@ export const useDonateContractFn = (
     functionName: "donate",
     args: [recipientAddress, message],
     overrides: {
-      value: ethers.utils.parseEther(donationAmount),
+      value: ethers.utils.parseEther(donationAmount || "0"),
     },
   });
 
