@@ -35,8 +35,6 @@ const SendDonationPage: NextPage = () => {
         avatarPath="/assets/images/default_avatar.gif"
         nickname="Nix"
         address={recipientAddress}
-        editable={false}
-        shortenedAddress={false}
       />
       <div className="flex flex-col w-full sm:max-w-lg pt-12 gap-4">
         <Input
