@@ -17,6 +17,11 @@ const Home: NextPage = () => {
           <Button text="Dashboard" />
         </a>
       </Link>
+      <Link href={`/alert/${MY_ADDRESS}`}>
+        <a className="mt-3">
+          <Button text="Donation alert" />
+        </a>
+      </Link>
     </div>
   );
 };
