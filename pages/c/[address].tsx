@@ -45,7 +45,7 @@ const SendDonationPage: NextPage = () => {
         <TextField
           value={message}
           onChange={onDonationMessageChange}
-          rows={4}
+          minRows={4}
           maxLength={MESSAGE_MAX_LENGTH}
           footer={
             <p className="flex flex-row-reverse text-xs text-gray-400">
