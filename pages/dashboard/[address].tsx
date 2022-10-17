@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { DonationCard, RecipientProfile } from "@components";
-import { countAllDonations, reverseArray } from "@lib/helpers";
+import { getTotalDonationsAmount, reverseArray } from "@lib/helpers";
 import { useGetUpdatableDonationsArray } from "@hooks/useGetUpdatableDonationsArray";
 
 const DashboardPage: NextPage = () => {
@@ -32,7 +32,7 @@ const DashboardPage: NextPage = () => {
           <p className="mr-4">Total donations amount: </p>
           {donations &&
             <p className="font-medium">
-              {countAllDonations(donations)} ETH
+              {getTotalDonationsAmount(donations)} ETH
             </p>
           }
         </div>

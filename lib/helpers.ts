@@ -36,7 +36,7 @@ export const formatTimestamp = (timestamp: BigNumber): string => {
   return format(timestamp.mul(1000).toNumber(), "d MMMM yy  kk:mm")
 }
 
-export const countAllDonations = (donations: NewDonationEventObject[]): string => {
+export const getTotalDonationsAmount = (donations: NewDonationEventObject[]): string => {
   const symbolsAfterComma = 5;
   return Number(ethers.utils
     .formatEther(donations.reduce((a, b) => b.amount.add(a), BigNumber.from(0))))
