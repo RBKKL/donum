@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { BigNumber, ethers } from "ethers";
+import {formatAddress, formatTimestamp} from "@lib/helpers";
 
 interface DonationCardProps {
   from: string;
@@ -14,11 +15,17 @@ export const DonationCard: FC<DonationCardProps> = ({
   amount,
   message,
 }) => (
-  <div>
-    <p>
-      {from} sent {ethers.utils.formatEther(amount)} ETH
-    </p>
-    <p>{new Date(timestamp.mul(1000).toNumber()).toLocaleString()}</p>
-    <p>{message}</p>
+  <div className="rounded-2xl bg-zinc-700 px-4 py-2 text-sm my-3">
+    <div className="flex mb-2.5 justify-between text-white">
+      <p className="font-medium">
+        {formatAddress(from)}
+        <span className="font-normal"> sent </span>
+        {ethers.utils.formatEther(amount)} ETH
+      </p>
+      <p className="text-gray-400">
+        { formatTimestamp(timestamp) }
+      </p>
+    </div>
+    <p className="break-words text-neutral-50">{message}</p>
   </div>
 );
