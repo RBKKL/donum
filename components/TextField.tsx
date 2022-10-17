@@ -4,12 +4,11 @@ import TextareaAutosize from "react-textarea-autosize";
 interface TextFieldProps {
   value?: string;
   onChange?: (value: string) => void;
-  rows?: number;
+  minRows?: number;
   maxLength?: number;
   footer?: ReactNode;
 }
 
-// TODO: add min height and autosizing
 export const TextField: FC<TextFieldProps> = ({
   onChange,
   footer,

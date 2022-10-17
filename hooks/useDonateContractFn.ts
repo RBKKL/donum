@@ -65,5 +65,5 @@ export const useDonateContractFn = (
     // txData,
   ]);
 
-  return { donate, isAvailable, isLoading, isError };
+  return { donate, data, isAvailable, isLoading, isError };
 };
