@@ -1,8 +1,9 @@
 import { FC, ReactNode } from "react";
 interface InputProps {
   value?: string;
-  onChange?: (value: string) => void;
   rightCorner?: ReactNode;
+  onChange?: (value: string) => void;
+  onBlur?: () => void;
 }
 
 export const Input: FC<InputProps> = ({ onChange, rightCorner, ...props }) => {

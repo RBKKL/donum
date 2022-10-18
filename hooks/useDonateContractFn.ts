@@ -1,11 +1,6 @@
 import { useEffect } from "react";
 import { ethers } from "ethers";
-import {
-  useContractWrite,
-  useNetwork,
-  usePrepareContractWrite,
-  useWaitForTransaction,
-} from "wagmi";
+import { useContractWrite, useNetwork, usePrepareContractWrite } from "wagmi";
 import {
   CONTRACT_ABI,
   getContractAddressByChainId,
@@ -18,13 +13,16 @@ export const useDonateContractFn = (
 ) => {
   const { chain } = useNetwork();
 
+  const isValidAmount = !!donationAmount;
+
   const { config, error: prepareError } = usePrepareContractWrite({
+    enabled: isValidAmount,
     addressOrName: getContractAddressByChainId(chain?.id),
     contractInterface: CONTRACT_ABI,
     functionName: "donate",
     args: [recipientAddress, message],
     overrides: {
-      value: ethers.utils.parseEther(donationAmount),
+      value: ethers.utils.parseEther(donationAmount || "0"),
     },
   });
 
@@ -34,36 +32,14 @@ export const useDonateContractFn = (
     write?.();
   };
 
-  // TODO: should wait for transaction confirmation?
-  // const {
-  //   isSuccess: txSuccess,
-  //   error: txError,
-  //   data: txData,
-  // } = useWaitForTransaction({
-  //   confirmations: 1,
-  //   hash: data?.hash,
-  // });
-
   useEffect(() => {
     console.log("prepareError:", prepareError);
     console.log("isLoading:", isLoading);
     console.log("isError", isError);
     console.log("error:", error);
     console.log("data:", data);
-    // console.log("txError", txError);
-    // console.log("txSuccess", txSuccess);
-    // console.log("txData:", txData);
     console.log("___________");
-  }, [
-    prepareError,
-    isLoading,
-    isError,
-    error,
-    data,
-    // txError,
-    // txSuccess,
-    // txData,
-  ]);
+  }, [prepareError, isLoading, isError, error, data]);
 
-  return { donate, isAvailable, isLoading, isError };
+  return { donate, data, isAvailable, isLoading, isError };
 };

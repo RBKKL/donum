@@ -6,17 +6,21 @@ import { EthIcon } from "@components/icons";
 import { useDonateContractFn } from "@hooks/useDonateContractFn";
 import { MESSAGE_MAX_LENGTH } from "@lib/constants";
 import { isNumber } from "@lib/helpers";
+import { DonationModal } from "@components/DonationModal";
+
+const DEFAULT_DONATION_AMOUNT = "0.001";
 
 const SendDonationPage: NextPage = () => {
   const router = useRouter();
   const recipientAddress = router.query.address as string;
   // TODO: validate address
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const nickname = "Nix";
 
-  const [donationAmount, setDonationAmount] = useState("0.001");
-  // TODO: validate amount
+  const [donationAmount, setDonationAmount] = useState(DEFAULT_DONATION_AMOUNT);
   const [message, setMessage] = useState("");
 
-  const { donate, isAvailable } = useDonateContractFn(
+  const { donate, isAvailable, isLoading, isError } = useDonateContractFn(
     recipientAddress,
     donationAmount,
     message
@@ -29,23 +33,35 @@ const SendDonationPage: NextPage = () => {
     setMessage(message);
   };
 
+  const setMinimumAmount = () => {
+    if (!donationAmount || Number(donationAmount) === 0) {
+      setDonationAmount("0.0");
+    }
+  };
+
+  const onSendBtnClick = () => {
+    setIsModalOpen(true);
+    donate();
+  };
+
   return (
     <div className="flex flex-col items-center text-center">
       <RecipientProfile
         avatarPath="/assets/images/default_avatar.gif"
-        nickname="Nix"
+        nickname={nickname}
         address={recipientAddress}
       />
       <div className="flex flex-col w-full sm:max-w-lg pt-12 gap-4">
         <Input
           value={donationAmount}
           onChange={onDonationAmountChange}
+          onBlur={setMinimumAmount}
           rightCorner={<EthIcon />}
         />
         <TextField
           value={message}
           onChange={onDonationMessageChange}
-          rows={4}
+          minRows={6}
           maxLength={MESSAGE_MAX_LENGTH}
           footer={
             <p className="flex flex-row-reverse text-xs text-gray-400">
@@ -54,9 +70,21 @@ const SendDonationPage: NextPage = () => {
           }
         />
         <div className="flex flex-row-reverse">
-          <Button text="Send" disabled={!isAvailable} onClick={donate} />
+          <Button
+            text="Send"
+            disabled={!isAvailable || Number(donationAmount) === 0}
+            onClick={onSendBtnClick}
+          />
         </div>
       </div>
+      <DonationModal
+        isOpen={isModalOpen}
+        setIsOpen={setIsModalOpen}
+        isError={isError}
+        isLoading={isLoading}
+        donationAmount={donationAmount}
+        nickname={nickname}
+      />
     </div>
   );
 };
