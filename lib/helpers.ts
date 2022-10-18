@@ -12,33 +12,42 @@ export const reverseArray = <T>(arr: T[] | undefined): T[] => {
   return [...arr].reverse();
 };
 
-export const formatAddress = (address: string): string => {
+export const formatAddress = (address?: string): string => {
+  if (!address) {
+    return "";
+  }
+
   const leadingChars = 4;
   const trailingChars = 4;
 
   return address.length < leadingChars + trailingChars
     ? address
     : `${address.substring(0, leadingChars)}\u2026${address.substring(
-      address.length - trailingChars
-    )}`;
+        address.length - trailingChars
+      )}`;
 };
 
-export const newDonationArrayToObject =
-  (newDonationArray: [string, string, BigNumber, BigNumber, string]): NewDonationEventObject => ({
-  from: newDonationArray[0],
-  to: newDonationArray[1],
-  amount: newDonationArray[2],
-  timestamp: newDonationArray[3],
-  message: newDonationArray[4]
-})
+export const castToDonationObject = (
+  donationArray: [string, string, BigNumber, BigNumber, string]
+): NewDonationEventObject => ({
+  from: donationArray[0],
+  to: donationArray[1],
+  amount: donationArray[2],
+  timestamp: donationArray[3],
+  message: donationArray[4],
+});
 
 export const formatTimestamp = (timestamp: BigNumber): string => {
-  return format(timestamp.mul(1000).toNumber(), "d MMMM yy  kk:mm")
-}
+  return format(timestamp.mul(1000).toNumber(), "d MMMM yy  kk:mm");
+};
 
-export const getTotalDonationsAmount = (donations: NewDonationEventObject[]): string => {
+export const getTotalDonationsAmount = (
+  donations: NewDonationEventObject[]
+): string => {
   const symbolsAfterComma = 5;
-  return Number(ethers.utils
-    .formatEther(donations.reduce((a, b) => b.amount.add(a), BigNumber.from(0))))
-    .toFixed(symbolsAfterComma);
-}
+  return Number(
+    ethers.utils.formatEther(
+      donations.reduce((a, b) => b.amount.add(a), BigNumber.from(0))
+    )
+  ).toFixed(symbolsAfterComma);
+};
