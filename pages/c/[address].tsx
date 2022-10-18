@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { Button, RecipientProfile, Input, TextField } from "@components";
@@ -8,34 +8,40 @@ import { MESSAGE_MAX_LENGTH } from "@lib/constants";
 import { isNumber } from "@lib/helpers";
 import { DonationModal } from "@components/DonationModal";
 
+const DEFAULT_DONATION_AMOUNT = "0.001";
+
 const SendDonationPage: NextPage = () => {
   const router = useRouter();
   const recipientAddress = router.query.address as string;
   // TODO: validate address
-  const [isOpen, setIsOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const nickname = "Nix";
 
-  const [donationAmount, setDonationAmount] = useState("0.001");
-  // TODO: validate amount
+  const [donationAmount, setDonationAmount] = useState(DEFAULT_DONATION_AMOUNT);
   const [message, setMessage] = useState("");
 
-  const { donate, data, isAvailable, isLoading, isError } = useDonateContractFn(
+  const { donate, isAvailable, isLoading, isError } = useDonateContractFn(
     recipientAddress,
     donationAmount,
     message
   );
-
-  useEffect(() => {
-    if (isLoading || isError || data) {
-      setIsOpen(true);
-    }
-  }, [isLoading, isError, data]);
 
   const onDonationAmountChange = (amount: string) =>
     isNumber(amount) && setDonationAmount(amount);
 
   const onDonationMessageChange = (message: string) => {
     setMessage(message);
+  };
+
+  const setMinimumAmount = () => {
+    if (!donationAmount || Number(donationAmount) === 0) {
+      setDonationAmount("0.0");
+    }
+  };
+
+  const onSendBtnClick = () => {
+    setIsModalOpen(true);
+    donate();
   };
 
   return (
@@ -49,12 +55,13 @@ const SendDonationPage: NextPage = () => {
         <Input
           value={donationAmount}
           onChange={onDonationAmountChange}
+          onBlur={setMinimumAmount}
           rightCorner={<EthIcon />}
         />
         <TextField
           value={message}
           onChange={onDonationMessageChange}
-          minRows={4}
+          minRows={6}
           maxLength={MESSAGE_MAX_LENGTH}
           footer={
             <p className="flex flex-row-reverse text-xs text-gray-400">
@@ -63,12 +70,16 @@ const SendDonationPage: NextPage = () => {
           }
         />
         <div className="flex flex-row-reverse">
-          <Button text="Send" disabled={!isAvailable || Number(donationAmount) === 0} onClick={donate} />
+          <Button
+            text="Send"
+            disabled={!isAvailable || Number(donationAmount) === 0}
+            onClick={onSendBtnClick}
+          />
         </div>
       </div>
       <DonationModal
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
+        isOpen={isModalOpen}
+        setIsOpen={setIsModalOpen}
         isError={isError}
         isLoading={isLoading}
         donationAmount={donationAmount}
