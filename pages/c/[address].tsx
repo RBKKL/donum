@@ -3,7 +3,7 @@ import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { Button, RecipientProfile, Input, TextField } from "@components";
 import { EthIcon } from "@components/icons";
-import { useDonateContractFn } from "@hooks/useDonateContractFn";
+import { useSendDonation } from "@hooks/useSendDonation";
 import { MESSAGE_MAX_LENGTH } from "@lib/constants";
 import { isNumber } from "@lib/helpers";
 import { DonationModal } from "@components/DonationModal";
@@ -20,7 +20,7 @@ const SendDonationPage: NextPage = () => {
   const [donationAmount, setDonationAmount] = useState(DEFAULT_DONATION_AMOUNT);
   const [message, setMessage] = useState("");
 
-  const { donate, isAvailable, isLoading, isError } = useDonateContractFn(
+  const { donate, isAvailable, isLoading, isError } = useSendDonation(
     recipientAddress,
     donationAmount,
     message

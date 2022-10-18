@@ -10,9 +10,10 @@ import type {
 } from "../typechain-types/DonationsStore";
 import { ethers } from "ethers";
 
-export const useGetAllDonations = (recipientAddress: string) => {
+export const useDonationsHistory = (recipientAddress: string) => {
   const { chain } = useNetwork();
   const provider = useProvider({ chainId: chain?.id });
+
   const donationsStore = useContract<DonationsStore>({
     addressOrName: getContractAddressByChainId(chain?.id),
     contractInterface: CONTRACT_ABI,
@@ -23,6 +24,12 @@ export const useGetAllDonations = (recipientAddress: string) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [error, setError] = useState<any>(undefined);
+
+  const onError = (error: any) => {
+    setIsLoading(false);
+    setIsError(true);
+    setError(error);
+  };
 
   useEffect(() => {
     setIsLoading(true);
@@ -51,15 +58,9 @@ export const useGetAllDonations = (recipientAddress: string) => {
           setDonations(donations);
           setIsLoading(false);
         })
-        .catch((error) => {
-          setIsLoading(false);
-          setIsError(true);
-          setError(error);
-        });
+        .catch(onError);
     } catch (error) {
-      setIsLoading(false);
-      setIsError(true);
-      setError(error);
+      onError(error);
     }
   }, [recipientAddress]);
 

@@ -6,7 +6,7 @@ import {
   getContractAddressByChainId,
 } from "@lib/smartContractsData";
 
-export const useDonateContractFn = (
+export const useSendDonation = (
   recipientAddress: string,
   donationAmount: string,
   message: string
