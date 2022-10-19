@@ -9,6 +9,7 @@
     "clean": "hardhat clean",
     "deploy:goerli": "hardhat deploy --network goerli",
     "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "lint:contracts": "solhint 'contracts/**/*.sol'",
     "lint:app": "tsc --noEmit && eslint .",
     "lint": "npm run lint:contracts && npm run lint:app",
