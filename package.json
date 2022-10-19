@@ -17,9 +17,10 @@
     "lint:contracts": "solhint 'contracts/**/*.sol'",
     "lint:app": "tsc --noEmit && eslint .",
     "lint": "npm run lint:contracts && npm run lint:app",
-    "postinstall": "npm run compile"
+    "postinstall": "prisma generate && npm run compile"
   },
   "dependencies": {
+    "@prisma/client": "^4.5.0",
     "@rainbow-me/rainbowkit": "^0.7.1",
     "@tanstack/react-query": "^4.12.0",
     "@trpc/client": "^10.0.0-proxy-beta.21",
@@ -57,6 +58,7 @@
     "postcss": "^8.4.14",
     "prettier": "^2.7.1",
     "prettier-plugin-solidity": "^1.0.0-beta.24",
+    "prisma": "^4.5.0",
     "solhint": "^3.3.7",
     "solhint-plugin-prettier": "^0.0.5",
     "tailwindcss": "^3.1.2",
