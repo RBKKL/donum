@@ -22,13 +22,13 @@ export const DonationAlert: FC<DonationAlertProps> = ({
   });
 
   return (
-    <div className="w-full h-full flex flex-col items-center">
+    <div className="flex h-full w-full flex-col items-center">
       {audio}
       <ResponsiveImage src={src} alt="donation alert image" />
-      <h1 className="text-center pt-2.5 text-yellow-500 text-3xl font-bold text-border-2">
+      <h1 className="text-border-2 pt-2.5 text-center text-3xl font-bold text-yellow-500">
         {sender} sent {ethers.utils.formatEther(amount)} ETH
       </h1>
-      <p className="text-center pt-2.5 text-zinc-50 text-border-1 leading-none text-xl">
+      <p className="text-border-1 pt-2.5 text-center text-xl leading-none text-zinc-50">
         {message}
       </p>
     </div>

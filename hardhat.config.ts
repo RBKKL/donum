@@ -9,12 +9,12 @@ import "hardhat-deploy";
 import "tsconfig-paths/register";
 import { CHAIN_IDS, INFURA_ID } from "@lib/constants";
 
-const privateKey = process.env.PRIVATE_KEY ?? "NO_PRIVATE_KEY";
+const privateKey = process.env.PRIVATE_KEY;
 
 const getChainConfig = (
   network: keyof typeof CHAIN_IDS
 ): NetworkUserConfig => ({
-  accounts: [`0x${privateKey}`],
+  accounts: privateKey ? [`0x${privateKey}`] : [],
   chainId: CHAIN_IDS[network],
   url: `https://${network}.infura.io/v3/${INFURA_ID}`,
 });

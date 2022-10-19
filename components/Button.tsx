@@ -15,7 +15,7 @@ export const Button: FC<ButtonProps> = ({
 }) => (
   <button
     className={
-      "rounded-full bg-yellow-500 px-8 py-2 w-full font-semibold text-xl disabled:opacity-50 transition-opacity" +
+      "w-full rounded-full bg-yellow-500 px-8 py-2 text-xl font-semibold transition-opacity disabled:opacity-50" +
       (!fullWidth ? " sm:w-fit" : "")
     }
     disabled={disabled}

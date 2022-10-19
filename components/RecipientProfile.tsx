@@ -18,7 +18,7 @@ export const RecipientProfile: FC<RecipientProfileProps> = ({
   onEditClick,
   shortAddress,
 }) => (
-  <div className="flex flex-col items-center w-full">
+  <div className="flex w-full flex-col items-center">
     <BorderedImage
       src={avatarPath}
       height={160}
@@ -26,10 +26,10 @@ export const RecipientProfile: FC<RecipientProfileProps> = ({
       alt="Recipient avatar"
     />
     <div className="flex flex-row flex-nowrap items-center gap-x-2">
-      <p className="text-2xl font-semibold py-2">{nickname}</p>
+      <p className="py-2 text-2xl font-semibold">{nickname}</p>
       {onEditClick && <EditIcon size="small" onClick={onEditClick} />}
     </div>
-    <p className="text-sm text-ellipsis overflow-hidden align-center">
+    <p className="align-center overflow-hidden text-ellipsis text-sm">
       {shortAddress ? formatAddress(address) : address}
     </p>
   </div>

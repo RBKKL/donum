@@ -35,7 +35,7 @@ const AlertPage: NextPage = () => {
   });
 
   return (
-    <div className="w-full h-full  bg-green-screen">
+    <div className="h-full w-full  bg-green-screen">
       {currentDonation && (
         <DonationAlert
           src="/assets/images/default_avatar.gif"

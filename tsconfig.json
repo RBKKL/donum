@@ -20,7 +20,8 @@
       "@components/*": ["components/*"],
       "@lib/*": ["lib/*"],
       "@styles/*": ["styles/*"],
-      "@hooks/*": ["hooks/*"]
+      "@hooks/*": ["hooks/*"],
+      "@server/*": ["server/*"]
     }
   },
   "exclude": ["node_modules"],

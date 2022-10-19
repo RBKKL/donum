@@ -22,8 +22,8 @@ export const StyledModal: FC<StyledModalProps> = ({
       isOpen={isOpen}
       onRequestClose={close}
     >
-      <div className="bg-zinc-700 rounded-3xl p-4 w-96">
-        <div className="flex justify-between mb-3">
+      <div className="w-96 rounded-3xl bg-zinc-700 p-4">
+        <div className="mb-3 flex justify-between">
           <p>{title}</p>
           <CrossIcon onClick={close} />
         </div>

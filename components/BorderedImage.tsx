@@ -14,7 +14,7 @@ export const BorderedImage: FC<BorderedImageProps> = ({
   width,
   alt,
 }) => (
-  <div className="flex border-3 rounded-2xl">
+  <div className="flex rounded-2xl border-3">
     <Image
       className="rounded-2xl"
       src={src}

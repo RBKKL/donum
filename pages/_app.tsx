@@ -1,6 +1,6 @@
 import "@styles/globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
-import type { AppProps } from "next/app";
+import type { AppType } from "next/app";
 import Head from "next/head";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { WagmiConfig, configureChains, createClient, chain } from "wagmi";
@@ -8,6 +8,7 @@ import { infuraProvider } from "wagmi/providers/infura";
 import { publicProvider } from "wagmi/providers/public";
 import { ALERT_PAGE_PATH, APP_NAME, INFURA_ID } from "@lib/constants";
 import { Layout } from "@components/Layout";
+import { trpc } from "@lib/trpc";
 
 const usedChains = [
   // chain.mainnet,
@@ -32,7 +33,7 @@ const wagmiClient = createClient({
   provider,
 });
 
-const MyApp = ({ Component, pageProps, router }: AppProps) => {
+const MyApp: AppType = ({ Component, pageProps, router }) => {
   if (router.pathname.includes(ALERT_PAGE_PATH)) {
     return <Component {...pageProps} />;
   }
@@ -51,4 +52,4 @@ const MyApp = ({ Component, pageProps, router }: AppProps) => {
   );
 };
 
-export default MyApp;
+export default trpc.withTRPC(MyApp);
