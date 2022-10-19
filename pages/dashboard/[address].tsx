@@ -1,6 +1,7 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { DonationCard, RecipientProfile } from "@components";
+import { DonationCard } from "@components/DonationCard";
+import { RecipientProfile } from "@components/RecipientProfile";
 import { getTotalDonationsAmount, reverseArray } from "@lib/helpers";
 import { useLiveDonationsHistory } from "@hooks/useLiveDonationsHistory";
 

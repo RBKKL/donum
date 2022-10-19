@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { BigNumber, ethers } from "ethers";
-import {formatAddress, formatTimestamp} from "@lib/helpers";
+import { formatAddress, formatTimestamp } from "@lib/helpers";
 
 interface DonationCardProps {
   from: string;
@@ -22,9 +22,7 @@ export const DonationCard: FC<DonationCardProps> = ({
         <span className="font-normal"> sent </span>
         {ethers.utils.formatEther(amount)} ETH
       </p>
-      <p className="text-gray-400">
-        { formatTimestamp(timestamp) }
-      </p>
+      <p className="text-gray-400">{formatTimestamp(timestamp)}</p>
     </div>
     <p className="break-words text-neutral-50">{message}</p>
   </div>

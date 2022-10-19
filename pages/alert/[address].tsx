@@ -26,7 +26,7 @@ const AlertPage: NextPage = () => {
     setTimeout(() => {
       popQueue();
     }, ALERT_DURATION);
-  }, [currentDonation]);
+  }, [currentDonation, popQueue]);
 
   useNewDonationEvent((newDonation) => {
     if (newDonation.to === recipientAddress) {
