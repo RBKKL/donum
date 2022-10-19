@@ -17,6 +17,11 @@
   },
   "dependencies": {
     "@rainbow-me/rainbowkit": "^0.7.1",
+    "@tanstack/react-query": "^4.12.0",
+    "@trpc/client": "^10.0.0-proxy-beta.21",
+    "@trpc/next": "^10.0.0-proxy-beta.21",
+    "@trpc/react-query": "^10.0.0-proxy-beta.21",
+    "@trpc/server": "^10.0.0-proxy-beta.21",
     "date-fns": "^2.29.3",
     "ethers": "^5.7.1",
     "next": "latest",
@@ -26,7 +31,8 @@
     "react-modal": "^3.15.1",
     "react-textarea-autosize": "^8.3.4",
     "react-use": "^17.4.0",
-    "wagmi": "^0.6.7"
+    "wagmi": "^0.6.7",
+    "zod": "^3.19.1"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^2.0.0",
