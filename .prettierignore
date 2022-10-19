@@ -52,3 +52,8 @@ deployments/**/solcinputs
 .vscode
 
 deployments
+
+package.json
+package-lock.json
+.solhint.json
+tsconfig.json
