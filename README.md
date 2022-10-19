@@ -21,10 +21,12 @@ Make donations to streamers with cryptocurrency
 
 To learn more about the components of this repo:
 
-- [Ethereum Developers Documentation](https://ethereum.org/en/developers/docs/) - learn about Ethereum blockchain
-- [Solidity Documentation](https://docs.soliditylang.org/en/v0.8.17/) - learn about Solidity
-- [Ethers.js Documentation](https://docs.ethers.io/v5/) - learn about Ethers.js
-- [Hardhat Documentation](https://hardhat.org/docs) - learn about Hardhat
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs/) - learn about Tailwind
-- [wagmi Documentation](https://wagmi.sh/) - learn about wagmi
+- [Ethereum Developers Documentation](https://ethereum.org/en/developers/docs/) - used as a base layer for donations
+- [Solidity Documentation](https://docs.soliditylang.org/) - used for implementing smart contracts
+- [Ethers.js Documentation](https://docs.ethers.io/) - used for interacting with smart contracts
+- [Hardhat Documentation](https://hardhat.org/docs) - used for smart contacts development environment
+- [wagmi Documentation](https://wagmi.sh/) - used as ethersjs react hooks abstraction
+- [Next.js Documentation](https://nextjs.org/docs) - used for frontend
+- [tRPC Documentation](https://trpc.io/docs) - used for backend
+- [Prisma Documentation](https://www.prisma.io/docs/) - used as ORM
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs/) - used for styling
