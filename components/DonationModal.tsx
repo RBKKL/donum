@@ -27,7 +27,7 @@ export const DonationModal: FC<DonationModalProps> = ({
   >
     {isLoading ? (
       <div>
-        <div className="flex py-8 justify-center mb-3">
+        <div className="mb-3 flex justify-center py-8">
           <Image
             className="animate-spin"
             src="/assets/svg/loader.svg"
@@ -37,7 +37,7 @@ export const DonationModal: FC<DonationModalProps> = ({
             alt="icon for loading state"
           />
         </div>
-        <div className="flex flex-col w-full items-center">
+        <div className="flex w-full flex-col items-center">
           <p className="mb-1 text-lg font-semibold">Waiting for confirmation</p>
           <p className="mb-2 text-lg font-semibold">
             Donating {donationAmount} ETH to {nickname}
@@ -49,7 +49,7 @@ export const DonationModal: FC<DonationModalProps> = ({
       </div>
     ) : isError ? (
       <div>
-        <div className="flex flex-col py-8 justify-center items-center">
+        <div className="flex flex-col items-center justify-center py-8">
           <Image
             src="/assets/svg/warning.svg"
             layout="fixed"
@@ -63,7 +63,7 @@ export const DonationModal: FC<DonationModalProps> = ({
       </div>
     ) : (
       <div>
-        <div className="flex flex-col py-8 justify-center items-center">
+        <div className="flex flex-col items-center justify-center py-8">
           <Image
             src="/assets/svg/arrow.svg"
             layout="fixed"

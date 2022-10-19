@@ -8,9 +8,9 @@ interface InputProps {
 
 export const Input: FC<InputProps> = ({ onChange, rightCorner, ...props }) => {
   return (
-    <div className="flex justify-between items-center px-4 py-2 rounded-2xl bg-zinc-700">
+    <div className="flex items-center justify-between rounded-2xl bg-zinc-700 px-4 py-2">
       <input
-        className="flex h-full w-full bg-transparent outline-none text-xl"
+        className="flex h-full w-full bg-transparent text-xl outline-none"
         onChange={(e) => onChange?.(e.target.value)}
         {...props}
       />

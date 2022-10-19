@@ -9,7 +9,7 @@ const Document = () => (
         rel="stylesheet"
       />
     </Head>
-    <body className="bg-zinc-900 text-white font-inter">
+    <body className="bg-zinc-900 font-inter text-white">
       <Main />
       <NextScript />
     </body>

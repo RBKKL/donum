@@ -45,15 +45,19 @@ typechain-types
 cache
 artifacts
 contractsInfo.json
-deployments/**/solcinputs
+deployments
 
 # IDE
 .idea
 .vscode
 
-deployments
+# GitHub Actions
+.github
 
+# json files
 package.json
 package-lock.json
 .solhint.json
 tsconfig.json
+.eslintrc.json
+.prettierrc.json

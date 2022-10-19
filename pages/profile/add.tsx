@@ -18,7 +18,7 @@ const AddProfilePage: NextPage = () => {
   }
 
   return (
-    <div className="flex flex-col gap-4 w-96">
+    <div className="flex w-96 flex-col gap-4">
       Nickname:
       <input
         value={nickname}

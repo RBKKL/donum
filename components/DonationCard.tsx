@@ -15,8 +15,8 @@ export const DonationCard: FC<DonationCardProps> = ({
   amount,
   message,
 }) => (
-  <div className="rounded-2xl bg-zinc-700 px-4 py-2 text-sm my-3">
-    <div className="flex mb-2.5 justify-between text-white">
+  <div className="my-3 rounded-2xl bg-zinc-700 px-4 py-2 text-sm">
+    <div className="mb-2.5 flex justify-between text-white">
       <p className="font-medium">
         {formatAddress(from)}
         <span className="font-normal"> sent </span>

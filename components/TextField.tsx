@@ -14,10 +14,10 @@ export const TextField: FC<TextFieldProps> = ({
   footer,
   ...props
 }) => (
-  <div className="flex flex-col h-full w-full p-4 rounded-2xl bg-zinc-700">
+  <div className="flex h-full w-full flex-col rounded-2xl bg-zinc-700 p-4">
     <TextareaAutosize
       placeholder="Type your message here..."
-      className="h-full bg-transparent outline-none resize-none"
+      className="h-full resize-none bg-transparent outline-none"
       onChange={(e) => onChange?.(e.target.value)}
       {...props}
     />

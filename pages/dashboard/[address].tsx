@@ -24,7 +24,7 @@ const DashboardPage: NextPage = () => {
 
   return (
     <div className="flex flex-row flex-wrap justify-evenly">
-      <div className="flex flex-col items-center grow-0">
+      <div className="flex grow-0 flex-col items-center">
         <RecipientProfile
           avatarPath="/assets/images/default_avatar.gif"
           nickname="Nix"
@@ -32,7 +32,7 @@ const DashboardPage: NextPage = () => {
           onEditClick={editProfileButtonHandler}
           shortAddress
         />
-        <div className="flex flex-row flex-nowrap mt-11">
+        <div className="mt-11 flex flex-row flex-nowrap">
           <p className="mr-4">Total donations amount: </p>
           {donations && (
             <p className="font-medium">
@@ -41,8 +41,8 @@ const DashboardPage: NextPage = () => {
           )}
         </div>
       </div>
-      <div className="flex flex-col flew-wrap justify-start grow items-stretch max-w-5xl w-full">
-        <p className="text-2xl self-center font-semibold text-white my-3">
+      <div className="flew-wrap flex w-full max-w-5xl grow flex-col items-stretch justify-start">
+        <p className="my-3 self-center text-2xl font-semibold text-white">
           Donations history
         </p>
         {reverseArray(donations).map((donation, index) => (
