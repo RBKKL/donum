@@ -23,9 +23,9 @@ export const useDonationsHistory = (recipientAddress: string) => {
   const [donations, setDonations] = useState<NewDonationEventObject[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
-  const [error, setError] = useState<any>(undefined);
+  const [error, setError] = useState<unknown>(undefined);
 
-  const onError = (error: any) => {
+  const onError = (error: unknown) => {
     setIsLoading(false);
     setIsError(true);
     setError(error);
@@ -62,6 +62,7 @@ export const useDonationsHistory = (recipientAddress: string) => {
     } catch (error) {
       onError(error);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recipientAddress]);
 
   return { donations, isLoading, isError, error };

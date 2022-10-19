@@ -1,6 +1,6 @@
-import { Button } from "@components";
 import type { NextPage } from "next";
 import Link from "next/link";
+import { Button } from "@components/Button";
 
 const MY_ADDRESS = "0xAC0772000aa52CbF8a8dB501cC8caC03cDF01bf6";
 

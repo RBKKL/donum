@@ -1,8 +1,11 @@
 import { useState } from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { Button, RecipientProfile, Input, TextField } from "@components";
-import { EthIcon } from "@components/icons";
+import { Button } from "@components/Button";
+import { RecipientProfile } from "@components/RecipientProfile";
+import { Input } from "@components/Input";
+import { TextField } from "@components/TextField";
+import { EthIcon } from "@components/icons/EthIcon";
 import { useSendDonation } from "@hooks/useSendDonation";
 import { MESSAGE_MAX_LENGTH } from "@lib/constants";
 import { isNumber } from "@lib/helpers";

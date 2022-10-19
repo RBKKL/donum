@@ -61,7 +61,7 @@ describe(CONTRACT_NAME, async () => {
   });
 
   it("Should set recipient info", async () => {
-    const [_, sender] = await ethers.getSigners();
+    const [, sender] = await ethers.getSigners();
     donationsStore = donationsStore.connect(sender);
     const nickname = "Nixjke";
     const avatarURI =
