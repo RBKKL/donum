@@ -21,7 +21,7 @@ const DashboardPage: NextPage = () => {
   if (isLoading) return <div>Loading...</div>;
 
   if (!isConnected) {
-    return <Connect/>
+    return <Connect />;
   }
 
   if (isError) {
