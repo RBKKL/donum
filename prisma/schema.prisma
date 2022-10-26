@@ -15,3 +15,9 @@ model Profile {
   nickname String
   bio      String?
 }
+
+model DonationPage {
+  id            Int     @id @default(autoincrement())
+  address       String  @unique
+  description   String?
+}

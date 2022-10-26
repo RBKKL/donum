@@ -10,6 +10,7 @@ import { useSendDonation } from "@hooks/useSendDonation";
 import { MESSAGE_MAX_LENGTH } from "@lib/constants";
 import { isNumber } from "@lib/helpers";
 import { DonationModal } from "@components/DonationModal";
+import { trpc } from "@lib/trpc";
 
 const DEFAULT_DONATION_AMOUNT = "0.001";
 
@@ -19,6 +20,8 @@ const SendDonationPage: NextPage = () => {
   // TODO: validate address
   const [isModalOpen, setIsModalOpen] = useState(false);
   const nickname = "Nix";
+
+  const { data } = trpc.donationPage.byAddress.useQuery({ address: recipientAddress });
 
   const [donationAmount, setDonationAmount] = useState(DEFAULT_DONATION_AMOUNT);
   const [message, setMessage] = useState("");
@@ -54,7 +57,12 @@ const SendDonationPage: NextPage = () => {
         nickname={nickname}
         address={recipientAddress}
       />
-      <div className="flex w-full flex-col gap-4 pt-12 sm:max-w-lg">
+      <div className="flex w-full flex-col gap-4 pt-2 sm:max-w-4xl">
+        {data?.description && (
+          <p className="text-left text-sm px-4 pb-4">
+            {data.description}
+          </p>
+        )}
         <Input
           value={donationAmount}
           onChange={onDonationAmountChange}

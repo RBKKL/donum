@@ -3,15 +3,35 @@ import { Button } from "@components/Button";
 import { RecipientProfile } from "@components/RecipientProfile";
 import { TextField } from "@components/TextField";
 import { DESCRIPTION_MAX_LENGTH } from "@lib/constants";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
+import { trpc } from "@lib/trpc";
+import { useRouter } from "next/router";
 
 const SendDonationPageEdit: NextPage = () => {
+  const router = useRouter();
   const { address } = useAccount();
   const [description, setDescription] = useState("");
 
+  const { data } = trpc.donationPage.byAddress.useQuery({ address });
+  const mutation = trpc.donationPage.edit.useMutation();
+
+  useEffect(() => {
+    if (data?.description) {
+      setDescription(data.description);
+    }
+  }, [data]);
+
   if (!address) {
     return <div/>
+  }
+
+  const saveChanges = () => {
+    mutation.mutate({ address, description});
+  }
+
+  if (mutation.isSuccess) {
+    router.push(`/c/${address}`);
   }
 
   return (
@@ -33,6 +53,7 @@ const SendDonationPageEdit: NextPage = () => {
         <div className="flex flex-row-reverse">
           <Button
             text="Save"
+            onClick={saveChanges}
           />
         </div>
       </div>
