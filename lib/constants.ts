@@ -6,6 +6,7 @@ export const ALERT_PAGE_PATH = "/alert";
 export const CONTRACT_NAME = "DonationsStore";
 
 export const MESSAGE_MAX_LENGTH = 256;
+export const DESCRIPTION_MAX_LENGTH = 1024;
 
 export const CHAIN_IDS = {
   mainnet: 1,

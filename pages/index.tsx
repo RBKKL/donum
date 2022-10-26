@@ -12,6 +12,11 @@ const Home: NextPage = () => {
           <Button text="Donate me" />
         </a>
       </Link>
+      <Link href={`/c/edit`}>
+        <a className="mt-3">
+          <Button text="Edit send donation page" />
+        </a>
+      </Link>
       <Link href={`/dashboard/${MY_ADDRESS}`}>
         <a className="mt-3">
           <Button text="Dashboard" />

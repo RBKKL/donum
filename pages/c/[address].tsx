@@ -62,6 +62,8 @@ const SendDonationPage: NextPage = () => {
           rightCorner={<EthIcon />}
         />
         <TextField
+          className="flex h-full w-full flex-col rounded-2xl bg-zinc-700 p-4"
+          placeholder="Type your message here..."
           value={message}
           onChange={onDonationMessageChange}
           minRows={6}
