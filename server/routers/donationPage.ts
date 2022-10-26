@@ -10,7 +10,9 @@ export const donationPageRouter = router({
       });
     }),
   edit: publicProcedure
-    .input(z.object({ address: z.string(), description: z.string().optional() }))
+    .input(
+      z.object({ address: z.string(), description: z.string().optional() })
+    )
     .mutation(async ({ ctx, input }) => {
       const donationPage = await ctx.prisma.donationPage.upsert({
         where: { address: input.address },

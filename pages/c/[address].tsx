@@ -21,7 +21,9 @@ const SendDonationPage: NextPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const nickname = "Nix";
 
-  const { data } = trpc.donationPage.byAddress.useQuery({ address: recipientAddress });
+  const { data } = trpc.donationPage.byAddress.useQuery({
+    address: recipientAddress,
+  });
 
   const [donationAmount, setDonationAmount] = useState(DEFAULT_DONATION_AMOUNT);
   const [message, setMessage] = useState("");
@@ -59,7 +61,7 @@ const SendDonationPage: NextPage = () => {
       />
       <div className="flex w-full flex-col gap-4 pt-2 sm:max-w-4xl">
         {data?.description && (
-          <p className="text-left break-words text-sm px-4 pb-4">
+          <p className="break-words px-4 pb-4 text-left text-sm">
             {data.description}
           </p>
         )}

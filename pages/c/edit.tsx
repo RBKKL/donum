@@ -23,12 +23,12 @@ const SendDonationPageEdit: NextPage = () => {
   }, [data]);
 
   if (!address) {
-    return <div/>
+    return <div />;
   }
 
   const saveChanges = () => {
-    mutation.mutate({ address, description});
-  }
+    mutation.mutate({ address, description });
+  };
 
   if (mutation.isSuccess) {
     router.push(`/c/${address}`);
@@ -43,7 +43,7 @@ const SendDonationPageEdit: NextPage = () => {
       />
       <div className="flex w-full flex-col gap-4 pt-5 sm:max-w-4xl">
         <TextField
-          className="flex flex-col py-2 px-3 border-2 rounded-md border-gray-400"
+          className="flex flex-col rounded-md border-2 border-gray-400 py-2 px-3"
           placeholder="Type your description here..."
           value={description}
           onChange={setDescription}
@@ -51,10 +51,7 @@ const SendDonationPageEdit: NextPage = () => {
           maxLength={DESCRIPTION_MAX_LENGTH}
         />
         <div className="flex flex-row-reverse">
-          <Button
-            text="Save"
-            onClick={saveChanges}
-          />
+          <Button text="Save" onClick={saveChanges} />
         </div>
       </div>
     </div>
