@@ -19,7 +19,7 @@ export const TextField: FC<TextFieldProps> = ({
 }) => (
   <div className={className}>
     <TextareaAutosize
-      className="h-full resize-none bg-transparent outline-none"
+      className="h-full resize-none bg-transparent outline-none overflow-hidden"
       onChange={(e) => onChange?.(e.target.value)}
       {...props}
     />

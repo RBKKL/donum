@@ -59,7 +59,7 @@ const SendDonationPage: NextPage = () => {
       />
       <div className="flex w-full flex-col gap-4 pt-2 sm:max-w-4xl">
         {data?.description && (
-          <p className="text-left text-sm px-4 pb-4">
+          <p className="text-left break-words text-sm px-4 pb-4">
             {data.description}
           </p>
         )}
