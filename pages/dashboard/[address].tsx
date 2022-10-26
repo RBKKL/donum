@@ -4,11 +4,14 @@ import { DonationCard } from "@components/DonationCard";
 import { RecipientProfile } from "@components/RecipientProfile";
 import { getTotalDonationsAmount, reverseArray } from "@lib/helpers";
 import { useLiveDonationsHistory } from "@hooks/useLiveDonationsHistory";
+import { useAccount } from "wagmi";
+import { Connect } from "@components/Connect";
 
 const DashboardPage: NextPage = () => {
   const editProfileButtonHandler = () => {
     console.log("edit profile button handler");
   };
+  const { isConnected } = useAccount();
 
   const router = useRouter();
   const recipientAddress = router.query.address as string;
@@ -16,6 +19,10 @@ const DashboardPage: NextPage = () => {
     useLiveDonationsHistory(recipientAddress);
 
   if (isLoading) return <div>Loading...</div>;
+
+  if (!isConnected) {
+    return <Connect/>
+  }
 
   if (isError) {
     console.error(error);
