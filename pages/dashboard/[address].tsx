@@ -4,6 +4,9 @@ import { DonationCard } from "@components/DonationCard";
 import { RecipientProfile } from "@components/RecipientProfile";
 import { getTotalDonationsAmount, reverseArray } from "@lib/helpers";
 import { useLiveDonationsHistory } from "@hooks/useLiveDonationsHistory";
+import { Button } from "@components/Button";
+import { EditIcon } from "@components/icons/EditIcon";
+import Link from "next/link";
 
 const DashboardPage: NextPage = () => {
   const editProfileButtonHandler = () => {
@@ -32,6 +35,12 @@ const DashboardPage: NextPage = () => {
           onEditClick={editProfileButtonHandler}
           shortAddress
         />
+        <Link href={`/edit/${recipientAddress}`}>
+          <Button>
+            <EditIcon size="small" />
+            Edit profile
+          </Button>
+        </Link>
         <div className="mt-11 flex flex-row flex-nowrap">
           <p className="mr-4">Total donations amount: </p>
           {donations && (
