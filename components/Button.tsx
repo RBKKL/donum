@@ -13,7 +13,7 @@ export const Button: FC<ButtonProps> = ({
   onClick,
   fullWidth,
   text,
-  children
+  children,
 }) => (
   <button
     className={
