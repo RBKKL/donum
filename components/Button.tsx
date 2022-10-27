@@ -4,7 +4,8 @@ interface ButtonProps {
   disabled?: boolean;
   onClick?: () => void;
   fullWidth?: boolean;
-  text: string;
+  text?: string;
+  children?: React.ReactNode;
 }
 
 export const Button: FC<ButtonProps> = ({
@@ -12,6 +13,7 @@ export const Button: FC<ButtonProps> = ({
   onClick,
   fullWidth,
   text,
+  children
 }) => (
   <button
     className={
@@ -21,6 +23,6 @@ export const Button: FC<ButtonProps> = ({
     disabled={disabled}
     onClick={onClick}
   >
-    {text}
+    {children || text}
   </button>
 );
