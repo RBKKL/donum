@@ -12,6 +12,13 @@ export const profileRouter = router({
         where: { nickname: input.nickname },
       });
     }),
+  byAddress: publicProcedure
+    .input(z.object({ address: z.string() }))
+    .query(({ ctx, input }) => {
+      return ctx.prisma.profile.findFirst({
+        where: { address: input.address },
+      });
+    }),
   add: publicProcedure
     .input(z.object({ nickname: z.string(), bio: z.string().optional() }))
     .mutation(async ({ ctx, input }) => {
@@ -22,10 +29,10 @@ export const profileRouter = router({
       return profile;
     }),
   addDescription: publicProcedure
-    .input(z.object({ nickname: z.string(), description: z.string() }))
+    .input(z.object({ address: z.string(), description: z.string() }))
     .mutation(({ ctx, input }) => {
       return ctx.prisma.profile.update({
-        where: { nickname: input.nickname },
+        where: { address: input.address },
         data: {
           description: input.description,
         },
