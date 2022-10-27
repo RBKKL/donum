@@ -21,4 +21,14 @@ export const profileRouter = router({
 
       return profile;
     }),
+  addDescription: publicProcedure
+    .input(z.object({ nickname: z.string(), description: z.string() }))
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.profile.update({
+        where: { nickname: input.nickname },
+        data: {
+          description: input.description,
+        },
+      });
+    }),
 });
