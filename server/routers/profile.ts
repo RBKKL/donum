@@ -20,10 +20,17 @@ export const profileRouter = router({
       });
     }),
   add: publicProcedure
-    .input(z.object({ nickname: z.string(), bio: z.string().optional() }))
+    .input(
+      z.object({
+        nickname: z.string(),
+        address: z.string(),
+        bio: z.string().optional(),
+        description: z.string().optional(),
+      })
+    )
     .mutation(async ({ ctx, input }) => {
       const profile = await ctx.prisma.profile.create({
-        data: { nickname: input.nickname, bio: input.bio },
+        data: input,
       });
 
       return profile;

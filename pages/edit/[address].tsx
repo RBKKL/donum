@@ -18,12 +18,12 @@ const EditDonationPage: NextPage = () => {
   };
 
   useEffect(() => {
-    if (!profile.data.description) {
+    if (!profile?.data?.description) {
       return;
     }
 
     setNewDescription(profile.data.description);
-  }, [profile.data.description]);
+  }, [profile]);
 
   if (profile.isLoading) {
     return <div>Loading...</div>;
