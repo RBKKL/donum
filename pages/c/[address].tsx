@@ -10,10 +10,7 @@ import {useSendDonation} from "@hooks/useSendDonation";
 import {MESSAGE_MAX_LENGTH} from "@lib/constants";
 import {isNumber} from "@lib/helpers";
 import {DonationModal} from "@components/DonationModal";
-import {useAccount, useBalance, useNetwork, useProvider} from "wagmi";
-import {ethers} from "ethers";
-import {Provider} from "@wagmi/core";
-import {hardhat} from "@wagmi/core/chains";
+import {useAccount, useBalance} from "wagmi";
 import {Balance} from "@components/Balance";
 
 const DEFAULT_DONATION_AMOUNT = "0.001";
@@ -21,12 +18,9 @@ const DEFAULT_DONATION_AMOUNT = "0.001";
 const SendDonationPage: NextPage = () => {
   const router = useRouter();
   const recipientAddress = router.query.address as string;
-  const { chain } = useNetwork();
-  const provider = useProvider({ chainId: chain?.id });
-
   const [userBalance, setUserBalance] = useState("");
 
-  const { address, isConnecting, isDisconnected } = useAccount();
+  const { address, isDisconnected } = useAccount();
   const { data }  = useBalance({
     addressOrName: address,
   });
@@ -41,17 +35,12 @@ const SendDonationPage: NextPage = () => {
 
   const [donationAmount, setDonationAmount] = useState(DEFAULT_DONATION_AMOUNT);
   const [message, setMessage] = useState("");
-  const [canDonate, setCanDonate] = useState(true);
 
   const { donate, isAvailable, isLoading, isError } = useSendDonation(
     recipientAddress,
     donationAmount,
     message
   );
-
-  useEffect(() => {
-    setCanDonate(hasEnoughMoney());
-  }, [donationAmount])
 
   const hasEnoughMoney = () => {
     return (Number(userBalance) - Number(donationAmount)) > 0;
@@ -75,6 +64,8 @@ const SendDonationPage: NextPage = () => {
     donate();
   };
 
+  const canDonate = !isDisconnected && hasEnoughMoney();
+
     return (
     <div className="flex flex-col items-center text-center">
       <RecipientProfile
@@ -87,7 +78,7 @@ const SendDonationPage: NextPage = () => {
           value={donationAmount}
           onChange={onDonationAmountChange}
           onBlur={setMinimumAmount}
-          disabled={isDisconnected || !hasEnoughMoney()}
+          disabled={!canDonate}
           rightCorner={
           <div className="flex flex-col items-end">
               <EthIcon />
