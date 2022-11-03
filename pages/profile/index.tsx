@@ -10,10 +10,11 @@ const ProfilesPage: NextPage = () => {
 
   return (
     <div>
-      {profiles.data?.map(({ id, nickname, bio }) => (
-        <div key={id}>
-          <p>Id: {id}</p>
+      {profiles.data?.map(({wallet, nickname, bio, avatarUrl }, index) => (
+        <div key={index}>
+          <p>Wallet: {wallet}</p>
           <p>Nickname: {nickname}</p>
+          {avatarUrl && <img src={avatarUrl} alt={avatarUrl}/> }
           {bio && <p>{bio}</p>}
         </div>
       ))}

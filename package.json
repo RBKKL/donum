@@ -25,6 +25,7 @@
   "dependencies": {
     "@prisma/client": "^4.5.0",
     "@rainbow-me/rainbowkit": "^0.7.2",
+    "@supabase/storage-js": "^2.0.0",
     "@tanstack/react-query": "^4.12.0",
     "@trpc/client": "^10.0.0-proxy-beta.23",
     "@trpc/next": "^10.0.0-proxy-beta.23",

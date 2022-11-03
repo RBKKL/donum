@@ -12,6 +12,7 @@ datasource db {
 
 model Profile {
   id       Int     @id @default(autoincrement())
-  nickname String
+  nickname String  @unique
   bio      String?
+  wallet   String @unique
 }
