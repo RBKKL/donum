@@ -1,33 +1,61 @@
-import { useState } from "react";
-import type { NextPage } from "next";
-import { useRouter } from "next/router";
-import { Button } from "@components/Button";
-import { RecipientProfile } from "@components/RecipientProfile";
-import { Input } from "@components/Input";
-import { TextField } from "@components/TextField";
-import { EthIcon } from "@components/icons/EthIcon";
-import { useSendDonation } from "@hooks/useSendDonation";
-import { MESSAGE_MAX_LENGTH } from "@lib/constants";
-import { isNumber } from "@lib/helpers";
-import { DonationModal } from "@components/DonationModal";
+import {useEffect, useState} from "react";
+import type {NextPage} from "next";
+import {useRouter} from "next/router";
+import {Button} from "@components/Button";
+import {RecipientProfile} from "@components/RecipientProfile";
+import {Input} from "@components/Input";
+import {TextField} from "@components/TextField";
+import {EthIcon} from "@components/icons/EthIcon";
+import {useSendDonation} from "@hooks/useSendDonation";
+import {MESSAGE_MAX_LENGTH} from "@lib/constants";
+import {isNumber} from "@lib/helpers";
+import {DonationModal} from "@components/DonationModal";
+import {useAccount, useBalance, useNetwork, useProvider} from "wagmi";
+import {ethers} from "ethers";
+import {Provider} from "@wagmi/core";
+import {hardhat} from "@wagmi/core/chains";
+import {Balance} from "@components/Balance";
 
 const DEFAULT_DONATION_AMOUNT = "0.001";
 
 const SendDonationPage: NextPage = () => {
   const router = useRouter();
   const recipientAddress = router.query.address as string;
+  const { chain } = useNetwork();
+  const provider = useProvider({ chainId: chain?.id });
+
+  const [userBalance, setUserBalance] = useState("");
+
+  const { address, isConnecting, isDisconnected } = useAccount();
+  const { data }  = useBalance({
+    addressOrName: address,
+  });
+
+  useEffect(() => {
+    setUserBalance(Number(data?.formatted).toFixed(6));
+  }, [data])
+
   // TODO: validate address
   const [isModalOpen, setIsModalOpen] = useState(false);
   const nickname = "Nix";
 
   const [donationAmount, setDonationAmount] = useState(DEFAULT_DONATION_AMOUNT);
   const [message, setMessage] = useState("");
+  const [canDonate, setCanDonate] = useState(true);
 
   const { donate, isAvailable, isLoading, isError } = useSendDonation(
     recipientAddress,
     donationAmount,
     message
   );
+
+  useEffect(() => {
+    setCanDonate(hasEnoughMoney());
+  }, [donationAmount])
+
+  const hasEnoughMoney = () => {
+    return (Number(userBalance) - Number(donationAmount)) > 0;
+  }
 
   const onDonationAmountChange = (amount: string) =>
     isNumber(amount) && setDonationAmount(amount);
@@ -47,7 +75,7 @@ const SendDonationPage: NextPage = () => {
     donate();
   };
 
-  return (
+    return (
     <div className="flex flex-col items-center text-center">
       <RecipientProfile
         avatarPath="/assets/images/default_avatar.gif"
@@ -59,7 +87,13 @@ const SendDonationPage: NextPage = () => {
           value={donationAmount}
           onChange={onDonationAmountChange}
           onBlur={setMinimumAmount}
-          rightCorner={<EthIcon />}
+          disabled={isDisconnected || !hasEnoughMoney()}
+          rightCorner={
+          <div className="flex flex-col items-end">
+              <EthIcon />
+              <Balance disabled={isDisconnected} balance={userBalance}/>
+          </div>
+          }
         />
         <TextField
           value={message}
