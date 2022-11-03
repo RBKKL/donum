@@ -71,19 +71,20 @@ const SendDonationPage: NextPage = () => {
           onBlur={setMinimumAmount}
           rightCorner={<EthIcon />}
         />
-        <TextField
-          className="flex h-full w-full flex-col rounded-2xl bg-zinc-700 p-4"
-          placeholder="Type your message here..."
-          value={message}
-          onChange={onDonationMessageChange}
-          minRows={6}
-          maxLength={MESSAGE_MAX_LENGTH}
-          footer={
-            <p className="flex flex-row-reverse text-xs text-gray-400">
-              {message.length}/{MESSAGE_MAX_LENGTH}
-            </p>
-          }
-        />
+        <div className="flex h-full w-full flex-col rounded-2xl bg-zinc-700 p-4">
+          <TextField
+            placeholder="Type your message here..."
+            value={message}
+            onChange={onDonationMessageChange}
+            minRows={6}
+            maxLength={MESSAGE_MAX_LENGTH}
+            footer={
+              <p className="flex flex-row-reverse text-xs text-gray-400">
+                {message.length}/{MESSAGE_MAX_LENGTH}
+              </p>
+            }
+          />
+        </div>
         <div className="flex flex-row-reverse">
           <Button
             text="Send"
