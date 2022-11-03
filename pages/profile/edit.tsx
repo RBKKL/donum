@@ -32,7 +32,7 @@ const EditSendDonationPage: NextPage = () => {
           />
         </div>
         <div className="flex flex-row-reverse">
-          <Button text="Save"/>
+          <Button text="Save" />
         </div>
       </div>
     </div>
