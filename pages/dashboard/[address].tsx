@@ -4,16 +4,24 @@ import { DonationCard } from "@components/DonationCard";
 import { RecipientProfile } from "@components/RecipientProfile";
 import { getTotalDonationsAmount, reverseArray } from "@lib/helpers";
 import { useLiveDonationsHistory } from "@hooks/useLiveDonationsHistory";
+import { useAccount } from "wagmi";
+import { ConnectWalletWarning } from "@components/ConnectWalletWarning";
 
 const DashboardPage: NextPage = () => {
   const editProfileButtonHandler = () => {
     console.log("edit profile button handler");
   };
+  const { isConnected } = useAccount();
 
   const router = useRouter();
   const recipientAddress = router.query.address as string;
   const { donations, isLoading, isError, error } =
     useLiveDonationsHistory(recipientAddress);
+
+  //TODO: move to separate component on Next.js 13 migration
+  if (!isConnected) {
+    return <ConnectWalletWarning />;
+  }
 
   if (isLoading) return <div>Loading...</div>;
 
