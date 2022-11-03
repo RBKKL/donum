@@ -1,17 +1,17 @@
-import {useEffect, useState} from "react";
-import type {NextPage} from "next";
-import {useRouter} from "next/router";
-import {Button} from "@components/Button";
-import {RecipientProfile} from "@components/RecipientProfile";
-import {Input} from "@components/Input";
-import {TextField} from "@components/TextField";
-import {EthIcon} from "@components/icons/EthIcon";
-import {useSendDonation} from "@hooks/useSendDonation";
-import {MESSAGE_MAX_LENGTH} from "@lib/constants";
-import {isNumber} from "@lib/helpers";
-import {DonationModal} from "@components/DonationModal";
-import {useAccount, useBalance} from "wagmi";
-import {Balance} from "@components/Balance";
+import { useEffect, useState } from "react";
+import type { NextPage } from "next";
+import { useRouter } from "next/router";
+import { Button } from "@components/Button";
+import { RecipientProfile } from "@components/RecipientProfile";
+import { Input } from "@components/Input";
+import { TextField } from "@components/TextField";
+import { EthIcon } from "@components/icons/EthIcon";
+import { useSendDonation } from "@hooks/useSendDonation";
+import { MESSAGE_MAX_LENGTH } from "@lib/constants";
+import { isNumber } from "@lib/helpers";
+import { DonationModal } from "@components/DonationModal";
+import { useAccount, useBalance } from "wagmi";
+import { Balance } from "@components/Balance";
 
 const DEFAULT_DONATION_AMOUNT = "0.001";
 
@@ -21,13 +21,13 @@ const SendDonationPage: NextPage = () => {
   const [userBalance, setUserBalance] = useState("");
 
   const { address, isDisconnected } = useAccount();
-  const { data }  = useBalance({
+  const { data } = useBalance({
     addressOrName: address,
   });
 
   useEffect(() => {
     setUserBalance(Number(data?.formatted).toFixed(6));
-  }, [data])
+  }, [data]);
 
   // TODO: validate address
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -43,8 +43,12 @@ const SendDonationPage: NextPage = () => {
   );
 
   const hasEnoughMoney = () => {
-    return (Number(userBalance) - Number(donationAmount)) > 0;
-  }
+    return Number(data?.formatted) - Number(donationAmount) > 0;
+  };
+
+  const isZeroDonation = () => {
+    return Number(donationAmount) == 0;
+  };
 
   const onDonationAmountChange = (amount: string) =>
     isNumber(amount) && setDonationAmount(amount);
@@ -64,9 +68,9 @@ const SendDonationPage: NextPage = () => {
     donate();
   };
 
-  const canDonate = !isDisconnected && hasEnoughMoney();
+  const canDonate = !isDisconnected && hasEnoughMoney() && !isZeroDonation();
 
-    return (
+  return (
     <div className="flex flex-col items-center text-center">
       <RecipientProfile
         avatarPath="/assets/images/default_avatar.gif"
@@ -80,10 +84,10 @@ const SendDonationPage: NextPage = () => {
           onBlur={setMinimumAmount}
           disabled={!canDonate}
           rightCorner={
-          <div className="flex flex-col items-end">
+            <div className="flex flex-col items-end">
               <EthIcon />
-              <Balance disabled={isDisconnected} balance={userBalance}/>
-          </div>
+              <Balance disabled={isDisconnected} balance={userBalance} />
+            </div>
           }
         />
         <TextField
