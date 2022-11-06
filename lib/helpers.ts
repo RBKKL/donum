@@ -52,10 +52,6 @@ export const getTotalDonationsAmount = (
   ).toFixed(symbolsAfterComma);
 };
 
-export const getFilenameWithoutExtension = (filename: string) => {
-  return filename.substring(0, filename.lastIndexOf(".")) || filename;
-};
-
 export const fileToBase64 = (file: File): Promise<string | undefined> => {
   return new Promise((resolve, reject) => {
     const fileReader = new FileReader();
