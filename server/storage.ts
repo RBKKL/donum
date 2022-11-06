@@ -1,4 +1,4 @@
-import { StorageClient } from '@supabase/storage-js'
+import { StorageClient } from "@supabase/storage-js";
 
 export const AVATARS_BUCKET_NAME = "avatars";
 const BUCKET_NAMES = [AVATARS_BUCKET_NAME]; // must contain all buckets names
@@ -8,7 +8,11 @@ class BucketsStorage {
   private bucketsInitialized = false;
   private bucketNames: Array<string>;
 
-  public constructor(storageUrl: string, serviceKey: string, bucketNames: Array<string>) {
+  public constructor(
+    storageUrl: string,
+    serviceKey: string,
+    bucketNames: Array<string>
+  ) {
     this.bucketNames = bucketNames;
 
     this.storageClient = new StorageClient(storageUrl, {
@@ -18,14 +22,15 @@ class BucketsStorage {
   }
 
   private async initBuckets() {
-    const { data: buckets, error: listBucketsError } = await this.storageClient.listBuckets();
+    const { data: buckets, error: listBucketsError } =
+      await this.storageClient.listBuckets();
     if (listBucketsError) {
       console.error("Unable to get list of buckets, error:");
       console.error(listBucketsError);
     }
 
-    this.bucketNames.map(async bucketName => {
-      if (!buckets?.map(bucket => bucket.name).includes(bucketName)) {
+    this.bucketNames.map(async (bucketName) => {
+      if (!buckets?.map((bucket) => bucket.name).includes(bucketName)) {
         const { error } = await this.storageClient.createBucket(
           bucketName, // Bucket name (must be unique)
           { public: true } // Bucket options

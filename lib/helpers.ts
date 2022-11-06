@@ -1,7 +1,6 @@
 import { BigNumber, ethers } from "ethers";
 import { NewDonationEventObject } from "../typechain-types/DonationsStore";
 import { format } from "date-fns";
-import nodeFetch from "node-fetch";
 
 export const isNumber = (value: string): boolean =>
   !!value.match(/^\d*\.?\d*$/);
@@ -54,8 +53,8 @@ export const getTotalDonationsAmount = (
 };
 
 export const getFilenameWithoutExtension = (filename: string) => {
-  return filename.substring(0, filename.lastIndexOf('.')) || filename;
-}
+  return filename.substring(0, filename.lastIndexOf(".")) || filename;
+};
 
 export const fileToBase64 = (file: File): Promise<string | undefined> => {
   return new Promise((resolve, reject) => {
@@ -73,15 +72,6 @@ export const fileToBase64 = (file: File): Promise<string | undefined> => {
 };
 
 export const base64ToBlob = async (base64string: string) => {
-  const base64Response = await nodeFetch(base64string);
+  const base64Response = await fetch(base64string);
   return await base64Response.blob();
 };
-
-export const mergeProfileAndAvatar = (profile: { wallet: string, nickname: string, bio: string }, avatarUrl: string) => {
-  return {
-    wallet: profile?.wallet,
-    nickname: profile?.nickname,
-    bio: profile?.bio,
-    avatarUrl: avatarUrl,
-  };
-}

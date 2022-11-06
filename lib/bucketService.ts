@@ -1,20 +1,27 @@
 import { base64ToBlob } from "@lib/helpers";
-import { AVATARS_BUCKET_NAME } from "@server/storage";
-import StorageFileApi from "@supabase/storage-js/src/packages/StorageFileApi";
+import StorageFileApi from "@supabase/storage-js/dist/module/packages/StorageFileApi";
 
-export const uploadImage = async (bucket: StorageFileApi, avatarBase64: string, wallet: string) => {
-  const blobAvatar = await base64ToBlob(avatarBase64);
-  const stringAvatar = await blobAvatar.text();
-  const avatarFilenameInBucket = `${wallet}.${blobAvatar.type.substring(6)}`;
-  const avatarsBucket = await buckets.from(AVATARS_BUCKET_NAME);
-  const { error: uploadError } = await bucket
-    .upload(avatarFilenameInBucket, stringAvatar, {upsert: true});
+export const uploadImage = async (
+  bucket: StorageFileApi,
+  imageBase64: string,
+  filename: string
+) => {
+  const blobImage = await base64ToBlob(imageBase64);
+  const { error: uploadError } = await bucket.upload(filename, blobImage, {
+    upsert: true,
+  });
 
   if (uploadError) {
-    console.error(`Error loading new avatar in bucket for ${wallet}`);
+    console.error(`Error uploading image in bucket for ${filename}`);
     console.error(uploadError);
   }
 
-  const { data: { publicUrl: avatarPublicUrl } } = avatarsBucket.getPublicUrl(avatarFilenameInBucket);
-  return avatarPublicUrl;
-}
+  return bucket.getPublicUrl(filename).data.publicUrl;
+};
+
+export const removeImage = async (bucket: StorageFileApi, filename: string) => {
+  const { error: removeError } = await bucket.remove([filename]);
+  if (removeError) {
+    console.error(`Error removing image from bucket for ${filename}`);
+  }
+};

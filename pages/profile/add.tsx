@@ -2,7 +2,7 @@ import { trpc } from "@lib/trpc";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import {fileToBase64} from "@lib/helpers";
+import { fileToBase64 } from "@lib/helpers";
 
 const AddProfilePage: NextPage = () => {
   const mutation = trpc.profile.add.useMutation();
@@ -12,8 +12,9 @@ const AddProfilePage: NextPage = () => {
   const [avatar, setAvatar] = useState("");
   const router = useRouter();
 
-  const uploadNewAvatarToClient = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e);
+  const uploadNewAvatarToClient = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     if (e.target.files?.[0]) {
       const avatarBase64 = await fileToBase64(e.target.files[0]);
       if (avatarBase64) {
@@ -21,10 +22,15 @@ const AddProfilePage: NextPage = () => {
         setAvatar(avatarBase64);
       }
     }
-  }
+  };
 
   const createProfile = () => {
-    mutation.mutate({ wallet, nickname, bio: bio ?? undefined, avatar: avatar ?? undefined });
+    mutation.mutate({
+      wallet,
+      nickname,
+      bio: bio ?? undefined,
+      avatar: avatar !== "" ? avatar : undefined,
+    });
   };
 
   if (mutation.isSuccess) {
@@ -33,7 +39,7 @@ const AddProfilePage: NextPage = () => {
 
   return (
     <div className="flex w-96 flex-col gap-4">
-      Wallet (Required):
+      Wallet (Required. Filed for debug):
       <textarea
         value={wallet}
         onChange={(e) => setWallet(e.target.value)}
@@ -54,9 +60,10 @@ const AddProfilePage: NextPage = () => {
         className="bg-slate-600"
       />
       Avatar (optional):
-      <input type="file"
-             onChange={e => uploadNewAvatarToClient(e)}
-             accept="image/gif, image/jpg, image/png"
+      <input
+        type="file"
+        onChange={(e) => uploadNewAvatarToClient(e)}
+        accept="image/gif, image/jpg, image/png, image/jpeg"
       />
       <button
         onClick={createProfile}

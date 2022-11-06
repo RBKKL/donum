@@ -11,19 +11,30 @@ const ProfilePage: NextPage = () => {
   const profile = trpc.profile.byNickname.useQuery({ nickname });
   const [newNickname, setNewNickname] = useState("");
   const [newAvatar, setNewAvatar] = useState("");
+  const [newBio, setNewBio] = useState<string>();
 
-  const editProfile = () =>  {
+  const editProfile = () => {
     if (profile.data?.wallet) {
-      mutation.mutate({
+      mutation.mutate(
+        {
           wallet: profile.data.wallet,
-          nickname: newNickname != "" ? newNickname : undefined,
+          nickname: newNickname !== "" ? newNickname : undefined,
           bio: undefined,
-          avatar: newAvatar != "" ? newAvatar : undefined },
-        {onSuccess: (_, {nickname}) => router.push(`/profile/${nickname}`)});
+          avatar: newAvatar !== "" ? newAvatar : undefined,
+        },
+        {
+          onSuccess: (data) => {
+            console.log(data);
+            router.push(`/profile/${data.nickname}`);
+          },
+        }
+      );
     }
-  }
+  };
 
-  const uploadNewAvatarToClient = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const uploadNewAvatarToClient = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     console.log(e);
     if (e.target.files?.[0]) {
       const newAvatarBase64 = await fileToBase64(e.target.files[0]);
@@ -32,7 +43,7 @@ const ProfilePage: NextPage = () => {
         setNewAvatar(newAvatarBase64);
       }
     }
-  }
+  };
 
   if (!profile.data) {
     return <div>Loading...</div>;
@@ -52,9 +63,16 @@ const ProfilePage: NextPage = () => {
             className="bg-slate-600"
           />
           <p>new avatar (optional): </p>
-          <input type="file"
-                 onChange={e => uploadNewAvatarToClient(e)}
-                 accept="image/gif, image/jpg, image/png"
+          <input
+            type="file"
+            onChange={(e) => uploadNewAvatarToClient(e)}
+            accept="image/gif, image/jpg, image/png"
+          />
+          <p>new bio (optional): </p>
+          <input
+            value={newBio}
+            onChange={(e) => setNewBio(e.target.value)}
+            className="bg-slate-600"
           />
           <button
             onClick={editProfile}
@@ -64,9 +82,9 @@ const ProfilePage: NextPage = () => {
           >
             Edit profile
           </button>
-          {mutation.isError &&
-            <p>Some error occurred editing nickname...</p>
-          }
+          {mutation.error && (
+            <p>Something went wrong! {mutation.error.message}</p>
+          )}
         </div>
       )}
     </div>
