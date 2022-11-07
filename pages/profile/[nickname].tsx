@@ -17,7 +17,7 @@ const ProfilePage: NextPage = () => {
         <div>
           <p>Id: {profile.data.id}</p>
           <p>Nickname: {profile.data.nickname}</p>
-          {profile.data.bio && <p>{profile.data.bio}</p>}
+          {profile.data.description && <p>{profile.data.description}</p>}
         </div>
       )}
     </div>

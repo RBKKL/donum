@@ -10,7 +10,7 @@ const AddProfilePage: NextPage = () => {
   const router = useRouter();
 
   const createProfile = () => {
-    mutation.mutate({ nickname, address: "address", bio: bio ?? undefined });
+    mutation.mutate({ nickname, address: "address", description: bio ?? undefined });
   };
 
   if (mutation.isSuccess) {
