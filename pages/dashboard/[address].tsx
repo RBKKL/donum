@@ -36,10 +36,11 @@ const DashboardPage: NextPage = () => {
           shortAddress
         />
         <Link href={`/edit/${recipientAddress}`}>
-          <Button>
-            <EditIcon size="small" />
-            Edit profile
-          </Button>
+          <Button
+            text="Edit profile"
+            icon={<EditIcon size="small" />}
+            size="small"
+          />
         </Link>
         <div className="mt-11 flex flex-row flex-nowrap">
           <p className="mr-4">Total donations amount: </p>
