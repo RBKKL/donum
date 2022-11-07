@@ -5,12 +5,21 @@ import { useEffect } from "react";
 import { NewDonationEventObject } from "typechain-types/DonationsStore";
 import { useNewDonationEvent } from "@hooks/useNewDonationEvent";
 import { useQueue } from "react-use";
+import { BigNumber } from "ethers";
 
 const ALERT_DURATION = 5000;
 
 const AlertPage: NextPage = () => {
   const router = useRouter();
   const recipientAddress = router.query.address as string;
+
+  const TEST_DONATION = {
+    from: recipientAddress,
+    to: recipientAddress,
+    amount: BigNumber.from("1000000000000000000"),
+    timestamp: BigNumber.from(Date.now()),
+    message: "test donation",
+  };
 
   const {
     add: pushQueue,
@@ -27,6 +36,14 @@ const AlertPage: NextPage = () => {
       popQueue();
     }, ALERT_DURATION);
   }, [currentDonation, popQueue]);
+
+  useEffect(() => {
+    if (!router.query.test) {
+      return;
+    }
+
+    pushQueue(TEST_DONATION);
+  }, [router.query.test]);
 
   useNewDonationEvent((newDonation) => {
     if (newDonation.to === recipientAddress) {
