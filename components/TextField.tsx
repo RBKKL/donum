@@ -5,6 +5,7 @@ interface TextFieldProps {
   value?: string;
   onChange?: (value: string) => void;
   minRows?: number;
+  placeholder?: string;
   maxLength?: number;
   footer?: ReactNode;
 }
@@ -14,13 +15,12 @@ export const TextField: FC<TextFieldProps> = ({
   footer,
   ...props
 }) => (
-  <div className="flex h-full w-full flex-col rounded-2xl bg-zinc-700 p-4">
+  <>
     <TextareaAutosize
-      placeholder="Type your message here..."
-      className="h-full resize-none bg-transparent outline-none"
+      className="h-full resize-none overflow-hidden bg-transparent outline-none"
       onChange={(e) => onChange?.(e.target.value)}
       {...props}
     />
     {footer}
-  </div>
+  </>
 );

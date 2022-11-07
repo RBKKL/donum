@@ -4,6 +4,7 @@ import { TextField } from "@components/TextField";
 import { trpc } from "@lib/trpc";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
+import { DESCRIPTION_MAX_LENGTH } from "@lib/constants";
 import { useState, useEffect } from "react";
 
 const EditDonationPage: NextPage = () => {
@@ -44,12 +45,16 @@ const EditDonationPage: NextPage = () => {
         nickname={profile.data.nickname}
         address={address}
       />
-      <div className="flex w-full flex-col gap-4 pt-12 sm:max-w-lg">
-        <TextField
-          value={newDescription}
-          onChange={(value) => setNewDescription(value)}
-          minRows={6}
-        />
+      <div className="flex w-full flex-col gap-4 pt-5 sm:max-w-4xl">
+        <div className="flex flex-col rounded-md border-2 border-gray-400 py-2 px-3">
+          <TextField
+            placeholder="Type your description here..."
+            value={newDescription}
+            onChange={(value) => setNewDescription(value)}
+            minRows={6}
+            maxLength={DESCRIPTION_MAX_LENGTH}
+          />
+        </div>
         <div className="flex flex-row-reverse">
           <Button text="Save" onClick={saveDescription} />
         </div>
