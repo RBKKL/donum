@@ -10,20 +10,20 @@ const EditDonationPage: NextPage = () => {
   const router = useRouter();
   const [newDescription, setNewDescription] = useState("");
   const address = router.query.address as string;
-  const profile = trpc.profile.byAddress.useQuery({ address: address });
+  const profile = trpc.profile.byAddress.useQuery({ address });
   const mutation = trpc.profile.addDescription.useMutation();
 
   const saveDescription = () => {
-    mutation.mutate({ address: address, description: newDescription });
+    mutation.mutate({ address, description: newDescription });
   };
 
   useEffect(() => {
-    if (!profile?.data?.description) {
+    if (!profile?.data?.description && profile.data?.description !== "") {
       return;
     }
 
     setNewDescription(profile.data.description);
-  }, [profile]);
+  }, [profile.data?.description]);
 
   if (profile.isLoading) {
     return <div>Loading...</div>;
