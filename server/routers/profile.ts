@@ -24,7 +24,6 @@ export const profileRouter = router({
       z.object({
         nickname: z.string(),
         address: z.string(),
-        bio: z.string().optional(),
         description: z.string().optional(),
       })
     )

@@ -14,6 +14,5 @@ model Profile {
   id          Int     @id @default(autoincrement())
   nickname    String
   address     String  @unique
-  bio         String?
   description String?
 }
