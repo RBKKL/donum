@@ -1,21 +1,29 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import { useAccount } from "wagmi";
 import { DonationCard } from "@components/DonationCard";
 import { RecipientProfile } from "@components/RecipientProfile";
+import { Button } from "@components/Button";
+import { ConnectWalletWarning } from "@components/ConnectWalletWarning";
 import { getTotalDonationsAmount, reverseArray } from "@lib/helpers";
 import { useLiveDonationsHistory } from "@hooks/useLiveDonationsHistory";
-import Link from "next/link";
-import { Button } from "@components/Button";
 
 const DashboardPage: NextPage = () => {
   const editProfileButtonHandler = () => {
     console.log("edit profile button handler");
   };
+  const { isConnected } = useAccount();
 
   const router = useRouter();
   const recipientAddress = router.query.address as string;
   const { donations, isLoading, isError, error } =
     useLiveDonationsHistory(recipientAddress);
+
+  //TODO: move to separate component on Next.js 13 migration
+  if (!isConnected) {
+    return <ConnectWalletWarning />;
+  }
 
   if (isLoading) return <div>Loading...</div>;
 
