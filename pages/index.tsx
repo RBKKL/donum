@@ -12,11 +12,6 @@ const Home: NextPage = () => {
           <Button text="Donate me" />
         </a>
       </Link>
-      <Link href={`/profile/edit`}>
-        <a className="mt-3">
-          <Button text="Edit profile" />
-        </a>
-      </Link>
       <Link href={`/dashboard/${MY_ADDRESS}`}>
         <a className="mt-3">
           <Button text="Dashboard" />
