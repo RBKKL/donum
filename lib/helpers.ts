@@ -1,6 +1,7 @@
 import { BigNumber, ethers } from "ethers";
 import { NewDonationEventObject } from "../typechain-types/DonationsStore";
 import { format } from "date-fns";
+import { FetchBalanceResult } from "@wagmi/core";
 
 export const isNumber = (value: string): boolean =>
   !!value.match(/^\d*\.?\d*$/);
@@ -51,3 +52,6 @@ export const getTotalDonationsAmount = (
     )
   ).toFixed(symbolsAfterComma);
 };
+
+export const formatBalance = (balanceData: FetchBalanceResult): string =>
+  balanceData.formatted.substring(0, 7);
