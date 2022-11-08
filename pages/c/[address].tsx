@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { Button } from "@components/Button";
@@ -8,26 +8,23 @@ import { TextField } from "@components/TextField";
 import { EthIcon } from "@components/icons/EthIcon";
 import { useSendDonation } from "@hooks/useSendDonation";
 import { MESSAGE_MAX_LENGTH } from "@lib/constants";
-import { isNumber } from "@lib/helpers";
+import { formatBalance, isNumber } from "@lib/helpers";
 import { DonationModal } from "@components/DonationModal";
 import { useAccount, useBalance } from "wagmi";
 import { Balance } from "@components/Balance";
+import { parseUnits } from "ethers/lib/utils";
 
 const DEFAULT_DONATION_AMOUNT = "0.001";
 
 const SendDonationPage: NextPage = () => {
   const router = useRouter();
   const recipientAddress = router.query.address as string;
-  const [userBalance, setUserBalance] = useState("");
 
   const { address, isDisconnected } = useAccount();
-  const { data } = useBalance({
+  const { data: balanceData } = useBalance({
     addressOrName: address,
+    watch: true,
   });
-
-  useEffect(() => {
-    setUserBalance(Number(data?.formatted).toFixed(6));
-  }, [data]);
 
   // TODO: validate address
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,13 +39,9 @@ const SendDonationPage: NextPage = () => {
     message
   );
 
-  const hasEnoughMoney = () => {
-    return Number(data?.formatted) - Number(donationAmount) > 0;
-  };
-
-  const isZeroDonation = () => {
-    return Number(donationAmount) == 0;
-  };
+  const isValidDonationAmount =
+    balanceData?.value?.gt(parseUnits(donationAmount, balanceData.decimals)) &&
+    parseUnits(donationAmount, balanceData.decimals).gt(0);
 
   const onDonationAmountChange = (amount: string) =>
     isNumber(amount) && setDonationAmount(amount);
@@ -68,7 +61,7 @@ const SendDonationPage: NextPage = () => {
     donate();
   };
 
-  const canDonate = !isDisconnected && hasEnoughMoney() && !isZeroDonation();
+  const canDonate = !isDisconnected && isValidDonationAmount;
 
   return (
     <div className="flex flex-col items-center text-center">
@@ -82,11 +75,11 @@ const SendDonationPage: NextPage = () => {
           value={donationAmount}
           onChange={onDonationAmountChange}
           onBlur={setMinimumAmount}
-          disabled={!canDonate}
+          error={!canDonate}
           rightCorner={
             <div className="flex flex-col items-end">
               <EthIcon />
-              <Balance disabled={isDisconnected} balance={userBalance} />
+              {balanceData && <Balance balance={formatBalance(balanceData)} />}
             </div>
           }
         />

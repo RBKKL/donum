@@ -2,7 +2,7 @@ import { FC, ReactNode } from "react";
 interface InputProps {
   value?: string;
   rightCorner?: ReactNode;
-  disabled?: boolean;
+  error?: boolean;
   onChange?: (value: string) => void;
   onBlur?: () => void;
 }
@@ -10,14 +10,14 @@ interface InputProps {
 export const Input: FC<InputProps> = ({
   onChange,
   rightCorner,
-  disabled,
+  error,
   ...props
 }) => {
   return (
     <div
       className={
         "flex items-center justify-between rounded-2xl bg-zinc-700 px-4 py-2" +
-        (disabled ? " outline outline-2 outline-red-500" : "")
+        (error ? " outline outline-2 outline-red-500" : "")
       }
     >
       <input
