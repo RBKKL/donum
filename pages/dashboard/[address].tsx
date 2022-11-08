@@ -1,11 +1,7 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import Link from "next/link";
-import { useAccount } from "wagmi";
 import { DonationCard } from "@components/DonationCard";
 import { RecipientProfile } from "@components/RecipientProfile";
-import { Button } from "@components/Button";
-import { ConnectWalletWarning } from "@components/ConnectWalletWarning";
 import { getTotalDonationsAmount, reverseArray } from "@lib/helpers";
 import { useLiveDonationsHistory } from "@hooks/useLiveDonationsHistory";
 import { Button } from "@components/Button";
