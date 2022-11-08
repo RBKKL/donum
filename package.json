@@ -30,6 +30,7 @@
     "@trpc/next": "^10.0.0-proxy-beta.23",
     "@trpc/react-query": "^10.0.0-proxy-beta.23",
     "@trpc/server": "^10.0.0-proxy-beta.23",
+    "classnames": "^2.3.2",
     "date-fns": "^2.29.3",
     "ethers": "^5.7.1",
     "next": "latest",

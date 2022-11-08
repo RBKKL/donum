@@ -12,13 +12,36 @@ export const profileRouter = router({
         where: { nickname: input.nickname },
       });
     }),
+  byAddress: publicProcedure
+    .input(z.object({ address: z.string() }))
+    .query(({ ctx, input }) => {
+      return ctx.prisma.profile.findFirst({
+        where: { address: input.address },
+      });
+    }),
   add: publicProcedure
-    .input(z.object({ nickname: z.string(), bio: z.string().optional() }))
+    .input(
+      z.object({
+        nickname: z.string(),
+        address: z.string(),
+        description: z.string().optional(),
+      })
+    )
     .mutation(async ({ ctx, input }) => {
       const profile = await ctx.prisma.profile.create({
-        data: { nickname: input.nickname, bio: input.bio },
+        data: input,
       });
 
       return profile;
+    }),
+  addDescription: publicProcedure
+    .input(z.object({ address: z.string(), description: z.string() }))
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.profile.update({
+        where: { address: input.address },
+        data: {
+          description: input.description,
+        },
+      });
     }),
 });

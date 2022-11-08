@@ -6,11 +6,15 @@ import { useState } from "react";
 const AddProfilePage: NextPage = () => {
   const mutation = trpc.profile.add.useMutation();
   const [nickname, setNickname] = useState("");
-  const [bio, setBio] = useState("");
+  const [description, setDescription] = useState("");
   const router = useRouter();
 
   const createProfile = () => {
-    mutation.mutate({ nickname, bio: bio ?? undefined });
+    mutation.mutate({
+      nickname,
+      address: "address",
+      description: description ?? undefined,
+    });
   };
 
   if (mutation.isSuccess) {
@@ -25,10 +29,10 @@ const AddProfilePage: NextPage = () => {
         onChange={(e) => setNickname(e.target.value)}
         className="bg-slate-600"
       />
-      Bio (optional):
+      Description (optional):
       <textarea
-        value={bio}
-        onChange={(e) => setBio(e.target.value)}
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
         className="bg-slate-600"
       />
       <button
