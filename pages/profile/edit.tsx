@@ -6,7 +6,7 @@ import { DESCRIPTION_MAX_LENGTH } from "@lib/constants";
 import { useState } from "react";
 import { useAccount } from "wagmi";
 
-const EditSendDonationPage: NextPage = () => {
+const EditProfilePage: NextPage = () => {
   const { address } = useAccount();
   const [description, setDescription] = useState("");
 
@@ -39,4 +39,4 @@ const EditSendDonationPage: NextPage = () => {
   );
 };
 
-export default EditSendDonationPage;
+export default EditProfilePage;
