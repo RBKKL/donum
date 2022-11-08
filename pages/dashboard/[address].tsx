@@ -1,11 +1,13 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import { useAccount } from "wagmi";
 import { DonationCard } from "@components/DonationCard";
 import { RecipientProfile } from "@components/RecipientProfile";
+import { Button } from "@components/Button";
+import { ConnectWalletWarning } from "@components/ConnectWalletWarning";
 import { getTotalDonationsAmount, reverseArray } from "@lib/helpers";
 import { useLiveDonationsHistory } from "@hooks/useLiveDonationsHistory";
-import { useAccount } from "wagmi";
-import { ConnectWalletWarning } from "@components/ConnectWalletWarning";
 
 const DashboardPage: NextPage = () => {
   const editProfileButtonHandler = () => {
@@ -40,6 +42,11 @@ const DashboardPage: NextPage = () => {
           onEditClick={editProfileButtonHandler}
           shortAddress
         />
+        <Link href={`/profile/edit`}>
+          <a className="mt-3">
+            <Button text="Edit profile" />
+          </a>
+        </Link>
         <div className="mt-11 flex flex-row flex-nowrap">
           <p className="mr-4">Total donations amount: </p>
           {donations && (
