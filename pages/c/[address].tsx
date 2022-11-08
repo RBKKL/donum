@@ -8,14 +8,24 @@ import { TextField } from "@components/TextField";
 import { EthIcon } from "@components/icons/EthIcon";
 import { useSendDonation } from "@hooks/useSendDonation";
 import { MESSAGE_MAX_LENGTH } from "@lib/constants";
-import { isNumber } from "@lib/helpers";
+import { formatBalance, isNumber } from "@lib/helpers";
 import { DonationModal } from "@components/DonationModal";
+import { useAccount, useBalance } from "wagmi";
+import { Balance } from "@components/Balance";
+import { parseUnits } from "ethers/lib/utils";
 
 const DEFAULT_DONATION_AMOUNT = "0.001";
 
 const SendDonationPage: NextPage = () => {
   const router = useRouter();
   const recipientAddress = router.query.address as string;
+
+  const { address, isDisconnected } = useAccount();
+  const { data: balanceData } = useBalance({
+    addressOrName: address,
+    watch: true,
+  });
+
   // TODO: validate address
   const [isModalOpen, setIsModalOpen] = useState(false);
   const nickname = "Nix";
@@ -28,6 +38,10 @@ const SendDonationPage: NextPage = () => {
     donationAmount,
     message
   );
+
+  const isValidDonationAmount =
+    balanceData?.value?.gt(parseUnits(donationAmount, balanceData.decimals)) &&
+    parseUnits(donationAmount, balanceData.decimals).gt(0);
 
   const onDonationAmountChange = (amount: string) =>
     isNumber(amount) && setDonationAmount(amount);
@@ -47,6 +61,8 @@ const SendDonationPage: NextPage = () => {
     donate();
   };
 
+  const canDonate = !isDisconnected && isValidDonationAmount;
+
   return (
     <div className="flex flex-col items-center text-center">
       <RecipientProfile
@@ -54,24 +70,34 @@ const SendDonationPage: NextPage = () => {
         nickname={nickname}
         address={recipientAddress}
       />
-      <div className="flex w-full flex-col gap-4 pt-12 sm:max-w-lg">
+      <div className="flex w-full flex-col gap-4 pt-2 sm:max-w-4xl">
+        <p className="break-words px-4 pb-4 text-left text-sm">description</p>
         <Input
           value={donationAmount}
           onChange={onDonationAmountChange}
           onBlur={setMinimumAmount}
-          rightCorner={<EthIcon />}
-        />
-        <TextField
-          value={message}
-          onChange={onDonationMessageChange}
-          minRows={6}
-          maxLength={MESSAGE_MAX_LENGTH}
-          footer={
-            <p className="flex flex-row-reverse text-xs text-gray-400">
-              {message.length}/{MESSAGE_MAX_LENGTH}
-            </p>
+          error={!canDonate}
+          rightCorner={
+            <div className="flex flex-col items-end">
+              <EthIcon />
+              {balanceData && <Balance balance={formatBalance(balanceData)} />}
+            </div>
           }
         />
+        <div className="flex h-full w-full flex-col rounded-2xl bg-zinc-700 p-4">
+          <TextField
+            placeholder="Type your message here..."
+            value={message}
+            onChange={onDonationMessageChange}
+            minRows={6}
+            maxLength={MESSAGE_MAX_LENGTH}
+            footer={
+              <p className="flex flex-row-reverse text-xs text-gray-400">
+                {message.length}/{MESSAGE_MAX_LENGTH}
+              </p>
+            }
+          />
+        </div>
         <div className="flex flex-row-reverse">
           <Button
             text="Send"

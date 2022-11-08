@@ -8,6 +8,7 @@ interface TextFieldProps {
   placeholder?: string;
   maxLength?: number;
   footer?: ReactNode;
+  className?: string;
 }
 
 export const TextField: FC<TextFieldProps> = ({
