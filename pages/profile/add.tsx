@@ -9,7 +9,7 @@ const AddProfilePage: NextPage = () => {
   const mutation = trpc.profile.add.useMutation();
   const [nickname, setNickname] = useState("");
   const [description, setDescription] = useState("");
-  const [wallet, setWallet] = useState("");
+  const [address, setAddress] = useState("");
   const [avatar, setAvatar] = useState("");
   const router = useRouter();
 
@@ -19,7 +19,6 @@ const AddProfilePage: NextPage = () => {
     if (e.target.files?.[0]) {
       const avatarBase64 = await fileToBase64(e.target.files[0]);
       if (avatarBase64) {
-        console.log(avatarBase64);
         setAvatar(avatarBase64);
       }
     }
@@ -27,7 +26,7 @@ const AddProfilePage: NextPage = () => {
 
   const createProfile = () => {
     mutation.mutate({
-      wallet,
+      address,
       nickname,
       description: description ?? undefined,
       avatar: avatar !== "" ? avatar : undefined,
@@ -42,8 +41,8 @@ const AddProfilePage: NextPage = () => {
     <div className="flex w-96 flex-col gap-4">
       Wallet (Required. Filed for debug):
       <textarea
-        value={wallet}
-        onChange={(e) => setWallet(e.target.value)}
+        value={address}
+        onChange={(e) => setAddress(e.target.value)}
         className="bg-slate-600"
         maxLength={42}
         minLength={42}

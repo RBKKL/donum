@@ -5,7 +5,7 @@ import {
   AddSchema,
   EditSchema,
   NicknameFormat,
-  WalletFormat,
+  AddressFormat,
 } from "@server/inputSchemas";
 import { uploadImage, removeImage } from "@lib/bucketService";
 import { TRPCError } from "@trpc/server";
@@ -30,7 +30,7 @@ export const profileRouter = router({
 
     const allProfiles = await ctx.prisma.profile.findMany();
     return allProfiles.map((profile) => ({
-      wallet: profile.wallet,
+      address: profile.address,
       nickname: profile?.nickname,
       description: profile?.description,
       avatarUrl: avatarsMap.get(profile.avatarFilename) ?? "",
@@ -67,22 +67,43 @@ export const profileRouter = router({
       }
 
       return {
-        wallet: profile.wallet,
+        address: profile.address,
         nickname: profile?.nickname,
         description: profile?.description,
         avatarUrl: avatarUrl,
       };
     }),
   byAddress: publicProcedure
-    .input(z.object({ wallet: WalletFormat }))
-    .query(({ ctx, input }) => {
-      return ctx.prisma.profile.findFirst({
-        where: { wallet: input.wallet },
+    .input(z.object({ address: AddressFormat }))
+    .query(async ({ ctx, input }) => {
+      const profile = await ctx.prisma.profile.findFirst({
+        where: { address: input.address },
       });
+      if (!profile) {
+        // TODO: remake
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "No such profile",
+        });
+      }
+
+      let avatarUrl = "";
+      if (profile.avatarFilename) {
+        const avatarsBucket = await ctx.buckets.from(AVATARS_BUCKET_NAME);
+        avatarUrl = avatarsBucket.getPublicUrl(profile.avatarFilename).data
+          .publicUrl;
+      }
+
+      return {
+        address: profile.address,
+        nickname: profile?.nickname,
+        description: profile?.description,
+        avatarUrl: avatarUrl,
+      };
     }),
   add: publicProcedure.input(AddSchema).mutation(async ({ ctx, input }) => {
     let profile = await ctx.prisma.profile.findFirst({
-      where: { wallet: input.wallet },
+      where: { address: input.address },
     });
     if (profile) {
       throw new TRPCError({
@@ -104,7 +125,7 @@ export const profileRouter = router({
 
     profile = await ctx.prisma.profile.create({
       data: {
-        wallet: input.wallet,
+        address: input.address,
         nickname: input.nickname,
         description: input.description,
         avatarFilename: avatarFilename,
@@ -112,7 +133,7 @@ export const profileRouter = router({
     });
 
     return {
-      wallet: profile.wallet,
+      address: profile.address,
       nickname: profile?.nickname,
       description: profile?.description,
       avatarUrl: avatarPublicUrl,
@@ -120,7 +141,7 @@ export const profileRouter = router({
   }),
   edit: publicProcedure.input(EditSchema).mutation(async ({ ctx, input }) => {
     let profile = await ctx.prisma.profile.findFirst({
-      where: { wallet: input.wallet },
+      where: { address: input.address },
     });
 
     if (!profile) {
@@ -144,7 +165,7 @@ export const profileRouter = router({
       profile.nickname = input.nickname;
     }
 
-    if (input.description) {
+    if (input.description || input.description === "") {
       profile.description = input.description;
     }
 
@@ -164,7 +185,7 @@ export const profileRouter = router({
     }
 
     profile = await ctx.prisma.profile.update({
-      where: { wallet: input.wallet },
+      where: { address: input.address },
       data: {
         nickname: profile.nickname,
         description: profile.description,
@@ -173,7 +194,7 @@ export const profileRouter = router({
     });
 
     return {
-      wallet: profile.wallet,
+      address: profile.address,
       nickname: profile?.nickname,
       description: profile?.description,
       avatarUrl: avatarPublicUrl,

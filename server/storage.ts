@@ -29,18 +29,20 @@ class BucketsStorage {
       console.error(listBucketsError);
     }
 
-    this.bucketNames.map(async (bucketName) => {
-      if (!buckets?.map((bucket) => bucket.name).includes(bucketName)) {
-        const { error } = await this.storageClient.createBucket(
-          bucketName, // Bucket name (must be unique)
-          { public: true } // Bucket options
-        );
-        if (error) {
-          console.error(`Error creating ${bucketName} bucket`);
-          console.error(error);
+    await Promise.all(
+      this.bucketNames.map(async (bucketName) => {
+        if (!buckets?.map((bucket) => bucket.name).includes(bucketName)) {
+          const { error } = await this.storageClient.createBucket(
+            bucketName, // Bucket name (must be unique)
+            { public: true } // Bucket options
+          );
+          if (error) {
+            console.error(`Error creating ${bucketName} bucket`);
+            console.error(error);
+          }
         }
-      }
-    });
+      })
+    );
   }
 
   public async from(id: string) {

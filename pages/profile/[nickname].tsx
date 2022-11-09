@@ -17,10 +17,10 @@ const ProfilePage: NextPage = () => {
   );
 
   const editProfile = () => {
-    if (profile.data?.wallet) {
+    if (profile.data?.address) {
       mutation.mutate(
         {
-          wallet: profile.data.wallet,
+          address: profile.data.address,
           nickname: newNickname !== "" ? newNickname : undefined,
           description: newDescription,
           avatar: newAvatar !== "" ? newAvatar : undefined,
@@ -53,7 +53,7 @@ const ProfilePage: NextPage = () => {
     <div>
       {profile.data && (
         <div>
-          <p>Wallet: {profile.data.wallet}</p>
+          <p>Wallet: {profile.data.address}</p>
           <p>Nickname: {profile.data.nickname}</p>
           {profile.data.description && <p>{profile.data.description}</p>}
           <p>new nickname (optional): </p>

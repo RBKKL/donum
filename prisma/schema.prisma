@@ -14,6 +14,6 @@ model Profile {
   id             Int     @id @default(autoincrement())
   nickname       String  @unique
   description    String?
-  wallet         String  @unique
+  address        String  @unique
   avatarFilename String?
 }
