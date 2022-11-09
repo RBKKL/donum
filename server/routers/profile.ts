@@ -2,22 +2,23 @@ import { z } from "zod";
 import { publicProcedure, router } from "@server/trpc";
 import { AVATARS_BUCKET_NAME, buckets } from "@server/storage";
 import { AddSchema, EditSchema, NicknameFormat } from "@server/inputSchemas";
-import { uploadImage, removeImage, getImageUrl } from "@lib/bucketService";
+import { uploadImage, removeImage } from "@lib/bucketService";
 import { TRPCError } from "@trpc/server";
+import { uuid4 } from "@sentry/utils";
 
 export const profileRouter = router({
   all: publicProcedure.query(async ({ ctx }) => {
     const avatarsMap = new Map();
     const avatarsBucket = await buckets.from(AVATARS_BUCKET_NAME);
     const { data: avatarFiles, error } = await avatarsBucket.list();
-    console.log(avatarFiles);
 
     if (error) {
       console.error("Error getting avatars list from bucket");
       console.error(error);
     } else {
       avatarFiles.map((avatarFile) => {
-        const avatarUrl = getImageUrl(avatarsBucket, avatarFile.name);
+        const avatarUrl = avatarsBucket.getPublicUrl(avatarFile.name).data
+          .publicUrl;
         avatarsMap.set(avatarFile.name, avatarUrl);
       });
     }
@@ -27,7 +28,7 @@ export const profileRouter = router({
       wallet: profile.wallet,
       nickname: profile?.nickname,
       bio: profile?.bio,
-      avatarUrl: avatarsMap.get(profile.wallet) ?? "",
+      avatarUrl: avatarsMap.get(profile.avatarFilename) ?? "",
     }));
   }),
   byNickname: publicProcedure
@@ -45,16 +46,19 @@ export const profileRouter = router({
       }
 
       let avatarUrl = "";
-      const avatarsBucket = await buckets.from(AVATARS_BUCKET_NAME);
-      const { data: avatarFiles, error } = await avatarsBucket.list();
-      if (error) {
-        console.error("Unable to get items from avatars bucket");
-        console.error(error);
-      } else {
-        const avatarFile = avatarFiles.filter(
-          (avatarFile) => avatarFile.name === profile.wallet
-        )[0];
-        avatarUrl = getImageUrl(avatarsBucket, avatarFile.name);
+      if (profile.avatarFilename) {
+        const avatarsBucket = await buckets.from(AVATARS_BUCKET_NAME);
+        const { data: avatarFiles, error } = await avatarsBucket.list();
+        if (error) {
+          console.error("Unable to get items from avatars bucket");
+          console.error(error);
+        } else {
+          const avatarFile = avatarFiles.filter(
+            (avatarFile) => avatarFile.name === profile.avatarFilename
+          )[0];
+          avatarUrl = avatarsBucket.getPublicUrl(avatarFile.name).data
+            .publicUrl;
+        }
       }
 
       return {
@@ -76,16 +80,23 @@ export const profileRouter = router({
     }
 
     let avatarPublicUrl = "";
+    let avatarFilename = null;
     if (input.avatar) {
+      avatarFilename = uuid4();
       avatarPublicUrl = await uploadImage(
         await ctx.buckets.from(AVATARS_BUCKET_NAME),
         input.avatar,
-        input.wallet
+        avatarFilename
       );
     }
 
     profile = await ctx.prisma.profile.create({
-      data: { wallet: input.wallet, nickname: input.nickname, bio: input.bio },
+      data: {
+        wallet: input.wallet,
+        nickname: input.nickname,
+        bio: input.bio,
+        avatarFilename: avatarFilename,
+      },
     });
 
     return {
@@ -124,22 +135,30 @@ export const profileRouter = router({
     if (input.bio) {
       profile.bio = input.bio;
     }
-    profile = await ctx.prisma.profile.update({
-      where: { wallet: input.wallet },
-      data: { nickname: profile.nickname, bio: profile.bio },
-    });
 
     let avatarPublicUrl = "";
+    let newAvatarFilename = undefined;
     if (input.avatar) {
+      newAvatarFilename = uuid4();
       const avatarsBucket = await ctx.buckets.from(AVATARS_BUCKET_NAME);
-      await removeImage(avatarsBucket, input.wallet);
+      if (profile.avatarFilename) {
+        await removeImage(avatarsBucket, profile.avatarFilename);
+      }
       avatarPublicUrl = await uploadImage(
         avatarsBucket,
         input.avatar,
-        input.wallet
+        newAvatarFilename
       );
-      console.log(avatarPublicUrl);
     }
+
+    profile = await ctx.prisma.profile.update({
+      where: { wallet: input.wallet },
+      data: {
+        nickname: profile.nickname,
+        bio: profile.bio,
+        avatarFilename: newAvatarFilename,
+      },
+    });
 
     return {
       wallet: profile.wallet,

@@ -3,6 +3,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { fileToBase64 } from "@lib/helpers";
+import { avatarAcceptableFileExtensions } from "@lib/constants";
 
 const ProfilePage: NextPage = () => {
   const mutation = trpc.profile.edit.useMutation();
@@ -11,7 +12,7 @@ const ProfilePage: NextPage = () => {
   const profile = trpc.profile.byNickname.useQuery({ nickname });
   const [newNickname, setNewNickname] = useState("");
   const [newAvatar, setNewAvatar] = useState("");
-  const [newBio, setNewBio] = useState<string>();
+  const [newBio, setNewBio] = useState<string | undefined>(undefined);
 
   const editProfile = () => {
     if (profile.data?.wallet) {
@@ -19,12 +20,11 @@ const ProfilePage: NextPage = () => {
         {
           wallet: profile.data.wallet,
           nickname: newNickname !== "" ? newNickname : undefined,
-          bio: undefined,
+          bio: newBio,
           avatar: newAvatar !== "" ? newAvatar : undefined,
         },
         {
           onSuccess: (data) => {
-            console.log(data);
             router.push(`/profile/${data.nickname}`);
           },
         }
@@ -35,11 +35,9 @@ const ProfilePage: NextPage = () => {
   const uploadNewAvatarToClient = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    console.log(e);
     if (e.target.files?.[0]) {
       const newAvatarBase64 = await fileToBase64(e.target.files[0]);
       if (newAvatarBase64) {
-        console.log(newAvatarBase64);
         setNewAvatar(newAvatarBase64);
       }
     }
@@ -66,7 +64,7 @@ const ProfilePage: NextPage = () => {
           <input
             type="file"
             onChange={(e) => uploadNewAvatarToClient(e)}
-            accept="image/gif, image/jpg, image/png"
+            accept={avatarAcceptableFileExtensions}
           />
           <p>new bio (optional): </p>
           <input
