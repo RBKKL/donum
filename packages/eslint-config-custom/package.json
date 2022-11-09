@@ -1,0 +1,14 @@
+{
+    "name": "eslint-config-custom",
+    "version": "0.0.0",
+    "main": "index.js",
+    "dependencies": {
+        "@typescript-eslint/eslint-plugin": "^5.42.1",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-config-turbo": "^0.0.4",
+        "eslint-plugin-unused-imports": "^2.0.0"
+    },
+    "devDependencies": {
+        "eslint": "^8.27.0"
+    }
+}

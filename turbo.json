@@ -1,0 +1,61 @@
+{
+    "$schema": "https://turbo.build/schema.json",
+    "globalDependencies": [
+        ".env"
+    ],
+    "globalEnv": [
+        "PRIVATE_KEY",
+        "INFURA_ID",
+        "NEXT_PUBLIC_INFURA_ID",
+        "REPORT_GAS",
+        "NODE_ENV",
+        "PORT",
+        "VERCEL_URL",
+        "STORAGE_URL",
+        "SERVICE_KEY",
+        "DATABASE_URL"
+    ],
+    "pipeline": {
+        "build": {
+            "dependsOn": [
+                "^build"
+            ],
+            "outputs": [
+                "dist/**",
+                ".next/**"
+            ]
+        },
+        "test": {
+            "inputs": [
+                "src/**/*.tsx",
+                "src/**/*.ts",
+                "test/**/*.ts",
+                "test/**/*.tsx"
+            ],
+            "outputs": []
+        },
+        "lint": {
+            "outputs": []
+        },
+        "dev": {
+            "dependsOn": [
+                "generate"
+            ],
+            "cache": false
+        },
+        "clean": {
+            "cache": false
+        },
+        "db:push": {
+            "outputs": []
+        },
+        "generate": {
+            "dependsOn": [
+                "^generate"
+            ]
+        },
+        "format:check": {
+            "outputs": []
+        }
+    }
+}
