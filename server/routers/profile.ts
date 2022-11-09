@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { publicProcedure, router } from "@server/trpc";
 import { AVATARS_BUCKET_NAME, buckets } from "@server/storage";
-import { AddSchema, EditSchema, NicknameFormat } from "@server/inputSchemas";
+import { AddSchema, EditSchema, NicknameFormat, WalletFormat } from "@server/inputSchemas";
 import { uploadImage, removeImage } from "@lib/bucketService";
 import { TRPCError } from "@trpc/server";
 import { uuid4 } from "@sentry/utils";
@@ -67,6 +67,13 @@ export const profileRouter = router({
         description: profile?.description,
         avatarUrl: avatarUrl,
       };
+    }),
+  byAddress: publicProcedure
+    .input(z.object({ wallet: WalletFormat }))
+    .query(({ ctx, input }) => {
+      return ctx.prisma.profile.findFirst({
+        where: { wallet: input.wallet },
+      });
     }),
   add: publicProcedure.input(AddSchema).mutation(async ({ ctx, input }) => {
     let profile = await ctx.prisma.profile.findFirst({

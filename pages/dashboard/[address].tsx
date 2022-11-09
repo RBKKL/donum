@@ -4,6 +4,9 @@ import { DonationCard } from "@components/DonationCard";
 import { RecipientProfile } from "@components/RecipientProfile";
 import { getTotalDonationsAmount, reverseArray } from "@lib/helpers";
 import { useLiveDonationsHistory } from "@hooks/useLiveDonationsHistory";
+import { Button } from "@components/Button";
+import { EditIcon } from "@components/icons/EditIcon";
+import Link from "next/link";
 import { useAccount } from "wagmi";
 import { ConnectWalletWarning } from "@components/ConnectWalletWarning";
 
@@ -40,6 +43,15 @@ const DashboardPage: NextPage = () => {
           onEditClick={editProfileButtonHandler}
           shortAddress
         />
+        <Link href={`/edit/${recipientAddress}`}>
+          <a className="mt-3">
+            <Button
+              text="Edit profile"
+              icon={<EditIcon size="small" />}
+              size="small"
+            />
+          </a>
+        </Link>
         <div className="mt-11 flex flex-row flex-nowrap">
           <p className="mr-4">Total donations amount: </p>
           {donations && (
