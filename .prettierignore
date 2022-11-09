@@ -1,20 +1,17 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
-/node_modules
-/.pnp
-.pnp.js
+node_modules
 
 # testing
-/coverage
+coverage
 coverage.json
 
 # next.js
-/.next/
-/out/
+.next
+out
 
 # production
-/build
+build
+dist
 
 # misc
 .DS_Store
@@ -38,26 +35,23 @@ yarn-error.log*
 next-env.d.ts
 
 # typechain
-typechain
-typechain-types
+apps/contracts/types
 
 # hardhat 
-cache
-artifacts
-contractsInfo.json
-deployments
+apps/contracts/cache
+apps/contracts/artifacts
+apps/contracts/contractsInfo.json
+apps/contracts/deployments/**/solcinputs
 
 # IDE
 .idea
 .vscode
 
+# Turborepo
+.turbo
+
 # GitHub Actions
 .github
 
 # json files
-package.json
-package-lock.json
-.solhint.json
-tsconfig.json
-.eslintrc.json
-.prettierrc.json
+*.json

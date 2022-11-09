@@ -1,0 +1,25 @@
+{
+    "name": "contracts",
+    "version": "0.1.0",
+    "description": "Donum smart contracts",
+    "private": true,
+    "scripts": {
+        "generate": "hardhat compile && hardhat run scripts/generate_abi.ts",
+        "test": "dotenv -- hardhat test",
+        "deploy:goerli": "dotenv -- hardhat deploy --network goerli",
+        "clean": "hardhat clean && rimraf .turbo node_modules cache",
+        "lint": "solhint 'contracts/**/*.sol'",
+        "postinstall": "npm run generate"
+    },
+    "devDependencies": {
+        "@nomicfoundation/hardhat-toolbox": "^2.0.0",
+        "hardhat": "^2.12.2",
+        "hardhat-deploy": "^0.11.20",
+        "prettier-plugin-solidity": "^1.0.0-rc.1",
+        "shared": "*",
+        "solhint": "^3.3.7",
+        "solhint-plugin-prettier": "^0.0.5",
+        "tsconfig": "*",
+        "tsconfig-paths": "^4.1.0"
+    }
+}

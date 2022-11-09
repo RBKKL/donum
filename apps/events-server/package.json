@@ -1,0 +1,20 @@
+{
+  "name": "events-server",
+  "private": true,
+  "scripts": {
+    "dev": "tsx watch --clear-screen=false server.ts",
+    "build": "tsc --build --verbose",
+    "lint": "tsc --noEmit && eslint .",
+    "clean": "tsc --build --clean && rimraf .turbo node_modules dist"
+  },
+  "dependencies": {
+    "@fastify/cors": "^8.2.0",
+    "fastify": "^4.9.2",
+    "fastify-socket.io": "^4.0.0",
+    "socket.io": "^4.5.3"
+  },
+  "devDependencies": {
+    "tsconfig": "*",
+    "tsx": "^3.11.0"
+  }
+}
