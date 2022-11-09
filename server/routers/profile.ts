@@ -27,7 +27,7 @@ export const profileRouter = router({
     return allProfiles.map((profile) => ({
       wallet: profile.wallet,
       nickname: profile?.nickname,
-      bio: profile?.bio,
+      description: profile?.description,
       avatarUrl: avatarsMap.get(profile.avatarFilename) ?? "",
     }));
   }),
@@ -64,7 +64,7 @@ export const profileRouter = router({
       return {
         wallet: profile.wallet,
         nickname: profile?.nickname,
-        bio: profile?.bio,
+        description: profile?.description,
         avatarUrl: avatarUrl,
       };
     }),
@@ -94,7 +94,7 @@ export const profileRouter = router({
       data: {
         wallet: input.wallet,
         nickname: input.nickname,
-        bio: input.bio,
+        description: input.description,
         avatarFilename: avatarFilename,
       },
     });
@@ -102,7 +102,7 @@ export const profileRouter = router({
     return {
       wallet: profile.wallet,
       nickname: profile?.nickname,
-      bio: profile?.bio,
+      description: profile?.description,
       avatarUrl: avatarPublicUrl,
     };
   }),
@@ -132,8 +132,8 @@ export const profileRouter = router({
       profile.nickname = input.nickname;
     }
 
-    if (input.bio) {
-      profile.bio = input.bio;
+    if (input.description) {
+      profile.description = input.description;
     }
 
     let avatarPublicUrl = "";
@@ -155,7 +155,7 @@ export const profileRouter = router({
       where: { wallet: input.wallet },
       data: {
         nickname: profile.nickname,
-        bio: profile.bio,
+        description: profile.description,
         avatarFilename: newAvatarFilename,
       },
     });
@@ -163,7 +163,7 @@ export const profileRouter = router({
     return {
       wallet: profile.wallet,
       nickname: profile?.nickname,
-      bio: profile?.bio,
+      description: profile?.description,
       avatarUrl: avatarPublicUrl,
     };
   }),

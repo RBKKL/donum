@@ -8,7 +8,7 @@ import { avatarAcceptableFileExtensions } from "@lib/constants";
 const AddProfilePage: NextPage = () => {
   const mutation = trpc.profile.add.useMutation();
   const [nickname, setNickname] = useState("");
-  const [bio, setBio] = useState("");
+  const [description, setDescription] = useState("");
   const [wallet, setWallet] = useState("");
   const [avatar, setAvatar] = useState("");
   const router = useRouter();
@@ -29,7 +29,7 @@ const AddProfilePage: NextPage = () => {
     mutation.mutate({
       wallet,
       nickname,
-      bio: bio ?? undefined,
+      description: description ?? undefined,
       avatar: avatar !== "" ? avatar : undefined,
     });
   };
@@ -54,10 +54,10 @@ const AddProfilePage: NextPage = () => {
         onChange={(e) => setNickname(e.target.value)}
         className="bg-slate-600"
       />
-      Bio (optional):
+      Description (optional):
       <textarea
-        value={bio}
-        onChange={(e) => setBio(e.target.value)}
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
         className="bg-slate-600"
       />
       Avatar (optional):

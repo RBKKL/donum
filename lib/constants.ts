@@ -7,7 +7,7 @@ export const CONTRACT_NAME = "DonationsStore";
 
 export const MESSAGE_MAX_LENGTH = 256;
 export const NICKNAME_MAX_LENGTH = 64;
-export const BIO_MAX_LENGTH = 65536;
+export const DESCRIPTION_MAX_LENGTH = 65536;
 
 export const avatarAcceptableFileExtensions =
   "image/png, image/gif, image/jpeg";

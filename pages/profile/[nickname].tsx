@@ -12,7 +12,9 @@ const ProfilePage: NextPage = () => {
   const profile = trpc.profile.byNickname.useQuery({ nickname });
   const [newNickname, setNewNickname] = useState("");
   const [newAvatar, setNewAvatar] = useState("");
-  const [newBio, setNewBio] = useState<string | undefined>(undefined);
+  const [newDescription, setNewDescription] = useState<string | undefined>(
+    undefined
+  );
 
   const editProfile = () => {
     if (profile.data?.wallet) {
@@ -20,7 +22,7 @@ const ProfilePage: NextPage = () => {
         {
           wallet: profile.data.wallet,
           nickname: newNickname !== "" ? newNickname : undefined,
-          bio: newBio,
+          description: newDescription,
           avatar: newAvatar !== "" ? newAvatar : undefined,
         },
         {
@@ -53,7 +55,7 @@ const ProfilePage: NextPage = () => {
         <div>
           <p>Wallet: {profile.data.wallet}</p>
           <p>Nickname: {profile.data.nickname}</p>
-          {profile.data.bio && <p>{profile.data.bio}</p>}
+          {profile.data.description && <p>{profile.data.description}</p>}
           <p>new nickname (optional): </p>
           <input
             value={newNickname}
@@ -66,10 +68,10 @@ const ProfilePage: NextPage = () => {
             onChange={(e) => uploadNewAvatarToClient(e)}
             accept={avatarAcceptableFileExtensions}
           />
-          <p>new bio (optional): </p>
+          <p>new description (optional): </p>
           <input
-            value={newBio}
-            onChange={(e) => setNewBio(e.target.value)}
+            value={newDescription}
+            onChange={(e) => setNewDescription(e.target.value)}
             className="bg-slate-600"
           />
           <button
