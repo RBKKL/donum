@@ -10,7 +10,7 @@ import { useSendDonation } from "@hooks/useSendDonation";
 import { MESSAGE_MAX_LENGTH } from "shared/constants";
 import { formatBalance, isNumber } from "@lib/helpers";
 import { DonationModal } from "@components/DonationModal";
-import { useAccount, useBalance } from "wagmi";
+import { Address, useAccount, useBalance } from "wagmi";
 import { Balance } from "@components/Balance";
 import { parseUnits } from "ethers/lib/utils";
 
@@ -18,7 +18,7 @@ const DEFAULT_DONATION_AMOUNT = "0.001";
 
 const SendDonationPage: NextPage = () => {
   const router = useRouter();
-  const recipientAddress = router.query.address as string;
+  const recipientAddress = router.query.address as Address; // TODO: validate address
 
   const { address, isDisconnected } = useAccount();
   const { data: balanceData } = useBalance({
@@ -26,7 +26,6 @@ const SendDonationPage: NextPage = () => {
     watch: true,
   });
 
-  // TODO: validate address
   const [isModalOpen, setIsModalOpen] = useState(false);
   const nickname = "Nix";
 

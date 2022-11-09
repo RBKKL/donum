@@ -1,13 +1,18 @@
 import { useEffect } from "react";
 import { ethers } from "ethers";
-import { useContractWrite, useNetwork, usePrepareContractWrite } from "wagmi";
 import {
-  CONTRACT_ABI,
+  Address,
+  useContractWrite,
+  useNetwork,
+  usePrepareContractWrite,
+} from "wagmi";
+import {
+  DonationsStoreABI,
   getContractAddressByChainId,
 } from "@lib/smartContractsData";
 
 export const useSendDonation = (
-  recipientAddress: string,
+  recipientAddress: Address,
   donationAmount: string,
   message: string
 ) => {
@@ -17,8 +22,8 @@ export const useSendDonation = (
 
   const { config, error: prepareError } = usePrepareContractWrite({
     enabled: isValidAmount,
-    addressOrName: getContractAddressByChainId(chain?.id),
-    contractInterface: CONTRACT_ABI,
+    address: getContractAddressByChainId(chain?.id),
+    abi: DonationsStoreABI,
     functionName: "donate",
     args: [recipientAddress, message],
     overrides: {

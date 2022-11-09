@@ -4,7 +4,7 @@
     "description": "Donum smart contracts",
     "private": true,
     "scripts": {
-        "generate": "hardhat compile",
+        "generate": "hardhat compile && hardhat run scripts/generate_abi.ts",
         "test": "dotenv -- hardhat test",
         "deploy:goerli": "dotenv -- hardhat deploy --network goerli",
         "clean": "hardhat clean && rimraf .turbo node_modules cache",

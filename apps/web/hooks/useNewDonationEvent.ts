@@ -1,10 +1,7 @@
+import { NewDonationEventObject } from "contracts/types/DonationsStore";
+import { Address, useContractEvent, useNetwork } from "wagmi";
 import {
-  DonationsStore,
-  NewDonationEventObject,
-} from "contracts/types/DonationsStore";
-import { useContractEvent, useNetwork } from "wagmi";
-import {
-  CONTRACT_ABI,
+  DonationsStoreABI,
   getContractAddressByChainId,
 } from "@lib/smartContractsData";
 import { BigNumber } from "ethers";
@@ -14,11 +11,13 @@ type NewDonationEventListener = (donation: NewDonationEventObject) => void;
 
 export const useNewDonationEvent = (listener: NewDonationEventListener) => {
   const { chain } = useNetwork();
-  useContractEvent<DonationsStore>({
-    addressOrName: getContractAddressByChainId(chain?.id),
-    contractInterface: CONTRACT_ABI,
+  useContractEvent({
+    address: getContractAddressByChainId(chain?.id),
+    abi: DonationsStoreABI,
     eventName: "NewDonation",
-    listener(newDonationArray: [string, string, BigNumber, BigNumber, string]) {
+    listener(
+      ...newDonationArray: [Address, Address, BigNumber, BigNumber, string]
+    ) {
       listener(castToDonationObject(newDonationArray));
     },
   });

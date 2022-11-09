@@ -1,22 +1,19 @@
 import { useEffect, useState } from "react";
 import { useContract, useNetwork, useProvider } from "wagmi";
 import {
-  CONTRACT_ABI,
+  DonationsStoreABI,
   getContractAddressByChainId,
 } from "@lib/smartContractsData";
-import type {
-  DonationsStore,
-  NewDonationEventObject,
-} from "contracts/types/DonationsStore";
+import type { NewDonationEventObject } from "contracts/types/DonationsStore";
 import { ethers } from "ethers";
 
 export const useDonationsHistory = (recipientAddress: string) => {
   const { chain } = useNetwork();
   const provider = useProvider({ chainId: chain?.id });
 
-  const donationsStore = useContract<DonationsStore>({
-    addressOrName: getContractAddressByChainId(chain?.id),
-    contractInterface: CONTRACT_ABI,
+  const donationsStore = useContract({
+    address: getContractAddressByChainId(chain?.id),
+    abi: DonationsStoreABI,
     signerOrProvider: provider,
   });
 
@@ -36,6 +33,10 @@ export const useDonationsHistory = (recipientAddress: string) => {
     setIsError(false);
     setError(undefined);
 
+    if (!donationsStore) {
+      return;
+    }
+
     if (!recipientAddress) {
       setIsLoading(false);
       return;
@@ -48,13 +49,18 @@ export const useDonationsHistory = (recipientAddress: string) => {
 
       const donationsFilter = donationsStore.filters.NewDonation(
         null,
-        recipientAddress
+        recipientAddress,
+        null,
+        null,
+        null
       );
 
       donationsStore
         .queryFilter(donationsFilter)
         .then((events) => {
-          const donations = events.map((event) => event.args);
+          const donations = events.map(
+            (event) => event.args as unknown as NewDonationEventObject
+          );
           setDonations(donations);
           setIsLoading(false);
         })

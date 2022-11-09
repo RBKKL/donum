@@ -2,6 +2,7 @@ import { BigNumber, ethers } from "ethers";
 import { NewDonationEventObject } from "contracts/types/DonationsStore";
 import { format } from "date-fns";
 import { FetchBalanceResult } from "@wagmi/core";
+import { Address } from "wagmi";
 
 export const isNumber = (value: string): boolean =>
   !!value.match(/^\d*\.?\d*$/);
@@ -29,7 +30,7 @@ export const formatAddress = (address?: string): string => {
 };
 
 export const castToDonationObject = (
-  donationArray: [string, string, BigNumber, BigNumber, string]
+  donationArray: [Address, Address, BigNumber, BigNumber, string]
 ): NewDonationEventObject => ({
   from: donationArray[0],
   to: donationArray[1],
