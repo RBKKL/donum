@@ -2,6 +2,7 @@
 import type { inferAsyncReturnType } from "@trpc/server";
 import type { CreateNextContextOptions } from "@trpc/server/adapters/next";
 import { prisma } from "@server/prisma";
+import { buckets } from "@server/storage";
 
 /**
  * Replace this with an object if you want to pass things to createContextInner
@@ -16,6 +17,7 @@ type CreateContextOptions = Record<string, never>;
 export const createContextInner = async (opts: CreateContextOptions) => {
   return {
     prisma,
+    buckets,
   };
 };
 

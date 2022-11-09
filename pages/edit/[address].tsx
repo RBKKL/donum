@@ -4,18 +4,40 @@ import { TextField } from "@components/TextField";
 import { trpc } from "@lib/trpc";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { DESCRIPTION_MAX_LENGTH } from "@lib/constants";
-import { useState, useEffect } from "react";
+import {
+  avatarAcceptableFileExtensions,
+  DESCRIPTION_MAX_LENGTH,
+} from "@lib/constants";
+import React, { useState, useEffect } from "react";
+import { fileToBase64 } from "@lib/helpers";
 
 const EditDonationPage: NextPage = () => {
   const router = useRouter();
+  const [newNickname, setNewNickname] = useState("");
+  const [newAvatar, setNewAvatar] = useState("");
   const [newDescription, setNewDescription] = useState("");
   const address = router.query.address as string;
   const profile = trpc.profile.byAddress.useQuery({ address });
-  const mutation = trpc.profile.addDescription.useMutation();
+  const mutation = trpc.profile.edit.useMutation();
 
-  const saveDescription = () => {
-    mutation.mutate({ address, description: newDescription });
+  const uploadNewAvatarToClient = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (e.target.files?.[0]) {
+      const newAvatarBase64 = await fileToBase64(e.target.files[0]);
+      if (newAvatarBase64) {
+        setNewAvatar(newAvatarBase64);
+      }
+    }
+  };
+
+  const editProfile = () => {
+    mutation.mutate({
+      address,
+      nickname: newNickname !== "" ? newNickname : undefined,
+      avatar: newAvatar !== "" ? newAvatar : undefined,
+      description: newDescription,
+    });
   };
 
   useEffect(() => {
@@ -41,7 +63,9 @@ const EditDonationPage: NextPage = () => {
   return (
     <div className="flex flex-col items-center text-center">
       <RecipientProfile
-        avatarPath="/assets/images/default_avatar.gif"
+        avatarPath={
+          profile.data.avatarUrl ?? "/assets/images/default_avatar.gif"
+        }
         nickname={profile.data.nickname}
         address={address}
       />
@@ -55,8 +79,20 @@ const EditDonationPage: NextPage = () => {
             maxLength={DESCRIPTION_MAX_LENGTH}
           />
         </div>
+        <p>new nickname (optional): </p>
+        <input
+          value={newNickname}
+          onChange={(e) => setNewNickname(e.target.value)}
+          className="bg-slate-600"
+        />
+        <p>new avatar (optional): </p>
+        <input
+          type="file"
+          onChange={(e) => uploadNewAvatarToClient(e)}
+          accept={avatarAcceptableFileExtensions}
+        />
         <div className="flex flex-row-reverse">
-          <Button text="Save" onClick={saveDescription} />
+          <Button text="Save" onClick={editProfile} />
         </div>
       </div>
     </div>

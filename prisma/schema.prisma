@@ -11,8 +11,9 @@ datasource db {
 }
 
 model Profile {
-  id          Int     @id @default(autoincrement())
-  nickname    String
-  address     String  @unique
-  description String?
+  id             Int     @id @default(autoincrement())
+  nickname       String  @unique
+  description    String?
+  address        String  @unique
+  avatarFilename String?
 }
