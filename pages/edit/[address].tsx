@@ -11,11 +11,11 @@ const EditDonationPage: NextPage = () => {
   const router = useRouter();
   const [newDescription, setNewDescription] = useState("");
   const address = router.query.address as string;
-  const profile = trpc.profile.byAddress.useQuery({ address });
-  const mutation = trpc.profile.addDescription.useMutation();
+  const profile = trpc.profile.byAddress.useQuery({ wallet: address });
+  const mutation = trpc.profile.edit.useMutation();
 
   const saveDescription = () => {
-    mutation.mutate({ address, description: newDescription });
+    mutation.mutate({ wallet: address, description: newDescription });
   };
 
   useEffect(() => {
