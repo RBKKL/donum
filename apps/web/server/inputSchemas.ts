@@ -24,3 +24,8 @@ export const EditSchema = z.object({
   description: DescriptionFormat.optional(),
   avatar: AvatarFormat.optional(),
 });
+
+export const MinimalDonationSchema = z.object({
+  address: AddressFormat,
+  minimalDonation: z.number().gt(0.0),
+});

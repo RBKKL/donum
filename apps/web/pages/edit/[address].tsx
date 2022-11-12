@@ -16,6 +16,7 @@ const EditDonationPage: NextPage = () => {
   const [newNickname, setNewNickname] = useState("");
   const [newAvatar, setNewAvatar] = useState("");
   const [newDescription, setNewDescription] = useState("");
+  const [newMinimalDonateAmount, setNewMinimalDonateAmount] = useState(-1);
   const address = router.query.address as string;
   const profile = trpc.profile.byAddress.useQuery({ address });
   const mutation = trpc.profile.edit.useMutation();
@@ -89,6 +90,12 @@ const EditDonationPage: NextPage = () => {
         <input
           type="file"
           onChange={(e) => uploadNewAvatarToClient(e)}
+          accept={avatarAcceptableFileExtensions}
+        />
+        <p>new minimal donate amount for showing alert (optional): </p>
+        <input
+          type="file"
+          onChange={(e) => setNewMinimalDonateAmount(Number(e.target.value))}
           accept={avatarAcceptableFileExtensions}
         />
         <div className="flex flex-row-reverse">

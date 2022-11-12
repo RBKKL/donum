@@ -6,6 +6,7 @@ import {
   EditSchema,
   NicknameFormat,
   AddressFormat,
+  MinimalDonationSchema,
 } from "@server/inputSchemas";
 import { uploadImage, removeImage } from "@lib/bucketService";
 import { TRPCError } from "@trpc/server";
@@ -200,4 +201,41 @@ export const profileRouter = router({
       avatarUrl: avatarPublicUrl,
     };
   }),
+  editMinimalDonation: publicProcedure
+    .input(MinimalDonationSchema)
+    .mutation(async ({ ctx, input }) => {
+      const profile = await ctx.prisma.profile.findFirst({
+        where: { address: input.address },
+      });
+      if (!profile) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message:
+            "No account created with this address, create(customize) account first to set minimal donation data",
+        });
+      }
+
+      await ctx.prisma.profile.update({
+        where: { address: input.address },
+        data: {
+          minimalDonation: input.minimalDonation,
+        },
+      });
+    }),
+  minimalDonation: publicProcedure
+    .input(z.object({ address: AddressFormat }))
+    .query(async ({ ctx, input }) => {
+      const profile = await ctx.prisma.profile.findFirst({
+        where: { address: input.address },
+      });
+      if (!profile) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message:
+            "No account created with this address, create(customize) account first to get minimal donation data",
+        });
+      }
+
+      return { minimalDonation: profile.minimalDonation };
+    }),
 });
