@@ -4,10 +4,13 @@ import { Button } from "@components/Button";
 import { SiweMessage } from "siwe";
 import { getCsrfToken, signIn, signOut, useSession } from "next-auth/react";
 import { InjectedConnector } from "@wagmi/core";
+import { useRouter } from "next/router";
 
 const SignInPage: NextPage = () => {
   const { chain } = useNetwork();
   const { address, isConnected } = useAccount();
+  const router = useRouter();
+  const { callbackUrl } = router.query;
 
   const { connect } = useConnect({ connector: new InjectedConnector() });
 
@@ -33,6 +36,7 @@ const SignInPage: NextPage = () => {
         message: message.prepareMessage(),
       });
       signIn("credentials", {
+        callbackUrl: callbackUrl || "/",
         message: JSON.stringify(message),
         signature,
       });

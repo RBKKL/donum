@@ -14,19 +14,6 @@ export const getAuthOptions: (
 ) => NextAuthOptions = (req) => ({
   providers: [
     CredentialsProvider({
-      name: "Ethereum",
-      credentials: {
-        message: {
-          label: "Message",
-          type: "text",
-          placeholder: "0x0",
-        },
-        signature: {
-          label: "Signature",
-          type: "text",
-          placeholder: "0x0",
-        },
-      },
       async authorize(credentials) {
         try {
           const message = new SiweMessage(
@@ -40,12 +27,7 @@ export const getAuthOptions: (
             nonce: await getCsrfToken({ req }),
           });
 
-          if (result.success) {
-            return {
-              id: message.address,
-            };
-          }
-          return null;
+          return result.success ? { id: message.address } : null;
         } catch (e) {
           return null;
         }
@@ -65,6 +47,9 @@ export const getAuthOptions: (
       session.user.name = token.sub;
       return session;
     },
+  },
+  pages: {
+    signIn: "/sign-in",
   },
 });
 
