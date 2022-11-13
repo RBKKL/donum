@@ -3,11 +3,15 @@ import type { inferAsyncReturnType } from "@trpc/server";
 import type { CreateNextContextOptions } from "@trpc/server/adapters/next";
 import { prisma } from "@server/prisma";
 import { buckets } from "@server/storage";
+import { Session } from "inspector";
+import { getServerAuthSession } from "@server/getServerAuthSession";
 
 /**
  * Replace this with an object if you want to pass things to createContextInner
  */
-type CreateContextOptions = Record<string, never>;
+type CreateContextOptions = {
+  session: Session | null;
+};
 
 /** Use this helper for:
  *  - testing, where we dont have to Mock Next.js' req/res
@@ -16,6 +20,7 @@ type CreateContextOptions = Record<string, never>;
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const createContextInner = async (opts: CreateContextOptions) => {
   return {
+    session: opts.session,
     prisma,
     buckets,
   };
@@ -27,7 +32,13 @@ export const createContextInner = async (opts: CreateContextOptions) => {
  **/
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const createContext = async (opts: CreateNextContextOptions) => {
-  return await createContextInner({});
+  const { req, res } = opts;
+
+  const session = await getServerAuthSession({ req, res });
+
+  return await createContextInner({
+    session,
+  });
 };
 
 export type Context = inferAsyncReturnType<typeof createContext>;

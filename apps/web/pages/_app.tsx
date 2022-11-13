@@ -10,6 +10,7 @@ import { ALERT_PAGE_PATH, APP_NAME } from "shared/constants";
 import { Layout } from "@components/Layout";
 import { trpc } from "@lib/trpc";
 import { clientEnv } from "@env/client";
+import { SessionProvider } from "next-auth/react";
 
 const usedChains = [
   // chain.mainnet,
@@ -42,12 +43,14 @@ const MyApp: AppType = ({ Component, pageProps, router }) => {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
-        <Layout>
-          <Head>
-            <title>{APP_NAME}</title>
-          </Head>
-          <Component {...pageProps} />
-        </Layout>
+        <SessionProvider session={pageProps.session}>
+          <Layout>
+            <Head>
+              <title>{APP_NAME}</title>
+            </Head>
+            <Component {...pageProps} />
+          </Layout>
+        </SessionProvider>
       </RainbowKitProvider>
     </WagmiConfig>
   );
