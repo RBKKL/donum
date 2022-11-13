@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { publicProcedure, router } from "@server/trpc";
+import { protectedProcedure, publicProcedure, router } from "@server/trpc";
 import { AVATARS_BUCKET_NAME, buckets } from "@server/storage";
 import {
   AddSchema,
@@ -139,65 +139,75 @@ export const profileRouter = router({
       avatarUrl: avatarPublicUrl,
     };
   }),
-  edit: publicProcedure.input(EditSchema).mutation(async ({ ctx, input }) => {
-    let profile = await ctx.prisma.profile.findFirst({
-      where: { address: input.address },
-    });
-
-    if (!profile) {
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "No account connected with this wallet, create account first",
+  edit: protectedProcedure
+    .input(EditSchema)
+    .mutation(async ({ ctx, input }) => {
+      let profile = await ctx.prisma.profile.findFirst({
+        where: { address: input.address },
       });
-    }
 
-    if (input.nickname) {
-      const sameNicknameCheck = await ctx.prisma.profile.findFirst({
-        where: { nickname: input.nickname },
-      });
-      if (sameNicknameCheck) {
+      if (!profile) {
         throw new TRPCError({
           code: "BAD_REQUEST",
-          message: "This nickname is already used",
+          message:
+            "No account connected with this wallet, create account first",
         });
       }
 
-      profile.nickname = input.nickname;
-    }
-
-    if (input.description || input.description === "") {
-      profile.description = input.description;
-    }
-
-    let avatarPublicUrl = "";
-    let newAvatarFilename = undefined;
-    if (input.avatar) {
-      newAvatarFilename = uuid4();
-      const avatarsBucket = await ctx.buckets.from(AVATARS_BUCKET_NAME);
-      if (profile.avatarFilename) {
-        await removeImage(avatarsBucket, profile.avatarFilename);
+      if (input.address !== ctx.session.user.name) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "You can't edit someone else's profile",
+        });
       }
-      avatarPublicUrl = await uploadImage(
-        avatarsBucket,
-        input.avatar,
-        newAvatarFilename
-      );
-    }
 
-    profile = await ctx.prisma.profile.update({
-      where: { address: input.address },
-      data: {
-        nickname: profile.nickname,
-        description: profile.description,
-        avatarFilename: newAvatarFilename,
-      },
-    });
+      if (input.nickname) {
+        const sameNicknameCheck = await ctx.prisma.profile.findFirst({
+          where: { nickname: input.nickname },
+        });
+        if (sameNicknameCheck) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "This nickname is already used",
+          });
+        }
 
-    return {
-      address: profile.address,
-      nickname: profile?.nickname,
-      description: profile?.description,
-      avatarUrl: avatarPublicUrl,
-    };
-  }),
+        profile.nickname = input.nickname;
+      }
+
+      if (input.description || input.description === "") {
+        profile.description = input.description;
+      }
+
+      let avatarPublicUrl = "";
+      let newAvatarFilename = undefined;
+      if (input.avatar) {
+        newAvatarFilename = uuid4();
+        const avatarsBucket = await ctx.buckets.from(AVATARS_BUCKET_NAME);
+        if (profile.avatarFilename) {
+          await removeImage(avatarsBucket, profile.avatarFilename);
+        }
+        avatarPublicUrl = await uploadImage(
+          avatarsBucket,
+          input.avatar,
+          newAvatarFilename
+        );
+      }
+
+      profile = await ctx.prisma.profile.update({
+        where: { address: input.address },
+        data: {
+          nickname: profile.nickname,
+          description: profile.description,
+          avatarFilename: newAvatarFilename,
+        },
+      });
+
+      return {
+        address: profile.address,
+        nickname: profile?.nickname,
+        description: profile?.description,
+        avatarUrl: avatarPublicUrl,
+      };
+    }),
 });
