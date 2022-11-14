@@ -11,6 +11,7 @@ import { Layout } from "@components/Layout";
 import { trpc } from "@lib/trpc";
 import { clientEnv } from "@env/client";
 import { SessionProvider } from "next-auth/react";
+import { Session } from "next-auth";
 
 const usedChains = [
   // chain.mainnet,
@@ -35,7 +36,11 @@ const wagmiClient = createClient({
   provider,
 });
 
-const MyApp: AppType = ({ Component, pageProps, router }) => {
+const MyApp: AppType<{ session: Session | null }> = ({
+  Component,
+  pageProps,
+  router,
+}) => {
   if (router.pathname.includes(ALERT_PAGE_PATH)) {
     return <Component {...pageProps} />;
   }

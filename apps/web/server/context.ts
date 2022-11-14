@@ -3,8 +3,8 @@ import type { inferAsyncReturnType } from "@trpc/server";
 import type { CreateNextContextOptions } from "@trpc/server/adapters/next";
 import { prisma } from "@server/prisma";
 import { buckets } from "@server/storage";
-import { Session } from "inspector";
 import { getServerAuthSession } from "@server/getServerAuthSession";
+import { Session } from "next-auth";
 
 /**
  * Replace this with an object if you want to pass things to createContextInner

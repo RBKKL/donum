@@ -14,6 +14,10 @@ export const getAuthOptions: (
 ) => NextAuthOptions = (req) => ({
   providers: [
     CredentialsProvider({
+      credentials: {
+        message: {},
+        signature: {},
+      },
       async authorize(credentials) {
         try {
           const message = new SiweMessage(

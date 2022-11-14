@@ -13,7 +13,9 @@
         "VERCEL_URL",
         "STORAGE_URL",
         "SERVICE_KEY",
-        "DATABASE_URL"
+        "DATABASE_URL",
+        "NEXTAUTH_URL",
+        "NEXTAUTH_SECRET"
     ],
     "pipeline": {
         "build": {

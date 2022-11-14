@@ -36,7 +36,9 @@ const SignInPage: NextPage = () => {
         message: message.prepareMessage(),
       });
       signIn("credentials", {
-        callbackUrl: callbackUrl || "/",
+        callbackUrl: Array.isArray(callbackUrl)
+          ? callbackUrl[0]
+          : callbackUrl || "/",
         message: JSON.stringify(message),
         signature,
       });
