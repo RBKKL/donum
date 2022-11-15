@@ -34,10 +34,10 @@ const AlertPage: NextPage = () => {
   }, [currentDonation, popQueue]);
 
   useNewDonationEvent(async (newDonation) => {
-    const minimalDonationShow = await profile?.data?.minimalDonationShow;
+    const minShowAmount = await profile?.data?.minShowAmount;
     if (
       newDonation.to === recipientAddress &&
-      newDonation.amount.gte(ethers.BigNumber.from(minimalDonationShow))
+      newDonation.amount.gte(ethers.BigNumber.from(minShowAmount))
     ) {
       pushQueue(newDonation);
     }

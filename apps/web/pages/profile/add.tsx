@@ -27,7 +27,7 @@ const AddProfilePage: NextPage = () => {
   const createProfile = () => {
     mutation.mutate({
       address,
-      nickname,
+      nickname: nickname !== "" ? nickname : undefined,
       description: description ?? undefined,
       avatar: avatar !== "" ? avatar : undefined,
     });

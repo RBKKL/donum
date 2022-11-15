@@ -17,7 +17,7 @@ const EditDonationPage: NextPage = () => {
   const [newNickname, setNewNickname] = useState("");
   const [newAvatar, setNewAvatar] = useState("");
   const [newDescription, setNewDescription] = useState("");
-  const [newMinimalDonationAmount, setNewMinimalDonationAmount] = useState("");
+  const [newMinShowAmount, setNewMinShowAmount] = useState("");
   const address = router.query.address as string;
   const profile = trpc.profile.byAddress.useQuery({ address });
   const mutation = trpc.profile.edit.useMutation();
@@ -34,17 +34,15 @@ const EditDonationPage: NextPage = () => {
   };
 
   const editProfile = () => {
-    if (isNumber(newMinimalDonationAmount)) {
+    if (!newMinShowAmount || isNumber(newMinShowAmount)) {
       mutation.mutate({
         address,
         nickname: newNickname !== "" ? newNickname : undefined,
         avatar: newAvatar !== "" ? newAvatar : undefined,
         description: newDescription,
-        minimalDonationShow:
-          newMinimalDonationAmount !== ""
-            ? ethers.utils
-                .parseUnits(newMinimalDonationAmount, "ether")
-                .toString()
+        minShowAmount:
+          newMinShowAmount !== ""
+            ? ethers.utils.parseUnits(newMinShowAmount, "ether").toString()
             : undefined,
       });
     }
@@ -76,7 +74,7 @@ const EditDonationPage: NextPage = () => {
         avatarPath={
           profile.data.avatarUrl ?? "/assets/images/default_avatar.gif"
         }
-        nickname={profile.data.nickname}
+        nickname={profile.data.nickname ?? ""}
         address={address}
       />
       <div className="flex w-full flex-col gap-4 pt-5 sm:max-w-4xl">
@@ -105,8 +103,8 @@ const EditDonationPage: NextPage = () => {
         <input
           type="number"
           min="0"
-          value={newMinimalDonationAmount}
-          onChange={(e) => setNewMinimalDonationAmount(e.target.value)}
+          value={newMinShowAmount}
+          onChange={(e) => setNewMinShowAmount(e.target.value)}
           className="bg-slate-600"
         />
         <div className="flex flex-row-reverse">
