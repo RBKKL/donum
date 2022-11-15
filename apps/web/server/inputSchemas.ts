@@ -1,9 +1,16 @@
 import { z } from "zod";
-import { DESCRIPTION_MAX_LENGTH, NICKNAME_MAX_LENGTH } from "shared/constants";
+import {
+  DESCRIPTION_MAX_LENGTH,
+  NICKNAME_MAX_LENGTH,
+  NICKNAME_MIN_LENGTH,
+} from "shared/constants";
 import { ethers } from "ethers";
 import { BN } from "bn.js";
 
-export const NicknameFormat = z.string().max(NICKNAME_MAX_LENGTH);
+export const NicknameFormat = z
+  .string()
+  .min(NICKNAME_MIN_LENGTH)
+  .max(NICKNAME_MAX_LENGTH);
 export const AddressFormat = z
   .string()
   .refine((val) => ethers.utils.isAddress(val), {
@@ -29,7 +36,7 @@ const MinimalDonationShowFormat = z.string().transform((val, ctx) => {
 
 export const AddSchema = z.object({
   address: AddressFormat,
-  nickname: NicknameFormat,
+  nickname: NicknameFormat.optional(),
   description: DescriptionFormat.optional(),
   avatar: AvatarFormat.optional(),
 });
@@ -39,5 +46,5 @@ export const EditSchema = z.object({
   nickname: NicknameFormat.optional(),
   description: DescriptionFormat.optional(),
   avatar: AvatarFormat.optional(),
-  minimalDonationShow: MinimalDonationShowFormat.optional(),
+  minShowAmount: MinimalDonationShowFormat.optional(),
 });

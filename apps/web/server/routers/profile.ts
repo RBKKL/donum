@@ -36,7 +36,7 @@ export const profileRouter = router({
       nickname: profile?.nickname,
       description: profile?.description,
       avatarUrl: avatarsMap.get(profile.avatarFilename) ?? "",
-      minimalDonationShow: profile.minimalDonationShow.toString(),
+      minShowAmount: profile.minShowAmount.toString(),
     }));
   }),
   byNickname: publicProcedure
@@ -76,7 +76,7 @@ export const profileRouter = router({
         nickname: profile?.nickname,
         description: profile?.description,
         avatarUrl: avatarUrl,
-        minimalDonationShow: profile.minimalDonationShow.toString(),
+        minShowAmount: profile.minShowAmount.toString(),
       };
     }),
   byAddress: publicProcedure
@@ -105,7 +105,7 @@ export const profileRouter = router({
         nickname: profile?.nickname,
         description: profile?.description,
         avatarUrl: avatarUrl,
-        minimalDonationShow: profile.minimalDonationShow.toString(),
+        minShowAmount: profile.minShowAmount.toString(),
       };
     }),
   add: publicProcedure.input(AddSchema).mutation(async ({ ctx, input }) => {
@@ -144,7 +144,7 @@ export const profileRouter = router({
       nickname: profile?.nickname,
       description: profile?.description,
       avatarUrl: avatarPublicUrl,
-      minimalDonationShow: profile.minimalDonationShow.toString(),
+      minShowAmount: profile.minShowAmount.toString(),
     };
   }),
   edit: publicProcedure.input(EditSchema).mutation(async ({ ctx, input }) => {
@@ -177,10 +177,8 @@ export const profileRouter = router({
       profile.description = input.description;
     }
 
-    if (input.minimalDonationShow) {
-      profile.minimalDonationShow = new Prisma.Decimal(
-        input.minimalDonationShow
-      );
+    if (input.minShowAmount) {
+      profile.minShowAmount = new Prisma.Decimal(input.minShowAmount);
     }
 
     let avatarPublicUrl = "";
@@ -204,7 +202,7 @@ export const profileRouter = router({
         nickname: profile.nickname,
         description: profile.description,
         avatarFilename: newAvatarFilename,
-        minimalDonationShow: profile.minimalDonationShow,
+        minShowAmount: profile.minShowAmount,
       },
     });
 
@@ -213,7 +211,7 @@ export const profileRouter = router({
       nickname: profile?.nickname,
       description: profile?.description,
       avatarUrl: avatarPublicUrl,
-      minimalDonationShow: profile.minimalDonationShow.toString(),
+      minShowAmount: profile.minShowAmount.toString(),
     };
   }),
 });

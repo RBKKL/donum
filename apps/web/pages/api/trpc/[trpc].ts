@@ -6,7 +6,9 @@ import { serverEnv } from "@env/server";
 export const config = {
   api: {
     bodyParser: {
-      sizeLimit: "15mb",
+      // A rough approximation for base64 would be that the size of the data is increased to 4/3 of the original
+      // + additional request data
+      sizeLimit: "14mb" /* ~10mb avatar limit */,
     },
   },
 };
