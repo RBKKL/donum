@@ -23,12 +23,10 @@
     "clean": "turbo run clean --parallel"
   },
   "devDependencies": {
+    "dotenv-cli": "^6.0.0",
     "eslint-config-custom": "*",
     "prettier": "^2.7.1",
     "rimraf": "^3.0.2",
     "turbo": "^1.6.3"
-  },
-  "dependencies": {
-    "dotenv-cli": "^6.0.0"
   }
 }
