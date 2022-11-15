@@ -18,6 +18,7 @@ export const profileRouter = router({
     const avatarsBucket = await buckets.from(AVATARS_BUCKET_NAME);
     const { data: avatarFiles, error } = await avatarsBucket.list();
 
+    // data === null only when error !== null and vice versa
     if (avatarFiles) {
       avatarFiles.map((avatarFile) => {
         const avatarUrl = avatarsBucket.getPublicUrl(avatarFile.name).data
@@ -56,6 +57,8 @@ export const profileRouter = router({
       if (profile.avatarFilename) {
         const avatarsBucket = await buckets.from(AVATARS_BUCKET_NAME);
         const { data: avatarFiles, error } = await avatarsBucket.list();
+
+        // data === null only when error !== null and vice versa
         if (avatarFiles) {
           const avatarFile = avatarFiles.filter(
             (avatarFile) => avatarFile.name === profile.avatarFilename
@@ -178,7 +181,6 @@ export const profileRouter = router({
       profile.minimalDonationShow = new Prisma.Decimal(
         input.minimalDonationShow
       );
-      console.log(new Prisma.Decimal(input.minimalDonationShow));
     }
 
     let avatarPublicUrl = "";

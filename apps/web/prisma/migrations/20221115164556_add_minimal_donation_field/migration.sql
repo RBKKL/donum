@@ -9,7 +9,7 @@
 -- AlterTable
 ALTER TABLE "Profile" ADD COLUMN     "address" TEXT NOT NULL,
 ADD COLUMN     "avatarFilename" TEXT,
-ADD COLUMN     "minimalDonation" DECIMAL(65,30) NOT NULL DEFAULT 0.001;
+ADD COLUMN     "minimalDonationShow" DECIMAL(78,0) NOT NULL DEFAULT 1000000000000000;
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Profile_nickname_key" ON "Profile"("nickname");
