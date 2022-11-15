@@ -6,11 +6,11 @@ import {
   EditSchema,
   NicknameFormat,
   AddressFormat,
-  MinimalDonationSchema,
 } from "@server/inputSchemas";
 import { uploadImage, removeImage } from "@lib/bucketService";
 import { TRPCError } from "@trpc/server";
 import { uuid4 } from "@sentry/utils";
+import { Prisma } from "@prisma/client";
 
 export const profileRouter = router({
   all: publicProcedure.query(async ({ ctx }) => {
@@ -18,15 +18,15 @@ export const profileRouter = router({
     const avatarsBucket = await buckets.from(AVATARS_BUCKET_NAME);
     const { data: avatarFiles, error } = await avatarsBucket.list();
 
-    if (error) {
-      console.error("Error getting avatars list from bucket");
-      console.error(error);
-    } else {
+    if (avatarFiles) {
       avatarFiles.map((avatarFile) => {
         const avatarUrl = avatarsBucket.getPublicUrl(avatarFile.name).data
           .publicUrl;
         avatarsMap.set(avatarFile.name, avatarUrl);
       });
+    } else {
+      console.error("Error getting avatars list from bucket");
+      console.error(error);
     }
 
     const allProfiles = await ctx.prisma.profile.findMany();
@@ -35,6 +35,7 @@ export const profileRouter = router({
       nickname: profile?.nickname,
       description: profile?.description,
       avatarUrl: avatarsMap.get(profile.avatarFilename) ?? "",
+      minimalDonationShow: profile.minimalDonationShow.toString(),
     }));
   }),
   byNickname: publicProcedure
@@ -55,15 +56,15 @@ export const profileRouter = router({
       if (profile.avatarFilename) {
         const avatarsBucket = await buckets.from(AVATARS_BUCKET_NAME);
         const { data: avatarFiles, error } = await avatarsBucket.list();
-        if (error) {
-          console.error("Unable to get items from avatars bucket");
-          console.error(error);
-        } else {
+        if (avatarFiles) {
           const avatarFile = avatarFiles.filter(
             (avatarFile) => avatarFile.name === profile.avatarFilename
           )[0];
           avatarUrl = avatarsBucket.getPublicUrl(avatarFile.name).data
             .publicUrl;
+        } else {
+          console.error("Unable to get items from avatars bucket");
+          console.error(error);
         }
       }
 
@@ -72,6 +73,7 @@ export const profileRouter = router({
         nickname: profile?.nickname,
         description: profile?.description,
         avatarUrl: avatarUrl,
+        minimalDonationShow: profile.minimalDonationShow.toString(),
       };
     }),
   byAddress: publicProcedure
@@ -100,6 +102,7 @@ export const profileRouter = router({
         nickname: profile?.nickname,
         description: profile?.description,
         avatarUrl: avatarUrl,
+        minimalDonationShow: profile.minimalDonationShow.toString(),
       };
     }),
   add: publicProcedure.input(AddSchema).mutation(async ({ ctx, input }) => {
@@ -138,6 +141,7 @@ export const profileRouter = router({
       nickname: profile?.nickname,
       description: profile?.description,
       avatarUrl: avatarPublicUrl,
+      minimalDonationShow: profile.minimalDonationShow.toString(),
     };
   }),
   edit: publicProcedure.input(EditSchema).mutation(async ({ ctx, input }) => {
@@ -170,6 +174,13 @@ export const profileRouter = router({
       profile.description = input.description;
     }
 
+    if (input.minimalDonationShow) {
+      profile.minimalDonationShow = new Prisma.Decimal(
+        input.minimalDonationShow
+      );
+      console.log(new Prisma.Decimal(input.minimalDonationShow));
+    }
+
     let avatarPublicUrl = "";
     let newAvatarFilename = undefined;
     if (input.avatar) {
@@ -191,6 +202,7 @@ export const profileRouter = router({
         nickname: profile.nickname,
         description: profile.description,
         avatarFilename: newAvatarFilename,
+        minimalDonationShow: profile.minimalDonationShow,
       },
     });
 
@@ -199,43 +211,7 @@ export const profileRouter = router({
       nickname: profile?.nickname,
       description: profile?.description,
       avatarUrl: avatarPublicUrl,
+      minimalDonationShow: profile.minimalDonationShow.toString(),
     };
   }),
-  editMinimalDonation: publicProcedure
-    .input(MinimalDonationSchema)
-    .mutation(async ({ ctx, input }) => {
-      const profile = await ctx.prisma.profile.findFirst({
-        where: { address: input.address },
-      });
-      if (!profile) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message:
-            "No account created with this address, create(customize) account first to set minimal donation data",
-        });
-      }
-
-      await ctx.prisma.profile.update({
-        where: { address: input.address },
-        data: {
-          minimalDonation: input.minimalDonation,
-        },
-      });
-    }),
-  minimalDonation: publicProcedure
-    .input(z.object({ address: AddressFormat }))
-    .query(async ({ ctx, input }) => {
-      const profile = await ctx.prisma.profile.findFirst({
-        where: { address: input.address },
-      });
-      if (!profile) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message:
-            "No account created with this address, create(customize) account first to get minimal donation data",
-        });
-      }
-
-      return { minimalDonation: profile.minimalDonation };
-    }),
 });

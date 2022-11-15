@@ -5,12 +5,17 @@ import { useEffect } from "react";
 import { NewDonationEventObject } from "contracts/types/DonationsStore";
 import { useNewDonationEvent } from "@hooks/useNewDonationEvent";
 import { useQueue } from "react-use";
+import { trpc } from "@lib/trpc";
+import { ethers } from "ethers";
 
 const ALERT_DURATION = 5000;
 
 const AlertPage: NextPage = () => {
   const router = useRouter();
   const recipientAddress = router.query.address as string;
+  const profile = trpc.profile.byAddress.useQuery({
+    address: recipientAddress,
+  });
 
   const {
     add: pushQueue,
@@ -28,8 +33,12 @@ const AlertPage: NextPage = () => {
     }, ALERT_DURATION);
   }, [currentDonation, popQueue]);
 
-  useNewDonationEvent((newDonation) => {
-    if (newDonation.to === recipientAddress) {
+  useNewDonationEvent(async (newDonation) => {
+    const minimalDonationShow = await profile?.data?.minimalDonationShow;
+    if (
+      newDonation.to === recipientAddress &&
+      newDonation.amount.gte(ethers.BigNumber.from(minimalDonationShow))
+    ) {
       pushQueue(newDonation);
     }
   });
