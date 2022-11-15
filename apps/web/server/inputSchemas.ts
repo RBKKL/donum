@@ -18,7 +18,7 @@ export const AddressFormat = z
   });
 export const DescriptionFormat = z.string().max(DESCRIPTION_MAX_LENGTH);
 export const AvatarFormat = z.string().startsWith("data:image/");
-const MinimalDonationShowFormat = z.string().transform((val, ctx) => {
+const MinShowAmountFormat = z.string().transform((val, ctx) => {
   try {
     const valBN = new BN(val);
     if (valBN.isNeg()) {
@@ -46,5 +46,5 @@ export const EditSchema = z.object({
   nickname: NicknameFormat.optional(),
   description: DescriptionFormat.optional(),
   avatar: AvatarFormat.optional(),
-  minShowAmount: MinimalDonationShowFormat.optional(),
+  minShowAmount: MinShowAmountFormat.optional(),
 });
