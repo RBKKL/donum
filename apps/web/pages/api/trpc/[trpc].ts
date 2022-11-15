@@ -7,8 +7,8 @@ export const config = {
   api: {
     bodyParser: {
       // A rough approximation for base64 would be that the size of the data is increased to 4/3 of the original
-      // + additional request data
-      sizeLimit: "14mb" /* ~10mb avatar limit */,
+      // 10mb avatar limit * 4/3 + additional request data
+      sizeLimit: "14mb",
     },
   },
 };
