@@ -8,6 +8,7 @@ import {
   NextApiResponse,
 } from "next";
 import { JWT } from "next-auth/jwt";
+import { serverEnv } from "@env/server";
 
 export const getAuthOptions: (
   req: NextApiRequest | GetServerSidePropsContext["req"]
@@ -23,7 +24,7 @@ export const getAuthOptions: (
           const message = new SiweMessage(
             JSON.parse(credentials?.message || "{}")
           );
-          const nextAuthUrl = new URL(process.env.NEXTAUTH_URL || "");
+          const nextAuthUrl = new URL(serverEnv.NEXTAUTH_URL || "");
 
           const result = await message.verify({
             signature: credentials?.signature || "",
@@ -41,7 +42,7 @@ export const getAuthOptions: (
   session: {
     strategy: "jwt",
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: serverEnv.NEXTAUTH_SECRET,
   callbacks: {
     async session({ session, token }: { session: Session; token: JWT }) {
       if (!session.user) {

@@ -3,8 +3,8 @@ import type { inferAsyncReturnType } from "@trpc/server";
 import type { CreateNextContextOptions } from "@trpc/server/adapters/next";
 import { prisma } from "@server/prisma";
 import { buckets } from "@server/storage";
-import { getServerAuthSession } from "@server/getServerAuthSession";
-import { Session } from "next-auth";
+import { Session, unstable_getServerSession } from "next-auth";
+import { getAuthOptions } from "../pages/api/auth/[...nextauth]";
 
 /**
  * Replace this with an object if you want to pass things to createContextInner
@@ -18,9 +18,9 @@ type CreateContextOptions = {
  *  - trpc's `createSSGHelpers` where we don't have req/res
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const createContextInner = async (opts: CreateContextOptions) => {
+export const createContextInner = async ({ session }: CreateContextOptions) => {
   return {
-    session: opts.session,
+    session,
     prisma,
     buckets,
   };
@@ -31,10 +31,12 @@ export const createContextInner = async (opts: CreateContextOptions) => {
  * @link https://trpc.io/docs/context
  **/
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const createContext = async (opts: CreateNextContextOptions) => {
-  const { req, res } = opts;
-
-  const session = await getServerAuthSession({ req, res });
+export const createContext = async ({ req, res }: CreateNextContextOptions) => {
+  const session = await unstable_getServerSession(
+    req,
+    res,
+    getAuthOptions(req)
+  );
 
   return await createContextInner({
     session,
