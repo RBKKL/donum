@@ -9,13 +9,15 @@ import {
   DESCRIPTION_MAX_LENGTH,
 } from "shared/constants";
 import React, { useState, useEffect } from "react";
-import { fileToBase64 } from "@lib/helpers";
+import { fileToBase64, isNumber } from "@lib/helpers";
+import { ethers } from "ethers";
 
 const EditDonationPage: NextPage = () => {
   const router = useRouter();
   const [newNickname, setNewNickname] = useState("");
   const [newAvatar, setNewAvatar] = useState("");
   const [newDescription, setNewDescription] = useState("");
+  const [newMinimalDonationAmount, setNewMinimalDonationAmount] = useState("");
   const address = router.query.address as string;
   const profile = trpc.profile.byAddress.useQuery({ address });
   const mutation = trpc.profile.edit.useMutation();
@@ -32,12 +34,20 @@ const EditDonationPage: NextPage = () => {
   };
 
   const editProfile = () => {
-    mutation.mutate({
-      address,
-      nickname: newNickname !== "" ? newNickname : undefined,
-      avatar: newAvatar !== "" ? newAvatar : undefined,
-      description: newDescription,
-    });
+    if (isNumber(newMinimalDonationAmount)) {
+      mutation.mutate({
+        address,
+        nickname: newNickname !== "" ? newNickname : undefined,
+        avatar: newAvatar !== "" ? newAvatar : undefined,
+        description: newDescription,
+        minimalDonationShow:
+          newMinimalDonationAmount !== ""
+            ? ethers.utils
+                .parseUnits(newMinimalDonationAmount, "ether")
+                .toString()
+            : undefined,
+      });
+    }
   };
 
   useEffect(() => {
@@ -90,6 +100,14 @@ const EditDonationPage: NextPage = () => {
           type="file"
           onChange={(e) => uploadNewAvatarToClient(e)}
           accept={avatarAcceptableFileExtensions}
+        />
+        <p>new minimal donation amount for showing alert (optional, ETH): </p>
+        <input
+          type="number"
+          min="0"
+          value={newMinimalDonationAmount}
+          onChange={(e) => setNewMinimalDonationAmount(e.target.value)}
+          className="bg-slate-600"
         />
         <div className="flex flex-row-reverse">
           <Button text="Save" onClick={editProfile} />
