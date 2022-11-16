@@ -16,7 +16,7 @@ export const useLogIn = () => {
         statement: SIGN_IN_MESSAGE,
         uri: window.location.origin,
         version: "1",
-        chainId: chain.id,
+        chainId: chain?.id,
         nonce: await getCsrfToken(),
       });
       const signature = await signMessageAsync({
