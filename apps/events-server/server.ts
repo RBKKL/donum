@@ -1,36 +1,62 @@
 import Fastify from "fastify";
 import socketioServer from "fastify-socket.io";
-import cors from "@fastify/cors";
+import corsPlugin from "@fastify/cors";
+import { BiMap } from "mnemonist";
+import type { NewDonationEvent } from "contracts/types/DonationsStore";
+import { castToDonationObject } from "contracts/helpers";
+import { DonationsStoreContract } from "./donations-store-contract";
+import { toDonationObjectForWidget } from "./utils";
+
+const clients = new BiMap<string, string>(); // address <-> socketId
 
 const app = Fastify({ logger: true });
-app.register(cors, {
+const cors = {
   origin: "*",
-  methods: "GET,POST,PUT,PATCH,DELETE",
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   allowedHeaders: "*",
-});
-app.register(socketioServer, {
-  cors: {
-    origin: "*",
-    methods: "GET,POST,PUT,PATCH,DELETE",
-    allowedHeaders: "*",
-  },
-});
+};
+app.register(corsPlugin, cors);
+app.register(socketioServer, { cors });
 
 app.ready((err) => {
-  if (err) throw err;
+  if (err) {
+    app.log.error(`Got error on app.ready: ${err}`);
+    throw err;
+  }
 
   app.io.on("connection", (socket) => {
-    app.log.info("a user connected with id: ", socket.id);
+    app.log.info(
+      `Connected to server with id: ${socket.id}, address: ${socket.handshake.auth.address}`
+    );
+    clients.set(socket.handshake.auth.address, socket.id);
 
-    socket.on("widget-message", (message) => {
-      app.log.info(`widget says: ${message}`);
+    socket.on("disconnect", () => {
+      app.log.info(`Client with id: ${socket.id} disconnected`);
+      clients.inverse.delete(socket.id);
     });
-
-    socket.emit("server-message", "hello from server");
   });
 });
 
-app.listen({ port: 8000 }, (err, address) => {
-  if (err) throw err;
-  app.log.info(`server listening on ${address}`);
-});
+DonationsStoreContract.on<NewDonationEvent>(
+  DonationsStoreContract.filters.NewDonation(),
+  (...donationArray) => {
+    const donation = castToDonationObject(donationArray);
+    app.log.info(`New donation: ${JSON.stringify(donation)}`);
+    const socketId = clients.get(donation.to);
+    if (socketId) {
+      app.io
+        .to(socketId)
+        .emit("new-donation", toDonationObjectForWidget(donation));
+    }
+  }
+);
+
+const start = async () => {
+  try {
+    await app.listen({ port: 8000 });
+  } catch (err) {
+    app.log.error(`Got error on app.listen: ${err}`);
+    process.exit(1);
+  }
+};
+start();
