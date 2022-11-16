@@ -3,10 +3,10 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { fileToBase64 } from "@lib/helpers";
-import { avatarAcceptableFileExtensions } from "shared/constants";
+import { avatarAcceptableFileExtensions } from "../../../../../packages/shared/constants";
 
 const AddProfilePage: NextPage = () => {
-  const mutation = trpc.profile.add.useMutation();
+  const mutation = trpc.devOnlyProfile.add.useMutation();
   const [nickname, setNickname] = useState("");
   const [description, setDescription] = useState("");
   const [address, setAddress] = useState("");
@@ -34,7 +34,7 @@ const AddProfilePage: NextPage = () => {
   };
 
   if (mutation.isSuccess) {
-    router.push("/profile");
+    router.push("/dev-only/profile");
   }
 
   return (

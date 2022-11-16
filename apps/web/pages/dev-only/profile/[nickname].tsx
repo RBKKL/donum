@@ -3,13 +3,13 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { fileToBase64 } from "@lib/helpers";
-import { avatarAcceptableFileExtensions } from "shared/constants";
+import { avatarAcceptableFileExtensions } from "../../../../../packages/shared/constants";
 
 const ProfilePage: NextPage = () => {
-  const mutation = trpc.profile.edit.useMutation();
+  const mutation = trpc.devOnlyProfile.edit.useMutation();
   const router = useRouter();
   const nickname = router.query.nickname as string;
-  const profile = trpc.profile.byNickname.useQuery({ nickname });
+  const profile = trpc.devOnlyProfile.byNickname.useQuery({ nickname });
   const [newNickname, setNewNickname] = useState("");
   const [newAvatar, setNewAvatar] = useState("");
   const [newDescription, setNewDescription] = useState<string | undefined>(
@@ -27,7 +27,7 @@ const ProfilePage: NextPage = () => {
         },
         {
           onSuccess: (data) => {
-            router.push(`/profile/${data.nickname}`);
+            router.push(`/dev-only/profile/${data.nickname}`);
           },
         }
       );
