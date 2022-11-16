@@ -12,7 +12,7 @@ jobs:
           node-version: 18
       - uses: bahmutov/npm-install@v1
         with:
-          useLockFile: false # fix for https://github.com/vercel/turbo/issues/1263
+          install-command: npm install --no-package-lock
       - name: Lint
         run: npm run lint
       - name: Check formatting
