@@ -40,7 +40,7 @@ const SendDonationPage: NextPage = () => {
     donationAmount,
     message
   );
-
+  const te = 0;
   const isValidDonationAmount =
     balanceData?.value?.gt(parseUnits(donationAmount, balanceData.decimals)) &&
     parseUnits(donationAmount, balanceData.decimals).gt(0);
