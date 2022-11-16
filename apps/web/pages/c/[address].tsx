@@ -13,6 +13,9 @@ import { DonationModal } from "@components/DonationModal";
 import { Address, useAccount, useBalance } from "wagmi";
 import { Balance } from "@components/Balance";
 import { parseUnits } from "ethers/lib/utils";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import classNames from "classnames";
+import { SendDonationButton } from "@components/SendDonationButton";
 
 const DEFAULT_DONATION_AMOUNT = "0.001";
 
@@ -60,8 +63,6 @@ const SendDonationPage: NextPage = () => {
     donate();
   };
 
-  const canDonate = !isDisconnected && isValidDonationAmount;
-
   return (
     <div className="flex flex-col items-center text-center">
       <RecipientProfile
@@ -75,7 +76,7 @@ const SendDonationPage: NextPage = () => {
           value={donationAmount}
           onChange={onDonationAmountChange}
           onBlur={setMinimumAmount}
-          error={!canDonate}
+          error={!isDisconnected && !isValidDonationAmount}
           rightCorner={
             <div className="flex flex-col items-end">
               <EthIcon />
@@ -98,10 +99,10 @@ const SendDonationPage: NextPage = () => {
           />
         </div>
         <div className="flex flex-row-reverse">
-          <Button
-            text="Send"
-            disabled={!isAvailable || Number(donationAmount) === 0}
-            onClick={onSendBtnClick}
+          <SendDonationButton
+            isSendButtonDisabled={!isAvailable || Number(donationAmount) === 0}
+            isConnectButton={isDisconnected}
+            onSendButtonClick={onSendBtnClick}
           />
         </div>
       </div>
