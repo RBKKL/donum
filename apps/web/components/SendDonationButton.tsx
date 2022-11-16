@@ -1,5 +1,4 @@
-import classNames from "classnames";
-import { FC, ReactNode } from "react";
+import { FC } from "react";
 import { Button } from "@components/Button";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
