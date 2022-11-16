@@ -27,7 +27,7 @@ const ProfilePage: NextPage = () => {
         },
         {
           onSuccess: (data) => {
-            router.push(`/profile/${data.nickname}`);
+            router.push(`/dashboard/profile/${data.nickname}`);
           },
         }
       );

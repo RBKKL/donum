@@ -34,7 +34,7 @@ const AddProfilePage: NextPage = () => {
   };
 
   if (mutation.isSuccess) {
-    router.push("/profile");
+    router.push("/dashboard/profile");
   }
 
   return (
