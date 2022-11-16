@@ -1,7 +1,6 @@
 import { useState } from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { Button } from "@components/Button";
 import { RecipientProfile } from "@components/RecipientProfile";
 import { Input } from "@components/Input";
 import { TextField } from "@components/TextField";
@@ -13,8 +12,6 @@ import { DonationModal } from "@components/DonationModal";
 import { Address, useAccount, useBalance } from "wagmi";
 import { Balance } from "@components/Balance";
 import { parseUnits } from "ethers/lib/utils";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
-import classNames from "classnames";
 import { SendDonationButton } from "@components/SendDonationButton";
 
 const DEFAULT_DONATION_AMOUNT = "0.001";
@@ -40,7 +37,6 @@ const SendDonationPage: NextPage = () => {
     donationAmount,
     message
   );
-  const te = 0;
   const isValidDonationAmount =
     balanceData?.value?.gt(parseUnits(donationAmount, balanceData.decimals)) &&
     parseUnits(donationAmount, balanceData.decimals).gt(0);
