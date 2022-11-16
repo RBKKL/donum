@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "tsc && eslint .",
+    "clean": "rimraf dist .turbo node_modules",
     "preview": "vite preview"
   },
   "dependencies": {
