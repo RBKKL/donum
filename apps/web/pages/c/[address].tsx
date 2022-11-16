@@ -20,7 +20,7 @@ const SendDonationPage: NextPage = () => {
   const router = useRouter();
   const recipientAddress = router.query.address as Address; // TODO: validate address
 
-  const { address, isDisconnected } = useAccount();
+  const { address, isConnected } = useAccount();
   const { data: balanceData } = useBalance({
     addressOrName: address,
     watch: true,
@@ -72,7 +72,7 @@ const SendDonationPage: NextPage = () => {
           value={donationAmount}
           onChange={onDonationAmountChange}
           onBlur={setMinimumAmount}
-          error={!isDisconnected && !isValidDonationAmount}
+          error={isConnected && !isValidDonationAmount}
           rightCorner={
             <div className="flex flex-col items-end">
               <EthIcon />
@@ -97,7 +97,7 @@ const SendDonationPage: NextPage = () => {
         <div className="flex flex-row-reverse">
           <SendDonationButton
             isSendButtonDisabled={!isAvailable || Number(donationAmount) === 0}
-            isConnectButton={isDisconnected}
+            isConnectButton={!isConnected}
             onSendButtonClick={onSendBtnClick}
           />
         </div>
