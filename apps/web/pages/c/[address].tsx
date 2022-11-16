@@ -12,7 +12,8 @@ import { DonationModal } from "@components/DonationModal";
 import { Address, useAccount, useBalance } from "wagmi";
 import { Balance } from "@components/Balance";
 import { parseUnits } from "ethers/lib/utils";
-import { SendDonationButton } from "@components/SendDonationButton";
+import { Button } from "@components/Button";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const DEFAULT_DONATION_AMOUNT = "0.001";
 
@@ -95,11 +96,15 @@ const SendDonationPage: NextPage = () => {
           />
         </div>
         <div className="flex flex-row-reverse">
-          <SendDonationButton
-            isSendButtonDisabled={!isAvailable || Number(donationAmount) === 0}
-            isConnectButton={!isConnected}
-            onSendButtonClick={onSendBtnClick}
-          />
+          {!isConnected ? (
+            <ConnectButton />
+          ) : (
+            <Button
+              text="Send"
+              disabled={!isAvailable || Number(donationAmount) === 0}
+              onClick={onSendBtnClick}
+            />
+          )}
         </div>
       </div>
       <DonationModal
