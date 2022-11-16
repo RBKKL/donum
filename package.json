@@ -27,6 +27,6 @@
     "eslint-config-custom": "*",
     "prettier": "^2.7.1",
     "rimraf": "^3.0.2",
-    "turbo": "^1.6.3"
+    "turbo": "^1.6.2"
   }
 }
