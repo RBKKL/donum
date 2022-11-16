@@ -11,6 +11,8 @@ jobs:
         with:
           node-version: 18
       - uses: bahmutov/npm-install@v1
+        with:
+          install-command: npm install --no-package-lock
       - name: Lint
         run: npm run lint
       - name: Check formatting

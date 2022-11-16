@@ -1,8 +1,10 @@
-import { BigNumber, ethers } from "ethers";
-import { NewDonationEventObject } from "contracts/types/DonationsStore";
+import { BigNumber } from "ethers";
 import { format } from "date-fns";
 import { FetchBalanceResult } from "@wagmi/core";
-import { Address } from "wagmi";
+export {
+  castToDonationObject,
+  getTotalDonationsAmount,
+} from "contracts/helpers";
 
 // TODO: check for optimal
 export const isNumber = (value: string): boolean =>
@@ -30,29 +32,8 @@ export const formatAddress = (address?: string): string => {
       )}`;
 };
 
-export const castToDonationObject = (
-  donationArray: [Address, Address, BigNumber, BigNumber, string]
-): NewDonationEventObject => ({
-  from: donationArray[0],
-  to: donationArray[1],
-  amount: donationArray[2],
-  timestamp: donationArray[3],
-  message: donationArray[4],
-});
-
 export const formatTimestamp = (timestamp: BigNumber): string => {
   return format(timestamp.mul(1000).toNumber(), "d MMMM yy  kk:mm");
-};
-
-export const getTotalDonationsAmount = (
-  donations: NewDonationEventObject[]
-): string => {
-  const symbolsAfterComma = 5;
-  return Number(
-    ethers.utils.formatEther(
-      donations.reduce((a, b) => b.amount.add(a), BigNumber.from(0))
-    )
-  ).toFixed(symbolsAfterComma);
 };
 
 export const fileToBase64 = (file: File): Promise<string | undefined> => {
