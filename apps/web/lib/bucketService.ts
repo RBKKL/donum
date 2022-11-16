@@ -23,6 +23,6 @@ export const removeImage = async (bucket: StorageFileApi, filename: string) => {
   const { error: removeError } = await bucket.remove([filename]);
   if (removeError) {
     console.error(`Error removing image from bucket for ${filename}`);
-    console.log(removeError);
+    console.error(removeError);
   }
 };

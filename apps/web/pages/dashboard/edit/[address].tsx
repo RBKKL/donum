@@ -9,13 +9,15 @@ import {
   DESCRIPTION_MAX_LENGTH,
 } from "shared/constants";
 import React, { useState, useEffect } from "react";
-import { fileToBase64 } from "@lib/helpers";
+import { fileToBase64, isNumber } from "@lib/helpers";
+import { ethers } from "ethers";
 
 const EditDonationPage: NextPage = () => {
   const router = useRouter();
   const [newNickname, setNewNickname] = useState("");
   const [newAvatar, setNewAvatar] = useState("");
   const [newDescription, setNewDescription] = useState("");
+  const [newMinShowAmount, setNewMinShowAmount] = useState("");
   const address = router.query.address as string;
   const profile = trpc.profile.byAddress.useQuery({ address });
   const mutation = trpc.profile.edit.useMutation();
@@ -32,12 +34,18 @@ const EditDonationPage: NextPage = () => {
   };
 
   const editProfile = () => {
-    mutation.mutate({
-      address,
-      nickname: newNickname !== "" ? newNickname : undefined,
-      avatar: newAvatar !== "" ? newAvatar : undefined,
-      description: newDescription,
-    });
+    if (!newMinShowAmount || isNumber(newMinShowAmount)) {
+      mutation.mutate({
+        address,
+        nickname: newNickname !== "" ? newNickname : undefined,
+        avatar: newAvatar !== "" ? newAvatar : undefined,
+        description: newDescription,
+        minShowAmount:
+          newMinShowAmount !== ""
+            ? ethers.utils.parseUnits(newMinShowAmount, "ether").toString()
+            : undefined,
+      });
+    }
   };
 
   useEffect(() => {
@@ -66,7 +74,7 @@ const EditDonationPage: NextPage = () => {
         avatarPath={
           profile.data.avatarUrl ?? "/assets/images/default_avatar.gif"
         }
-        nickname={profile.data.nickname}
+        nickname={profile.data.nickname ?? ""}
         address={address}
       />
       <div className="flex w-full flex-col gap-4 pt-5 sm:max-w-4xl">
@@ -90,6 +98,14 @@ const EditDonationPage: NextPage = () => {
           type="file"
           onChange={(e) => uploadNewAvatarToClient(e)}
           accept={avatarAcceptableFileExtensions}
+        />
+        <p>new minimal donation amount for showing alert (optional, ETH): </p>
+        <input
+          type="number"
+          min="0"
+          value={newMinShowAmount}
+          onChange={(e) => setNewMinShowAmount(e.target.value)}
+          className="bg-slate-600"
         />
         <div className="flex flex-row-reverse">
           <Button text="Save" onClick={editProfile} />

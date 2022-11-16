@@ -10,6 +10,7 @@ import {
 import { uploadImage, removeImage } from "@lib/bucketService";
 import { TRPCError } from "@trpc/server";
 import { uuid4 } from "@sentry/utils";
+import { Prisma } from "@prisma/client";
 
 export const profileRouter = router({
   all: publicProcedure.query(async ({ ctx }) => {
@@ -17,15 +18,16 @@ export const profileRouter = router({
     const avatarsBucket = await buckets.from(AVATARS_BUCKET_NAME);
     const { data: avatarFiles, error } = await avatarsBucket.list();
 
-    if (error) {
-      console.error("Error getting avatars list from bucket");
-      console.error(error);
-    } else {
+    // data === null only when error !== null and vice versa
+    if (avatarFiles) {
       avatarFiles.map((avatarFile) => {
         const avatarUrl = avatarsBucket.getPublicUrl(avatarFile.name).data
           .publicUrl;
         avatarsMap.set(avatarFile.name, avatarUrl);
       });
+    } else {
+      console.error("Error getting avatars list from bucket");
+      console.error(error);
     }
 
     const allProfiles = await ctx.prisma.profile.findMany();
@@ -34,6 +36,7 @@ export const profileRouter = router({
       nickname: profile?.nickname,
       description: profile?.description,
       avatarUrl: avatarsMap.get(profile.avatarFilename) ?? "",
+      minShowAmount: profile.minShowAmount.toString(),
     }));
   }),
   byNickname: publicProcedure
@@ -54,15 +57,17 @@ export const profileRouter = router({
       if (profile.avatarFilename) {
         const avatarsBucket = await buckets.from(AVATARS_BUCKET_NAME);
         const { data: avatarFiles, error } = await avatarsBucket.list();
-        if (error) {
-          console.error("Unable to get items from avatars bucket");
-          console.error(error);
-        } else {
+
+        // data === null only when error !== null and vice versa
+        if (avatarFiles) {
           const avatarFile = avatarFiles.filter(
             (avatarFile) => avatarFile.name === profile.avatarFilename
           )[0];
           avatarUrl = avatarsBucket.getPublicUrl(avatarFile.name).data
             .publicUrl;
+        } else {
+          console.error("Unable to get items from avatars bucket");
+          console.error(error);
         }
       }
 
@@ -71,6 +76,7 @@ export const profileRouter = router({
         nickname: profile?.nickname,
         description: profile?.description,
         avatarUrl: avatarUrl,
+        minShowAmount: profile.minShowAmount.toString(),
       };
     }),
   byAddress: publicProcedure
@@ -99,6 +105,7 @@ export const profileRouter = router({
         nickname: profile?.nickname,
         description: profile?.description,
         avatarUrl: avatarUrl,
+        minShowAmount: profile.minShowAmount.toString(),
       };
     }),
   add: publicProcedure.input(AddSchema).mutation(async ({ ctx, input }) => {
@@ -137,6 +144,7 @@ export const profileRouter = router({
       nickname: profile?.nickname,
       description: profile?.description,
       avatarUrl: avatarPublicUrl,
+      minShowAmount: profile.minShowAmount.toString(),
     };
   }),
   edit: protectedProcedure
@@ -179,6 +187,10 @@ export const profileRouter = router({
         profile.description = input.description;
       }
 
+      if (input.minShowAmount) {
+        profile.minShowAmount = new Prisma.Decimal(input.minShowAmount);
+      }
+
       let avatarPublicUrl = "";
       let newAvatarFilename = undefined;
       if (input.avatar) {
@@ -200,6 +212,7 @@ export const profileRouter = router({
           nickname: profile.nickname,
           description: profile.description,
           avatarFilename: newAvatarFilename,
+          minShowAmount: profile.minShowAmount,
         },
       });
 
@@ -208,6 +221,7 @@ export const profileRouter = router({
         nickname: profile?.nickname,
         description: profile?.description,
         avatarUrl: avatarPublicUrl,
+        minShowAmount: profile.minShowAmount.toString(),
       };
     }),
 });
