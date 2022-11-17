@@ -8,7 +8,7 @@ import {
 } from "@server/inputSchemas";
 import { uploadImage, removeImage } from "@lib/bucketService";
 import { TRPCError } from "@trpc/server";
-import { uuid4 } from "@sentry/utils"; // TODO: replace with uuidv4 from uuid package
+import { v4 as uuidv4 } from "uuid";
 import { Prisma } from "@prisma/client";
 
 export const profileRouter = router({
@@ -130,7 +130,7 @@ export const profileRouter = router({
       let avatarPublicUrl = "";
       let newAvatarFilename = undefined;
       if (input.avatar) {
-        newAvatarFilename = uuid4();
+        newAvatarFilename = uuidv4();
         const avatarsBucket = await ctx.buckets.from(AVATARS_BUCKET_NAME);
         if (profile.avatarFilename) {
           await removeImage(avatarsBucket, profile.avatarFilename);

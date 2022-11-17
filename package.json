@@ -19,10 +19,14 @@
     "format:check": "prettier --check .",
     "clean": "turbo run clean --parallel"
   },
-  "devDependencies": {
-    "eslint-config-custom": "workspace:*",
+  "dependencies": {
+    "@manypkg/cli": "^0.19.2",
     "dotenv-cli": "^6.0.0",
+    "eslint": "^8.27.0",
+    "eslint-config-custom": "workspace:0.0.0",
     "prettier": "^2.7.1",
+    "prettier-plugin-solidity": "^1.0.0-rc.1",
+    "prettier-plugin-tailwindcss": "^0.1.13",
     "rimraf": "^3.0.2",
     "turbo": "^1.6.3"
   }

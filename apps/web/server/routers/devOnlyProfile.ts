@@ -3,7 +3,7 @@ import { AVATARS_BUCKET_NAME, buckets } from "@server/storage";
 import { AddSchema } from "@server/inputSchemas";
 import { uploadImage } from "@lib/bucketService";
 import { TRPCError } from "@trpc/server";
-import { uuid4 } from "@sentry/utils";
+import { v4 as uuidv4 } from "uuid";
 import { profileRouter } from "@server/routers/profile";
 
 // This router contains development only endpoints
@@ -51,7 +51,7 @@ export const devOnlyProfileRouter = router({
     let avatarPublicUrl = "";
     let avatarFilename = null;
     if (input.avatar) {
-      avatarFilename = uuid4();
+      avatarFilename = uuidv4();
       avatarPublicUrl = await uploadImage(
         await ctx.buckets.from(AVATARS_BUCKET_NAME),
         input.avatar,

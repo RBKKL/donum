@@ -53,5 +53,6 @@ apps/contracts/deployments/**/solcinputs
 # GitHub Actions
 .github
 
-# json files
+# data files
 *.json
+*.yaml

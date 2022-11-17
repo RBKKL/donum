@@ -1,6 +1,5 @@
 import { BigNumber } from "ethers";
 import { format } from "date-fns";
-import { FetchBalanceResult } from "@wagmi/core";
 export {
   castToDonationObject,
   getTotalDonationsAmount,
@@ -56,5 +55,5 @@ export const base64ToBlob = async (base64string: string) => {
   return await base64Response.blob();
 };
 
-export const formatBalance = (balanceData: FetchBalanceResult): string =>
-  balanceData.formatted.substring(0, 7);
+export const formatBalance = (formattedBalance: string): string =>
+  formattedBalance.substring(0, 7);
