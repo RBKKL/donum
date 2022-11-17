@@ -20,6 +20,7 @@
     "pipeline": {
         "build": {
             "dependsOn": [
+                "generate",
                 "^build"
             ],
             "outputs": [
@@ -49,6 +50,9 @@
             "cache": false
         },
         "db:push": {
+            "inputs": [
+                "prisma/schema.prisma"
+            ],
             "outputs": []
         },
         "generate": {

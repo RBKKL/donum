@@ -8,8 +8,8 @@
     "clean": "tsc --build --clean && rimraf .turbo node_modules dist"
   },
   "dependencies": {
+    "contracts": "workspace:*",
     "@fastify/cors": "^8.2.0",
-    "contacts": "*",
     "ethers": "^5.7.2",
     "fastify": "^4.9.2",
     "fastify-socket.io": "^4.0.0",
@@ -17,7 +17,7 @@
     "socket.io": "^4.5.3"
   },
   "devDependencies": {
-    "tsconfig": "*",
+    "tsconfig": "workspace:*",
     "tsx": "^3.11.0"
   }
 }
