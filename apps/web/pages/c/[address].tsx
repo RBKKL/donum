@@ -23,7 +23,7 @@ const SendDonationPage: NextPage = () => {
 
   const { address, isConnected } = useAccount();
   const { data: balanceData } = useBalance({
-    addressOrName: address,
+    address,
     watch: true,
   });
 
@@ -77,7 +77,9 @@ const SendDonationPage: NextPage = () => {
           rightCorner={
             <div className="flex flex-col items-end">
               <EthIcon />
-              {balanceData && <Balance balance={formatBalance(balanceData)} />}
+              {balanceData && (
+                <Balance balance={formatBalance(balanceData.formatted)} />
+              )}
             </div>
           }
         />

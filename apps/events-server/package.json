@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@fastify/cors": "^8.2.0",
-    "contacts": "*",
+    "contracts": "workspace:*",
     "ethers": "^5.7.2",
     "fastify": "^4.9.2",
     "fastify-socket.io": "^4.0.0",
@@ -17,7 +17,9 @@
     "socket.io": "^4.5.3"
   },
   "devDependencies": {
-    "tsconfig": "*",
-    "tsx": "^3.11.0"
+    "eslint": "^8.27.0",
+    "tsconfig": "workspace:*",
+    "tsx": "^3.11.0",
+    "typescript": "4.9.3"
   }
 }
