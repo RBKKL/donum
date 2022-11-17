@@ -2,7 +2,7 @@ import { trpc } from "@lib/trpc";
 import { NextPage } from "next";
 
 const ProfilesPage: NextPage = () => {
-  const profiles = trpc.profile.all.useQuery();
+  const profiles = trpc.devOnlyProfile.all.useQuery();
 
   if (!profiles.data) {
     return <div>Loading...</div>;
