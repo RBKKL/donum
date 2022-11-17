@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useAccount } from "wagmi";
 import { DASHBOARD_PAGE_PATH, SessionStatus } from "shared/constants";
+import { Loader } from "./Loader";
 
 interface LayoutProps {
   children: ReactNode;
@@ -25,9 +26,7 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
   }, [status, isConnected, isSecured]);
 
   const SecuredContent = () => {
-    if (status === SessionStatus.LOADING) {
-      return <div>Loading...</div>;
-    }
+    if (status === SessionStatus.LOADING) return <Loader />;
 
     if (status === SessionStatus.UNAUTHENTICATED) {
       return <div>Login to see this page</div>;
