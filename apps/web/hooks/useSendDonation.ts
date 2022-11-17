@@ -32,7 +32,7 @@ export const useSendDonation = (
   });
 
   const { write, data, isLoading, isError, error } = useContractWrite(config);
-  const isAvailable = !!write;
+  const isAvailable = !!write && Number(donationAmount) != 0;
   const donate = () => {
     write?.();
   };

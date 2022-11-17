@@ -96,14 +96,14 @@ const SendDonationPage: NextPage = () => {
           />
         </div>
         <div className="flex flex-row-reverse">
-          {!isConnected ? (
-            <ConnectButton />
-          ) : (
+          {isConnected ? (
             <Button
               text="Send"
-              disabled={!isAvailable || Number(donationAmount) === 0}
+              disabled={!isAvailable}
               onClick={onSendBtnClick}
             />
+          ) : (
+            <ConnectButton />
           )}
         </div>
       </div>
