@@ -53,9 +53,6 @@ export const getAuthOptions: (
       return session;
     },
   },
-  pages: {
-    signIn: "/sign-in",
-  },
 });
 
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {

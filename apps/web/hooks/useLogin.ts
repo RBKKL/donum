@@ -3,12 +3,12 @@ import { getCsrfToken, signIn } from "next-auth/react";
 import { SiweMessage } from "siwe";
 import { SIGN_IN_MESSAGE } from "shared/constants";
 
-export const useLogIn = () => {
+export const useLogin = () => {
   const { address } = useAccount();
   const { chain } = useNetwork();
   const { signMessageAsync } = useSignMessage();
 
-  const logIn = async () => {
+  const login = async () => {
     try {
       const message = new SiweMessage({
         domain: window.location.host,
@@ -32,5 +32,5 @@ export const useLogIn = () => {
     }
   };
 
-  return { logIn };
+  return { login };
 };

@@ -16,7 +16,7 @@ const Home: NextPage = () => {
       <Link href={`/alert/${MY_ADDRESS}`} className="mt-3">
         <Button text="Donation alert" />
       </Link>
-      <Link href={`/sign-in/`} className="mt-3">
+      <Link href={`/dev-only/sign-in/`} className="mt-3">
         <Button text="Sign-in" />
       </Link>
     </div>

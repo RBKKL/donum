@@ -1,6 +1,6 @@
 import { FC, ReactNode, useEffect } from "react";
 import { Header } from "@components/Header";
-import { useLogIn } from "@hooks/useLogIn";
+import { useLogin } from "@hooks/useLogin";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useAccount } from "wagmi";
@@ -11,7 +11,7 @@ interface LayoutProps {
 }
 
 export const Layout: FC<LayoutProps> = ({ children }) => {
-  const { logIn } = useLogIn();
+  const { login } = useLogin();
   const router = useRouter();
   const { status } = useSession();
   const { isConnected } = useAccount();
@@ -19,7 +19,7 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
   const isSecured = router.pathname.includes(DASHBOARD_PAGE_PATH);
   useEffect(() => {
     if (isSecured && isConnected && status === "unauthenticated") {
-      logIn();
+      login();
     }
   }, [status, isConnected, router.pathname]);
 
