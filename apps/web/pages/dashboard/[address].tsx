@@ -9,6 +9,7 @@ import { EditIcon } from "@components/icons/EditIcon";
 import Link from "next/link";
 import { useAccount } from "wagmi";
 import { ConnectWalletWarning } from "@components/ConnectWalletWarning";
+import { Loader } from "@components/Loader";
 
 const DashboardPage: NextPage = () => {
   const editProfileButtonHandler = () => {
@@ -26,7 +27,7 @@ const DashboardPage: NextPage = () => {
     return <ConnectWalletWarning />;
   }
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loader />;
 
   if (isError) {
     console.error(error);
