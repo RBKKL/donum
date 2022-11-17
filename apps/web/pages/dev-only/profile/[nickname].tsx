@@ -3,7 +3,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { fileToBase64 } from "@lib/helpers";
-import { avatarAcceptableFileExtensions } from "../../../../../packages/shared/constants";
+import { avatarAcceptableFileExtensions } from "shared/constants";
 
 const ProfilePage: NextPage = () => {
   const mutation = trpc.devOnlyProfile.edit.useMutation();

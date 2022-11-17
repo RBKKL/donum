@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import { Button } from "@components/Button";
 import { RecipientProfile } from "@components/RecipientProfile";
 import { TextField } from "@components/TextField";
-import { DESCRIPTION_MAX_LENGTH } from "../../../../../packages/shared/constants";
+import { DESCRIPTION_MAX_LENGTH } from "shared/constants";
 import { useState } from "react";
 import { useAccount } from "wagmi";
 
