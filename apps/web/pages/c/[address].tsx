@@ -1,7 +1,6 @@
 import { useState } from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { Button } from "@components/Button";
 import { RecipientProfile } from "@components/RecipientProfile";
 import { Input } from "@components/Input";
 import { TextField } from "@components/TextField";
@@ -13,6 +12,8 @@ import { DonationModal } from "@components/DonationModal";
 import { Address, useAccount, useBalance } from "wagmi";
 import { Balance } from "@components/Balance";
 import { parseUnits } from "ethers/lib/utils";
+import { Button } from "@components/Button";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const DEFAULT_DONATION_AMOUNT = "0.001";
 
@@ -20,7 +21,7 @@ const SendDonationPage: NextPage = () => {
   const router = useRouter();
   const recipientAddress = router.query.address as Address; // TODO: validate address
 
-  const { address, isDisconnected } = useAccount();
+  const { address, isConnected } = useAccount();
   const { data: balanceData } = useBalance({
     addressOrName: address,
     watch: true,
@@ -37,7 +38,6 @@ const SendDonationPage: NextPage = () => {
     donationAmount,
     message
   );
-
   const isValidDonationAmount =
     balanceData?.value?.gt(parseUnits(donationAmount, balanceData.decimals)) &&
     parseUnits(donationAmount, balanceData.decimals).gt(0);
@@ -60,8 +60,6 @@ const SendDonationPage: NextPage = () => {
     donate();
   };
 
-  const canDonate = !isDisconnected && isValidDonationAmount;
-
   return (
     <div className="flex flex-col items-center text-center">
       <RecipientProfile
@@ -75,7 +73,7 @@ const SendDonationPage: NextPage = () => {
           value={donationAmount}
           onChange={onDonationAmountChange}
           onBlur={setMinimumAmount}
-          error={!canDonate}
+          error={isConnected && !isValidDonationAmount}
           rightCorner={
             <div className="flex flex-col items-end">
               <EthIcon />
@@ -98,11 +96,15 @@ const SendDonationPage: NextPage = () => {
           />
         </div>
         <div className="flex flex-row-reverse">
-          <Button
-            text="Send"
-            disabled={!isAvailable || Number(donationAmount) === 0}
-            onClick={onSendBtnClick}
-          />
+          {isConnected ? (
+            <Button
+              text="Send"
+              disabled={!isAvailable}
+              onClick={onSendBtnClick}
+            />
+          ) : (
+            <ConnectButton />
+          )}
         </div>
       </div>
       <DonationModal
