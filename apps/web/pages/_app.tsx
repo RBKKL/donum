@@ -10,6 +10,8 @@ import { ALERT_PAGE_PATH, APP_NAME } from "shared/constants";
 import { Layout } from "@components/Layout";
 import { trpc } from "@lib/trpc";
 import { clientEnv } from "@env/client";
+import { SessionProvider } from "next-auth/react";
+import { Session } from "next-auth";
 
 const usedChains = [
   // chain.mainnet,
@@ -34,7 +36,11 @@ const wagmiClient = createClient({
   provider,
 });
 
-const MyApp: AppType = ({ Component, pageProps, router }) => {
+const MyApp: AppType<{ session: Session | null }> = ({
+  Component,
+  pageProps,
+  router,
+}) => {
   if (router.pathname.includes(ALERT_PAGE_PATH)) {
     return <Component {...pageProps} />;
   }
@@ -42,12 +48,14 @@ const MyApp: AppType = ({ Component, pageProps, router }) => {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
-        <Layout>
-          <Head>
-            <title>{APP_NAME}</title>
-          </Head>
-          <Component {...pageProps} />
-        </Layout>
+        <SessionProvider session={pageProps.session}>
+          <Layout>
+            <Head>
+              <title>{APP_NAME}</title>
+            </Head>
+            <Component {...pageProps} />
+          </Layout>
+        </SessionProvider>
       </RainbowKitProvider>
     </WagmiConfig>
   );

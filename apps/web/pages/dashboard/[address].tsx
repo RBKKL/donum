@@ -44,7 +44,7 @@ const DashboardPage: NextPage = () => {
           onEditClick={editProfileButtonHandler}
           shortAddress
         />
-        <Link href={`/edit/${recipientAddress}`} className="mt-3">
+        <Link href={`/dashboard/edit/${recipientAddress}`} className="mt-3">
           <Button
             text="Edit profile"
             icon={<EditIcon size="small" />}
