@@ -2,7 +2,6 @@ import { z } from "zod";
 import { protectedProcedure, publicProcedure, router } from "@server/trpc";
 import { AVATARS_BUCKET_NAME, buckets } from "@server/storage";
 import {
-  AddSchema,
   EditSchema,
   NicknameFormat,
   AddressFormat,
@@ -13,32 +12,6 @@ import { uuid4 } from "@sentry/utils";
 import { Prisma } from "@prisma/client";
 
 export const profileRouter = router({
-  all: publicProcedure.query(async ({ ctx }) => {
-    const avatarsMap = new Map();
-    const avatarsBucket = await buckets.from(AVATARS_BUCKET_NAME);
-    const { data: avatarFiles, error } = await avatarsBucket.list();
-
-    // data === null only when error !== null and vice versa
-    if (avatarFiles) {
-      avatarFiles.map((avatarFile) => {
-        const avatarUrl = avatarsBucket.getPublicUrl(avatarFile.name).data
-          .publicUrl;
-        avatarsMap.set(avatarFile.name, avatarUrl);
-      });
-    } else {
-      console.error("Error getting avatars list from bucket");
-      console.error(error);
-    }
-
-    const allProfiles = await ctx.prisma.profile.findMany();
-    return allProfiles.map((profile) => ({
-      address: profile.address,
-      nickname: profile?.nickname,
-      description: profile?.description,
-      avatarUrl: avatarsMap.get(profile.avatarFilename) ?? "",
-      minShowAmount: profile.minShowAmount.toString(),
-    }));
-  }),
   byNickname: publicProcedure
     .input(z.object({ nickname: NicknameFormat }))
     .query(async ({ ctx, input }) => {
@@ -79,6 +52,7 @@ export const profileRouter = router({
         minShowAmount: profile.minShowAmount.toString(),
       };
     }),
+  // TODO: discuss if byAddress endpoint should be in production router
   byAddress: publicProcedure
     .input(z.object({ address: AddressFormat }))
     .query(async ({ ctx, input }) => {
@@ -108,48 +82,10 @@ export const profileRouter = router({
         minShowAmount: profile.minShowAmount.toString(),
       };
     }),
-  add: publicProcedure.input(AddSchema).mutation(async ({ ctx, input }) => {
-    let profile = await ctx.prisma.profile.findFirst({
-      where: { address: input.address },
-    });
-    if (profile) {
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "Account with this wallet is already added",
-      });
-    }
-
-    let avatarPublicUrl = "";
-    let avatarFilename = null;
-    if (input.avatar) {
-      avatarFilename = uuid4();
-      avatarPublicUrl = await uploadImage(
-        await ctx.buckets.from(AVATARS_BUCKET_NAME),
-        input.avatar,
-        avatarFilename
-      );
-    }
-
-    profile = await ctx.prisma.profile.create({
-      data: {
-        address: input.address,
-        nickname: input.nickname,
-        description: input.description,
-        avatarFilename: avatarFilename,
-      },
-    });
-
-    return {
-      address: profile.address,
-      nickname: profile?.nickname,
-      description: profile?.description,
-      avatarUrl: avatarPublicUrl,
-      minShowAmount: profile.minShowAmount.toString(),
-    };
-  }),
   edit: protectedProcedure
     .input(EditSchema)
     .mutation(async ({ ctx, input }) => {
+      // TODO: make this endpoint create profile if doesn't exist
       let profile = await ctx.prisma.profile.findFirst({
         where: { address: input.address },
       });
