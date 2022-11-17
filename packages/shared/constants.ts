@@ -18,3 +18,9 @@ export const CHAIN_IDS = {
   goerli: 5,
   hardhat: 1337,
 };
+
+export enum SessionStatus {
+  UNAUTHENTICATED = "unauthenticated",
+  AUTHENTICATED = "authenticated",
+  LOADING = "loading",
+}
