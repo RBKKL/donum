@@ -8,7 +8,7 @@
         "build": "next build",
         "start": "next start",
         "lint": "TIMING=1 tsc && eslint .",
-        "clean": "rimraf .next .turbo .vercel .cache node_modules",
+        "clean": "rimraf .next .turbo .vercel .cache node_modules tsconfig.tsbuildinfo",
         "db:push": "prisma db push",
         "generate": "prisma generate",
         "postinstall": "npm run generate"
@@ -28,6 +28,7 @@
         "date-fns": "^2.29.3",
         "ethers": "^5.7.2",
         "next": "^13.0.2",
+        "next-auth": "^4.16.4",
         "next-transpile-modules": "^10.0.0",
         "react": "18.2.0",
         "react-dom": "18.2.0",
@@ -36,6 +37,7 @@
         "react-textarea-autosize": "^8.3.4",
         "react-use": "^17.4.0",
         "shared": "*",
+        "siwe": "^2.0.5",
         "superjson": "^1.11.0",
         "wagmi": "^0.7.15",
         "zod": "^3.19.1"
