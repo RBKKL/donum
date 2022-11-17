@@ -11,6 +11,7 @@ import {
 import React, { useState, useEffect } from "react";
 import { fileToBase64, isNumber } from "@lib/helpers";
 import { ethers } from "ethers";
+import { Loader } from "@components/Loader";
 
 const EditDonationPage: NextPage = () => {
   const router = useRouter();
@@ -56,9 +57,7 @@ const EditDonationPage: NextPage = () => {
     setNewDescription(profile.data.description);
   }, [profile.data?.description]);
 
-  if (profile.isLoading) {
-    return <div>Loading...</div>;
-  }
+  if (profile.isLoading) return <Loader />;
 
   if (profile.isError || !profile.data) {
     return <div>Error</div>;
