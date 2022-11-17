@@ -6,5 +6,5 @@ Make donations to streamers with cryptocurrency
 
 - Create `.env` file from `.env.example` and fill all fields
 - Symlink (or copy) `.env` to all apps
-- `npm i`
-- `npm run dev`
+- `pnpm i`
+- `pnpm dev`
