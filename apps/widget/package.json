@@ -1,19 +1,22 @@
 {
   "name": "widget",
-  "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "tsc && eslint .",
+    "clean": "rimraf dist .turbo node_modules",
     "preview": "vite preview"
   },
   "dependencies": {
-    "socket.io-client": "^4.5.3"
+    "socket.io-client": "^4.5.3",
+    "solid-js": "^1.6.2"
   },
   "devDependencies": {
-    "vite": "^3.2.3",
+    "eslint-plugin-solid": "^0.8.0",
+    "vite": "^3.2.4",
+    "vite-plugin-solid": "^2.4.0",
     "tsconfig": "*"
   }
 }
