@@ -8,7 +8,7 @@ import {
 } from "@server/inputSchemas";
 import { uploadImage, removeImage } from "@lib/bucketService";
 import { TRPCError } from "@trpc/server";
-import { uuid4 } from "@sentry/utils";
+import { uuid4 } from "@sentry/utils"; // TODO: replace with uuidv4 from uuid package
 import { Prisma } from "@prisma/client";
 
 export const profileRouter = router({
