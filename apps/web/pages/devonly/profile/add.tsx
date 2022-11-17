@@ -34,7 +34,7 @@ const AddProfilePage: NextPage = () => {
   };
 
   if (mutation.isSuccess) {
-    router.push("/dev-only/profile");
+    router.push("/devonly/profile");
   }
 
   return (
