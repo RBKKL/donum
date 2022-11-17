@@ -8,7 +8,7 @@
         "build": "next build",
         "start": "next start",
         "lint": "TIMING=1 tsc && eslint .",
-        "clean": "rimraf .next .turbo .vercel .cache node_modules",
+        "clean": "rimraf .next .turbo .vercel .cache node_modules tsconfig.tsbuildinfo",
         "db:push": "prisma db push",
         "generate": "prisma generate",
         "postinstall": "npm run generate"

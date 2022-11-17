@@ -34,11 +34,7 @@ const AddProfilePage: NextPage = () => {
   };
 
   if (mutation.isSuccess) {
-<<<<<<<< HEAD:apps/web/pages/dashboard/profile/add.tsx
-    router.push("/dashboard/profile");
-========
     router.push("/dev-only/profile");
->>>>>>>> main:apps/web/pages/dev-only/profile/add.tsx
   }
 
   return (

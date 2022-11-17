@@ -27,11 +27,7 @@ const ProfilePage: NextPage = () => {
         },
         {
           onSuccess: (data) => {
-<<<<<<<< HEAD:apps/web/pages/dashboard/profile/[nickname].tsx
-            router.push(`/dashboard/profile/${data.nickname}`);
-========
             router.push(`/dev-only/profile/${data.nickname}`);
->>>>>>>> main:apps/web/pages/dev-only/profile/[nickname].tsx
           },
         }
       );
