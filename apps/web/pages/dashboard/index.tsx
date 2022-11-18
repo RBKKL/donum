@@ -1,5 +1,4 @@
 import { NextPage } from "next";
-import { useRouter } from "next/router";
 import { DonationCard } from "@components/DonationCard";
 import { RecipientProfile } from "@components/RecipientProfile";
 import { getTotalDonationsAmount, reverseArray } from "@lib/helpers";
@@ -8,18 +7,26 @@ import { Button } from "@components/Button";
 import { EditIcon } from "@components/icons/EditIcon";
 import Link from "next/link";
 import { Loader } from "@components/Loader";
+import { useSession } from "next-auth/react";
+import { trpc } from "@lib/trpc";
 
 const DashboardPage: NextPage = () => {
   const editProfileButtonHandler = () => {
     console.log("edit profile button handler");
   };
 
-  const router = useRouter();
-  const recipientAddress = router.query.address as string;
+  const { data: session } = useSession();
+  // session, user and name can't be null here, because it's secured page and Layout will show warning
+  const recipientAddress = session!.user!.name!;
+
   const { donations, isLoading, isError, error } =
     useLiveDonationsHistory(recipientAddress);
 
+  const profile = trpc.profile.me.useQuery().data;
+
   if (isLoading) return <Loader />;
+
+  if (!profile) return <div>You have no profile!</div>;
 
   if (isError) {
     console.error(error);
@@ -30,8 +37,8 @@ const DashboardPage: NextPage = () => {
     <div className="flex flex-row flex-wrap justify-evenly">
       <div className="flex grow-0 flex-col items-center">
         <RecipientProfile
-          avatarPath="/assets/images/default_avatar.gif"
-          nickname="Nix"
+          avatarPath={profile.avatarUrl}
+          nickname={profile.nickname || ""}
           address={recipientAddress}
           onEditClick={editProfileButtonHandler}
           shortAddress

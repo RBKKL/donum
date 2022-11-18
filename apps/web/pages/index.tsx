@@ -10,7 +10,7 @@ const Home: NextPage = () => {
       <Link href={`/c/${MY_ADDRESS}`}>
         <Button text="Donate me" />
       </Link>
-      <Link href={`/dashboard/${MY_ADDRESS}`} className="mt-3">
+      <Link href={`/dashboard/`} className="mt-3">
         <Button text="Dashboard" />
       </Link>
       <Link href={`/alert/${MY_ADDRESS}`} className="mt-3">

@@ -64,7 +64,7 @@ const EditDonationPage: NextPage = () => {
   }
 
   if (mutation.isSuccess) {
-    router.push(`/dashboard/${address}`);
+    router.push(`/dashboard/`);
   }
 
   return (
