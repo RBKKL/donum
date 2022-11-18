@@ -12,6 +12,33 @@ import { v4 as uuidv4 } from "uuid";
 import { Prisma } from "@prisma/client";
 
 export const profileRouter = router({
+  me: protectedProcedure.query(async ({ ctx }) => {
+    const profile = await ctx.prisma.profile.findFirst({
+      where: { address: ctx.session.user.name || "" },
+    });
+
+    if (!profile) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "No account connected with this wallet, create account first",
+      });
+    }
+
+    let avatarUrl = "";
+    if (profile.avatarFilename) {
+      const avatarsBucket = await ctx.buckets.from(AVATARS_BUCKET_NAME);
+      avatarUrl = avatarsBucket.getPublicUrl(profile.avatarFilename).data
+        .publicUrl;
+    }
+
+    return {
+      address: profile.address,
+      nickname: profile?.nickname,
+      description: profile?.description,
+      avatarUrl: avatarUrl,
+      minShowAmount: profile.minShowAmount.toString(),
+    };
+  }),
   byNickname: publicProcedure
     .input(z.object({ nickname: NicknameFormat }))
     .query(async ({ ctx, input }) => {
