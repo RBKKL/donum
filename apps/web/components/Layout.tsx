@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import { useAccount } from "wagmi";
 import { DASHBOARD_PAGE_PATH, SessionStatus } from "shared/constants";
 import { Loader } from "./Loader";
+import { ConnectWalletWarning } from "@components/ConnectWalletWarning";
 
 interface LayoutProps {
   children: ReactNode;
@@ -27,6 +28,8 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
 
   const SecuredContent = () => {
     if (status === SessionStatus.LOADING) return <Loader />;
+
+    if (!isConnected) return <ConnectWalletWarning />;
 
     if (status === SessionStatus.UNAUTHENTICATED) {
       return <div>Login to see this page</div>;
