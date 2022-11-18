@@ -14,12 +14,27 @@ import { Balance } from "@components/Balance";
 import { parseUnits } from "ethers/lib/utils";
 import { Button } from "@components/Button";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { ethers } from "ethers";
+import { trpc } from "@lib/trpc";
 
 const DEFAULT_DONATION_AMOUNT = "0.001";
 
 const SendDonationPage: NextPage = () => {
   const router = useRouter();
-  const recipientAddress = router.query.address as Address; // TODO: validate address
+  const addressOrNickname = router.query.addressOrNickname as string;
+  const isAddress = ethers.utils.isAddress(addressOrNickname);
+
+  const profile = (
+    isAddress
+      ? trpc.profile.byAddress.useQuery({
+          address: addressOrNickname,
+        })
+      : trpc.profile.byNickname.useQuery({
+          nickname: addressOrNickname,
+        })
+  ).data;
+
+  const recipientAddress = (profile?.address || addressOrNickname) as Address;
 
   const { address, isConnected } = useAccount();
   const { data: balanceData } = useBalance({
@@ -38,6 +53,11 @@ const SendDonationPage: NextPage = () => {
     donationAmount,
     message
   );
+
+  if (!profile) {
+    return <div>No such profile: {addressOrNickname}</div>;
+  }
+
   const isValidDonationAmount =
     balanceData?.value?.gt(parseUnits(donationAmount, balanceData.decimals)) &&
     parseUnits(donationAmount, balanceData.decimals).gt(0);
@@ -63,12 +83,14 @@ const SendDonationPage: NextPage = () => {
   return (
     <div className="flex flex-col items-center text-center">
       <RecipientProfile
-        avatarPath="/assets/images/default_avatar.gif"
-        nickname={nickname}
+        avatarPath={profile.avatarUrl}
+        nickname={profile.nickname || ""}
         address={recipientAddress}
       />
       <div className="flex w-full flex-col gap-4 pt-2 sm:max-w-4xl">
-        <p className="break-words px-4 pb-4 text-left text-sm">description</p>
+        <p className="break-words px-4 pb-4 text-left text-sm">
+          {profile.description}
+        </p>
         <Input
           value={donationAmount}
           onChange={onDonationAmountChange}

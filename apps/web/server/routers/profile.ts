@@ -10,6 +10,7 @@ import { uploadImage, removeImage } from "@lib/bucketService";
 import { TRPCError } from "@trpc/server";
 import { v4 as uuidv4 } from "uuid";
 import { Prisma } from "@prisma/client";
+import { DEFAULT_PROFILE } from "shared/constants";
 
 export const profileRouter = router({
   byNickname: publicProcedure
@@ -60,11 +61,7 @@ export const profileRouter = router({
         where: { address: input.address },
       });
       if (!profile) {
-        // TODO: remake
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "No such profile",
-        });
+        return DEFAULT_PROFILE;
       }
 
       let avatarUrl = "";
