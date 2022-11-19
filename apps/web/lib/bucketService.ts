@@ -1,12 +1,12 @@
 import StorageFileApi from "@supabase/storage-js/dist/module/packages/StorageFileApi";
+import { base64ToBlob } from "shared/utils/base64";
 
 export const uploadImage = async (
   bucket: StorageFileApi,
   imageBase64: string,
   filename: string
 ) => {
-  const base64Response = await fetch(imageBase64);
-  const blobImage = await base64Response.blob();
+  const blobImage = await base64ToBlob(imageBase64);
   const { error: uploadError } = await bucket.upload(filename, blobImage, {
     upsert: true,
   });
