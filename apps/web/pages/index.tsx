@@ -7,7 +7,7 @@ const MY_ADDRESS = "0xAC0772000aa52CbF8a8dB501cC8caC03cDF01bf6";
 const Home: NextPage = () => {
   return (
     <div className="flex h-96 w-full flex-col items-center justify-center pt-1 text-center">
-      <Link href={`/c/${MY_ADDRESS}`}>
+      <Link href={`/${MY_ADDRESS}`}>
         <Button text="Donate me" />
       </Link>
       <Link href={`/dashboard/`} className="mt-3">
