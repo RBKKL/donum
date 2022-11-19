@@ -9,7 +9,7 @@ async function generateAbi() {
   const contractName = "DonationsStore";
   const ContractArtifact = artifacts.readArtifactSync(contractName);
 
-  const abiPath = path.join(__dirname, "..", "abis", `${contractName}ABI.ts`);
+  const abiPath = path.join(__dirname, "..", "abi", `${contractName}ABI.ts`);
 
   const abiTs = `export const ${contractName}ABI = ${JSON.stringify(
     ContractArtifact.abi,
