@@ -12,10 +12,6 @@ import { useSession } from "next-auth/react";
 import { trpc } from "@lib/trpc";
 
 const DashboardPage: NextPage = () => {
-  const editProfileButtonHandler = () => {
-    console.log("edit profile button handler");
-  };
-
   const { data: session } = useSession();
   // session, user and name can't be null here, because it's secured page and Layout will show warning
   const recipientAddress = session!.user!.name!;
@@ -41,7 +37,7 @@ const DashboardPage: NextPage = () => {
   if (!profile) return <div>You have no profile!</div>;
 
   return (
-    <div className="flex w-full flex-col lg:flex-row justify-between self-start">
+    <div className="flex w-full flex-col justify-between self-start lg:flex-row">
       <div className="flex flex-col items-center px-24">
         <RecipientProfile
           avatarPath={profile.avatarUrl}

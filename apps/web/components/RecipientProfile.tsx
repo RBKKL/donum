@@ -1,6 +1,5 @@
-import { FC, MouseEventHandler } from "react";
+import { FC } from "react";
 import { BorderedImage } from "@components/BorderedImage";
-import { EditIcon } from "@components/icons/EditIcon";
 import { formatAddress } from "shared/helpers";
 
 interface RecipientProfileProps {
