@@ -18,8 +18,12 @@ const DashboardPage: NextPage = () => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const recipientAddress = session!.user!.name!;
 
-  const { donations, isLoading, isError, error } =
-    useLiveDonationsHistory(recipientAddress);
+  const {
+    donations,
+    isLoading: isDonationsLoading,
+    isError: isDonationsError,
+    error: donationsError,
+  } = useLiveDonationsHistory(recipientAddress);
 
   const {
     data: profile,
@@ -28,10 +32,10 @@ const DashboardPage: NextPage = () => {
     error: profileError,
   } = trpc.profile.me.useQuery();
 
-  if (isLoading || isProfileLoading) return <Loader />;
+  if (isProfileLoading) return <Loader />;
 
-  if (isError || isProfileError) {
-    console.error(error);
+  if (isDonationsError || isProfileError) {
+    console.error(donationsError);
     console.error(profileError);
     return <div>Error!</div>;
   }
@@ -43,7 +47,10 @@ const DashboardPage: NextPage = () => {
       <div className="flex flex-col items-center px-24">
         <RecipientProfile
           avatarPath={profile.avatarUrl}
-          nickname={profile.nickname || ""}
+          nickname={profile.nickname}
+          address={recipientAddress}
+          showAddress={!profile.nickname}
+          shortAddress
         />
         <Link href={routes.editProfile(recipientAddress)}>
           <Button
@@ -68,15 +75,19 @@ const DashboardPage: NextPage = () => {
         <p className="my-3 text-2xl font-semibold text-white">
           Donations history
         </p>
-        {reverseArray(donations).map((donation, index) => (
-          <DonationCard
-            key={index}
-            from={donation.from}
-            timestamp={donation.timestamp}
-            amount={donation.amount}
-            message={donation.message}
-          />
-        ))}
+        {isDonationsLoading ? (
+          <Loader />
+        ) : (
+          reverseArray(donations).map((donation, index) => (
+            <DonationCard
+              key={index}
+              from={donation.from}
+              timestamp={donation.timestamp}
+              amount={donation.amount}
+              message={donation.message}
+            />
+          ))
+        )}
       </div>
     </div>
   );

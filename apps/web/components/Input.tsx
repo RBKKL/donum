@@ -10,6 +10,7 @@ interface InputProps {
   textSize?: "small" | "normal" | "large";
   textWeight?: "normal" | "semibold";
   maxLength?: number;
+  placeholder?: string;
 }
 
 export const Input: FC<InputProps> = ({

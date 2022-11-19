@@ -1,12 +1,14 @@
 import { FC } from "react";
 import { BorderedImage } from "@components/BorderedImage";
 import { formatAddress } from "@donum/shared/helpers";
+import classNames from "classnames";
 
 interface RecipientProfileProps {
   avatarPath: string;
-  nickname: string;
+  nickname?: string | null;
   address?: string;
   shortAddress?: boolean;
+  showAddress?: boolean;
 }
 
 export const RecipientProfile: FC<RecipientProfileProps> = ({
@@ -14,6 +16,7 @@ export const RecipientProfile: FC<RecipientProfileProps> = ({
   nickname,
   address,
   shortAddress,
+  showAddress = true,
 }) => (
   <div className="flex w-full flex-col items-center">
     <BorderedImage
@@ -22,11 +25,18 @@ export const RecipientProfile: FC<RecipientProfileProps> = ({
       width={160}
       alt="Recipient avatar"
     />
-    <div className="flex flex-row flex-nowrap items-center gap-x-2">
-      <p className="py-2 text-2xl font-semibold">{nickname}</p>
-    </div>
-    {address && (
-      <p className="align-center overflow-hidden text-ellipsis text-sm text-gray-400">
+    {nickname && (
+      <div className="flex flex-row flex-nowrap items-center gap-x-2 pt-2 pb-0 text-2xl font-semibold">
+        {nickname}
+      </div>
+    )}
+    {showAddress && address && (
+      <p
+        className={classNames(
+          "align-center overflow-hidden text-ellipsis pb-4 text-sm text-gray-400",
+          { "pt-2": !nickname }
+        )}
+      >
         Address: {shortAddress ? formatAddress(address) : address}
       </p>
     )}

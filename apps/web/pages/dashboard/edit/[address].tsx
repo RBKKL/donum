@@ -83,6 +83,7 @@ const EditDonationPage: NextPage = () => {
         onChange={setNewNickname}
         maxLength={NICKNAME_MAX_LENGTH}
         error={!isNicknameValid}
+        placeholder="Nickname..."
         variant="underlined"
         textSize="large"
         textWeight="semibold"
