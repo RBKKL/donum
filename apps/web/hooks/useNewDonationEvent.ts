@@ -5,7 +5,7 @@ import {
   getContractAddressByChainId,
 } from "@lib/smartContractsData";
 import { BigNumber } from "ethers";
-import { castToDonationObject } from "@lib/helpers";
+import { castToDonationObject } from "contracts/helpers";
 
 type NewDonationEventListener = (donation: NewDonationEventObject) => void;
 

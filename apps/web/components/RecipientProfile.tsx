@@ -1,7 +1,7 @@
 import { FC, MouseEventHandler } from "react";
 import { BorderedImage } from "@components/BorderedImage";
 import { EditIcon } from "@components/icons/EditIcon";
-import { formatAddress } from "@lib/helpers";
+import { formatAddress } from "shared/helpers";
 
 interface RecipientProfileProps {
   avatarPath: string;

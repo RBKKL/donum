@@ -1,5 +1,9 @@
 {
     "name": "shared",
     "version": "0.0.0",
-    "private": true
+    "private": true,
+    "dependencies": {
+        "date-fns": "^2.29.3",
+        "ethers": "^5.7.2"
+    }
 }

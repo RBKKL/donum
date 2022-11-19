@@ -238,7 +238,12 @@ importers:
       typescript: 4.9.3
 
   packages/shared:
-    specifiers: {}
+    specifiers:
+      date-fns: ^2.29.3
+      ethers: ^5.7.2
+    dependencies:
+      date-fns: 2.29.3
+      ethers: 5.7.2
 
   packages/tsconfig:
     specifiers: {}
