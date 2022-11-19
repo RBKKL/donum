@@ -1,8 +1,8 @@
 import { NextPage } from "next";
 import { DonationCard } from "@components/DonationCard";
 import { RecipientProfile } from "@components/RecipientProfile";
-import { getTotalDonationsAmount } from "contracts/helpers";
-import { reverseArray } from "shared/helpers";
+import { getTotalDonationsAmount } from "@donum/contracts/helpers";
+import { reverseArray } from "@donum/shared/helpers";
 import { useLiveDonationsHistory } from "@hooks/useLiveDonationsHistory";
 import { Button } from "@components/Button";
 import { EditIcon } from "@components/icons/EditIcon";

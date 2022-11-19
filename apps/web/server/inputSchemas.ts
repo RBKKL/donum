@@ -3,7 +3,7 @@ import {
   DESCRIPTION_MAX_LENGTH,
   NICKNAME_MAX_LENGTH,
   NICKNAME_MIN_LENGTH,
-} from "shared/constants";
+} from "@donum/shared/constants";
 import { ethers } from "ethers";
 import { BN } from "bn.js";
 

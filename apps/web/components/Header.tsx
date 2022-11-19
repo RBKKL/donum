@@ -1,6 +1,6 @@
 import { FC } from "react";
 import Link from "next/link";
-import { APP_NAME } from "shared/constants";
+import { APP_NAME } from "@donum/shared/constants";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { routes } from "@lib/routes";
 

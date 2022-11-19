@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Link from "next/link";
 import { Button } from "@components/Button";
 import { routes } from "@lib/routes";
-import { DEFAULT_ADDRESS } from "shared/constants";
+import { DEFAULT_ADDRESS } from "@donum/shared/constants";
 
 const Home: NextPage = () => {
   return (

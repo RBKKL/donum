@@ -1,11 +1,11 @@
-import { NewDonationEventObject } from "contracts/types/DonationsStore";
+import { NewDonationEventObject } from "@donum/contracts/types/DonationsStore";
 import { Address, useContractEvent, useNetwork } from "wagmi";
 import {
   DonationsStoreABI,
   getContractAddressByChainId,
 } from "@lib/smartContractsData";
 import { BigNumber } from "ethers";
-import { castToDonationObject } from "contracts/helpers";
+import { castToDonationObject } from "@donum/contracts/helpers";
 
 type NewDonationEventListener = (donation: NewDonationEventObject) => void;
 

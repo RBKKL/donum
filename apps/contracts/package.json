@@ -1,5 +1,5 @@
 {
-    "name": "contracts",
+    "name": "@donum/contracts",
     "version": "0.1.0",
     "description": "Donum smart contracts",
     "private": true,
@@ -30,12 +30,12 @@
         "hardhat": "^2.12.2",
         "hardhat-deploy": "^0.11.20",
         "hardhat-gas-reporter": "^1.0.9",
-        "shared": "workspace:*",
+        "@donum/shared": "workspace:*",
         "solhint": "^3.3.7",
         "solhint-plugin-prettier": "^0.0.5",
         "solidity-coverage": "^0.8.2",
         "ts-node": "^10.9.1",
-        "tsconfig": "workspace:*",
+        "@donum/tsconfig": "workspace:*",
         "tsconfig-paths": "^4.1.0",
         "typechain": "^8.1.1",
         "typescript": "4.9.3"

@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 // fix for https://github.com/vercel/turbo/issues/665
-const withTM = require("next-transpile-modules")(["contracts", "shared"]);
+const withTM = require("next-transpile-modules")([
+  "@donum/contracts",
+  "@donum/shared",
+]);
 
 /** @type {import('next').NextConfig} */
 const config = {

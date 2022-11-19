@@ -4,7 +4,7 @@ import { useLogin } from "@hooks/useLogin";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useAccount } from "wagmi";
-import { SessionStatus } from "shared/constants";
+import { SessionStatus } from "@donum/shared/constants";
 import { Loader } from "./Loader";
 import { ConnectWalletWarning } from "@components/ConnectWalletWarning";
 import { routes } from "@lib/routes";

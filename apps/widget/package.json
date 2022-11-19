@@ -1,5 +1,5 @@
 {
-  "name": "widget",
+  "name": "@donum/widget",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
@@ -16,7 +16,7 @@
   "devDependencies": {
     "eslint": "^8.27.0",
     "eslint-plugin-solid": "^0.8.0",
-    "tsconfig": "workspace:*",
+    "@donum/tsconfig": "workspace:*",
     "typescript": "4.9.3",
     "vite": "^3.2.4",
     "vite-plugin-solid": "^2.4.0"

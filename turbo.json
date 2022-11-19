@@ -49,12 +49,6 @@
         "clean": {
             "cache": false
         },
-        "db:push": {
-            "inputs": [
-                "prisma/schema.prisma"
-            ],
-            "outputs": []
-        },
         "generate": {
             "dependsOn": [
                 "^generate"

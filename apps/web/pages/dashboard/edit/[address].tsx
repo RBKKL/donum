@@ -7,10 +7,10 @@ import { useRouter } from "next/router";
 import {
   avatarAcceptableFileExtensions,
   DESCRIPTION_MAX_LENGTH,
-} from "shared/constants";
+} from "@donum/shared/constants";
 import React, { useState, useEffect } from "react";
-import { isNumber } from "shared/helpers";
-import { fileToBase64 } from "shared/utils/base64";
+import { isNumber } from "@donum/shared/helpers";
+import { fileToBase64 } from "@donum/shared/utils/base64";
 import { ethers } from "ethers";
 import { Loader } from "@components/Loader";
 import { routes } from "@lib/routes";

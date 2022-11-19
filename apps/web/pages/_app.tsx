@@ -6,7 +6,7 @@ import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { WagmiConfig, configureChains, createClient, chain } from "wagmi";
 import { infuraProvider } from "wagmi/providers/infura";
 import { publicProvider } from "wagmi/providers/public";
-import { APP_NAME } from "shared/constants";
+import { APP_NAME } from "@donum/shared/constants";
 import { Layout } from "@components/Layout";
 import { trpc } from "@lib/trpc";
 import { clientEnv } from "@env/client";

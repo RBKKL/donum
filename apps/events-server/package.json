@@ -1,5 +1,5 @@
 {
-  "name": "events-server",
+  "name": "@donum/events-server",
   "private": true,
   "scripts": {
     "dev": "tsx watch --clear-screen=false server.ts",
@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@fastify/cors": "^8.2.0",
-    "contracts": "workspace:*",
+    "@donum/contracts": "workspace:*",
     "ethers": "^5.7.2",
     "fastify": "^4.9.2",
     "fastify-socket.io": "^4.0.0",
@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "eslint": "^8.27.0",
-    "tsconfig": "workspace:*",
+    "@donum/tsconfig": "workspace:*",
     "tsx": "^3.11.0",
     "typescript": "4.9.3"
   }

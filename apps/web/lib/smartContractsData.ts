@@ -1,5 +1,5 @@
-import { CHAIN_IDS } from "shared/constants";
-import DonationsStoreContractGoerli from "contracts/deployments/goerli/DonationsStore.json";
+import { CHAIN_IDS } from "@donum/shared/constants";
+import DonationsStoreContractGoerli from "@donum/contracts/deployments/goerli/DonationsStore.json";
 
 // inline as temporary solution for https://github.com/wagmi-dev/wagmi/issues/1090
 // copied from apps/contracts/artifacts/contracts/DonationsStore.sol/DonationsStoreABI.ts

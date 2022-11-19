@@ -4,7 +4,7 @@ import {
   DonationsStoreABI,
   getContractAddressByChainId,
 } from "@lib/smartContractsData";
-import type { NewDonationEventObject } from "contracts/types/DonationsStore";
+import type { NewDonationEventObject } from "@donum/contracts/types/DonationsStore";
 import { ethers } from "ethers";
 
 export const useDonationsHistory = (recipientAddress: string) => {
