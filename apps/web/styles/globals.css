@@ -21,6 +21,10 @@
     1.4px 1.4px #000, -1.4px -1.4px #000, 1.4px -1.4px #000, -1.4px 1.4px #000;
 }
 
+.break-words-custom {
+  word-break: break-word;
+}
+
 /* Loader styles */
 
 .lds-roller {

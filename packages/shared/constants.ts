@@ -10,8 +10,7 @@ export const NICKNAME_MIN_LENGTH = 3;
 export const NICKNAME_MAX_LENGTH = 64;
 export const DESCRIPTION_MAX_LENGTH = 1024;
 
-export const avatarAcceptableFileExtensions =
-  "image/png, image/gif, image/jpeg";
+export const AVATAR_ACCEPTABLE_FILE_TYPES = "image/png, image/gif, image/jpeg";
 
 export const CHAIN_IDS = {
   mainnet: 1,
