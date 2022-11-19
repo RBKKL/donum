@@ -9,7 +9,7 @@
         "deploy:goerli": "dotenv -- hardhat deploy --network goerli",
         "clean": "hardhat clean && rimraf .turbo node_modules cache",
         "lint": "solhint 'contracts/**/*.sol'",
-        "postinstall": "npm run generate"
+        "postinstall": "pnpm generate"
     },
     "dependencies": {
         "@ethersproject/abi": "^5.7.0",

@@ -11,7 +11,7 @@
         "clean": "rimraf .next .turbo .vercel .cache node_modules tsconfig.tsbuildinfo",
         "db:push": "prisma db push",
         "generate": "prisma generate",
-        "postinstall": "npm run generate"
+        "postinstall": "pnpm generate"
     },
     "dependencies": {
         "@prisma/client": "^4.6.0",
