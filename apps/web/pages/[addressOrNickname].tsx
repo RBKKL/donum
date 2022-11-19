@@ -7,7 +7,7 @@ import { TextField } from "@components/TextField";
 import { EthIcon } from "@components/icons/EthIcon";
 import { useSendDonation } from "@hooks/useSendDonation";
 import { MESSAGE_MAX_LENGTH } from "@donum/shared/constants";
-import { formatBalance, isNumber } from "@donum/shared/helpers";
+import { formatTokenAmount, isNumber } from "@donum/shared/helpers";
 import { DonationModal } from "@components/DonationModal";
 import { Address, useAccount, useBalance } from "wagmi";
 import { Balance } from "@components/Balance";
@@ -100,7 +100,12 @@ const SendDonationPage: NextPage = () => {
             <div className="flex flex-col items-end">
               <EthIcon />
               {balanceData && (
-                <Balance balance={formatBalance(balanceData.formatted)} />
+                <Balance
+                  balance={formatTokenAmount(
+                    balanceData.value,
+                    balanceData.decimals
+                  )}
+                />
               )}
             </div>
           }

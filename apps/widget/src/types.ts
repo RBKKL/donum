@@ -1,14 +1,15 @@
 import { Socket } from "socket.io-client";
 
-export interface DonationType {
+export interface DonationInfo {
   from: string;
-  to: string;
   amount: string;
   message: string;
 }
 
-export interface Store {
+export interface WidgetStore {
   socket?: Socket;
   error?: Error;
-  donation?: DonationType;
+  donationInfo?: DonationInfo;
+  imageSrc: string;
+  soundSrc: string;
 }

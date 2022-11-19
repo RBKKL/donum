@@ -1,6 +1,10 @@
 import { FC } from "react";
-import { BigNumber, ethers } from "ethers";
-import { formatAddress, formatTimestamp } from "@donum/shared/helpers";
+import { BigNumber } from "ethers";
+import {
+  formatAddress,
+  formatTimestamp,
+  formatTokenAmount,
+} from "@donum/shared/helpers";
 
 interface DonationCardProps {
   from: string;
@@ -20,7 +24,7 @@ export const DonationCard: FC<DonationCardProps> = ({
       <p className="font-medium">
         {formatAddress(from)}
         <span className="font-normal"> sent </span>
-        {ethers.utils.formatEther(amount)} ETH
+        {formatTokenAmount(amount)} ETH
       </p>
       <p className="text-gray-400">{formatTimestamp(timestamp)}</p>
     </div>
