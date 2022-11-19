@@ -10,8 +10,34 @@ import { uploadImage, removeImage } from "@lib/bucketService";
 import { TRPCError } from "@trpc/server";
 import { v4 as uuidv4 } from "uuid";
 import { Prisma } from "@prisma/client";
+import { getDefaultProfile } from "@lib/profile";
 
 export const profileRouter = router({
+  me: protectedProcedure.query(async ({ ctx }) => {
+    const address = ctx.session.user.name || "";
+    const profile = await ctx.prisma.profile.findFirst({
+      where: { address },
+    });
+
+    if (!profile) {
+      return getDefaultProfile(address);
+    }
+
+    let avatarUrl = "";
+    if (profile.avatarFilename) {
+      const avatarsBucket = await ctx.buckets.from(AVATARS_BUCKET_NAME);
+      avatarUrl = avatarsBucket.getPublicUrl(profile.avatarFilename).data
+        .publicUrl;
+    }
+
+    return {
+      address: profile.address,
+      nickname: profile?.nickname,
+      description: profile?.description,
+      avatarUrl: avatarUrl,
+      minShowAmount: profile.minShowAmount.toString(),
+    };
+  }),
   byNickname: publicProcedure
     .input(z.object({ nickname: NicknameFormat }))
     .query(async ({ ctx, input }) => {
@@ -52,7 +78,6 @@ export const profileRouter = router({
         minShowAmount: profile.minShowAmount.toString(),
       };
     }),
-  // TODO: discuss if byAddress endpoint should be in production router
   byAddress: publicProcedure
     .input(z.object({ address: AddressFormat }))
     .query(async ({ ctx, input }) => {
@@ -60,11 +85,7 @@ export const profileRouter = router({
         where: { address: input.address },
       });
       if (!profile) {
-        // TODO: remake
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "No such profile",
-        });
+        return getDefaultProfile(input.address);
       }
 
       let avatarUrl = "";

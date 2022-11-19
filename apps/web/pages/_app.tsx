@@ -12,6 +12,7 @@ import { trpc } from "@lib/trpc";
 import { clientEnv } from "@env/client";
 import { SessionProvider } from "next-auth/react";
 import { Session } from "next-auth";
+import { StrictMode } from "react";
 
 const usedChains = [
   // chain.mainnet,
@@ -46,18 +47,20 @@ const MyApp: AppType<{ session: Session | null }> = ({
   }
 
   return (
-    <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains}>
-        <SessionProvider session={pageProps.session}>
-          <Layout>
-            <Head>
-              <title>{APP_NAME}</title>
-            </Head>
-            <Component {...pageProps} />
-          </Layout>
-        </SessionProvider>
-      </RainbowKitProvider>
-    </WagmiConfig>
+    <StrictMode>
+      <WagmiConfig client={wagmiClient}>
+        <RainbowKitProvider chains={chains}>
+          <SessionProvider session={pageProps.session}>
+            <Layout>
+              <Head>
+                <title>{APP_NAME}</title>
+              </Head>
+              <Component {...pageProps} />
+            </Layout>
+          </SessionProvider>
+        </RainbowKitProvider>
+      </WagmiConfig>
+    </StrictMode>
   );
 };
 
