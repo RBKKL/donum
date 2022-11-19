@@ -13,7 +13,6 @@ import { clientEnv } from "@env/client";
 import { SessionProvider } from "next-auth/react";
 import { Session } from "next-auth";
 import { StrictMode } from "react";
-import { Inter } from "@next/font/google";
 
 const usedChains = [
   // chain.mainnet,
@@ -38,13 +37,6 @@ const wagmiClient = createClient({
   provider,
 });
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin", "latin-ext", "cyrillic", "cyrillic-ext"],
-  display: "swap",
-  weight: ["300", "400", "500", "600", "700"],
-});
-
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps,
@@ -58,9 +50,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
               <Head>
                 <title>{APP_NAME}</title>
               </Head>
-              <div className={`${inter.variable} font-inter`}>
-                <Component {...pageProps} />
-              </div>
+              <Component {...pageProps} />
             </Layout>
           </SessionProvider>
         </RainbowKitProvider>

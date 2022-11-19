@@ -8,10 +8,18 @@ import { SessionStatus } from "@donum/shared/constants";
 import { Loader } from "./Loader";
 import { ConnectWalletWarning } from "@components/ConnectWalletWarning";
 import { routes } from "@lib/routes";
+import { Inter } from "@next/font/google";
 
 interface LayoutProps {
   children: ReactNode;
 }
+
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin", "latin-ext", "cyrillic", "cyrillic-ext"],
+  display: "swap",
+  weight: ["300", "400", "500", "600", "700"],
+});
 
 export const Layout: FC<LayoutProps> = ({ children }) => {
   const { login } = useLogin();
@@ -40,7 +48,9 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col py-3 px-2 sm:px-8">
+    <div
+      className={`flex min-h-screen flex-col py-3 px-2 sm:px-8 ${inter.variable} font-inter`}
+    >
       <Header />
       <main className="flex grow items-center justify-center pt-12">
         {isSecured ? <SecuredContent /> : children}
