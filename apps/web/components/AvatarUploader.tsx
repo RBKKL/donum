@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { AVATAR_ACCEPTABLE_FILE_TYPES } from "shared/constants";
+import { AVATAR_ACCEPTABLE_FILE_TYPES } from "@donum/shared/constants";
 import { BorderedImage } from "./BorderedImage";
 import { UploadIcon } from "./icons/UploadIcon";
 

@@ -26,6 +26,7 @@ importers:
 
   apps/contracts:
     specifiers:
+      '@donum/shared': workspace:*
       '@donum/tsconfig': workspace:*
       '@ethersproject/abi': ^5.7.0
       '@ethersproject/bytes': ^5.7.0
@@ -53,6 +54,7 @@ importers:
       typechain: ^8.1.1
       typescript: 4.9.3
     dependencies:
+      '@donum/shared': link:../../packages/shared
       '@donum/tsconfig': link:../../packages/tsconfig
       '@ethersproject/abi': 5.7.0
       '@ethersproject/bytes': 5.7.0
