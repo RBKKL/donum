@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { protectedProcedure, publicProcedure, router } from "@server/trpc";
-import { AVATARS_BUCKET_NAME, buckets } from "@server/storage";
+import { AVATARS_BUCKET_NAME } from "@server/storage";
 import {
   EditSchema,
   NicknameFormat,
@@ -10,7 +10,7 @@ import { uploadImage, removeImage } from "@lib/bucketService";
 import { TRPCError } from "@trpc/server";
 import { v4 as uuidv4 } from "uuid";
 import { Prisma } from "@prisma/client";
-import { getDefaultProfile } from "@lib/profile";
+import { getDefaultProfile, getProfileAvatarUrl } from "@lib/profile";
 
 export const profileRouter = router({
   me: protectedProcedure.query(async ({ ctx }) => {
@@ -23,18 +23,15 @@ export const profileRouter = router({
       return getDefaultProfile(address);
     }
 
-    let avatarUrl = "";
-    if (profile.avatarFilename) {
-      const avatarsBucket = await ctx.buckets.from(AVATARS_BUCKET_NAME);
-      avatarUrl = avatarsBucket.getPublicUrl(profile.avatarFilename).data
-        .publicUrl;
-    }
-
     return {
       address: profile.address,
       nickname: profile?.nickname,
       description: profile?.description,
-      avatarUrl: avatarUrl,
+      avatarUrl: getProfileAvatarUrl(
+        profile.address,
+        profile.avatarFilename,
+        await ctx.buckets.from(AVATARS_BUCKET_NAME)
+      ),
       minShowAmount: profile.minShowAmount.toString(),
     };
   }),
@@ -52,29 +49,15 @@ export const profileRouter = router({
         });
       }
 
-      let avatarUrl = "";
-      if (profile.avatarFilename) {
-        const avatarsBucket = await buckets.from(AVATARS_BUCKET_NAME);
-        const { data: avatarFiles, error } = await avatarsBucket.list();
-
-        // data === null only when error !== null and vice versa
-        if (avatarFiles) {
-          const avatarFile = avatarFiles.filter(
-            (avatarFile) => avatarFile.name === profile.avatarFilename
-          )[0];
-          avatarUrl = avatarsBucket.getPublicUrl(avatarFile.name).data
-            .publicUrl;
-        } else {
-          console.error("Unable to get items from avatars bucket");
-          console.error(error);
-        }
-      }
-
       return {
         address: profile.address,
         nickname: profile?.nickname,
         description: profile?.description,
-        avatarUrl: avatarUrl,
+        avatarUrl: getProfileAvatarUrl(
+          profile.address,
+          profile.avatarFilename,
+          await ctx.buckets.from(AVATARS_BUCKET_NAME)
+        ),
         minShowAmount: profile.minShowAmount.toString(),
       };
     }),
@@ -88,18 +71,15 @@ export const profileRouter = router({
         return getDefaultProfile(input.address);
       }
 
-      let avatarUrl = "";
-      if (profile.avatarFilename) {
-        const avatarsBucket = await ctx.buckets.from(AVATARS_BUCKET_NAME);
-        avatarUrl = avatarsBucket.getPublicUrl(profile.avatarFilename).data
-          .publicUrl;
-      }
-
       return {
         address: profile.address,
         nickname: profile?.nickname,
         description: profile?.description,
-        avatarUrl: avatarUrl,
+        avatarUrl: getProfileAvatarUrl(
+          profile.address,
+          profile.avatarFilename,
+          await ctx.buckets.from(AVATARS_BUCKET_NAME)
+        ),
         minShowAmount: profile.minShowAmount.toString(),
       };
     }),
@@ -148,7 +128,7 @@ export const profileRouter = router({
         profile.minShowAmount = new Prisma.Decimal(input.minShowAmount);
       }
 
-      let avatarPublicUrl = "";
+      let avatarPublicUrl = getDefaultProfile(profile.address).avatarUrl;
       let newAvatarFilename = undefined;
       if (input.avatar) {
         newAvatarFilename = uuidv4();
