@@ -10,7 +10,8 @@ import {
   DESCRIPTION_MAX_LENGTH,
 } from "shared/constants";
 import React, { useState, useEffect } from "react";
-import { fileToBase64, isNumber } from "@lib/helpers";
+import { isNumber } from "shared/helpers";
+import { fileToBase64 } from "shared/utils/base64";
 import { ethers } from "ethers";
 import { Loader } from "@components/Loader";
 

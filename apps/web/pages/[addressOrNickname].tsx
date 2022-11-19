@@ -7,7 +7,7 @@ import { TextField } from "@components/TextField";
 import { EthIcon } from "@components/icons/EthIcon";
 import { useSendDonation } from "@hooks/useSendDonation";
 import { MESSAGE_MAX_LENGTH } from "shared/constants";
-import { formatBalance, isNumber } from "@lib/helpers";
+import { formatBalance, isNumber } from "shared/helpers";
 import { DonationModal } from "@components/DonationModal";
 import { Address, useAccount, useBalance } from "wagmi";
 import { Balance } from "@components/Balance";
