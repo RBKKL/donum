@@ -52,8 +52,8 @@ const EditDonationPage: NextPage = () => {
 
   useEffect(() => {
     if (profile.data) {
-      setNewNickname(profile.data?.nickname ?? "");
-      setNewDescription(profile.data?.description);
+      setNewNickname(profile.data.nickname ?? "");
+      setNewDescription(profile.data.description);
     }
   }, [profile.data]);
 
