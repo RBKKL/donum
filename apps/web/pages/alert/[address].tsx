@@ -47,7 +47,7 @@ const AlertPage: NextPage = () => {
     <div className="bg-green-screen h-full  w-full">
       {currentDonation && (
         <DonationAlert
-          src="/assets/images/default_avatar.gif"
+          src="/default_avatar.gif"
           amount={currentDonation.amount}
           sender={currentDonation.from}
           message={currentDonation.message}
