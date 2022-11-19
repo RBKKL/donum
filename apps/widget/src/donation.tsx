@@ -11,7 +11,7 @@ export const Donation: Component<DonationProps> = (props) => (
     <audio
       src="http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3"
       autoplay
-    ></audio>
+    />
     <div class="donation__image-container">
       <img
         class="donation__image"

@@ -1,5 +1,4 @@
 export const APP_NAME = "Donum";
-export const ALERT_PAGE_PATH = "/alert";
 export const DASHBOARD_PAGE_PATH = "/dashboard";
 export const CONTRACT_NAME = "DonationsStore";
 export const SIGN_IN_MESSAGE =
