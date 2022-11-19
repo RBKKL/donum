@@ -10,6 +10,7 @@ import Link from "next/link";
 import { Loader } from "@components/Loader";
 import { useSession } from "next-auth/react";
 import { trpc } from "@lib/trpc";
+import { routes } from "@lib/routes";
 
 const DashboardPage: NextPage = () => {
   const editProfileButtonHandler = () => {
@@ -50,7 +51,7 @@ const DashboardPage: NextPage = () => {
           onEditClick={editProfileButtonHandler}
           shortAddress
         />
-        <Link href={`/dashboard/edit/${recipientAddress}`} className="mt-3">
+        <Link href={routes.editProfile(recipientAddress)} className="mt-3">
           <Button
             text="Edit profile"
             icon={<EditIcon size="small" />}

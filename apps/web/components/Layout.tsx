@@ -4,9 +4,10 @@ import { useLogin } from "@hooks/useLogin";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useAccount } from "wagmi";
-import { DASHBOARD_PAGE_PATH, SessionStatus } from "shared/constants";
+import { SessionStatus } from "shared/constants";
 import { Loader } from "./Loader";
 import { ConnectWalletWarning } from "@components/ConnectWalletWarning";
+import { routes } from "@lib/routes";
 
 interface LayoutProps {
   children: ReactNode;
@@ -18,7 +19,7 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
   const { status } = useSession();
   const { isConnected } = useAccount();
 
-  const isSecured = router.pathname.includes(DASHBOARD_PAGE_PATH);
+  const isSecured = router.pathname.startsWith(routes.dashboard);
 
   useEffect(() => {
     if (isSecured && isConnected && status === "unauthenticated") {

@@ -6,7 +6,6 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import {
   avatarAcceptableFileExtensions,
-  DASHBOARD_PAGE_PATH,
   DESCRIPTION_MAX_LENGTH,
 } from "shared/constants";
 import React, { useState, useEffect } from "react";
@@ -14,6 +13,7 @@ import { isNumber } from "shared/helpers";
 import { fileToBase64 } from "shared/utils/base64";
 import { ethers } from "ethers";
 import { Loader } from "@components/Loader";
+import { routes } from "@lib/routes";
 
 const EditDonationPage: NextPage = () => {
   const router = useRouter();
@@ -66,7 +66,7 @@ const EditDonationPage: NextPage = () => {
   }
 
   if (mutation.isSuccess) {
-    router.push(DASHBOARD_PAGE_PATH);
+    router.push(routes.dashboard);
   }
 
   return (

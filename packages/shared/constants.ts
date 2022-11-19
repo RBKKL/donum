@@ -1,5 +1,4 @@
 export const APP_NAME = "Donum";
-export const DASHBOARD_PAGE_PATH = "/dashboard";
 export const CONTRACT_NAME = "DonationsStore";
 export const SIGN_IN_MESSAGE =
   "This will cost you nothing\nBelow is the technical information";
@@ -23,3 +22,5 @@ export enum SessionStatus {
   AUTHENTICATED = "authenticated",
   LOADING = "loading",
 }
+
+export const DEFAULT_ADDRESS = "0xAC0772000aa52CbF8a8dB501cC8caC03cDF01bf6";
