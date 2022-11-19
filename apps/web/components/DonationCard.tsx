@@ -1,7 +1,6 @@
 import { FC } from "react";
 import { BigNumber, ethers } from "ethers";
-import { formatAddress } from "shared/helpers";
-import { formatTimestamp } from "shared/helpers";
+import { formatAddress, formatTimestamp } from "shared/helpers";
 
 interface DonationCardProps {
   from: string;
