@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { FC } from "react";
 
 interface BorderedImageProps {
@@ -5,6 +6,7 @@ interface BorderedImageProps {
   height: number;
   width: number;
   alt: string;
+  layout?: "normal" | "fill";
 }
 
 export const BorderedImage: FC<BorderedImageProps> = ({
@@ -12,8 +14,13 @@ export const BorderedImage: FC<BorderedImageProps> = ({
   height,
   width,
   alt,
+  layout = "normal",
 }) => (
-  <div className="border-3 flex rounded-2xl">
+  <div
+    className={classNames("border-3 flex rounded-2xl", {
+      absolute: layout === "fill",
+    })}
+  >
     <img
       className="rounded-2xl"
       src={src}

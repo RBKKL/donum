@@ -27,33 +27,33 @@ const DashboardPage: NextPage = () => {
   }
 
   return (
-    <div className="flex flex-row flex-wrap justify-evenly">
-      <div className="flex grow-0 flex-col items-center">
+    <div className="flex w-full flex-col lg:flex-row justify-between self-start">
+      <div className="flex flex-col items-center px-24">
         <RecipientProfile
           avatarPath="/assets/images/default_avatar.gif"
           nickname="Nix"
-          address={recipientAddress}
-          onEditClick={editProfileButtonHandler}
-          shortAddress
         />
-        <Link href={`/dashboard/edit/${recipientAddress}`} className="mt-3">
+        <Link href={`/dashboard/edit/${recipientAddress}`}>
           <Button
             text="Edit profile"
             icon={<EditIcon size="small" />}
             size="small"
           />
         </Link>
-        <div className="mt-11 flex flex-row flex-nowrap">
-          <p className="mr-4">Total donations amount: </p>
-          {donations && (
-            <p className="font-medium">
-              {getTotalDonationsAmount(donations)} ETH
-            </p>
-          )}
+        <div className="pt-10">
+          <h2 className="text-center text-2xl text-white">Statistics</h2>
+          <p className="whitespace-nowrap pt-4 text-zinc-50">
+            Total donations amount:
+            {donations && (
+              <span className="pl-8 text-lg font-medium">
+                {getTotalDonationsAmount(donations)} ETH
+              </span>
+            )}
+          </p>
         </div>
       </div>
-      <div className="flew-wrap flex w-full max-w-5xl grow flex-col items-stretch justify-start">
-        <p className="my-3 self-center text-2xl font-semibold text-white">
+      <div className="flex grow flex-col items-center pt-10 lg:pt-0">
+        <p className="my-3 text-2xl font-semibold text-white">
           Donations history
         </p>
         {reverseArray(donations).map((donation, index) => (
