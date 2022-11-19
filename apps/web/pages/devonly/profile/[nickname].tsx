@@ -2,7 +2,7 @@ import { trpc } from "@lib/trpc";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { fileToBase64 } from "@lib/helpers";
+import { fileToBase64 } from "shared/helpers";
 import { avatarAcceptableFileExtensions } from "shared/constants";
 
 const ProfilePage: NextPage = () => {

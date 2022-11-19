@@ -1,4 +1,3 @@
-import { base64ToBlob } from "@lib/helpers";
 import StorageFileApi from "@supabase/storage-js/dist/module/packages/StorageFileApi";
 
 export const uploadImage = async (
@@ -6,7 +5,8 @@ export const uploadImage = async (
   imageBase64: string,
   filename: string
 ) => {
-  const blobImage = await base64ToBlob(imageBase64);
+  const base64Response = await fetch(imageBase64);
+  const blobImage = await base64Response.blob();
   const { error: uploadError } = await bucket.upload(filename, blobImage, {
     upsert: true,
   });

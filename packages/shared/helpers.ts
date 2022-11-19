@@ -1,9 +1,5 @@
-import { BigNumber } from "ethers";
 import { format } from "date-fns";
-export {
-  castToDonationObject,
-  getTotalDonationsAmount,
-} from "contracts/helpers";
+import { BigNumber } from "ethers";
 
 // TODO: check for optimal
 export const isNumber = (value: string): boolean =>
@@ -14,6 +10,10 @@ export const reverseArray = <T>(arr: T[] | undefined): T[] => {
     return [];
   }
   return [...arr].reverse();
+};
+
+export const formatTimestamp = (timestamp: BigNumber): string => {
+  return format(timestamp.mul(1000).toNumber(), "d MMMM yy  kk:mm");
 };
 
 export const formatAddress = (address?: string): string => {
@@ -31,10 +31,6 @@ export const formatAddress = (address?: string): string => {
       )}`;
 };
 
-export const formatTimestamp = (timestamp: BigNumber): string => {
-  return format(timestamp.mul(1000).toNumber(), "d MMMM yy  kk:mm");
-};
-
 export const fileToBase64 = (file: File): Promise<string | undefined> => {
   return new Promise((resolve, reject) => {
     const fileReader = new FileReader();
@@ -48,11 +44,6 @@ export const fileToBase64 = (file: File): Promise<string | undefined> => {
       reject(error);
     };
   });
-};
-
-export const base64ToBlob = async (base64string: string) => {
-  const base64Response = await fetch(base64string);
-  return await base64Response.blob();
 };
 
 export const formatBalance = (formattedBalance: string): string =>
