@@ -86,6 +86,7 @@ const SendDonationPage: NextPage = () => {
         avatarPath={profile.avatarUrl}
         nickname={profile.nickname || ""}
         address={recipientAddress}
+        shortAddress
       />
       <div className="flex w-full flex-col gap-4 pt-2 sm:max-w-4xl">
         <p className="break-words px-4 pb-4 text-left text-sm">
@@ -115,7 +116,7 @@ const SendDonationPage: NextPage = () => {
           placeholder="Type your message here..."
           value={message}
           onChange={onDonationMessageChange}
-          minRows={6}
+          minRows={5}
           maxLength={MESSAGE_MAX_LENGTH}
           footer={
             <p className="flex flex-row-reverse text-xs text-gray-400">

@@ -49,7 +49,7 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
 
   return (
     <div
-      className={`flex min-h-screen flex-col py-3 px-2 sm:px-8 ${inter.variable} font-inter`}
+      className={`flex min-h-screen flex-col px-2 pt-3 pb-32 sm:px-8 ${inter.variable} font-inter`}
     >
       <Header />
       <main className="flex grow items-center justify-center pt-12">

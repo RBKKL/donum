@@ -11,6 +11,7 @@ interface TextFieldProps {
   footer?: ReactNode;
   className?: string;
   variant?: "normal" | "outlined";
+  textSize?: "small" | "normal" | "large";
 }
 
 export const TextField: FC<TextFieldProps> = ({
@@ -29,7 +30,8 @@ export const TextField: FC<TextFieldProps> = ({
       {
         "h-full w-full flex-col rounded-2xl bg-zinc-700 p-4":
           variant === "normal",
-      }
+      },
+      { "text-sm": props.textSize === "small" }
     )}
   >
     <TextareaAutosize

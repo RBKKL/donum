@@ -13,10 +13,10 @@ export const AvatarUploader: FC<AvatarUploaderProps> = ({
   currentAvatarUrl,
 }) => {
   return (
-    <div className="relative h-40 w-40">
+    <div className="relative h-40 w-40 cursor-pointer">
       <label
         htmlFor="avatar-upload"
-        className="absolute inset-0 z-10 flex h-full w-full flex-col items-center justify-center bg-zinc-900/50"
+        className="absolute inset-0 z-10 flex h-full w-full cursor-pointer flex-col items-center justify-center bg-zinc-900/50"
       >
         <UploadIcon size="small" />
         <p className="pt-3">Upload avatar</p>

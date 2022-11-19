@@ -22,7 +22,7 @@ export const formatAddress = (address?: string): string => {
     return "";
   }
 
-  const leadingChars = 4;
+  const leadingChars = 6; // 0x + 4 chars
   const trailingChars = 4;
 
   return address.length < leadingChars + trailingChars

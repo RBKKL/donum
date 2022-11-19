@@ -25,8 +25,10 @@ export const RecipientProfile: FC<RecipientProfileProps> = ({
     <div className="flex flex-row flex-nowrap items-center gap-x-2">
       <p className="py-2 text-2xl font-semibold">{nickname}</p>
     </div>
-    <p className="align-center overflow-hidden text-ellipsis text-sm">
-      {address && (shortAddress ? formatAddress(address) : address)}
-    </p>
+    {address && (
+      <p className="align-center overflow-hidden text-ellipsis text-sm text-gray-400">
+        Address: {shortAddress ? formatAddress(address) : address}
+      </p>
+    )}
   </div>
 );
