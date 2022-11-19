@@ -3,7 +3,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { fileToBase64 } from "@donum/shared/utils/base64";
-import { avatarAcceptableFileExtensions } from "@donum/shared/constants";
+import { AVATAR_ACCEPTABLE_FILE_TYPES } from "@donum/shared/constants";
 
 const ProfilePage: NextPage = () => {
   const mutation = trpc.devOnlyProfile.edit.useMutation();
@@ -66,7 +66,7 @@ const ProfilePage: NextPage = () => {
           <input
             type="file"
             onChange={(e) => uploadNewAvatarToClient(e)}
-            accept={avatarAcceptableFileExtensions}
+            accept={AVATAR_ACCEPTABLE_FILE_TYPES}
           />
           <p>new description (optional): </p>
           <input

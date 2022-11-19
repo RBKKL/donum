@@ -9,8 +9,14 @@ import { BN } from "bn.js";
 
 export const NicknameFormat = z
   .string()
-  .min(NICKNAME_MIN_LENGTH)
-  .max(NICKNAME_MAX_LENGTH);
+  .refine(
+    (val) =>
+      val === "" ||
+      (val.length >= NICKNAME_MIN_LENGTH && val.length <= NICKNAME_MAX_LENGTH),
+    {
+      message: "Invalid nickname format",
+    }
+  );
 export const AddressFormat = z
   .string()
   .refine((val) => ethers.utils.isAddress(val), {
