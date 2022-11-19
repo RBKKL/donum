@@ -2,12 +2,7 @@ import { onMount, onError, onCleanup, Switch, Match } from "solid-js";
 import { createStore } from "solid-js/store";
 import { io, Socket } from "socket.io-client";
 import { Donation } from "./donation";
-
-interface Store {
-  socket?: Socket;
-  error?: Error;
-  donation?: string;
-}
+import { DonationType, Store } from "./types";
 
 export const Widget = () => {
   const [store, setStore] = createStore<Store>({});
@@ -20,7 +15,7 @@ export const Widget = () => {
     setStore("socket", socket);
   };
 
-  const showDonation = (donation: string) => {
+  const showDonation = (donation: DonationType) => {
     console.log(`new donation: ${donation}`);
     setStore("donation", donation);
     setTimeout(() => setStore("donation", undefined), 5000);
@@ -45,7 +40,7 @@ export const Widget = () => {
     });
 
     socket.on("new-donation", (donation) => {
-      showDonation(JSON.stringify(donation));
+      showDonation(donation);
     });
   });
 
