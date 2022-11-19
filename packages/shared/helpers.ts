@@ -31,20 +31,5 @@ export const formatAddress = (address?: string): string => {
       )}`;
 };
 
-export const fileToBase64 = (file: File): Promise<string | undefined> => {
-  return new Promise((resolve, reject) => {
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(file);
-
-    fileReader.onload = () => {
-      resolve(fileReader.result?.toString());
-    };
-
-    fileReader.onerror = (error) => {
-      reject(error);
-    };
-  });
-};
-
 export const formatBalance = (formattedBalance: string): string =>
   formattedBalance.substring(0, 7);
