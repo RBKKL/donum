@@ -7,7 +7,7 @@ import {
   usePrepareContractWrite,
 } from "wagmi";
 import { getContractAddressByChainId } from "@donum/contracts/helpers";
-import { DonationsStoreABI } from "@donum/contracts/constants";
+import { DonationsStoreABI } from "@donum/contracts/abi";
 
 export const useSendDonation = (
   recipientAddress: Address,

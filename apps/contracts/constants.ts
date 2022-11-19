@@ -1,5 +1,4 @@
 import DonationsStoreContractGoerli from "./deployments/goerli/DonationsStore.json";
-export { DonationsStoreABI } from "./artifacts/contracts/DonationsStore.sol/DonationsStoreABI";
 
 export const CHAIN_IDS = {
   mainnet: 1,

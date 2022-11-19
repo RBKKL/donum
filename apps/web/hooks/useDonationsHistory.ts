@@ -3,7 +3,7 @@ import { useContract, useNetwork, useProvider } from "wagmi";
 import type { NewDonationEventObject } from "@donum/contracts/types/DonationsStore";
 import { ethers } from "ethers";
 import { getContractAddressByChainId } from "@donum/contracts/helpers";
-import { DonationsStoreABI } from "@donum/contracts/constants";
+import { DonationsStoreABI } from "@donum/contracts/abi";
 
 export const useDonationsHistory = (recipientAddress: string) => {
   const { chain } = useNetwork();

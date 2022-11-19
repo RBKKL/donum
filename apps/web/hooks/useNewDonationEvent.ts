@@ -5,7 +5,7 @@ import {
   castToDonationObject,
   getContractAddressByChainId,
 } from "@donum/contracts/helpers";
-import { DonationsStoreABI } from "@donum/contracts/constants";
+import { DonationsStoreABI } from "@donum/contracts/abi";
 
 type NewDonationEventListener = (donation: NewDonationEventObject) => void;
 
