@@ -3,6 +3,7 @@ import { createStore } from "solid-js/store";
 import { io, Socket } from "socket.io-client";
 import { DonationAlert } from "./donation-alert";
 import { DonationInfo, WidgetStore } from "./types";
+import { DEFAULT_ALERT_DURATION } from "@donum/shared/constants";
 
 export const Widget = () => {
   const [store, setStore] = createStore<WidgetStore>({
@@ -22,7 +23,10 @@ export const Widget = () => {
   const showDonation = (donation: DonationInfo) => {
     console.log(`new donation: ${donation}`);
     setStore("donationInfo", donation);
-    setTimeout(() => setStore("donationInfo", undefined), 5000);
+    setTimeout(
+      () => setStore("donationInfo", undefined),
+      DEFAULT_ALERT_DURATION
+    );
   };
 
   onMount(() => {
