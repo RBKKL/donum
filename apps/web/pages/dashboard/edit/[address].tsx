@@ -72,9 +72,7 @@ const EditDonationPage: NextPage = () => {
   return (
     <div className="flex flex-col items-center text-center">
       <RecipientProfile
-        avatarPath={
-          profile.data.avatarUrl ?? "/assets/images/default_avatar.gif"
-        }
+        avatarPath={profile.data.avatarUrl ?? "/default_avatar.gif"}
         nickname={profile.data.nickname ?? ""}
         address={address}
       />

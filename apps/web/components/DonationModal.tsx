@@ -30,8 +30,7 @@ export const DonationModal: FC<DonationModalProps> = ({
         <div className="mb-3 flex justify-center py-8">
           <Image
             className="animate-spin"
-            src="/assets/svg/loader.svg"
-            layout="fixed"
+            src="/loader.svg"
             width={90}
             height={90}
             alt="icon for loading state"
@@ -51,8 +50,7 @@ export const DonationModal: FC<DonationModalProps> = ({
       <div>
         <div className="flex flex-col items-center justify-center py-8">
           <Image
-            src="/assets/svg/warning.svg"
-            layout="fixed"
+            src="/warning.svg"
             width={90}
             height={90}
             alt="icon for error result"
@@ -65,8 +63,7 @@ export const DonationModal: FC<DonationModalProps> = ({
       <div>
         <div className="flex flex-col items-center justify-center py-8">
           <Image
-            src="/assets/svg/arrow.svg"
-            layout="fixed"
+            src="/arrow.svg"
             width={90}
             height={90}
             alt="icon for success result"

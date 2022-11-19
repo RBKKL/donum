@@ -8,11 +8,6 @@ interface ResponsiveImageProps {
 
 export const ResponsiveImage: FC<ResponsiveImageProps> = ({ src, alt }) => (
   <div className="relative h-full w-full">
-    <Image
-      className="object-contain object-center"
-      src={src}
-      layout="fill"
-      alt={alt}
-    />
+    <Image className="object-contain object-center" src={src} alt={alt} fill />
   </div>
 );

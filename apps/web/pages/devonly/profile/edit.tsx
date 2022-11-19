@@ -17,7 +17,7 @@ const EditProfilePage: NextPage = () => {
   return (
     <div className="flex flex-col items-center text-center">
       <RecipientProfile
-        avatarPath="/assets/images/default_avatar.gif"
+        avatarPath="/default_avatar.gif"
         nickname="Nix"
         address={address}
       />

@@ -6,7 +6,7 @@ import { DonationInfo, WidgetStore } from "./types";
 
 export const Widget = () => {
   const [store, setStore] = createStore<WidgetStore>({
-    imageSrc: "/assets/default-image.gif",
+    imageSrc: "/assets/default_image.gif",
     soundSrc:
       "http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3",
   });
