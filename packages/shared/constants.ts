@@ -24,11 +24,3 @@ export enum SessionStatus {
   AUTHENTICATED = "authenticated",
   LOADING = "loading",
 }
-
-export const DEFAULT_PROFILE = {
-  address: null,
-  nickname: null,
-  description: "",
-  avatarUrl: "/assets/images/default_avatar.gif",
-  minShowAmount: "1000000000000000",
-};
