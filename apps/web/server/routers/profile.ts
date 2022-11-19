@@ -14,15 +14,13 @@ import { getDefaultProfile } from "@lib/profile";
 
 export const profileRouter = router({
   me: protectedProcedure.query(async ({ ctx }) => {
+    const address = ctx.session.user.name || "";
     const profile = await ctx.prisma.profile.findFirst({
-      where: { address: ctx.session.user.name || "" },
+      where: { address },
     });
 
     if (!profile) {
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "No account connected with this wallet, create account first",
-      });
+      return getDefaultProfile(address);
     }
 
     let avatarUrl = "";

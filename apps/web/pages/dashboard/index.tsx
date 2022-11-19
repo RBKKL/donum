@@ -22,16 +22,22 @@ const DashboardPage: NextPage = () => {
   const { donations, isLoading, isError, error } =
     useLiveDonationsHistory(recipientAddress);
 
-  const profile = trpc.profile.me.useQuery().data;
+  const {
+    data: profile,
+    isLoading: isProfileLoading,
+    isError: isProfileError,
+    error: profileError,
+  } = trpc.profile.me.useQuery();
 
-  if (isLoading) return <Loader />;
+  if (isLoading || isProfileLoading) return <Loader />;
 
-  if (!profile) return <div>You have no profile!</div>;
-
-  if (isError) {
+  if (isError || isProfileError) {
     console.error(error);
+    console.error(profileError);
     return <div>Error!</div>;
   }
+
+  if (!profile) return <div>You have no profile!</div>;
 
   return (
     <div className="flex flex-row flex-wrap justify-evenly">
