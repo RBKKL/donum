@@ -114,9 +114,9 @@ importers:
   apps/web:
     specifiers:
       '@donum/contracts': workspace:*
+      '@donum/prisma': workspace:*
       '@donum/shared': workspace:*
       '@donum/tsconfig': workspace:*
-      '@prisma/client': ^4.6.0
       '@rainbow-me/rainbowkit': ^0.8.0
       '@supabase/storage-js': ^2.0.0
       '@tanstack/react-query': ^4.14.5
@@ -139,9 +139,7 @@ importers:
       ethers: ^5.7.2
       next: ^13.0.2
       next-auth: ^4.16.4
-      next-transpile-modules: ^10.0.0
       postcss: ^8.4.18
-      prisma: ^4.6.0
       react: 18.2.0
       react-dom: 18.2.0
       react-icons: ^4.6.0
@@ -157,8 +155,8 @@ importers:
       zod: ^3.19.1
     dependencies:
       '@donum/contracts': link:../contracts
+      '@donum/prisma': link:../../packages/prisma
       '@donum/shared': link:../../packages/shared
-      '@prisma/client': 4.6.1_prisma@4.6.1
       '@rainbow-me/rainbowkit': 0.8.0_34cjc2jjasoiqsg4jltjjgnhi4
       '@supabase/storage-js': 2.0.0
       '@tanstack/react-query': 4.16.1_biqbaboplfbrettd7655fr4n2y
@@ -172,7 +170,6 @@ importers:
       ethers: 5.7.2
       next: 13.0.3_biqbaboplfbrettd7655fr4n2y
       next-auth: 4.16.4_ogpkrxaz2lg6nectum6dl66tn4
-      next-transpile-modules: 10.0.0
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-icons: 4.6.0_react@18.2.0
@@ -196,7 +193,6 @@ importers:
       eslint: 8.27.0
       eslint-config-next: 13.0.3_e3uo4sehh4zr4i6m57mkkxxv7y
       postcss: 8.4.19
-      prisma: 4.6.1
       tailwindcss: 3.2.4_postcss@8.4.19
       typescript: 4.9.3
 
@@ -237,6 +233,20 @@ importers:
       eslint-config-prettier: 8.5.0_eslint@8.27.0
       eslint-config-turbo: 0.0.4_eslint@8.27.0
       eslint-plugin-unused-imports: 2.0.0_mb5ommioozas4vcfu4l3k44vny
+      typescript: 4.9.3
+
+  packages/prisma:
+    specifiers:
+      '@prisma/client': ^4.6.1
+      '@types/node': 18.11.9
+      prisma: ^4.6.0
+      ts-node: ^10.9.1
+      typescript: 4.9.3
+    dependencies:
+      '@prisma/client': 4.6.1_prisma@4.6.1
+      '@types/node': 18.11.9
+      prisma: 4.6.1
+      ts-node: 10.9.1_wup25etrarvlqkprac7h35hj7u
       typescript: 4.9.3
 
   packages/shared:
@@ -1732,6 +1742,7 @@ packages:
   /@prisma/engines/4.6.1:
     resolution: {integrity: sha512-3u2/XxvxB+Q7cMXHnKU0CpBiUK1QWqpgiBv28YDo1zOIJE3FCF8DI2vrp6vuwjGt5h0JGXDSvmSf4D4maVjJdw==}
     requiresBuild: true
+    dev: false
 
   /@rainbow-me/rainbowkit/0.8.0_34cjc2jjasoiqsg4jltjjgnhi4:
     resolution: {integrity: sha512-4nqH5OGcNzYMe/fYSBU7qM8H102UzZ6PwURMA5z6puDct0BGpeBk0dofqaGATSDam+4RdEmKaqOz5r/1Lc3/0g==}
@@ -4264,14 +4275,6 @@ packages:
       - bufferutil
       - supports-color
       - utf-8-validate
-    dev: false
-
-  /enhanced-resolve/5.10.0:
-    resolution: {integrity: sha512-T0yTFjdpldGY8PmuXXR0PyQ1ufZpEGiHVrp7zHKB7jdR4qlmZHhONVM5AQOAWXuF/w3dnHbEQVrNptJgt7F+cQ==}
-    engines: {node: '>=10.13.0'}
-    dependencies:
-      graceful-fs: 4.2.10
-      tapable: 2.2.1
     dev: false
 
   /enquirer/2.3.6:
@@ -7253,12 +7256,6 @@ packages:
       uuid: 8.3.2
     dev: false
 
-  /next-transpile-modules/10.0.0:
-    resolution: {integrity: sha512-FyeJ++Lm2Fq31gbThiRCrJlYpIY9QaI7A3TjuhQLzOix8ChQrvn5ny4MhfIthS5cy6+uK1AhDRvxVdW17y3Xdw==}
-    dependencies:
-      enhanced-resolve: 5.10.0
-    dev: false
-
   /next/13.0.3_biqbaboplfbrettd7655fr4n2y:
     resolution: {integrity: sha512-rFQeepcenRxKzeKlh1CsmEnxsJwhIERtbUjmYnKZyDInZsU06lvaGw5DT44rlNp1Rv2MT/e9vffZ8vK+ytwXHA==}
     engines: {node: '>=14.6.0'}
@@ -7927,6 +7924,7 @@ packages:
     requiresBuild: true
     dependencies:
       '@prisma/engines': 4.6.1
+    dev: false
 
   /process-nextick-args/2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}
@@ -9366,11 +9364,6 @@ packages:
     transitivePeerDependencies:
       - ts-node
     dev: true
-
-  /tapable/2.2.1:
-    resolution: {integrity: sha512-GNzQvQTOIP6RyTfE2Qxb8ZVlNmw0n88vp1szwWRimP02mnTsx3Wtn5qRdqY9w2XduFNUgvOwhNnQsjwCp+kqaQ==}
-    engines: {node: '>=6'}
-    dev: false
 
   /text-encoding-utf-8/1.0.2:
     resolution: {integrity: sha512-8bw4MY9WjdsD2aMtO0OzOCY3pXGYNx2d2FfHRVUKkiCPDWjKuOlhLVASS+pD7VkLTVjW268LYJHwsnPFlBpbAg==}

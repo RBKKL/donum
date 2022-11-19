@@ -8,12 +8,12 @@
         "build": "next build",
         "start": "next start",
         "lint": "TIMING=1 tsc && eslint .",
-        "clean": "rimraf .next .turbo .vercel .cache node_modules tsconfig.tsbuildinfo",
-        "generate": "prisma db push",
-        "postinstall": "prisma generate"
+        "clean": "rimraf .next .turbo .vercel .cache node_modules tsconfig.tsbuildinfo"
     },
     "dependencies": {
-        "@prisma/client": "^4.6.0",
+        "@donum/contracts": "workspace:*",
+        "@donum/prisma": "workspace:*",
+        "@donum/shared": "workspace:*",
         "@rainbow-me/rainbowkit": "^0.8.0",
         "@supabase/storage-js": "^2.0.0",
         "@tanstack/react-query": "^4.14.5",
@@ -23,19 +23,16 @@
         "@trpc/server": "^10.0.0-rc.7",
         "bn.js": "^5.2.1",
         "classnames": "^2.3.2",
-        "@donum/contracts": "workspace:*",
         "date-fns": "^2.29.3",
         "ethers": "^5.7.2",
         "next": "^13.0.2",
         "next-auth": "^4.16.4",
-        "next-transpile-modules": "^10.0.0",
         "react": "18.2.0",
         "react-dom": "18.2.0",
         "react-icons": "^4.6.0",
         "react-modal": "^3.16.1",
         "react-textarea-autosize": "^8.3.4",
         "react-use": "^17.4.0",
-        "@donum/shared": "workspace:*",
         "siwe": "^2.0.5",
         "superjson": "^1.11.0",
         "uuid": "^9.0.0",
@@ -43,6 +40,7 @@
         "zod": "^3.19.1"
     },
     "devDependencies": {
+        "@donum/tsconfig": "workspace:*",
         "@types/bn.js": "^5.1.1",
         "@types/node": "18.11.9",
         "@types/react": "18.0.25",
@@ -53,9 +51,7 @@
         "eslint": "^8.27.0",
         "eslint-config-next": "^13.0.2",
         "postcss": "^8.4.18",
-        "prisma": "^4.6.0",
         "tailwindcss": "^3.2.2",
-        "@donum/tsconfig": "workspace:*",
         "typescript": "4.9.3"
     }
 }

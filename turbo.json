@@ -15,7 +15,8 @@
         "SERVICE_KEY",
         "DATABASE_URL",
         "NEXTAUTH_URL",
-        "NEXTAUTH_SECRET"
+        "NEXTAUTH_SECRET",
+        "CI"
     ],
     "pipeline": {
         "build": {

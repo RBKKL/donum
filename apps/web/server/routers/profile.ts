@@ -9,7 +9,7 @@ import {
 import { uploadImage, removeImage } from "@lib/bucketService";
 import { TRPCError } from "@trpc/server";
 import { v4 as uuidv4 } from "uuid";
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@donum/prisma";
 import { getDefaultProfile, getProfileAvatarUrl } from "@lib/profile";
 
 export const profileRouter = router({

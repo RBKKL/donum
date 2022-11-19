@@ -1,7 +1,7 @@
 // src/server/router/context.ts
 import type { inferAsyncReturnType } from "@trpc/server";
 import type { CreateNextContextOptions } from "@trpc/server/adapters/next";
-import { prisma } from "@server/prisma";
+import { prisma } from "@donum/prisma";
 import { buckets } from "@server/storage";
 import { Session, unstable_getServerSession } from "next-auth";
 import { getAuthOptions } from "../pages/api/auth/[...nextauth]";
