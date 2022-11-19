@@ -6,7 +6,7 @@ interface InputProps {
   error?: boolean;
   onChange?: (value: string) => void;
   onBlur?: () => void;
-  style?: "normal" | "minimalistic";
+  variant?: "normal" | "underlined";
   textSize?: "small" | "normal" | "large";
   maxLength?: number;
 }
@@ -15,7 +15,7 @@ export const Input: FC<InputProps> = ({
   onChange,
   rightCorner,
   error,
-  style = "normal",
+  variant = "normal",
   textSize = "normal",
   ...props
 }) => {
@@ -23,12 +23,12 @@ export const Input: FC<InputProps> = ({
     <div
       className={classNames(
         "flex items-center justify-between px-4 py-2",
-        { "rounded-2xl bg-zinc-700": style === "normal" },
-        { "outline outline-2 outline-red-500": style === "normal" && error },
-        { "border-b-2": style === "minimalistic" },
-        { "border-gray-400": style === "minimalistic" && !error },
+        { "rounded-2xl bg-zinc-700": variant === "normal" },
+        { "outline outline-2 outline-red-500": variant === "normal" && error },
+        { "border-b-2": variant === "underlined" },
+        { "border-gray-400": variant === "underlined" && !error },
         {
-          "border-red-500": style === "minimalistic" && error,
+          "border-red-500": variant === "underlined" && error,
         }
       )}
     >
@@ -38,7 +38,7 @@ export const Input: FC<InputProps> = ({
           { "text-lg": textSize === "small" },
           { "text-2xl font-semibold": textSize === "normal" },
           { "text-3xl": textSize === "large" },
-          { "text-center w-24": style === "minimalistic" }
+          { "text-center": variant === "underlined" }
         )}
         onChange={(e) => onChange?.(e.target.value)}
         {...props}

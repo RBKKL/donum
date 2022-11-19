@@ -10,13 +10,13 @@ interface TextFieldProps {
   maxLength?: number;
   footer?: ReactNode;
   className?: string;
-  style?: "normal" | "minimalistic";
+  variant?: "normal" | "outlined";
 }
 
 export const TextField: FC<TextFieldProps> = ({
   onChange,
   footer,
-  style = "normal",
+  variant = "normal",
   ...props
 }) => (
   <div
@@ -24,11 +24,11 @@ export const TextField: FC<TextFieldProps> = ({
       "flex",
       {
         "flex-col rounded-md border-2 border-gray-400 py-2 px-3":
-          style === "minimalistic",
+          variant === "outlined",
       },
       {
         "h-full w-full flex-col rounded-2xl bg-zinc-700 p-4":
-          style === "normal",
+          variant === "normal",
       }
     )}
   >

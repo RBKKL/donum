@@ -6,7 +6,7 @@ interface BorderedImageProps {
   height: number;
   width: number;
   alt: string;
-  layout?: "normal" | "fill";
+  absolute?: boolean;
 }
 
 export const BorderedImage: FC<BorderedImageProps> = ({
@@ -14,13 +14,9 @@ export const BorderedImage: FC<BorderedImageProps> = ({
   height,
   width,
   alt,
-  layout = "normal",
+  absolute,
 }) => (
-  <div
-    className={classNames("border-3 flex rounded-2xl", {
-      absolute: layout === "fill",
-    })}
-  >
+  <div className={classNames("border-3 flex rounded-2xl", { absolute })}>
     <img
       className="rounded-2xl"
       src={src}
