@@ -7,7 +7,7 @@
     "dev": "pnpm with-env prisma studio",
     "generate": "pnpm with-env prisma db push",
     "seed": "pnpm with-env prisma db seed",
-    "postinstall": "pnpm with-env prisma generate && pnpm seed"
+    "postinstall": "pnpm with-env prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^4.6.1",
