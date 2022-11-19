@@ -1,7 +1,5 @@
 {
     "name": "@donum/web",
-    "version": "0.1.0",
-    "description": "Donum web",
     "private": true,
     "scripts": {
         "dev": "next dev",

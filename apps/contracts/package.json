@@ -1,7 +1,5 @@
 {
     "name": "@donum/contracts",
-    "version": "0.1.0",
-    "description": "Donum smart contracts",
     "private": true,
     "scripts": {
         "generate": "hardhat compile && hardhat run scripts/generate_abi.ts",

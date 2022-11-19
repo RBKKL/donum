@@ -1,6 +1,5 @@
 {
   "name": "donum-monorepo",
-  "version": "0.1.0",
   "description": "Donum monorepo",
   "private": true,
   "packageManager": "pnpm@7.16.0",
@@ -19,13 +18,12 @@
     "clean": "turbo run clean --parallel"
   },
   "dependencies": {
+    "@donum/eslint-config-custom": "workspace:*",
     "@manypkg/cli": "^0.19.2",
     "dotenv-cli": "^6.0.0",
-    "eslint": "^8.27.0",
-    "@donum/eslint-config-custom": "workspace:*",
-    "my-lodash": "npm:lodash@^4.17.21",
+    "eslint": "^8.28.0",
     "prettier": "^2.7.1",
-    "prettier-plugin-solidity": "^1.0.0-rc.1",
+    "prettier-plugin-solidity": "^1.0.0",
     "prettier-plugin-tailwindcss": "^0.1.13",
     "rimraf": "^3.0.2",
     "turbo": "^1.6.3"
