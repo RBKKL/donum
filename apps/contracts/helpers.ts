@@ -1,4 +1,6 @@
-import { BigNumber, ethers } from "ethers";
+import { BigNumber } from "ethers";
+import { formatTokenAmount } from "../../packages/shared/helpers";
+import { CONTRACT_ADDRESSES } from "./constants";
 
 interface NewDonationEventObject {
   from: string;
@@ -21,10 +23,14 @@ export const castToDonationObject = (
 export const getTotalDonationsAmount = (
   donations: NewDonationEventObject[]
 ): string => {
-  const symbolsAfterComma = 5;
-  return Number(
-    ethers.utils.formatEther(
-      donations.reduce((a, b) => b.amount.add(a), BigNumber.from(0))
-    )
-  ).toFixed(symbolsAfterComma);
+  return formatTokenAmount(
+    donations.reduce((a, b) => b.amount.add(a), BigNumber.from(0))
+  );
+};
+
+export const getContractAddressByChainId = (
+  chainId: number | undefined
+): string | undefined => {
+  if (!chainId) return undefined;
+  return CONTRACT_ADDRESSES[chainId];
 };

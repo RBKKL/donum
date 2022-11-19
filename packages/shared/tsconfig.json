@@ -1,0 +1,9 @@
+{
+  "extends": "@donum/tsconfig/base.json",
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+  },
+  "include": ["**/*.ts"]
+}

@@ -2,5 +2,5 @@
 module.exports = {
   root: true,
   plugins: ["solid"],
-  extends: ["custom", "plugin:solid/typescript"],
+  extends: ["@donum/custom", "plugin:solid/typescript"],
 };

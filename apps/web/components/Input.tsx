@@ -8,6 +8,7 @@ interface InputProps {
   onBlur?: () => void;
   variant?: "normal" | "underlined";
   textSize?: "small" | "normal" | "large";
+  textWeight?: "normal" | "semibold";
   maxLength?: number;
 }
 
@@ -34,11 +35,12 @@ export const Input: FC<InputProps> = ({
     >
       <input
         className={classNames(
-          "flex bg-transparent outline-none",
-          { "text-lg": textSize === "small" },
-          { "text-2xl font-semibold": textSize === "normal" },
-          { "text-3xl": textSize === "large" },
-          { "text-center": variant === "underlined" }
+          "mr-2 flex w-full bg-transparent outline-none",
+          { "text-base": textSize === "small" },
+          { "text-xl": textSize === "normal" },
+          { "text-2xl": textSize === "large" },
+          { "text-center": variant === "underlined" },
+          { "font-semibold": props.textWeight === "semibold" }
         )}
         onChange={(e) => onChange?.(e.target.value)}
         {...props}

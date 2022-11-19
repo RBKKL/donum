@@ -2,8 +2,8 @@ import { trpc } from "@lib/trpc";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { fileToBase64 } from "shared/utils/base64";
-import { AVATAR_ACCEPTABLE_FILE_TYPES } from "shared/constants";
+import { fileToBase64 } from "@donum/shared/utils/base64";
+import { AVATAR_ACCEPTABLE_FILE_TYPES } from "@donum/shared/constants";
 
 const ProfilePage: NextPage = () => {
   const mutation = trpc.devOnlyProfile.edit.useMutation();

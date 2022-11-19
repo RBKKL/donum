@@ -1,5 +1,5 @@
 {
-  "name": "events-server",
+  "name": "@donum/events-server",
   "private": true,
   "scripts": {
     "dev": "tsx watch --clear-screen=false server.ts",
@@ -8,18 +8,19 @@
     "clean": "tsc --build --clean && rimraf .turbo node_modules dist"
   },
   "dependencies": {
+    "@donum/contracts": "workspace:*",
     "@fastify/cors": "^8.2.0",
-    "contracts": "workspace:*",
     "ethers": "^5.7.2",
-    "fastify": "^4.9.2",
+    "fastify": "^4.10.0",
     "fastify-socket.io": "^4.0.0",
     "mnemonist": "^0.39.5",
     "socket.io": "^4.5.3"
   },
   "devDependencies": {
-    "eslint": "^8.27.0",
-    "tsconfig": "workspace:*",
-    "tsx": "^3.11.0",
+    "@donum/eslint-config-custom": "workspace:*",
+    "@donum/tsconfig": "workspace:*",
+    "eslint": "^8.28.0",
+    "tsx": "^3.12.1",
     "typescript": "4.9.3"
   }
 }

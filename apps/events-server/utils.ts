@@ -1,4 +1,4 @@
-import { NewDonationEventObject } from "contracts/types/DonationsStore";
+import { NewDonationEventObject } from "@donum/contracts/types/DonationsStore";
 
 export const toDonationObjectForWidget = (donation: NewDonationEventObject) => {
   return {

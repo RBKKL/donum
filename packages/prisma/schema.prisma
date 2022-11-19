@@ -1,0 +1,23 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Profile {
+  id                  Int     @id @default(autoincrement())
+  nickname            String?  @unique
+  description         String  @default("")
+  address             String  @unique
+  avatarFilename      String?
+  // this type represents uint256
+  // default value - 0.001 ETH
+  // values are stored in WEI
+  minShowAmount Decimal @db.Decimal(78, 0)  @default(1000000000000000)
+}

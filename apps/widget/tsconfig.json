@@ -1,5 +1,5 @@
 {
-  "extends": "tsconfig/base.json",
+  "extends": "@donum/tsconfig/base.json",
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",

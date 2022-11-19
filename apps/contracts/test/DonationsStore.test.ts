@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
-import { CONTRACT_NAME } from "shared/constants";
+import { CONTRACT_NAME } from "@donum/shared/constants";
 import { DonationsStore } from "../typechain-types";
 
 describe(CONTRACT_NAME, async () => {

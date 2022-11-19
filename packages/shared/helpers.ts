@@ -1,5 +1,6 @@
 import { format } from "date-fns";
-import { BigNumber } from "ethers";
+import { BigNumber, BigNumberish } from "ethers";
+import { formatUnits } from "ethers/lib/utils";
 
 // TODO: check for optimal
 export const isNumber = (value: string): boolean =>
@@ -21,7 +22,7 @@ export const formatAddress = (address?: string): string => {
     return "";
   }
 
-  const leadingChars = 4;
+  const leadingChars = 6; // 0x + 4 chars
   const trailingChars = 4;
 
   return address.length < leadingChars + trailingChars
@@ -31,5 +32,13 @@ export const formatAddress = (address?: string): string => {
       )}`;
 };
 
-export const formatBalance = (formattedBalance: string): string =>
-  formattedBalance.substring(0, 7);
+export const formatTokenAmount = (
+  amount: BigNumberish,
+  units: string | BigNumberish = "ether", // ethers units or token decimals
+  decimals = 5 // number of decimals to show after the comma
+): string => {
+  const formattedAmount = formatUnits(amount, units);
+  const [integer, decimal] = formattedAmount.split(".");
+  const formattedDecimal = (decimal || "0").slice(0, decimals);
+  return `${integer}.${formattedDecimal}`;
+};

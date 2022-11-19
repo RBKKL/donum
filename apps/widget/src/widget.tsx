@@ -1,11 +1,16 @@
 import { onMount, onError, onCleanup, Switch, Match } from "solid-js";
 import { createStore } from "solid-js/store";
 import { io, Socket } from "socket.io-client";
-import { Donation } from "./donation";
-import { DonationType, Store } from "./types";
+import { DonationAlert } from "./donation-alert";
+import { DonationInfo, WidgetStore } from "./types";
+import { DEFAULT_ALERT_DURATION } from "@donum/shared/constants";
 
 export const Widget = () => {
-  const [store, setStore] = createStore<Store>({});
+  const [store, setStore] = createStore<WidgetStore>({
+    imageSrc: "/assets/default_image.gif",
+    soundSrc:
+      "http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3",
+  });
 
   const setError = (error: Error) => {
     setStore("error", error);
@@ -15,10 +20,13 @@ export const Widget = () => {
     setStore("socket", socket);
   };
 
-  const showDonation = (donation: DonationType) => {
+  const showDonation = (donation: DonationInfo) => {
     console.log(`new donation: ${donation}`);
-    setStore("donation", donation);
-    setTimeout(() => setStore("donation", undefined), 5000);
+    setStore("donationInfo", donation);
+    setTimeout(
+      () => setStore("donationInfo", undefined),
+      DEFAULT_ALERT_DURATION
+    );
   };
 
   onMount(() => {
@@ -54,8 +62,14 @@ export const Widget = () => {
 
   return (
     <Switch>
-      <Match when={!!store.donation}>
-        <Donation donation={store.donation!} />
+      <Match when={!!store.donationInfo}>
+        <DonationAlert
+          // donationInfo won't be undefined here, because of the Match
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          donationInfo={store.donationInfo!}
+          imageSrc={store.imageSrc}
+          soundSrc={store.soundSrc}
+        />
       </Match>
       <Match when={!!store.error}>Error: {store.error?.message}</Match>
     </Switch>

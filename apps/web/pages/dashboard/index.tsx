@@ -1,8 +1,8 @@
 import { NextPage } from "next";
 import { DonationCard } from "@components/DonationCard";
 import { RecipientProfile } from "@components/RecipientProfile";
-import { getTotalDonationsAmount } from "contracts/helpers";
-import { reverseArray } from "shared/helpers";
+import { getTotalDonationsAmount } from "@donum/contracts/helpers";
+import { reverseArray } from "@donum/shared/helpers";
 import { useLiveDonationsHistory } from "@hooks/useLiveDonationsHistory";
 import { Button } from "@components/Button";
 import { EditIcon } from "@components/icons/EditIcon";
@@ -10,10 +10,12 @@ import Link from "next/link";
 import { Loader } from "@components/Loader";
 import { useSession } from "next-auth/react";
 import { trpc } from "@lib/trpc";
+import { routes } from "@lib/routes";
 
 const DashboardPage: NextPage = () => {
   const { data: session } = useSession();
   // session, user and name can't be null here, because it's secured page and Layout will show warning
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const recipientAddress = session!.user!.name!;
 
   const { donations, isLoading, isError, error } =
@@ -43,7 +45,7 @@ const DashboardPage: NextPage = () => {
           avatarPath={profile.avatarUrl}
           nickname={profile.nickname || ""}
         />
-        <Link href={`/dashboard/edit/${recipientAddress}`}>
+        <Link href={routes.editProfile(recipientAddress)}>
           <Button
             text="Edit profile"
             icon={<EditIcon size="small" />}

@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { fontFamily } = require("tailwindcss/defaultTheme");
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -10,10 +12,7 @@ module.exports = {
         3: "3px",
       },
       fontFamily: {
-        inter: ["Inter", "sans-serif"],
-      },
-      colors: {
-        "green-screen": "#00FF00",
+        inter: ["var(--font-inter)", ...fontFamily.sans],
       },
     },
   },

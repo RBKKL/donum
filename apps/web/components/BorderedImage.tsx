@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import { FC } from "react";
+import Image from "next/image";
 
 interface BorderedImageProps {
   src: string;
@@ -17,7 +18,7 @@ export const BorderedImage: FC<BorderedImageProps> = ({
   absolute,
 }) => (
   <div className={classNames("border-3 flex rounded-2xl", { absolute })}>
-    <img
+    <Image
       className="rounded-2xl"
       src={src}
       height={height}

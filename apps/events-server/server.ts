@@ -2,8 +2,8 @@ import Fastify from "fastify";
 import socketioServer from "fastify-socket.io";
 import corsPlugin from "@fastify/cors";
 import { BiMap } from "mnemonist";
-import type { NewDonationEvent } from "contracts/types/DonationsStore";
-import { castToDonationObject } from "contracts/helpers";
+import type { NewDonationEvent } from "@donum/contracts/types/DonationsStore";
+import { castToDonationObject } from "@donum/contracts/helpers";
 import { DonationsStoreContract } from "./donations-store-contract";
 import { toDonationObjectForWidget } from "./utils";
 

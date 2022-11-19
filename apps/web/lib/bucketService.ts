@@ -1,5 +1,5 @@
 import StorageFileApi from "@supabase/storage-js/dist/module/packages/StorageFileApi";
-import { base64ToBlob } from "shared/utils/base64";
+import { base64ToBlob } from "@donum/shared/utils/base64";
 
 export const uploadImage = async (
   bucket: StorageFileApi,

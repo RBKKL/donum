@@ -6,8 +6,8 @@ import { Input } from "@components/Input";
 import { TextField } from "@components/TextField";
 import { EthIcon } from "@components/icons/EthIcon";
 import { useSendDonation } from "@hooks/useSendDonation";
-import { MESSAGE_MAX_LENGTH } from "shared/constants";
-import { formatBalance, isNumber } from "shared/helpers";
+import { MESSAGE_MAX_LENGTH } from "@donum/shared/constants";
+import { formatTokenAmount, isNumber } from "@donum/shared/helpers";
 import { DonationModal } from "@components/DonationModal";
 import { Address, useAccount, useBalance } from "wagmi";
 import { Balance } from "@components/Balance";
@@ -86,6 +86,7 @@ const SendDonationPage: NextPage = () => {
         avatarPath={profile.avatarUrl}
         nickname={profile.nickname || ""}
         address={recipientAddress}
+        shortAddress
       />
       <div className="flex w-full flex-col gap-4 pt-2 sm:max-w-4xl">
         <p className="break-words px-4 pb-4 text-left text-sm">
@@ -101,7 +102,12 @@ const SendDonationPage: NextPage = () => {
             <div className="flex flex-col items-end">
               <EthIcon />
               {balanceData && (
-                <Balance balance={formatBalance(balanceData.formatted)} />
+                <Balance
+                  balance={formatTokenAmount(
+                    balanceData.value,
+                    balanceData.decimals
+                  )}
+                />
               )}
             </div>
           }
@@ -110,7 +116,7 @@ const SendDonationPage: NextPage = () => {
           placeholder="Type your message here..."
           value={message}
           onChange={onDonationMessageChange}
-          minRows={6}
+          minRows={5}
           maxLength={MESSAGE_MAX_LENGTH}
           footer={
             <p className="flex flex-row-reverse text-xs text-gray-400">

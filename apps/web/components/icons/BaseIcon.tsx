@@ -27,7 +27,6 @@ export const BaseIcon: FC<BaseIconProps> = ({
   <Image
     src={src}
     alt={alt}
-    layout="fixed"
     width={sizes[size]}
     height={sizes[size]}
     onClick={onClick}

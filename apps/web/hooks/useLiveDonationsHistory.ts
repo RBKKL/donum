@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NewDonationEventObject } from "contracts/types/DonationsStore";
+import { NewDonationEventObject } from "@donum/contracts/types/DonationsStore";
 import { useDonationsHistory } from "@hooks/useDonationsHistory";
 import { useNewDonationEvent } from "./useNewDonationEvent";
 

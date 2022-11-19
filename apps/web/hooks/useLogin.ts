@@ -1,7 +1,7 @@
 import { useAccount, useNetwork, useSignMessage } from "wagmi";
 import { getCsrfToken, signIn } from "next-auth/react";
 import { SiweMessage } from "siwe";
-import { SIGN_IN_MESSAGE } from "shared/constants";
+import { SIGN_IN_MESSAGE } from "@donum/shared/constants";
 
 export const useLogin = () => {
   const { address } = useAccount();

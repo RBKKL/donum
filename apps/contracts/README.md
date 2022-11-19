@@ -4,12 +4,12 @@ Smart contracts for Donum
 
 ## Some smart-contract related tasks
 
-- Compile `npm run compile`
-- Run tests `npm test`
-- Run tests with gas report `REPORT_GAS=true npm test`
-- Deploy to Goerli testnet `npm run deploy:goerli`
-- Get help with Hardhat CLI `npx hardhat help`
-- Start localhost node `npx hardhat node`
+- Compile `pnpm compile`
+- Run tests `pnpm test`
+- Run tests with gas report `REPORT_GAS=true pnpm test`
+- Deploy to Goerli testnet `pnpm deploy:goerli`
+- Get help with Hardhat CLI `pnpm hardhat help`
+- Start localhost node `pnpm hardhat node`
 
 ## Learn More
 

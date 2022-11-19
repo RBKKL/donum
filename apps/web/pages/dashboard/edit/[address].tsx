@@ -4,16 +4,16 @@ import { trpc } from "@lib/trpc";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import {
-  DASHBOARD_PAGE_PATH,
   DESCRIPTION_MAX_LENGTH,
   NICKNAME_MAX_LENGTH,
   NICKNAME_MIN_LENGTH,
-} from "shared/constants";
+} from "@donum/shared/constants";
 import React, { useState, useEffect } from "react";
-import { isNumber } from "shared/helpers";
-import { fileToBase64 } from "shared/utils/base64";
+import { isNumber } from "@donum/shared/helpers";
+import { fileToBase64 } from "@donum/shared/utils/base64";
 import { ethers } from "ethers";
 import { Loader } from "@components/Loader";
+import { routes } from "@lib/routes";
 import { Input } from "@components/Input";
 import { EthIcon } from "@components/icons/EthIcon";
 import { AvatarUploader } from "@components/AvatarUploader";
@@ -64,7 +64,7 @@ const EditDonationPage: NextPage = () => {
   }
 
   if (mutation.isSuccess) {
-    router.push(DASHBOARD_PAGE_PATH);
+    router.push(routes.dashboard);
   }
 
   const isNicknameValid =
@@ -81,9 +81,11 @@ const EditDonationPage: NextPage = () => {
       <Input
         value={newNickname}
         onChange={setNewNickname}
-        variant="underlined"
         maxLength={NICKNAME_MAX_LENGTH}
         error={!isNicknameValid}
+        variant="underlined"
+        textSize="large"
+        textWeight="semibold"
       />
       <div className="flex w-full flex-col gap-4 pt-5 sm:max-w-4xl">
         <TextField
@@ -93,6 +95,7 @@ const EditDonationPage: NextPage = () => {
           minRows={6}
           maxLength={DESCRIPTION_MAX_LENGTH}
           variant="outlined"
+          textSize="small"
         />
         <h2 className="pt-8 text-2xl font-semibold">
           Donation notification settings
