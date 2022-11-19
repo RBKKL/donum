@@ -11,12 +11,6 @@ export const DESCRIPTION_MAX_LENGTH = 1024;
 export const avatarAcceptableFileExtensions =
   "image/png, image/gif, image/jpeg";
 
-export const CHAIN_IDS = {
-  mainnet: 1,
-  goerli: 5,
-  hardhat: 1337,
-};
-
 export enum SessionStatus {
   UNAUTHENTICATED = "unauthenticated",
   AUTHENTICATED = "authenticated",

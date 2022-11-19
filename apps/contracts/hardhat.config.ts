@@ -3,7 +3,7 @@ import { NetworkUserConfig } from "hardhat/types";
 import "@nomicfoundation/hardhat-toolbox";
 import "hardhat-deploy";
 import "tsconfig-paths/register";
-import { CHAIN_IDS } from "@donum/shared/constants";
+import { CHAIN_IDS } from "./constants";
 import { env } from "./env";
 
 const getChainConfig = (

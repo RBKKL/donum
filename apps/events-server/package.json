@@ -19,6 +19,7 @@
   "devDependencies": {
     "eslint": "^8.27.0",
     "@donum/tsconfig": "workspace:*",
+    "@donum/eslint-config-custom": "workspace:*",
     "tsx": "^3.11.0",
     "typescript": "4.9.3"
   }

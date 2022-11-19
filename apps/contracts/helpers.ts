@@ -1,4 +1,5 @@
 import { BigNumber, ethers } from "ethers";
+import { CONTRACT_ADDRESSES } from "./constants";
 
 interface NewDonationEventObject {
   from: string;
@@ -27,4 +28,11 @@ export const getTotalDonationsAmount = (
       donations.reduce((a, b) => b.amount.add(a), BigNumber.from(0))
     )
   ).toFixed(symbolsAfterComma);
+};
+
+export const getContractAddressByChainId = (
+  chainId: number | undefined
+): string | undefined => {
+  if (!chainId) return undefined;
+  return CONTRACT_ADDRESSES[chainId];
 };

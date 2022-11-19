@@ -28,7 +28,6 @@ importers:
 
   apps/contracts:
     specifiers:
-      '@donum/shared': workspace:*
       '@donum/tsconfig': workspace:*
       '@ethersproject/abi': ^5.7.0
       '@ethersproject/bytes': ^5.7.0
@@ -56,7 +55,6 @@ importers:
       typechain: ^8.1.1
       typescript: 4.9.3
     dependencies:
-      '@donum/shared': link:../../packages/shared
       '@donum/tsconfig': link:../../packages/tsconfig
       '@ethersproject/abi': 5.7.0
       '@ethersproject/bytes': 5.7.0
@@ -87,6 +85,7 @@ importers:
   apps/events-server:
     specifiers:
       '@donum/contracts': workspace:*
+      '@donum/eslint-config-custom': workspace:*
       '@donum/tsconfig': workspace:*
       '@fastify/cors': ^8.2.0
       eslint: ^8.27.0
@@ -106,6 +105,7 @@ importers:
       mnemonist: 0.39.5
       socket.io: 4.5.3
     devDependencies:
+      '@donum/eslint-config-custom': link:../../packages/eslint-config-custom
       '@donum/tsconfig': link:../../packages/tsconfig
       eslint: 8.27.0
       tsx: 3.12.1
@@ -251,11 +251,17 @@ importers:
 
   packages/shared:
     specifiers:
+      '@donum/tsconfig': workspace:*
+      '@types/node': 18.11.9
       date-fns: ^2.29.3
       ethers: ^5.7.2
+      typescript: 4.9.3
     dependencies:
+      '@donum/tsconfig': link:../tsconfig
+      '@types/node': 18.11.9
       date-fns: 2.29.3
       ethers: 5.7.2
+      typescript: 4.9.3
 
   packages/tsconfig:
     specifiers: {}

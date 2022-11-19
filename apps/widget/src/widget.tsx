@@ -55,6 +55,7 @@ export const Widget = () => {
   return (
     <Switch>
       <Match when={!!store.donation}>
+        {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
         <Donation donation={store.donation!} />
       </Match>
       <Match when={!!store.error}>Error: {store.error?.message}</Match>
