@@ -106,11 +106,14 @@ export const profileRouter = router({
         });
       }
 
+      if (input.nickname === "") {
+        profile.nickname = null;
+      }
       if (input.nickname) {
         const sameNicknameCheck = await ctx.prisma.profile.findFirst({
           where: { nickname: input.nickname },
         });
-        if (sameNicknameCheck) {
+        if (sameNicknameCheck && sameNicknameCheck.address !== input.address) {
           throw new TRPCError({
             code: "BAD_REQUEST",
             message: "This nickname is already used",

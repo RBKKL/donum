@@ -40,7 +40,7 @@ const EditDonationPage: NextPage = () => {
     if (!newMinShowAmount || isNumber(newMinShowAmount)) {
       mutation.mutate({
         address,
-        nickname: newNickname !== "" ? newNickname : undefined,
+        nickname: newNickname,
         avatar: newAvatar !== "" ? newAvatar : undefined,
         description: newDescription,
         minShowAmount:
@@ -50,6 +50,10 @@ const EditDonationPage: NextPage = () => {
       });
     }
   };
+
+  useEffect(() => {
+    setNewNickname(profile.data?.nickname ?? "");
+  }, [profile.data?.nickname]);
 
   useEffect(() => {
     if (!profile?.data?.description && profile.data?.description !== "") {
