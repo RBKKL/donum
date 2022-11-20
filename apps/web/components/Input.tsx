@@ -19,6 +19,7 @@ export const Input: FC<InputProps> = ({
   error,
   variant = "normal",
   textSize = "normal",
+  textWeight = "normal",
   ...props
 }) => {
   return (
@@ -41,7 +42,7 @@ export const Input: FC<InputProps> = ({
           { "text-xl": textSize === "normal" },
           { "text-2xl": textSize === "large" },
           { "text-center": variant === "underlined" },
-          { "font-semibold": props.textWeight === "semibold" }
+          { "font-semibold": textWeight === "semibold" }
         )}
         onChange={(e) => onChange?.(e.target.value)}
         {...props}

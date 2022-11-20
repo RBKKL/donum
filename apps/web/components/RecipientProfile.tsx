@@ -18,7 +18,7 @@ export const RecipientProfile: FC<RecipientProfileProps> = ({
   shortAddress,
   showAddress = true,
 }) => (
-  <div className="flex w-full flex-col items-center">
+  <div className="flex w-full flex-col items-center pb-4">
     <BorderedImage
       src={avatarPath}
       height={160}
@@ -26,14 +26,14 @@ export const RecipientProfile: FC<RecipientProfileProps> = ({
       alt="Recipient avatar"
     />
     {nickname && (
-      <div className="flex flex-row flex-nowrap items-center gap-x-2 pt-2 pb-0 text-2xl font-semibold">
+      <div className="flex flex-row flex-nowrap items-center gap-x-2 pt-2 text-2xl font-semibold">
         {nickname}
       </div>
     )}
     {showAddress && address && (
       <p
         className={classNames(
-          "align-center overflow-hidden text-ellipsis pb-4 text-sm text-gray-400",
+          "align-center overflow-hidden text-ellipsis text-sm text-gray-400",
           { "pt-2": !nickname }
         )}
       >

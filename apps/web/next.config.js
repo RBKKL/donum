@@ -13,4 +13,7 @@ module.exports = {
   eslint: {
     ignoreDuringBuilds: !!process.env.CI,
   },
+  images: {
+    domains: ["localhost"],
+  },
 };
