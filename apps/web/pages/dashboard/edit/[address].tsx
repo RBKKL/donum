@@ -52,8 +52,9 @@ const EditDonationPage: NextPage = () => {
 
   useEffect(() => {
     if (profile.data) {
-      setNewNickname(profile.data.nickname ?? "");
-      setNewDescription(profile.data.description);
+      if (profile.data.nickname) setNewNickname(profile.data.nickname);
+      if (profile.data.avatarUrl) setNewAvatar(profile.data.avatarUrl);
+      if (profile.data.description) setNewDescription(profile.data.description);
     }
   }, [profile.data]);
 
@@ -75,7 +76,7 @@ const EditDonationPage: NextPage = () => {
   return (
     <div className="flex w-full flex-col items-center text-center">
       <AvatarUploader
-        currentAvatarUrl={profile.data.avatarUrl ?? "/default_avatar.gif"}
+        currentAvatarUrl={newAvatar || "/default_avatar.gif"}
         onUpload={uploadNewAvatarToClient}
       />
       <Input
