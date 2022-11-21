@@ -27,11 +27,12 @@ export const profileRouter = router({
       address: profile.address,
       nickname: profile?.nickname,
       description: profile?.description,
-      avatarUrl: getProfileAvatarUrl(
-        profile.address,
-        profile.avatarFilename,
-        await ctx.buckets.from(AVATARS_BUCKET_NAME)
-      ),
+      avatarUrl: profile?.avatarFilename,
+      // avatarUrl: getProfileAvatarUrl(
+      //   profile.address,
+      //   profile.avatarFilename,
+      //   await ctx.buckets.from(AVATARS_BUCKET_NAME)
+      // ),
       minShowAmount: profile.minShowAmount.toString(),
     };
   }),
@@ -53,11 +54,12 @@ export const profileRouter = router({
         address: profile.address,
         nickname: profile?.nickname,
         description: profile?.description,
-        avatarUrl: getProfileAvatarUrl(
-          profile.address,
-          profile.avatarFilename,
-          await ctx.buckets.from(AVATARS_BUCKET_NAME)
-        ),
+        avatarUrl: profile?.avatarFilename,
+        // avatarUrl: getProfileAvatarUrl(
+        //   profile.address,
+        //   profile.avatarFilename,
+        //   await ctx.buckets.from(AVATARS_BUCKET_NAME)
+        // ),
         minShowAmount: profile.minShowAmount.toString(),
       };
     }),
@@ -75,11 +77,12 @@ export const profileRouter = router({
         address: profile.address,
         nickname: profile?.nickname,
         description: profile?.description,
-        avatarUrl: getProfileAvatarUrl(
-          profile.address,
-          profile.avatarFilename,
-          await ctx.buckets.from(AVATARS_BUCKET_NAME)
-        ),
+        avatarUrl: profile?.avatarFilename,
+        // avatarUrl: getProfileAvatarUrl(
+        //   profile.address,
+        //   profile.avatarFilename,
+        //   await ctx.buckets.from(AVATARS_BUCKET_NAME)
+        // ),
         minShowAmount: profile.minShowAmount.toString(),
       };
     }),
@@ -131,27 +134,15 @@ export const profileRouter = router({
         profile.minShowAmount = new Prisma.Decimal(input.minShowAmount);
       }
 
-      let avatarPublicUrl = getDefaultProfile(profile.address).avatarUrl;
-      let newAvatarFilename = undefined;
-      if (input.avatar) {
-        newAvatarFilename = uuidv4();
-        const avatarsBucket = await ctx.buckets.from(AVATARS_BUCKET_NAME);
-        if (profile.avatarFilename) {
-          await removeImage(avatarsBucket, profile.avatarFilename);
-        }
-        avatarPublicUrl = await uploadImage(
-          avatarsBucket,
-          input.avatar,
-          newAvatarFilename
-        );
-      }
+      const avatarPublicUrl =
+        input.avatarUrl || getDefaultProfile(profile.address).avatarUrl;
 
       profile = await ctx.prisma.profile.update({
         where: { address: input.address },
         data: {
           nickname: profile.nickname,
           description: profile.description,
-          avatarFilename: newAvatarFilename,
+          avatarFilename: input.avatarUrl,
           minShowAmount: profile.minShowAmount,
         },
       });

@@ -51,6 +51,7 @@ export const EditSchema = z.object({
   address: AddressFormat,
   nickname: NicknameFormat.optional(),
   description: DescriptionFormat.optional(),
-  avatar: AvatarFormat.optional(),
+  // avatar: AvatarFormat.optional(),
+  avatarUrl: z.string().optional(),
   minShowAmount: MinShowAmountFormat.optional(),
 });

@@ -25,7 +25,7 @@ export const AvatarUploader: FC<AvatarUploaderProps> = ({
           id="avatar-upload"
           type="file"
           onChange={(e) => e.target?.files?.[0] && onUpload(e.target.files[0])}
-          accept={AVATAR_ACCEPTABLE_FILE_TYPES}
+          accept={AVATAR_ACCEPTABLE_FILE_TYPES.join(",")}
         />
       </label>
       <BorderedImage

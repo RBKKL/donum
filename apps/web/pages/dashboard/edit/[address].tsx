@@ -22,25 +22,43 @@ const EditDonationPage: NextPage = () => {
   const router = useRouter();
   const [newNickname, setNewNickname] = useState("");
   const [newAvatar, setNewAvatar] = useState("");
+  const [avatarFile, setAvatarFile] = useState<File>();
   const [newDescription, setNewDescription] = useState("");
   const [newMinShowAmount, setNewMinShowAmount] = useState("");
   const address = router.query.address as string;
   const profile = trpc.profile.byAddress.useQuery({ address });
   const mutation = trpc.profile.edit.useMutation();
 
+  // TODO: remove base64 logic
   const uploadNewAvatarToClient = async (file: File) => {
+    setAvatarFile(file);
     const newAvatarBase64 = await fileToBase64(file);
     if (newAvatarBase64) {
       setNewAvatar(newAvatarBase64);
     }
   };
 
-  const editProfile = () => {
-    if (!newMinShowAmount || isNumber(newMinShowAmount)) {
+  const editProfile = async () => {
+    let avatarUrl: string | undefined;
+    if (avatarFile) {
+      // TODO: move avatar upload logic to separate function
+      const res = await fetch("/api/files/avatar");
+      const uploadUrl = await res.text();
+      const body = new FormData();
+      body.append("file", avatarFile);
+      const uploadRes = await fetch(uploadUrl, {
+        method: "POST",
+        body,
+      });
+      avatarUrl = await uploadRes.text();
+      console.log("avatarUrl", avatarUrl);
+    }
+
+    if (avatarFile || !newMinShowAmount || isNumber(newMinShowAmount)) {
       mutation.mutate({
         address,
         nickname: newNickname,
-        avatar: newAvatar !== "" ? newAvatar : undefined,
+        avatarUrl,
         description: newDescription,
         minShowAmount:
           newMinShowAmount !== ""
