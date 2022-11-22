@@ -43,7 +43,6 @@ const SendDonationPage: NextPage = () => {
   });
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const nickname = "Nix";
 
   const [donationAmount, setDonationAmount] = useState(DEFAULT_DONATION_AMOUNT);
   const [message, setMessage] = useState("");
@@ -142,7 +141,7 @@ const SendDonationPage: NextPage = () => {
         isError={isError}
         isLoading={isLoading}
         donationAmount={donationAmount}
-        nickname={nickname}
+        nickname={profile.nickname || profile.address}
       />
     </div>
   );
