@@ -99,7 +99,7 @@ const DashboardPage: NextPage = () => {
           showAddress={!profile.nickname}
           shortAddress
         />
-        <Link href={routes.editProfile(recipientAddress)}>
+        <Link href={routes.editProfile}>
           <Button
             text="Edit profile"
             icon={<EditIcon size="small" />}
