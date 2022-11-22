@@ -164,4 +164,13 @@ export const profileRouter = router({
         minShowAmount: profile.minShowAmount.toString(),
       };
     }),
+  availableNickname: publicProcedure
+    .input(z.object({ nickname: NicknameFormat }))
+    .query(async ({ ctx, input }) => {
+      // TODO: check that given nickname isn't one of the reversed words
+      const profile = await ctx.prisma.profile.findFirst({
+        where: { nickname: input.nickname },
+      });
+      return !profile;
+    }),
 });

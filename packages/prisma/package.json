@@ -7,6 +7,7 @@
     "dev": "pnpm with-env prisma studio",
     "generate": "pnpm with-env prisma db push",
     "seed": "pnpm with-env prisma db seed",
+    "migrate": "pnpm with-env prisma migrate dev",
     "postinstall": "pnpm with-env prisma generate"
   },
   "dependencies": {
