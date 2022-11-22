@@ -9,11 +9,7 @@ const SignInPage: NextPage = () => {
   const { login } = useLogin();
 
   const { connect } = useConnect({ connector });
-  const { data: session, status } = useSession();
-
-  if (status === "loading") {
-    return <div>Loading...</div>;
-  }
+  const { data: session } = useSession();
 
   return (
     <div>
