@@ -6,4 +6,5 @@ export const serverEnv = {
   SERVICE_KEY: process.env.SERVICE_KEY ?? "",
   NEXTAUTH_URL: process.env.NEXTAUTH_URL ?? "",
   NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET ?? "",
+  EVENTS_SERVER_URL: process.env.EVENTS_SERVER_URL ?? "",
 };

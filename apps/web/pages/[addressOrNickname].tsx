@@ -6,7 +6,10 @@ import { Input } from "@components/Input";
 import { TextField } from "@components/TextField";
 import { EthIcon } from "@components/icons/EthIcon";
 import { useSendDonation } from "@hooks/useSendDonation";
-import { MESSAGE_MAX_LENGTH } from "@donum/shared/constants";
+import {
+  DEFAULT_DONATION_AMOUNT,
+  MESSAGE_MAX_LENGTH,
+} from "@donum/shared/constants";
 import { formatTokenAmount, isNumber } from "@donum/shared/helpers";
 import { DonationModal } from "@components/DonationModal";
 import { Address, useAccount, useBalance } from "wagmi";
@@ -16,8 +19,6 @@ import { Button } from "@components/Button";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ethers } from "ethers";
 import { trpc } from "@lib/trpc";
-
-const DEFAULT_DONATION_AMOUNT = "0.001";
 
 const SendDonationPage: NextPage = () => {
   const router = useRouter();

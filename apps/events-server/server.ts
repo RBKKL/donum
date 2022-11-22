@@ -2,10 +2,14 @@ import Fastify from "fastify";
 import socketioServer from "fastify-socket.io";
 import corsPlugin from "@fastify/cors";
 import { BiMap } from "mnemonist";
-import type { NewDonationEvent } from "@donum/contracts/types/DonationsStore";
+import type {
+  NewDonationEvent,
+  NewDonationEventObject,
+} from "@donum/contracts/types/DonationsStore";
 import { castToDonationObject } from "@donum/contracts/helpers";
 import { DonationsStoreContract } from "./donations-store-contract";
 import { toDonationObjectForWidget } from "./utils";
+import { BigNumber } from "ethers";
 
 const clients = new BiMap<string, string>(); // address <-> socketId
 
@@ -37,17 +41,29 @@ app.ready((err) => {
   });
 });
 
+const emitNewDonationEvent = (donation: NewDonationEventObject) => {
+  app.log.info(`New donation: ${JSON.stringify(donation)}`);
+  const socketId = clients.get(donation.to);
+  if (socketId) {
+    app.io
+      .to(socketId)
+      .emit("new-donation", toDonationObjectForWidget(donation));
+  }
+};
+
+app.post("/test", (req) => {
+  const testDonation = JSON.parse(req.body as string);
+  emitNewDonationEvent({
+    ...testDonation,
+    amount: BigNumber.from(testDonation.amount),
+  });
+});
+
 DonationsStoreContract.on<NewDonationEvent>(
   DonationsStoreContract.filters.NewDonation(),
   (...donationArray) => {
     const donation = castToDonationObject(donationArray);
-    app.log.info(`New donation: ${JSON.stringify(donation)}`);
-    const socketId = clients.get(donation.to);
-    if (socketId) {
-      app.io
-        .to(socketId)
-        .emit("new-donation", toDonationObjectForWidget(donation));
-    }
+    emitNewDonationEvent(donation);
   }
 );
 

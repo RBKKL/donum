@@ -1,6 +1,7 @@
 import { z } from "zod";
 import {
   DESCRIPTION_MAX_LENGTH,
+  MESSAGE_MAX_LENGTH,
   NICKNAME_MAX_LENGTH,
   NICKNAME_MIN_LENGTH,
 } from "@donum/shared/constants";
@@ -22,7 +23,13 @@ export const AddressFormat = z
   .refine((val) => ethers.utils.isAddress(val), {
     message: "String must be in wallet format",
   });
+export const HexStringFormat = z
+  .string()
+  .refine((val) => ethers.utils.isHexString(val), {
+    message: "String must be in hex format",
+  });
 export const DescriptionFormat = z.string().max(DESCRIPTION_MAX_LENGTH);
+export const MessageFormat = z.string().max(MESSAGE_MAX_LENGTH);
 export const AvatarFormat = z.string().startsWith("data:image/");
 const MinShowAmountFormat = z.string().transform((val, ctx) => {
   try {
@@ -53,4 +60,11 @@ export const EditSchema = z.object({
   description: DescriptionFormat.optional(),
   avatar: AvatarFormat.optional(),
   minShowAmount: MinShowAmountFormat.optional(),
+});
+
+export const DonationSchema = z.object({
+  from: NicknameFormat.optional(),
+  to: AddressFormat,
+  amount: HexStringFormat,
+  message: MessageFormat.optional(),
 });

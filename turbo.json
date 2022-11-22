@@ -16,6 +16,7 @@
         "DATABASE_URL",
         "NEXTAUTH_URL",
         "NEXTAUTH_SECRET",
+        "EVENTS_SERVER_URL",
         "CI"
     ],
     "pipeline": {

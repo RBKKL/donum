@@ -2,6 +2,7 @@ export const APP_NAME = "Donum";
 export const CONTRACT_NAME = "DonationsStore";
 export const SIGN_IN_MESSAGE =
   "This will cost you nothing\nBelow is the technical information";
+export const DEFAULT_DONATION_AMOUNT = "0.001";
 
 export const MESSAGE_MAX_LENGTH = 256;
 export const NICKNAME_MIN_LENGTH = 3;
