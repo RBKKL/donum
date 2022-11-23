@@ -17,6 +17,7 @@ import { Input } from "@components/Input";
 import { EthIcon } from "@components/icons/EthIcon";
 import { AvatarUploader } from "@components/AvatarUploader";
 import { useUploadFiles } from "@hooks/useUploadFiles";
+import { useSession } from "next-auth/react";
 
 const EditDonationPage: NextPage = () => {
   const router = useRouter();
@@ -25,7 +26,11 @@ const EditDonationPage: NextPage = () => {
   const [avatarFile, setAvatarFile] = useState<File>();
   const [newDescription, setNewDescription] = useState("");
   const [newMinShowAmount, setNewMinShowAmount] = useState("");
-  const address = router.query.address as string;
+
+  const { data: session } = useSession();
+  // session, user and name can't be null here, because it's secured page and Layout will show warning
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const address = session!.user!.name!;
   const profile = trpc.profile.byAddress.useQuery({ address });
   const editProfile = trpc.profile.edit.useMutation();
   const uploadFiles = useUploadFiles();
