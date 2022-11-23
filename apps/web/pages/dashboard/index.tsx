@@ -107,9 +107,9 @@ const DashboardPage: NextPage = () => {
             size="small"
             onClick={() => mutation.mutate({ address: recipientAddress })}
           />
-          <Link href={routes.editProfile(recipientAddress)}>
+          <Link href={routes.settings}>
             <Button
-              text="Edit profile"
+              text="Settings"
               icon={<EditIcon size="small" />}
               size="small"
             />
