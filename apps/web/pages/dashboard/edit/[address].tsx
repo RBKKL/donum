@@ -26,7 +26,7 @@ const EditDonationPage: NextPage = () => {
   const [newAvatar, setNewAvatar] = useState("");
   const [newDescription, setNewDescription] = useState("");
   const [newMinShowAmount, setNewMinShowAmount] = useState("");
-  const [allowedNewNickname, setAllowedNewNickname] = useState(false);
+  const [availableNickname, setAvailableNickname] = useState(false);
   const address = router.query.address as string;
   const profile = trpc.profile.byAddress.useQuery({ address });
   const mutation = trpc.profile.edit.useMutation();
@@ -40,7 +40,7 @@ const EditDonationPage: NextPage = () => {
     }
   );
 
-  useDebounce(
+  const [isReady] = useDebounce(
     async () => {
       if (
         newNickname === profile?.data?.nickname ||
@@ -49,7 +49,7 @@ const EditDonationPage: NextPage = () => {
         return;
       }
       const result = await availableNewNicknameQuery.refetch();
-      setAllowedNewNickname(!!result.data);
+      setAvailableNickname(!!result.data);
     },
     NICKNAME_CHECK_ALLOWANCE_DEBOUNCE,
     [newNickname]
@@ -103,7 +103,23 @@ const EditDonationPage: NextPage = () => {
     newNickname === profile.data.nickname ||
     (newNickname.length >= NICKNAME_MIN_LENGTH &&
       newNickname.length <= NICKNAME_MAX_LENGTH &&
-      allowedNewNickname);
+      newNickname.match(/^(\w)*$/) &&
+      availableNickname);
+
+  let nicknameFormatInfo;
+  if (!isNicknameValid) {
+    if (
+      newNickname.length < NICKNAME_MIN_LENGTH ||
+      newNickname.length > NICKNAME_MAX_LENGTH
+    ) {
+      nicknameFormatInfo = `Nickname must be between ${NICKNAME_MIN_LENGTH} and ${NICKNAME_MAX_LENGTH} characters`;
+    } else if (!newNickname.match(/^(\w)*$/)) {
+      nicknameFormatInfo =
+        "Only alphanumeric and underscore characters are allowed in nickname";
+    } else {
+      nicknameFormatInfo = "This nickname is already taken";
+    }
+  }
 
   return (
     <div className="flex w-full flex-col items-center text-center">
@@ -114,11 +130,8 @@ const EditDonationPage: NextPage = () => {
       <Input
         value={newNickname}
         onChange={(e) => {
-          if (!e.match(/^(\w)*$/)) {
-            return;
-          }
           setNewNickname(e);
-          setAllowedNewNickname(true);
+          setAvailableNickname(true);
         }}
         maxLength={NICKNAME_MAX_LENGTH}
         error={!isNicknameValid}
@@ -127,6 +140,7 @@ const EditDonationPage: NextPage = () => {
         textSize="large"
         textWeight="semibold"
       />
+      <p className="text-sm">{nicknameFormatInfo}</p>
       <div className="flex w-full flex-col gap-4 pt-5 sm:max-w-4xl">
         <TextField
           placeholder="Type your description here..."
@@ -156,7 +170,14 @@ const EditDonationPage: NextPage = () => {
         <h3>Notification sound</h3>
         <input type="file" />
         <div className="flex flex-row-reverse">
-          <Button text="Save" onClick={editProfile} />
+          <Button
+            text="Save"
+            onClick={editProfile}
+            disabled={
+              !isNicknameValid ||
+              (!isReady() && newNickname !== profile.data.nickname)
+            }
+          />
         </div>
       </div>
     </div>
