@@ -1,6 +1,6 @@
 export const routes = {
   home: "/",
   dashboard: "/dashboard",
-  editProfile: "/dashboard/edit",
+  settings: "/dashboard/settings",
   donate: (addressOrNickname: string) => `/${addressOrNickname}`,
 };
