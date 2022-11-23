@@ -2,7 +2,7 @@
     "name": "@donum/web",
     "private": true,
     "scripts": {
-        "dev": "next dev",
+        "dev": "open-cli http://localhost:3000 && next dev",
         "build": "next build",
         "start": "next start",
         "lint": "TIMING=1 tsc && eslint .",
