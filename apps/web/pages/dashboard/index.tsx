@@ -18,6 +18,8 @@ const DashboardPage: NextPage = () => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const recipientAddress = session!.user!.name!;
 
+  const mutation = trpc.donation.sendDefaultTestDonation.useMutation();
+
   const {
     donations,
     isLoading: isDonationsLoading,
@@ -99,13 +101,20 @@ const DashboardPage: NextPage = () => {
           showAddress={!profile.nickname}
           shortAddress
         />
-        <Link href={routes.editProfile(recipientAddress)}>
+        <div className="flex flex-col items-center gap-2">
           <Button
-            text="Edit profile"
-            icon={<EditIcon size="small" />}
+            text="Send test donation alert"
             size="small"
+            onClick={() => mutation.mutate({ address: recipientAddress })}
           />
-        </Link>
+          <Link href={routes.editProfile(recipientAddress)}>
+            <Button
+              text="Edit profile"
+              icon={<EditIcon size="small" />}
+              size="small"
+            />
+          </Link>
+        </div>
         <div className="pt-10">
           <h2 className="text-center text-2xl font-semibold text-white">
             Statistics

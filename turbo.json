@@ -19,6 +19,7 @@
         "WEBAPP_BASE_URL",
         "REDIS_URL",
         "EVENTS_SERVER_URL",
+        "EVENT_SECRET",
         "CI"
     ],
     "pipeline": {

@@ -51,12 +51,18 @@ const emitNewDonationEvent = (donation: NewDonationEventObject) => {
   }
 };
 
-app.post("/test", (req) => {
+app.post("/test", (req, res) => {
+  if (req.headers.authorization !== process.env.EVENT_SECRET) {
+    res.status(403).send("Wrong secret");
+    return;
+  }
   const testDonation = JSON.parse(req.body as string);
+
   emitNewDonationEvent({
     ...testDonation,
     amount: BigNumber.from(testDonation.amount),
   });
+  res.status(200).send();
 });
 
 DonationsStoreContract.on<NewDonationEvent>(

@@ -51,25 +51,3 @@ export const MinShowAmountFormat = z.string().transform((val, ctx) => {
     return z.NEVER;
   }
 });
-
-export const AddSchema = z.object({
-  address: AddressFormat,
-  nickname: NicknameFormat.optional(),
-  description: DescriptionFormat.optional(),
-  avatar: AvatarFormat.optional(),
-});
-
-export const EditSchema = z.object({
-  address: AddressFormat,
-  nickname: NicknameFormat.optional(),
-  description: DescriptionFormat.optional(),
-  avatar: AvatarFormat.optional(),
-  minShowAmount: MinShowAmountFormat.optional(),
-});
-
-export const DonationSchema = z.object({
-  from: NicknameFormat.optional(),
-  to: AddressFormat,
-  amount: HexStringFormat,
-  message: MessageFormat.optional(),
-});
