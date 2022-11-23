@@ -1,10 +1,17 @@
 import { publicProcedure, router } from "@server/trpc";
 import { AVATARS_BUCKET_NAME, buckets } from "@server/storage";
-import { AddSchema } from "@server/inputSchemas";
+import {
+  AddressFormat,
+  AddSchema,
+  AvatarFormat,
+  DescriptionFormat,
+  NicknameFormat,
+} from "@server/input-formats";
 import { uploadImage } from "@lib/bucketService";
 import { TRPCError } from "@trpc/server";
 import { v4 as uuidv4 } from "uuid";
 import { profileRouter } from "@server/routers/profile";
+import { z } from "zod";
 
 // This router contains development only endpoints
 // They may work wrong or not work at all
@@ -37,44 +44,53 @@ export const devOnlyProfileRouter = router({
   }),
   byNickname: profileRouter.byNickname,
   byAddress: profileRouter.byAddress,
-  add: publicProcedure.input(AddSchema).mutation(async ({ ctx, input }) => {
-    let profile = await ctx.prisma.profile.findFirst({
-      where: { address: input.address },
-    });
-    if (profile) {
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "Account with this wallet is already added",
+  add: publicProcedure
+    .input(
+      z.object({
+        address: AddressFormat,
+        nickname: NicknameFormat.optional(),
+        description: DescriptionFormat.optional(),
+        avatar: AvatarFormat.optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      let profile = await ctx.prisma.profile.findFirst({
+        where: { address: input.address },
       });
-    }
+      if (profile) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Account with this wallet is already added",
+        });
+      }
 
-    let avatarPublicUrl = "";
-    let avatarFilename = null;
-    if (input.avatar) {
-      avatarFilename = uuidv4();
-      avatarPublicUrl = await uploadImage(
-        await ctx.buckets.from(AVATARS_BUCKET_NAME),
-        input.avatar,
-        avatarFilename
-      );
-    }
+      let avatarPublicUrl = "";
+      let avatarFilename = null;
+      if (input.avatar) {
+        avatarFilename = uuidv4();
+        avatarPublicUrl = await uploadImage(
+          await ctx.buckets.from(AVATARS_BUCKET_NAME),
+          input.avatar,
+          avatarFilename
+        );
+      }
 
-    profile = await ctx.prisma.profile.create({
-      data: {
-        address: input.address,
-        nickname: input.nickname,
-        description: input.description,
-        avatarFilename: avatarFilename,
-      },
-    });
+      profile = await ctx.prisma.profile.create({
+        data: {
+          address: input.address,
+          nickname: input.nickname,
+          description: input.description,
+          avatarFilename: avatarFilename,
+        },
+      });
 
-    return {
-      address: profile.address,
-      nickname: profile?.nickname,
-      description: profile?.description,
-      avatarUrl: avatarPublicUrl,
-      minShowAmount: profile.minShowAmount.toString(),
-    };
-  }),
+      return {
+        address: profile.address,
+        nickname: profile?.nickname,
+        description: profile?.description,
+        avatarUrl: avatarPublicUrl,
+        minShowAmount: profile.minShowAmount.toString(),
+      };
+    }),
   edit: profileRouter.edit,
 });

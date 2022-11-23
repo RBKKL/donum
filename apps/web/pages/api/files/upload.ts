@@ -1,37 +1,25 @@
 import fs from "fs";
-// import { Writable } from "stream";
-import formidable, { Options } from "formidable";
+import formidable from "formidable";
 import type { NextApiRequest, NextApiResponse, PageConfig } from "next";
-import { getUploadConfig } from "@lib/files";
+import { getUploadConfig } from "@server/uploads";
 import { buckets } from "@server/storage";
 
 // promisify formidable
-function parseForm(
+const parseForm = (
   req: NextApiRequest,
-  opts?: Parameters<typeof formidable>[0]
-): Promise<formidable.File> {
-  return new Promise((accept, reject) => {
+  opts?: formidable.Options
+): Promise<formidable.File> => {
+  return new Promise((resolve, reject) => {
     const form = formidable(opts);
 
     form.parse(req, (err, fields, files) => {
       if (err) {
         return reject(err);
       }
-      return accept(files.file as formidable.File);
+      return resolve(files.file as formidable.File);
     });
   });
-}
-
-// const fileConsumer = <T = unknown>(acc: T[]) => {
-//   const writable = new Writable({
-//     write: (chunk, _enc, next) => {
-//       acc.push(chunk);
-//       next();
-//     },
-//   });
-
-//   return writable;
-// };
+};
 
 export default async function getUploadAvatarUrl(
   req: NextApiRequest,
@@ -43,11 +31,11 @@ export default async function getUploadAvatarUrl(
     return;
   }
 
-  let uploadConfig: Options;
+  let uploadOptions: formidable.Options;
   let bucketName: string;
   try {
     const config = await getUploadConfig(id);
-    uploadConfig = config.options;
+    uploadOptions = config.options;
     bucketName = config.bucket;
   } catch (err) {
     res.status(400).send("Invalid id");
@@ -55,13 +43,10 @@ export default async function getUploadAvatarUrl(
   }
 
   try {
-    // const chunks: never[] = [];
     const file = await parseForm(req, {
-      ...uploadConfig,
-      // TODO: fix this
-      // fileWriteStreamHandler: () => fileConsumer(chunks),
+      ...uploadOptions,
     });
-    const fileBuffer = fs.readFileSync(file.filepath);
+    const fileBuffer = fs.readFileSync(file.filepath); // TODO: use streams
     const filename = file.newFilename;
 
     // TODO: remove previous avatar
@@ -76,13 +61,11 @@ export default async function getUploadAvatarUrl(
 
     res.status(200).send(bucket.getPublicUrl(filename).data.publicUrl);
   } catch (e) {
-    // handle errors
     console.error(e);
-    res.status(500).send("Error uploading image");
+    res.status(500).send("Error uploading file");
   }
 }
 
-// and don't forget
 export const config: PageConfig = {
   api: {
     bodyParser: false,

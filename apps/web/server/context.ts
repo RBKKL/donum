@@ -3,6 +3,7 @@ import type { inferAsyncReturnType } from "@trpc/server";
 import type { CreateNextContextOptions } from "@trpc/server/adapters/next";
 import { prisma } from "@donum/prisma";
 import { buckets } from "@server/storage";
+import { fileUploadsStore } from "@server/uploads";
 import { Session, unstable_getServerSession } from "next-auth";
 import { getAuthOptions } from "../pages/api/auth/[...nextauth]";
 
@@ -23,6 +24,7 @@ export const createContextInner = async ({ session }: CreateContextOptions) => {
     session,
     prisma,
     buckets,
+    fileUploadsStore,
   };
 };
 

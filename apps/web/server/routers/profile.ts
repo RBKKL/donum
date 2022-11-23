@@ -1,16 +1,14 @@
 import { z } from "zod";
 import { protectedProcedure, publicProcedure, router } from "@server/trpc";
-import { AVATARS_BUCKET_NAME } from "@server/storage";
 import {
-  EditSchema,
   NicknameFormat,
   AddressFormat,
-} from "@server/inputSchemas";
-import { uploadImage, removeImage } from "@lib/bucketService";
+  DescriptionFormat,
+  MinShowAmountFormat,
+} from "@server/input-formats";
 import { TRPCError } from "@trpc/server";
-import { v4 as uuidv4 } from "uuid";
 import { Prisma } from "@donum/prisma";
-import { getDefaultProfile, getProfileAvatarUrl } from "@lib/profile";
+import { getDefaultProfile } from "@lib/profile";
 
 export const profileRouter = router({
   me: protectedProcedure.query(async ({ ctx }) => {
@@ -87,7 +85,16 @@ export const profileRouter = router({
       };
     }),
   edit: protectedProcedure
-    .input(EditSchema)
+    .input(
+      z.object({
+        address: AddressFormat,
+        nickname: NicknameFormat.optional(),
+        description: DescriptionFormat.optional(),
+        // avatar: AvatarFormat.optional(),
+        avatarUrl: z.string().optional(),
+        minShowAmount: MinShowAmountFormat.optional(),
+      })
+    )
     .mutation(async ({ ctx, input }) => {
       // TODO: make this endpoint create profile if doesn't exist
       let profile = await ctx.prisma.profile.findFirst({

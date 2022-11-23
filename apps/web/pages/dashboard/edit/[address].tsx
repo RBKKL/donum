@@ -17,6 +17,7 @@ import { routes } from "@lib/routes";
 import { Input } from "@components/Input";
 import { EthIcon } from "@components/icons/EthIcon";
 import { AvatarUploader } from "@components/AvatarUploader";
+import { useUploadFiles } from "@hooks/useUploadFiles";
 
 const EditDonationPage: NextPage = () => {
   const router = useRouter();
@@ -27,7 +28,8 @@ const EditDonationPage: NextPage = () => {
   const [newMinShowAmount, setNewMinShowAmount] = useState("");
   const address = router.query.address as string;
   const profile = trpc.profile.byAddress.useQuery({ address });
-  const mutation = trpc.profile.edit.useMutation();
+  const editProfile = trpc.profile.edit.useMutation();
+  const uploadFiles = useUploadFiles();
 
   // TODO: remove base64 logic
   const uploadNewAvatarToClient = async (file: File) => {
@@ -38,24 +40,18 @@ const EditDonationPage: NextPage = () => {
     }
   };
 
-  const editProfile = async () => {
+  const onSave = async () => {
     let avatarUrl: string | undefined;
     if (avatarFile) {
-      // TODO: move avatar upload logic to separate function
-      const res = await fetch("/api/files/avatar");
-      const uploadUrl = await res.text();
-      const body = new FormData();
-      body.append("file", avatarFile);
-      const uploadRes = await fetch(uploadUrl, {
-        method: "POST",
-        body,
-      });
-      avatarUrl = await uploadRes.text();
-      console.log("avatarUrl", avatarUrl);
+      [avatarUrl] = await uploadFiles([
+        {
+          file: avatarFile,
+          type: "avatar",
+        },
+      ]);
     }
-
-    if (avatarFile || !newMinShowAmount || isNumber(newMinShowAmount)) {
-      mutation.mutate({
+    if (avatarUrl || !newMinShowAmount || isNumber(newMinShowAmount)) {
+      editProfile.mutate({
         address,
         nickname: newNickname,
         avatarUrl,
@@ -82,7 +78,7 @@ const EditDonationPage: NextPage = () => {
     return <div>Error</div>;
   }
 
-  if (mutation.isSuccess) {
+  if (editProfile.isSuccess) {
     router.push(routes.dashboard);
   }
 
@@ -136,7 +132,7 @@ const EditDonationPage: NextPage = () => {
         <h3>Notification sound</h3>
         <input type="file" />
         <div className="flex flex-row-reverse">
-          <Button text="Save" onClick={editProfile} />
+          <Button text="Save" onClick={onSave} />
         </div>
       </div>
     </div>
