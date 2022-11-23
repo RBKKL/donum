@@ -1,39 +1,27 @@
 import { z } from "zod";
 import { protectedProcedure, publicProcedure, router } from "@server/trpc";
-import { AVATARS_BUCKET_NAME } from "@server/storage";
 import {
-  EditSchema,
   NicknameFormat,
   AddressFormat,
-} from "@server/inputSchemas";
-import { uploadImage, removeImage } from "@lib/bucketService";
+  DescriptionFormat,
+  MinShowAmountFormat,
+} from "@server/input-formats";
 import { TRPCError } from "@trpc/server";
-import { v4 as uuidv4 } from "uuid";
 import { Prisma } from "@donum/prisma";
-import { getDefaultProfile, getProfileAvatarUrl } from "@lib/profile";
+import { populateProfileWithDefaultValues } from "@lib/profile";
 
 export const profileRouter = router({
   me: protectedProcedure.query(async ({ ctx }) => {
-    const address = ctx.session.user.name || "";
+    const address = ctx.session.user.name!; // protectedProcedure always returns existing user
     const profile = await ctx.prisma.profile.findFirst({
       where: { address },
     });
 
     if (!profile) {
-      return getDefaultProfile(address);
+      return populateProfileWithDefaultValues({ address });
     }
 
-    return {
-      address: profile.address,
-      nickname: profile?.nickname,
-      description: profile?.description,
-      avatarUrl: getProfileAvatarUrl(
-        profile.address,
-        profile.avatarFilename,
-        await ctx.buckets.from(AVATARS_BUCKET_NAME)
-      ),
-      minShowAmount: profile.minShowAmount.toString(),
-    };
+    return populateProfileWithDefaultValues(profile);
   }),
   byNickname: publicProcedure
     .input(z.object({ nickname: NicknameFormat }))
@@ -49,17 +37,7 @@ export const profileRouter = router({
         });
       }
 
-      return {
-        address: profile.address,
-        nickname: profile?.nickname,
-        description: profile?.description,
-        avatarUrl: getProfileAvatarUrl(
-          profile.address,
-          profile.avatarFilename,
-          await ctx.buckets.from(AVATARS_BUCKET_NAME)
-        ),
-        minShowAmount: profile.minShowAmount.toString(),
-      };
+      return populateProfileWithDefaultValues(profile);
     }),
   byAddress: publicProcedure
     .input(z.object({ address: AddressFormat }))
@@ -68,25 +46,23 @@ export const profileRouter = router({
         where: { address: input.address },
       });
       if (!profile) {
-        return getDefaultProfile(input.address);
+        return populateProfileWithDefaultValues({ address: input.address });
       }
 
-      return {
-        address: profile.address,
-        nickname: profile?.nickname,
-        description: profile?.description,
-        avatarUrl: getProfileAvatarUrl(
-          profile.address,
-          profile.avatarFilename,
-          await ctx.buckets.from(AVATARS_BUCKET_NAME)
-        ),
-        minShowAmount: profile.minShowAmount.toString(),
-      };
+      return populateProfileWithDefaultValues(profile);
     }),
   edit: protectedProcedure
-    .input(EditSchema)
+    .input(
+      z.object({
+        address: AddressFormat,
+        nickname: NicknameFormat.optional(),
+        description: DescriptionFormat.optional(),
+        avatarUrl: z.string().url().optional(),
+        minShowAmount: MinShowAmountFormat.optional(),
+      })
+    )
     .mutation(async ({ ctx, input }) => {
-      // TODO: make this endpoint create profile if doesn't exist
+      // TODO: make this endpoint create profile if it doesn't exist
       let profile = await ctx.prisma.profile.findFirst({
         where: { address: input.address },
       });
@@ -131,38 +107,17 @@ export const profileRouter = router({
         profile.minShowAmount = new Prisma.Decimal(input.minShowAmount);
       }
 
-      let avatarPublicUrl = getDefaultProfile(profile.address).avatarUrl;
-      let newAvatarFilename = undefined;
-      if (input.avatar) {
-        newAvatarFilename = uuidv4();
-        const avatarsBucket = await ctx.buckets.from(AVATARS_BUCKET_NAME);
-        if (profile.avatarFilename) {
-          await removeImage(avatarsBucket, profile.avatarFilename);
-        }
-        avatarPublicUrl = await uploadImage(
-          avatarsBucket,
-          input.avatar,
-          newAvatarFilename
-        );
-      }
-
       profile = await ctx.prisma.profile.update({
         where: { address: input.address },
         data: {
           nickname: profile.nickname,
           description: profile.description,
-          avatarFilename: newAvatarFilename,
+          avatarUrl: input.avatarUrl,
           minShowAmount: profile.minShowAmount,
         },
       });
 
-      return {
-        address: profile.address,
-        nickname: profile?.nickname,
-        description: profile?.description,
-        avatarUrl: avatarPublicUrl,
-        minShowAmount: profile.minShowAmount.toString(),
-      };
+      return populateProfileWithDefaultValues(profile);
     }),
   availableNickname: publicProcedure
     .input(z.object({ nickname: NicknameFormat }))

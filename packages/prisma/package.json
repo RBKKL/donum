@@ -4,8 +4,8 @@
   "scripts": {
     "clean": "rimraf .turbo node_modules",
     "with-env": "dotenv -e ../../.env",
-    "dev": "pnpm with-env prisma studio",
-    "generate": "pnpm with-env prisma db push",
+    "dev": "pnpm with-env --  prisma studio -b none",
+    "generate": "pnpm with-env -- prisma db push --accept-data-loss",
     "seed": "pnpm with-env prisma db seed",
     "migrate": "pnpm with-env prisma migrate dev",
     "postinstall": "pnpm with-env prisma generate"

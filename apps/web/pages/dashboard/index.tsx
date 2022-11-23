@@ -93,15 +93,15 @@ const DashboardPage: NextPage = () => {
     <div className="flex w-full flex-col justify-between self-start lg:flex-row">
       <div className="flex min-w-[30%] flex-col items-center">
         <RecipientProfile
-          avatarPath={profile.avatarUrl}
+          avatarUrl={profile.avatarUrl}
           nickname={profile.nickname}
           address={recipientAddress}
           showAddress={!profile.nickname}
           shortAddress
         />
-        <Link href={routes.editProfile(recipientAddress)}>
+        <Link href={routes.settings}>
           <Button
-            text="Edit profile"
+            text="Settings"
             icon={<EditIcon size="small" />}
             size="small"
           />
