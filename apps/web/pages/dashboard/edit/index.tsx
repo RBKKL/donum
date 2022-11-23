@@ -10,19 +10,20 @@ import {
 } from "@donum/shared/constants";
 import React, { useState, useEffect } from "react";
 import { isNumber } from "@donum/shared/helpers";
-import { fileToBase64 } from "@donum/shared/utils/base64";
 import { ethers } from "ethers";
 import { Loader } from "@components/Loader";
 import { routes } from "@lib/routes";
 import { Input } from "@components/Input";
 import { EthIcon } from "@components/icons/EthIcon";
 import { AvatarUploader } from "@components/AvatarUploader";
+import { useUploadFiles } from "@hooks/useUploadFiles";
 import { useSession } from "next-auth/react";
 
 const EditDonationPage: NextPage = () => {
   const router = useRouter();
   const [newNickname, setNewNickname] = useState("");
-  const [newAvatar, setNewAvatar] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState(""); // empty string is for typescript
+  const [avatarFile, setAvatarFile] = useState<File>();
   const [newDescription, setNewDescription] = useState("");
   const [newMinShowAmount, setNewMinShowAmount] = useState("");
 
@@ -31,21 +32,29 @@ const EditDonationPage: NextPage = () => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const address = session!.user!.name!;
   const profile = trpc.profile.byAddress.useQuery({ address });
-  const mutation = trpc.profile.edit.useMutation();
+  const editProfile = trpc.profile.edit.useMutation();
+  const uploadFiles = useUploadFiles();
 
-  const uploadNewAvatarToClient = async (file: File) => {
-    const newAvatarBase64 = await fileToBase64(file);
-    if (newAvatarBase64) {
-      setNewAvatar(newAvatarBase64);
-    }
+  const setAvatar = (newAvatarFile: File) => {
+    setAvatarFile(newAvatarFile);
+    setAvatarUrl(URL.createObjectURL(newAvatarFile));
   };
 
-  const editProfile = () => {
-    if (!newMinShowAmount || isNumber(newMinShowAmount)) {
-      mutation.mutate({
+  const onSave = async () => {
+    let avatarUrl: string | undefined;
+    if (avatarFile) {
+      [avatarUrl] = await uploadFiles([
+        {
+          file: avatarFile,
+          type: "avatar",
+        },
+      ]);
+    }
+    if (avatarUrl || !newMinShowAmount || isNumber(newMinShowAmount)) {
+      editProfile.mutate({
         address,
         nickname: newNickname,
-        avatar: newAvatar !== "" ? newAvatar : undefined,
+        avatarUrl,
         description: newDescription,
         minShowAmount:
           newMinShowAmount !== ""
@@ -57,9 +66,9 @@ const EditDonationPage: NextPage = () => {
 
   useEffect(() => {
     if (profile.data) {
-      if (profile.data.nickname) setNewNickname(profile.data.nickname);
-      if (profile.data.avatarUrl) setNewAvatar(profile.data.avatarUrl);
-      if (profile.data.description) setNewDescription(profile.data.description);
+      setNewNickname(profile.data.nickname);
+      setAvatarUrl(profile.data.avatarUrl);
+      setNewDescription(profile.data.description);
     }
   }, [profile.data]);
 
@@ -69,7 +78,7 @@ const EditDonationPage: NextPage = () => {
     return <div>Error</div>;
   }
 
-  if (mutation.isSuccess) {
+  if (editProfile.isSuccess) {
     router.push(routes.dashboard);
   }
 
@@ -80,10 +89,7 @@ const EditDonationPage: NextPage = () => {
 
   return (
     <div className="flex w-full flex-col items-center text-center">
-      <AvatarUploader
-        currentAvatarUrl={newAvatar || "/default_avatar.gif"}
-        onUpload={uploadNewAvatarToClient}
-      />
+      <AvatarUploader currentAvatarUrl={avatarUrl} onUpload={setAvatar} />
       <Input
         value={newNickname}
         onChange={setNewNickname}
@@ -123,7 +129,7 @@ const EditDonationPage: NextPage = () => {
         <h3>Notification sound</h3>
         <input type="file" />
         <div className="flex flex-row-reverse">
-          <Button text="Save" onClick={editProfile} />
+          <Button text="Save" onClick={onSave} />
         </div>
       </div>
     </div>

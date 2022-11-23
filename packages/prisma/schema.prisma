@@ -12,12 +12,12 @@ datasource db {
 
 model Profile {
   id                  Int     @id @default(autoincrement())
-  nickname            String?  @unique
+  nickname            String? @unique
   description         String  @default("")
   address             String  @unique
-  avatarFilename      String?
+  avatarUrl           String?
   // this type represents uint256
   // default value - 0.001 ETH
   // values are stored in WEI
-  minShowAmount Decimal @db.Decimal(78, 0)  @default(1000000000000000)
+  minShowAmount       Decimal  @db.Decimal(78, 0)  @default(1000000000000000)
 }

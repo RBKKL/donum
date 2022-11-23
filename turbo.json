@@ -16,7 +16,9 @@
         "DATABASE_URL",
         "NEXTAUTH_URL",
         "NEXTAUTH_SECRET",
-        "CI"
+        "CI",
+        "WEBAPP_BASE_URL",
+        "REDIS_URL"
     ],
     "pipeline": {
         "build": {
