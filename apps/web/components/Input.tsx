@@ -27,7 +27,7 @@ export const Input: FC<InputProps> = ({
   return (
     <div
       className={classNames(
-        "flex items-center justify-between px-4 py-2",
+        "flex items-center justify-between px-4 pt-2 pb-1",
         { "rounded-2xl bg-zinc-700": variant === "normal" },
         { "outline outline-2 outline-red-500": variant === "normal" && error },
         { "border-b-2": variant === "underlined" },
