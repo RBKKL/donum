@@ -70,11 +70,12 @@ const SendDonationPage: NextPage = () => {
   }
 
   const isValidDonationAmount =
+    isNumber(donationAmount) &&
     balanceData?.value?.gt(parseUnits(donationAmount, balanceData.decimals)) &&
     parseUnits(donationAmount, balanceData.decimals).gt(0);
 
   const onDonationAmountChange = (amount: string) =>
-    isNumber(amount) && setDonationAmount(amount);
+    (isNumber(amount) || amount == "") && setDonationAmount(amount);
 
   const onDonationMessageChange = (message: string) => {
     setMessage(message);
