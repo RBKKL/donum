@@ -4,7 +4,7 @@ import { formatAddress } from "@donum/shared/helpers";
 import classNames from "classnames";
 
 interface RecipientProfileProps {
-  avatarPath: string;
+  avatarUrl: string;
   nickname?: string | null;
   address?: string;
   shortAddress?: boolean;
@@ -12,7 +12,7 @@ interface RecipientProfileProps {
 }
 
 export const RecipientProfile: FC<RecipientProfileProps> = ({
-  avatarPath,
+  avatarUrl,
   nickname,
   address,
   shortAddress,
@@ -20,7 +20,7 @@ export const RecipientProfile: FC<RecipientProfileProps> = ({
 }) => (
   <div className="flex w-full flex-col items-center pb-4">
     <BorderedImage
-      src={avatarPath}
+      src={avatarUrl}
       height={160}
       width={160}
       alt="Recipient avatar"

@@ -22,6 +22,7 @@
     "@manypkg/cli": "^0.19.2",
     "dotenv-cli": "^6.0.0",
     "eslint": "^8.28.0",
+    "open-cli": "^7.1.0",
     "prettier": "^2.7.1",
     "prettier-plugin-solidity": "^1.0.0",
     "prettier-plugin-tailwindcss": "^0.1.13",

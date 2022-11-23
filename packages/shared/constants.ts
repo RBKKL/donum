@@ -10,7 +10,13 @@ export const NICKNAME_MAX_LENGTH = 64;
 export const DESCRIPTION_MAX_LENGTH = 1024;
 export const DEFAULT_ALERT_DURATION = 5000; // 5 seconds
 
-export const AVATAR_ACCEPTABLE_FILE_TYPES = "image/png, image/gif, image/jpeg";
+export const AVATAR_MAX_SIZE = 1024 * 1024 * 10; // 10MB
+
+export const AVATAR_ACCEPTABLE_FILE_TYPES = [
+  "image/png",
+  "image/gif",
+  "image/jpeg",
+];
 
 export enum SessionStatus {
   UNAUTHENTICATED = "unauthenticated",

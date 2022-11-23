@@ -19,21 +19,25 @@ import { Button } from "@components/Button";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ethers } from "ethers";
 import { trpc } from "@lib/trpc";
+import { Loader } from "@components/Loader";
 
 const SendDonationPage: NextPage = () => {
   const router = useRouter();
   const addressOrNickname = router.query.addressOrNickname as string;
   const isAddress = ethers.utils.isAddress(addressOrNickname);
 
-  const profile = (
-    isAddress
-      ? trpc.profile.byAddress.useQuery({
-          address: addressOrNickname,
-        })
-      : trpc.profile.byNickname.useQuery({
-          nickname: addressOrNickname,
-        })
-  ).data;
+  const {
+    data: profile,
+    isLoading: isProfileLoading,
+    isError: isProfileError,
+    error: profileError,
+  } = isAddress
+    ? trpc.profile.byAddress.useQuery({
+        address: addressOrNickname,
+      })
+    : trpc.profile.byNickname.useQuery({
+        nickname: addressOrNickname,
+      });
 
   const recipientAddress = (profile?.address || addressOrNickname) as Address;
 
@@ -44,7 +48,6 @@ const SendDonationPage: NextPage = () => {
   });
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const nickname = "Nix";
 
   const [donationAmount, setDonationAmount] = useState(DEFAULT_DONATION_AMOUNT);
   const [message, setMessage] = useState("");
@@ -54,6 +57,13 @@ const SendDonationPage: NextPage = () => {
     donationAmount,
     message
   );
+
+  if (isProfileLoading) return <Loader />;
+
+  if (isProfileError) {
+    console.log(profileError);
+    return <div>Error!</div>;
+  }
 
   if (!profile) {
     return <div>No such profile: {addressOrNickname}</div>;
@@ -84,7 +94,7 @@ const SendDonationPage: NextPage = () => {
   return (
     <div className="flex w-full flex-col items-center text-center">
       <RecipientProfile
-        avatarPath={profile.avatarUrl}
+        avatarUrl={profile.avatarUrl}
         nickname={profile.nickname || ""}
         address={recipientAddress}
         shortAddress
@@ -143,7 +153,7 @@ const SendDonationPage: NextPage = () => {
         isError={isError}
         isLoading={isLoading}
         donationAmount={donationAmount}
-        nickname={nickname}
+        nickname={profile.nickname || profile.address}
       />
     </div>
   );

@@ -1,11 +1,11 @@
 import { router } from "@server/trpc";
 import { profileRouter } from "./profile";
-import { devOnlyProfileRouter } from "@server/routers/devOnlyProfile";
-import { donationRouter } from "@server/routers/donation";
+import { uploadsRouter } from "./uploads";
+import { donationRouter } from "./donation";
 
 export const appRouter = router({
   profile: profileRouter,
-  devOnlyProfile: devOnlyProfileRouter,
+  uploads: uploadsRouter,
   donation: donationRouter,
 });
 
