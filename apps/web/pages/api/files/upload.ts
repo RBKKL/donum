@@ -21,7 +21,7 @@ const parseForm = (
   });
 };
 
-export default async function getUploadAvatarUrl(
+export default async function upload(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
