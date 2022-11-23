@@ -34,7 +34,7 @@ const Alert: NextPage = () => {
     address,
   });
 
-  const mutation = trpc.donation.sendTestDonation.useMutation();
+  const sendTestDonation = trpc.donation.sendTestDonation.useMutation();
 
   if (isLoading) return <Loader />;
 
@@ -58,7 +58,7 @@ const Alert: NextPage = () => {
     <div className="flex w-full flex-col items-center text-center">
       <RecipientProfile
         avatarUrl={profile.avatarUrl}
-        nickname={profile.nickname || ""}
+        nickname={profile.nickname}
         address={address}
         shortAddress
       />
@@ -99,10 +99,10 @@ const Alert: NextPage = () => {
           <Button
             text="Send test donation"
             onClick={() =>
-              mutation.mutate({
+              sendTestDonation.mutate({
                 from,
                 to: address,
-                amount: ethers.utils.parseEther(amount).toHexString(),
+                amount: ethers.utils.parseUnits(amount, "ether").toString(),
                 message,
               })
             }

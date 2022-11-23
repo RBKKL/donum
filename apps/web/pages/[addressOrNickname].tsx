@@ -95,7 +95,7 @@ const SendDonationPage: NextPage = () => {
     <div className="flex w-full flex-col items-center text-center">
       <RecipientProfile
         avatarUrl={profile.avatarUrl}
-        nickname={profile.nickname || ""}
+        nickname={profile.nickname}
         address={recipientAddress}
         shortAddress
       />

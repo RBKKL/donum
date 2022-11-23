@@ -28,6 +28,7 @@ export const DEFAULT_ADDRESS = "0xAC0772000aa52CbF8a8dB501cC8caC03cDF01bf6";
 
 export const DEFAULT_TEST_DONATION = {
   from: "Test user",
-  amount: "0x112210f4768db400", // 1.23456789 ETH in hex representation,
+  amount:
+    "000000000000000000000000000000000000000000000000000000000001234567890000000000", // 1.23456789 ETH,
   message: "This is a test donation",
 };

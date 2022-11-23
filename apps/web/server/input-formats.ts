@@ -25,18 +25,13 @@ export const AddressFormat = z
     message: "String must be in wallet format",
   });
 
-export const HexStringFormat = z
-  .string()
-  .refine((val) => ethers.utils.isHexString(val), {
-    message: "String must be in hex format",
-  });
 export const DescriptionFormat = z.string().max(DESCRIPTION_MAX_LENGTH);
 
 export const MessageFormat = z.string().max(MESSAGE_MAX_LENGTH);
 
 export const AvatarFormat = z.string().startsWith("data:image/");
 
-export const MinShowAmountFormat = z.string().transform((val, ctx) => {
+export const AmountFormat = z.string().transform((val, ctx) => {
   try {
     const valBN = new BN(val);
     if (valBN.isNeg()) {

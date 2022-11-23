@@ -18,7 +18,7 @@ const DashboardPage: NextPage = () => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const recipientAddress = session!.user!.name!;
 
-  const mutation = trpc.donation.sendDefaultTestDonation.useMutation();
+  const sendTestDonation = trpc.donation.sendTestDonation.useMutation();
 
   const {
     donations,
@@ -105,7 +105,7 @@ const DashboardPage: NextPage = () => {
           <Button
             text="Send test donation alert"
             size="small"
-            onClick={() => mutation.mutate({ address: recipientAddress })}
+            onClick={() => sendTestDonation.mutate()}
           />
           <Link href={routes.settings}>
             <Button
