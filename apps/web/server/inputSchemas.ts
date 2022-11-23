@@ -12,7 +12,9 @@ export const NicknameFormat = z
   .refine(
     (val) =>
       val === "" ||
-      (val.length >= NICKNAME_MIN_LENGTH && val.length <= NICKNAME_MAX_LENGTH),
+      (val.length >= NICKNAME_MIN_LENGTH &&
+        val.length <= NICKNAME_MAX_LENGTH &&
+        val.match(/^(\w)+$/)),
     {
       message: "Invalid nickname format",
     }

@@ -167,7 +167,11 @@ export const profileRouter = router({
   availableNickname: publicProcedure
     .input(z.object({ nickname: NicknameFormat }))
     .query(async ({ ctx, input }) => {
-      // TODO: check that given nickname isn't one of the reversed words
+      const reservedWords = await ctx.prisma.reservedWords.findMany();
+      if (reservedWords.map((record) => record.word).includes(input.nickname)) {
+        return false;
+      }
+
       const profile = await ctx.prisma.profile.findFirst({
         where: { nickname: input.nickname },
       });

@@ -7,6 +7,7 @@ import {
   DESCRIPTION_MAX_LENGTH,
   NICKNAME_MAX_LENGTH,
   NICKNAME_MIN_LENGTH,
+  NICKNAME_CHECK_ALLOWANCE_DEBOUNCE,
 } from "@donum/shared/constants";
 import React, { useState, useEffect } from "react";
 import { isNumber } from "@donum/shared/helpers";
@@ -17,6 +18,7 @@ import { routes } from "@lib/routes";
 import { Input } from "@components/Input";
 import { EthIcon } from "@components/icons/EthIcon";
 import { AvatarUploader } from "@components/AvatarUploader";
+import { useDebounce } from "react-use";
 
 const EditDonationPage: NextPage = () => {
   const router = useRouter();
@@ -24,9 +26,34 @@ const EditDonationPage: NextPage = () => {
   const [newAvatar, setNewAvatar] = useState("");
   const [newDescription, setNewDescription] = useState("");
   const [newMinShowAmount, setNewMinShowAmount] = useState("");
+  const [allowedNewNickname, setAllowedNewNickname] = useState(false);
   const address = router.query.address as string;
   const profile = trpc.profile.byAddress.useQuery({ address });
   const mutation = trpc.profile.edit.useMutation();
+  const availableNewNicknameQuery = trpc.profile.availableNickname.useQuery(
+    {
+      nickname: newNickname,
+    },
+    {
+      enabled: false,
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  useDebounce(
+    async () => {
+      if (
+        newNickname === profile?.data?.nickname ||
+        newNickname.length < NICKNAME_MIN_LENGTH
+      ) {
+        return;
+      }
+      const result = await availableNewNicknameQuery.refetch();
+      setAllowedNewNickname(!!result.data);
+    },
+    NICKNAME_CHECK_ALLOWANCE_DEBOUNCE,
+    [newNickname]
+  );
 
   const uploadNewAvatarToClient = async (file: File) => {
     const newAvatarBase64 = await fileToBase64(file);
@@ -40,7 +67,10 @@ const EditDonationPage: NextPage = () => {
       mutation.mutate({
         address,
         nickname: newNickname,
-        avatar: newAvatar !== "" ? newAvatar : undefined,
+        avatar:
+          newAvatar !== "" && newAvatar !== profile?.data?.avatarUrl
+            ? newAvatar
+            : undefined,
         description: newDescription,
         minShowAmount:
           newMinShowAmount !== ""
@@ -70,8 +100,10 @@ const EditDonationPage: NextPage = () => {
 
   const isNicknameValid =
     newNickname === "" ||
+    newNickname === profile.data.nickname ||
     (newNickname.length >= NICKNAME_MIN_LENGTH &&
-      newNickname.length <= NICKNAME_MAX_LENGTH);
+      newNickname.length <= NICKNAME_MAX_LENGTH &&
+      allowedNewNickname);
 
   return (
     <div className="flex w-full flex-col items-center text-center">
@@ -81,7 +113,13 @@ const EditDonationPage: NextPage = () => {
       />
       <Input
         value={newNickname}
-        onChange={setNewNickname}
+        onChange={(e) => {
+          if (!e.match(/^(\w)*$/)) {
+            return;
+          }
+          setNewNickname(e);
+          setAllowedNewNickname(true);
+        }}
         maxLength={NICKNAME_MAX_LENGTH}
         error={!isNicknameValid}
         placeholder="Nickname..."
