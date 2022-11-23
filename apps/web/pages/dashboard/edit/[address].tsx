@@ -10,7 +10,6 @@ import {
 } from "@donum/shared/constants";
 import React, { useState, useEffect } from "react";
 import { isNumber } from "@donum/shared/helpers";
-import { fileToBase64 } from "@donum/shared/utils/base64";
 import { ethers } from "ethers";
 import { Loader } from "@components/Loader";
 import { routes } from "@lib/routes";
@@ -22,7 +21,7 @@ import { useUploadFiles } from "@hooks/useUploadFiles";
 const EditDonationPage: NextPage = () => {
   const router = useRouter();
   const [newNickname, setNewNickname] = useState("");
-  const [newAvatar, setNewAvatar] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState(""); // empty string is for typescript
   const [avatarFile, setAvatarFile] = useState<File>();
   const [newDescription, setNewDescription] = useState("");
   const [newMinShowAmount, setNewMinShowAmount] = useState("");
@@ -31,13 +30,9 @@ const EditDonationPage: NextPage = () => {
   const editProfile = trpc.profile.edit.useMutation();
   const uploadFiles = useUploadFiles();
 
-  // TODO: remove base64 logic
-  const uploadNewAvatarToClient = async (file: File) => {
-    setAvatarFile(file);
-    const newAvatarBase64 = await fileToBase64(file);
-    if (newAvatarBase64) {
-      setNewAvatar(newAvatarBase64);
-    }
+  const setAvatar = (newAvatarFile: File) => {
+    setAvatarFile(newAvatarFile);
+    setAvatarUrl(URL.createObjectURL(newAvatarFile));
   };
 
   const onSave = async () => {
@@ -66,9 +61,9 @@ const EditDonationPage: NextPage = () => {
 
   useEffect(() => {
     if (profile.data) {
-      if (profile.data.nickname) setNewNickname(profile.data.nickname);
-      if (profile.data.avatarUrl) setNewAvatar(profile.data.avatarUrl);
-      if (profile.data.description) setNewDescription(profile.data.description);
+      setNewNickname(profile.data.nickname);
+      setAvatarUrl(profile.data.avatarUrl);
+      setNewDescription(profile.data.description);
     }
   }, [profile.data]);
 
@@ -89,10 +84,7 @@ const EditDonationPage: NextPage = () => {
 
   return (
     <div className="flex w-full flex-col items-center text-center">
-      <AvatarUploader
-        currentAvatarUrl={newAvatar || "/default_avatar.gif"}
-        onUpload={uploadNewAvatarToClient}
-      />
+      <AvatarUploader currentAvatarUrl={avatarUrl} onUpload={setAvatar} />
       <Input
         value={newNickname}
         onChange={setNewNickname}
