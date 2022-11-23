@@ -10,7 +10,7 @@ import {
   NICKNAME_CHECK_ALLOWANCE_DEBOUNCE,
 } from "@donum/shared/constants";
 import React, { useState, useEffect } from "react";
-import { isNumber } from "@donum/shared/helpers";
+import { isCorrectNickname, isNumber } from "@donum/shared/helpers";
 import { ethers } from "ethers";
 import { Loader } from "@components/Loader";
 import { routes } from "@lib/routes";
@@ -29,7 +29,6 @@ const EditDonationPage: NextPage = () => {
   const [newDescription, setNewDescription] = useState("");
   const [newMinShowAmount, setNewMinShowAmount] = useState("");
   const [availableNickname, setAvailableNickname] = useState(false);
-  const address = router.query.address as string;
 
   const { data: session } = useSession();
   // session, user and name can't be null here, because it's secured page and Layout will show warning
@@ -53,7 +52,7 @@ const EditDonationPage: NextPage = () => {
     async () => {
       if (
         newNickname === profile?.data?.nickname ||
-        newNickname.length < NICKNAME_MIN_LENGTH
+        !isCorrectNickname(newNickname)
       ) {
         return;
       }
@@ -114,10 +113,7 @@ const EditDonationPage: NextPage = () => {
   const isNicknameValid =
     newNickname === "" ||
     newNickname === profile.data.nickname ||
-    (newNickname.length >= NICKNAME_MIN_LENGTH &&
-      newNickname.length <= NICKNAME_MAX_LENGTH &&
-      newNickname.match(/^(\w)*$/) &&
-      availableNickname);
+    (isCorrectNickname(newNickname) && availableNickname);
 
   let nicknameFormatInfo;
   if (!isNicknameValid) {

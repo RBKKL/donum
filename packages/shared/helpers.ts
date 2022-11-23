@@ -1,6 +1,7 @@
 import { format } from "date-fns";
 import { BigNumber, BigNumberish } from "ethers";
 import { formatUnits } from "ethers/lib/utils";
+import { NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH } from "./constants";
 
 // TODO: check for optimal
 export const isNumber = (value: string): boolean =>
@@ -41,4 +42,12 @@ export const formatTokenAmount = (
   const [integer, decimal] = formattedAmount.split(".");
   const formattedDecimal = (decimal || "0").slice(0, decimals);
   return `${integer}.${formattedDecimal}`;
+};
+
+export const isCorrectNickname = (nickname: string) => {
+  return (
+    nickname.length >= NICKNAME_MIN_LENGTH &&
+    nickname.length <= NICKNAME_MAX_LENGTH &&
+    nickname.match(/^(\w)*$/)
+  );
 };

@@ -5,6 +5,7 @@ import {
   AddressFormat,
   DescriptionFormat,
   MinShowAmountFormat,
+  AvatarUrlFormat,
 } from "@server/input-formats";
 import { TRPCError } from "@trpc/server";
 import { Prisma } from "@donum/prisma";
@@ -57,7 +58,7 @@ export const profileRouter = router({
         address: AddressFormat,
         nickname: NicknameFormat.optional(),
         description: DescriptionFormat.optional(),
-        avatarUrl: z.string().url().optional(),
+        avatarUrl: AvatarUrlFormat.optional(),
         minShowAmount: MinShowAmountFormat.optional(),
       })
     )
@@ -122,8 +123,10 @@ export const profileRouter = router({
   availableNickname: publicProcedure
     .input(z.object({ nickname: NicknameFormat }))
     .query(async ({ ctx, input }) => {
-      const reservedWords = await ctx.prisma.reservedWords.findMany();
-      if (reservedWords.map((record) => record.word).includes(input.nickname)) {
+      const isReservedWord = await ctx.prisma.reservedWords.findUnique({
+        where: { word: input.nickname },
+      });
+      if (isReservedWord) {
         return false;
       }
 
