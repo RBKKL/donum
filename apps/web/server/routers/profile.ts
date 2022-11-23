@@ -1,10 +1,10 @@
 import { z } from "zod";
 import { protectedProcedure, publicProcedure, router } from "@server/trpc";
 import {
-  NicknameFormat,
   AddressFormat,
   DescriptionFormat,
   MinShowAmountFormat,
+  NicknameFormat,
 } from "@server/input-formats";
 import { TRPCError } from "@trpc/server";
 import { Prisma } from "@donum/prisma";
