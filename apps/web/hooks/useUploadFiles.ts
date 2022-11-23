@@ -15,7 +15,7 @@ export const useUploadFiles = () => {
         type: upload.type,
       });
       const form = new FormData();
-      form.append("file", upload.file);
+      form.append("file", upload.file); // this should be the same as the name in the server
       const uploadRes = await fetch(uploadUrl, {
         method: "POST",
         body: form,

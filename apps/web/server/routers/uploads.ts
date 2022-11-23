@@ -9,7 +9,7 @@ export const uploadsRouter = router({
     .input(z.object({ type: z.enum(UploadTypes) }))
     .mutation(async ({ ctx, input }) => {
       const id = uuidv4();
-      await ctx.fileUploadsStore.set(id, input.type);
+      await ctx.uploadsStore.set(id, input.type); // store the upload type for generated id in redis
       return `${serverEnv.WEBAPP_BASE_URL}/api/files/upload?id=${id}`;
     }),
 });

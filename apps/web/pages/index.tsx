@@ -13,9 +13,6 @@ const Home: NextPage = () => {
       <Link href={routes.dashboard} className="mt-3">
         <Button text="Dashboard" />
       </Link>
-      <Link href={`/devonly/sign-in/`} className="mt-3">
-        <Button text="Sign-in" />
-      </Link>
     </div>
   );
 };

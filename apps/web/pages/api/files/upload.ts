@@ -16,7 +16,7 @@ const parseForm = (
       if (err) {
         return reject(err);
       }
-      return resolve(files.file as formidable.File);
+      return resolve(files["file"] as formidable.File); // this should be the same as the name in the client
     });
   });
 };

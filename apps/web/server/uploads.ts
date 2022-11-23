@@ -17,9 +17,9 @@ type UploadConfig = {
   bucketName: string;
 };
 
-export const fileUploadsStore = new Keyv<UploadType>(serverEnv.REDIS_URL, {
+export const uploadsStore = new Keyv<UploadType>(serverEnv.REDIS_URL, {
   ttl: 1000 * 60, // 1 minute
-  namespace: "file-uploads",
+  namespace: "uploads",
 });
 
 export const uploadConfig: Record<UploadType, UploadConfig> = {
@@ -36,7 +36,7 @@ export const getUploadConfig = async (
   options: Options;
   bucket: string;
 }> => {
-  const uploadType = await fileUploadsStore.get(id);
+  const uploadType = await uploadsStore.get(id);
   if (!uploadType) {
     throw new Error("Invalid id");
   }
