@@ -1,20 +1,27 @@
-import StorageFileApi from "@supabase/storage-js/dist/module/packages/StorageFileApi";
+import { Prisma } from "@donum/prisma";
 
-export const getDefaultProfile = (address: string) => ({
-  address,
-  nickname: null,
-  description: "",
-  avatarUrl: "/default_avatar.gif",
-  minShowAmount: "1000000000000000", // 0.001 ETH
-});
-
-export const getProfileAvatarUrl = (
-  address: string,
-  avatarFilename: string | null,
-  avatarsBucket: StorageFileApi
-) => {
-  if (!avatarFilename) {
-    return getDefaultProfile(address).avatarUrl;
-  }
-  return avatarsBucket.getPublicUrl(avatarFilename).data.publicUrl;
+export type Profile = {
+  address: string;
+  nickname?: string | null;
+  description?: string;
+  avatarUrl?: string | null;
+  minShowAmount?: Prisma.Decimal;
 };
+
+export type PopulatedProfile = {
+  address: string;
+  nickname: string;
+  description: string;
+  avatarUrl: string;
+  minShowAmount: string;
+};
+
+export const populateProfileWithDefaultValues = (
+  profile: Profile
+): PopulatedProfile => ({
+  address: profile.address,
+  nickname: profile.nickname ?? "",
+  description: profile.description ?? "",
+  avatarUrl: profile.avatarUrl ?? "/default_avatar.gif",
+  minShowAmount: profile.minShowAmount?.toString() ?? "1000000000000000", // default is 0.001 ETH
+});

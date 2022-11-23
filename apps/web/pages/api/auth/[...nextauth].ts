@@ -10,9 +10,11 @@ import {
 import { JWT } from "next-auth/jwt";
 import { serverEnv } from "@env/server";
 
-export const getAuthOptions: (
+type GetAuthOptionsFn = (
   req: NextApiRequest | GetServerSidePropsContext["req"]
-) => NextAuthOptions = (req) => ({
+) => NextAuthOptions;
+
+export const getAuthOptions: GetAuthOptionsFn = (req) => ({
   providers: [
     CredentialsProvider({
       credentials: {

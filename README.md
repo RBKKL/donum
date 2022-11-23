@@ -6,5 +6,6 @@ Make donations to streamers with cryptocurrency
 
 - Create `.env` file from `.env.example` and fill all fields
 - Symlink (or copy) `.env` to all apps
+- Run `docker-compose up -d`
 - `pnpm i`
 - `pnpm dev`

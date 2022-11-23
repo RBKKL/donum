@@ -93,7 +93,7 @@ const DashboardPage: NextPage = () => {
     <div className="flex w-full flex-col justify-between self-start lg:flex-row">
       <div className="flex min-w-[30%] flex-col items-center">
         <RecipientProfile
-          avatarPath={profile.avatarUrl}
+          avatarUrl={profile.avatarUrl}
           nickname={profile.nickname}
           address={recipientAddress}
           showAddress={!profile.nickname}
