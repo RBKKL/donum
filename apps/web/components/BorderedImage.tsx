@@ -17,13 +17,16 @@ export const BorderedImage: FC<BorderedImageProps> = ({
   alt,
   absolute,
 }) => (
-  <div className={classNames("border-3 flex rounded-2xl", { absolute })}>
-    <Image
-      className="rounded-2xl"
-      src={src}
-      height={height}
-      width={width}
-      alt={alt}
-    />
+  <div
+    style={{ height: height, width: width }}
+    className={classNames(
+      "border-3 overflow-hidden rounded-2xl bg-zinc-50",
+      {
+        absolute,
+      },
+      { relative: !absolute }
+    )}
+  >
+    <Image className="object-cover" fill src={src} alt={alt} />
   </div>
 );
