@@ -120,6 +120,10 @@ const EditDonationPage: NextPage = () => {
       nicknameFormatInfo = "This nickname is already taken";
     }
   }
+  console.log("valid");
+  console.log(isNicknameValid);
+  console.log("ready");
+  console.log(isReady());
 
   return (
     <div className="flex w-full flex-col items-center text-center">
@@ -175,7 +179,9 @@ const EditDonationPage: NextPage = () => {
             onClick={editProfile}
             disabled={
               !isNicknameValid ||
-              (!isReady() && newNickname !== profile.data.nickname)
+              (!isReady() &&
+                newNickname !== profile.data.nickname &&
+                newNickname !== "")
             }
           />
         </div>

@@ -11,13 +11,11 @@ interface InputProps {
   textWeight?: "normal" | "semibold";
   maxLength?: number;
   placeholder?: string;
-  caption?: ReactNode;
 }
 
 export const Input: FC<InputProps> = ({
   onChange,
   rightCorner,
-  caption,
   error,
   variant = "normal",
   textSize = "normal",
@@ -25,36 +23,33 @@ export const Input: FC<InputProps> = ({
   ...props
 }) => {
   return (
-    <div>
-      <div
+    <div
+      className={classNames(
+        "flex items-center justify-between px-4 py-2",
+        { "rounded-2xl bg-zinc-700": variant === "normal" },
+        {
+          "outline outline-2 outline-red-500": variant === "normal" && error,
+        },
+        { "border-b-2": variant === "underlined" },
+        { "border-gray-400": variant === "underlined" && !error },
+        {
+          "border-red-500": variant === "underlined" && error,
+        }
+      )}
+    >
+      <input
         className={classNames(
-          "flex items-center justify-between px-4 py-2",
-          { "rounded-2xl bg-zinc-700": variant === "normal" },
-          {
-            "outline outline-2 outline-red-500": variant === "normal" && error,
-          },
-          { "border-b-2": variant === "underlined" },
-          { "border-gray-400": variant === "underlined" && !error },
-          {
-            "border-red-500": variant === "underlined" && error,
-          }
+          "mr-2 flex w-full bg-transparent outline-none",
+          { "text-base": textSize === "small" },
+          { "text-xl": textSize === "normal" },
+          { "text-2xl": textSize === "large" },
+          { "text-center": variant === "underlined" },
+          { "font-semibold": textWeight === "semibold" }
         )}
-      >
-        <input
-          className={classNames(
-            "mr-2 flex w-full bg-transparent outline-none",
-            { "text-base": textSize === "small" },
-            { "text-xl": textSize === "normal" },
-            { "text-2xl": textSize === "large" },
-            { "text-center": variant === "underlined" },
-            { "font-semibold": textWeight === "semibold" }
-          )}
-          onChange={(e) => onChange?.(e.target.value)}
-          {...props}
-        />
-        {rightCorner}
-      </div>
-      {caption}
+        onChange={(e) => onChange?.(e.target.value)}
+        {...props}
+      />
+      {rightCorner}
     </div>
   );
 };
