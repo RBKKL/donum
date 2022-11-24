@@ -2,6 +2,7 @@ import { StyledModal } from "@components/Modal";
 import Image from "next/image";
 import { Button } from "@components/Button";
 import { FC } from "react";
+import { Loader } from "./Loader";
 
 interface DonationModalProps {
   isOpen: boolean;
@@ -28,13 +29,7 @@ export const DonationModal: FC<DonationModalProps> = ({
     {isLoading ? (
       <div>
         <div className="mb-3 flex justify-center py-8">
-          <Image
-            className="animate-spin"
-            src="/loader.svg"
-            width={90}
-            height={90}
-            alt="icon for loading state"
-          />
+          <Loader size={90} color="orange" />
         </div>
         <div className="flex w-full flex-col items-center">
           <p className="mb-1 text-lg font-semibold">Waiting for confirmation</p>

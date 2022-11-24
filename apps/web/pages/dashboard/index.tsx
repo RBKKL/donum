@@ -43,7 +43,7 @@ const DashboardPage: NextPage = () => {
   if (!profile) return <div>You have no profile!</div>;
 
   const renderDonationsHistory = () => {
-    if (isDonationsLoading) return <Loader />;
+    if (isDonationsLoading) return <Loader size={40} />;
     if (isDonationsError) return <div>Error!</div>;
     if (!donations) return <div>No donations yet!</div>;
 
@@ -59,7 +59,7 @@ const DashboardPage: NextPage = () => {
   };
 
   const renderDonationsStats = () => {
-    if (isDonationsLoading) return <Loader />;
+    if (isDonationsLoading) return <Loader size={40} />;
     if (isDonationsError) return <div>Error!</div>;
     if (!donations) return <div>No donations yet!</div>;
 
@@ -106,7 +106,7 @@ const DashboardPage: NextPage = () => {
             size="small"
           />
         </Link>
-        <div className="pt-10">
+        <div className="flex flex-col items-center pt-10">
           <h2 className="text-center text-2xl font-semibold text-white">
             Statistics
           </h2>
