@@ -42,6 +42,7 @@ apps/contracts/cache
 apps/contracts/artifacts
 apps/contracts/contractsInfo.json
 apps/contracts/deployments/**/solcinputs
+apps/contracts/abi
 
 # IDE
 .idea

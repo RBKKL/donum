@@ -2,6 +2,7 @@ import classNames from "classnames";
 import { FC, ReactNode } from "react";
 interface InputProps {
   value?: string;
+  downCorner?: ReactNode;
   rightCorner?: ReactNode;
   error?: boolean;
   onChange?: (value: string) => void;
@@ -14,6 +15,7 @@ interface InputProps {
 }
 
 export const Input: FC<InputProps> = ({
+  downCorner,
   onChange,
   rightCorner,
   error,
@@ -25,7 +27,7 @@ export const Input: FC<InputProps> = ({
   return (
     <div
       className={classNames(
-        "flex items-center justify-between px-4 py-2",
+        "flex items-center justify-between px-4 pt-2 pb-1",
         { "rounded-2xl bg-zinc-700": variant === "normal" },
         {
           "outline outline-2 outline-red-500": variant === "normal" && error,
@@ -37,18 +39,21 @@ export const Input: FC<InputProps> = ({
         }
       )}
     >
-      <input
-        className={classNames(
-          "mr-2 flex w-full bg-transparent outline-none",
-          { "text-base": textSize === "small" },
-          { "text-xl": textSize === "normal" },
-          { "text-2xl": textSize === "large" },
-          { "text-center": variant === "underlined" },
-          { "font-semibold": textWeight === "semibold" }
-        )}
-        onChange={(e) => onChange?.(e.target.value)}
-        {...props}
-      />
+      <div className={classNames("flex w-full flex-col")}>
+        <input
+          className={classNames(
+            "mr-2 flex bg-transparent outline-none",
+            { "text-base": textSize === "small" },
+            { "text-xl": textSize === "normal" },
+            { "text-2xl": textSize === "large" },
+            { "text-center": variant === "underlined" },
+            { "font-semibold": textWeight === "semibold" }
+          )}
+          onChange={(e) => onChange?.(e.target.value)}
+          {...props}
+        />
+        {downCorner}
+      </div>
       {rightCorner}
     </div>
   );

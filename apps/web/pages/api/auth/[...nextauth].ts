@@ -57,6 +57,5 @@ export const getAuthOptions: GetAuthOptionsFn = (req) => ({
   },
 });
 
-export default async function auth(req: NextApiRequest, res: NextApiResponse) {
-  return await NextAuth(req, res, getAuthOptions(req));
-}
+export default async (req: NextApiRequest, res: NextApiResponse) =>
+  await NextAuth(req, res, getAuthOptions(req));

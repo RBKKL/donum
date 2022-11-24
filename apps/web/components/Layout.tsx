@@ -30,10 +30,10 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
   const isSecured = router.pathname.startsWith(routes.dashboard);
 
   useEffect(() => {
-    if (isSecured && isConnected && status === "unauthenticated") {
+    if (isSecured && isConnected && status === SessionStatus.UNAUTHENTICATED) {
       login();
     }
-  }, [status, isConnected, isSecured]);
+  }, [status, isConnected, isSecured, login]);
 
   const SecuredContent = () => {
     if (status === SessionStatus.LOADING) return <Loader />;

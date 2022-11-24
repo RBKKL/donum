@@ -1,11 +1,11 @@
 import { z } from "zod";
 import { protectedProcedure, publicProcedure, router } from "@server/trpc";
 import {
-  NicknameFormat,
   AddressFormat,
   DescriptionFormat,
-  MinShowAmountFormat,
+  NicknameFormat,
   AvatarUrlFormat,
+  AmountFormat,
 } from "@server/input-formats";
 import { TRPCError } from "@trpc/server";
 import { Prisma } from "@donum/prisma";
@@ -59,7 +59,7 @@ export const profileRouter = router({
         nickname: NicknameFormat.optional(),
         description: DescriptionFormat.optional(),
         avatarUrl: AvatarUrlFormat.optional(),
-        minShowAmount: MinShowAmountFormat.optional(),
+        minShowAmount: AmountFormat.optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
