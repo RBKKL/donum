@@ -1,6 +1,7 @@
 import { z } from "zod";
 import {
   DESCRIPTION_MAX_LENGTH,
+  MESSAGE_MAX_LENGTH,
   NICKNAME_MAX_LENGTH,
   NICKNAME_MIN_LENGTH,
 } from "@donum/shared/constants";
@@ -26,9 +27,11 @@ export const AddressFormat = z
 
 export const DescriptionFormat = z.string().max(DESCRIPTION_MAX_LENGTH);
 
+export const MessageFormat = z.string().max(MESSAGE_MAX_LENGTH);
+
 export const AvatarFormat = z.string().startsWith("data:image/");
 
-export const MinShowAmountFormat = z.string().transform((val, ctx) => {
+export const AmountFormat = z.string().transform((val, ctx) => {
   try {
     const valBN = new BN(val);
     if (valBN.isNeg()) {

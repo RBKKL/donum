@@ -8,4 +8,6 @@ export const serverEnv = {
   NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET ?? "",
   WEBAPP_BASE_URL: process.env.WEBAPP_BASE_URL ?? "",
   REDIS_URL: process.env.REDIS_URL ?? "",
+  EVENTS_SERVER_URL: process.env.EVENTS_SERVER_URL ?? "",
+  EVENT_SECRET: process.env.EVENT_SECRET ?? "",
 };

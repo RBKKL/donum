@@ -6,7 +6,10 @@ import { Input } from "@components/Input";
 import { TextField } from "@components/TextField";
 import { EthIcon } from "@components/icons/EthIcon";
 import { useSendDonation } from "@hooks/useSendDonation";
-import { MESSAGE_MAX_LENGTH } from "@donum/shared/constants";
+import {
+  DEFAULT_DONATION_AMOUNT,
+  MESSAGE_MAX_LENGTH,
+} from "@donum/shared/constants";
 import { formatTokenAmount, isNumber } from "@donum/shared/helpers";
 import { DonationModal } from "@components/DonationModal";
 import { Address, useAccount, useBalance } from "wagmi";
@@ -17,8 +20,6 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ethers } from "ethers";
 import { trpc } from "@lib/trpc";
 import { Loader } from "@components/Loader";
-
-const DEFAULT_DONATION_AMOUNT = "0.001";
 
 const SendDonationPage: NextPage = () => {
   const router = useRouter();
@@ -39,6 +40,7 @@ const SendDonationPage: NextPage = () => {
       });
 
   const recipientAddress = (profile?.address || addressOrNickname) as Address;
+  const minShowAmount = profile?.minShowAmount || "0";
 
   const { address, isConnected } = useAccount();
   const { data: balanceData } = useBalance({
@@ -69,11 +71,12 @@ const SendDonationPage: NextPage = () => {
   }
 
   const isValidDonationAmount =
+    isNumber(donationAmount) &&
     balanceData?.value?.gt(parseUnits(donationAmount, balanceData.decimals)) &&
     parseUnits(donationAmount, balanceData.decimals).gt(0);
 
   const onDonationAmountChange = (amount: string) =>
-    isNumber(amount) && setDonationAmount(amount);
+    (isNumber(amount) || amount == "") && setDonationAmount(amount);
 
   const onDonationMessageChange = (message: string) => {
     setMessage(message);
@@ -94,7 +97,7 @@ const SendDonationPage: NextPage = () => {
     <div className="flex w-full flex-col items-center text-center">
       <RecipientProfile
         avatarUrl={profile.avatarUrl}
-        nickname={profile.nickname || ""}
+        nickname={profile.nickname}
         address={recipientAddress}
         shortAddress
       />
@@ -104,6 +107,12 @@ const SendDonationPage: NextPage = () => {
         </p>
         <Input
           value={donationAmount}
+          downCorner={
+            <div className="w-full text-left text-xs text-gray-400">
+              Minimal amount to show donation:{" "}
+              {formatTokenAmount(minShowAmount)}
+            </div>
+          }
           onChange={onDonationAmountChange}
           onBlur={setMinimumAmount}
           error={isConnected && !isValidDonationAmount}
