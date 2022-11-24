@@ -9,7 +9,9 @@ import type {
 import { castToDonationObject } from "@donum/contracts/helpers";
 import { DonationsStoreContract } from "./donations-store-contract";
 import { toDonationObjectForWidget } from "./utils";
+import { prisma } from "@donum/prisma";
 import { BigNumber } from "ethers";
+import { DEFAULT_SHOW_AMOUNT } from "@donum/shared/constants";
 
 const clients = new BiMap<string, string>(); // address <-> socketId
 
@@ -33,7 +35,6 @@ app.ready((err) => {
       `Connected to server with id: ${socket.id}, address: ${socket.handshake.auth.address}`
     );
     clients.set(socket.handshake.auth.address, socket.id);
-
     socket.on("disconnect", () => {
       app.log.info(`Client with id: ${socket.id} disconnected`);
       clients.inverse.delete(socket.id);
@@ -41,15 +42,32 @@ app.ready((err) => {
   });
 });
 
-const emitNewDonationEvent = (donation: NewDonationEventObject) => {
+const emitNewDonationEvent = async (donation: NewDonationEventObject) => {
   app.log.info(`New donation: ${JSON.stringify(donation)}`);
   const socketId = clients.get(donation.to);
-  if (socketId) {
+  const profile = await prisma.profile.findFirst({
+    where: {address: donation.to},
+  });
+
+  if (
+    socketId &&
+    donation.amount.gte(
+      BigNumber.from(profile?.minShowAmount.toString() ?? DEFAULT_SHOW_AMOUNT)
+    )
+  ) {
     app.io
       .to(socketId)
       .emit("new-donation", toDonationObjectForWidget(donation));
   }
 };
+
+DonationsStoreContract.on<NewDonationEvent>(
+  DonationsStoreContract.filters.NewDonation(),
+  (...donationArray) => {
+    const donation = castToDonationObject(donationArray);
+    emitNewDonationEvent(donation);
+  }
+);
 
 app.post("/test", (req, res) => {
   if (req.headers.authorization !== process.env.EVENT_SECRET) {

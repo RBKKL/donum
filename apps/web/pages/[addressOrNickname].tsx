@@ -40,6 +40,7 @@ const SendDonationPage: NextPage = () => {
       });
 
   const recipientAddress = (profile?.address || addressOrNickname) as Address;
+  const minShowAmount = profile?.minShowAmount || "0";
 
   const { address, isConnected } = useAccount();
   const { data: balanceData } = useBalance({
@@ -70,11 +71,12 @@ const SendDonationPage: NextPage = () => {
   }
 
   const isValidDonationAmount =
+    isNumber(donationAmount) &&
     balanceData?.value?.gt(parseUnits(donationAmount, balanceData.decimals)) &&
     parseUnits(donationAmount, balanceData.decimals).gt(0);
 
   const onDonationAmountChange = (amount: string) =>
-    isNumber(amount) && setDonationAmount(amount);
+    (isNumber(amount) || amount == "") && setDonationAmount(amount);
 
   const onDonationMessageChange = (message: string) => {
     setMessage(message);
@@ -105,6 +107,12 @@ const SendDonationPage: NextPage = () => {
         </p>
         <Input
           value={donationAmount}
+          downCorner={
+            <div className="w-full text-left text-xs text-gray-400">
+              Minimal amount to show donation:{" "}
+              {formatTokenAmount(minShowAmount)}
+            </div>
+          }
           onChange={onDonationAmountChange}
           onBlur={setMinimumAmount}
           error={isConnected && !isValidDonationAmount}

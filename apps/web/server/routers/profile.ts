@@ -1,9 +1,9 @@
 import { z } from "zod";
 import { protectedProcedure, publicProcedure, router } from "@server/trpc";
 import {
-  NicknameFormat,
   AddressFormat,
   DescriptionFormat,
+  NicknameFormat,
   AmountFormat,
 } from "@server/input-formats";
 import { TRPCError } from "@trpc/server";
