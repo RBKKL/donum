@@ -7,9 +7,10 @@ import {
   DESCRIPTION_MAX_LENGTH,
   NICKNAME_MAX_LENGTH,
   NICKNAME_MIN_LENGTH,
+  NICKNAME_CHECK_ALLOWANCE_DEBOUNCE,
 } from "@donum/shared/constants";
 import React, { useState, useEffect } from "react";
-import { isNumber } from "@donum/shared/helpers";
+import { isCorrectNickname, isNumber } from "@donum/shared/helpers";
 import { ethers } from "ethers";
 import { Loader } from "@components/Loader";
 import { routes } from "@lib/routes";
@@ -18,6 +19,7 @@ import { EthIcon } from "@components/icons/EthIcon";
 import { AvatarUploader } from "@components/AvatarUploader";
 import { useUploadFiles } from "@hooks/useUploadFiles";
 import { useSession } from "next-auth/react";
+import { useDebounce } from "react-use";
 
 const EditDonationPage: NextPage = () => {
   const router = useRouter();
@@ -26,6 +28,7 @@ const EditDonationPage: NextPage = () => {
   const [avatarFile, setAvatarFile] = useState<File>();
   const [newDescription, setNewDescription] = useState("");
   const [newMinShowAmount, setNewMinShowAmount] = useState("");
+  const [availableNickname, setAvailableNickname] = useState(false);
 
   const { data: session } = useSession();
   // session, user and name can't be null here, because it's secured page and Layout will show warning
@@ -34,6 +37,31 @@ const EditDonationPage: NextPage = () => {
   const profile = trpc.profile.byAddress.useQuery({ address });
   const editProfile = trpc.profile.edit.useMutation();
   const uploadFiles = useUploadFiles();
+
+  const availableNewNicknameQuery = trpc.profile.availableNickname.useQuery(
+    {
+      nickname: newNickname,
+    },
+    {
+      enabled: false,
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  const [isReady] = useDebounce(
+    async () => {
+      if (
+        newNickname === profile?.data?.nickname ||
+        !isCorrectNickname(newNickname)
+      ) {
+        return;
+      }
+      const result = await availableNewNicknameQuery.refetch();
+      setAvailableNickname(!!result.data);
+    },
+    NICKNAME_CHECK_ALLOWANCE_DEBOUNCE,
+    [newNickname]
+  );
 
   const setAvatar = (newAvatarFile: File) => {
     setAvatarFile(newAvatarFile);
@@ -84,15 +112,33 @@ const EditDonationPage: NextPage = () => {
 
   const isNicknameValid =
     newNickname === "" ||
-    (newNickname.length >= NICKNAME_MIN_LENGTH &&
-      newNickname.length <= NICKNAME_MAX_LENGTH);
+    newNickname === profile.data.nickname ||
+    (isCorrectNickname(newNickname) && availableNickname);
+
+  let nicknameFormatInfo;
+  if (!isNicknameValid) {
+    if (
+      newNickname.length < NICKNAME_MIN_LENGTH ||
+      newNickname.length > NICKNAME_MAX_LENGTH
+    ) {
+      nicknameFormatInfo = `Nickname must be between ${NICKNAME_MIN_LENGTH} and ${NICKNAME_MAX_LENGTH} characters`;
+    } else if (!newNickname.match(/^(\w)*$/)) {
+      nicknameFormatInfo =
+        "Only alphanumeric and underscore characters are allowed in nickname";
+    } else {
+      nicknameFormatInfo = "This nickname is already taken";
+    }
+  }
 
   return (
     <div className="flex w-full flex-col items-center text-center">
       <AvatarUploader currentAvatarUrl={avatarUrl} onUpload={setAvatar} />
       <Input
         value={newNickname}
-        onChange={setNewNickname}
+        onChange={(e) => {
+          setNewNickname(e);
+          setAvailableNickname(true);
+        }}
         maxLength={NICKNAME_MAX_LENGTH}
         error={!isNicknameValid}
         placeholder="Nickname..."
@@ -100,6 +146,7 @@ const EditDonationPage: NextPage = () => {
         textSize="large"
         textWeight="semibold"
       />
+      <p className="text-sm">{nicknameFormatInfo}</p>
       <div className="flex w-full flex-col gap-4 pt-5 sm:max-w-4xl">
         <TextField
           placeholder="Type your description here..."
@@ -129,7 +176,16 @@ const EditDonationPage: NextPage = () => {
         <h3>Notification sound</h3>
         <input type="file" />
         <div className="flex flex-row-reverse">
-          <Button text="Save" onClick={onSave} />
+          <Button
+            text="Save"
+            onClick={onSave}
+            disabled={
+              !isNicknameValid ||
+              (!isReady() &&
+                newNickname !== profile.data.nickname &&
+                newNickname !== "")
+            }
+          />
         </div>
       </div>
     </div>

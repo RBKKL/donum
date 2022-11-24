@@ -2,22 +2,16 @@ import { z } from "zod";
 import {
   DESCRIPTION_MAX_LENGTH,
   MESSAGE_MAX_LENGTH,
-  NICKNAME_MAX_LENGTH,
-  NICKNAME_MIN_LENGTH,
 } from "@donum/shared/constants";
 import { ethers } from "ethers";
 import { BN } from "bn.js";
+import { isCorrectNickname } from "@donum/shared/helpers";
 
 export const NicknameFormat = z
   .string()
-  .refine(
-    (val) =>
-      val === "" ||
-      (val.length >= NICKNAME_MIN_LENGTH && val.length <= NICKNAME_MAX_LENGTH),
-    {
-      message: "Invalid nickname format",
-    }
-  );
+  .refine((val) => val === "" || isCorrectNickname(val), {
+    message: "Invalid nickname format",
+  });
 
 export const AddressFormat = z
   .string()
@@ -29,7 +23,7 @@ export const DescriptionFormat = z.string().max(DESCRIPTION_MAX_LENGTH);
 
 export const MessageFormat = z.string().max(MESSAGE_MAX_LENGTH);
 
-export const AvatarFormat = z.string().startsWith("data:image/");
+export const AvatarUrlFormat = z.string().url();
 
 export const AmountFormat = z.string().transform((val, ctx) => {
   try {

@@ -29,7 +29,9 @@ export const Input: FC<InputProps> = ({
       className={classNames(
         "flex items-center justify-between px-4 pt-2 pb-1",
         { "rounded-2xl bg-zinc-700": variant === "normal" },
-        { "outline outline-2 outline-red-500": variant === "normal" && error },
+        {
+          "outline outline-2 outline-red-500": variant === "normal" && error,
+        },
         { "border-b-2": variant === "underlined" },
         { "border-gray-400": variant === "underlined" && !error },
         {

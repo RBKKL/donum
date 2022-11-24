@@ -21,3 +21,8 @@ model Profile {
   // values are stored in WEI
   minShowAmount       Decimal  @db.Decimal(78, 0)  @default(1000000000000000)
 }
+
+model ReservedWords {
+  id    Int     @id @default(autoincrement())
+  word  String  @unique
+}
