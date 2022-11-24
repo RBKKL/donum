@@ -1,5 +1,4 @@
 import { FC } from "react";
-import styles from "@styles/loader.module.css";
 
 interface LoaderProps {
   size?: number;
@@ -10,7 +9,7 @@ export const Loader: FC<LoaderProps> = ({ size = 80, color = "white" }) => (
   <div style={{ width: size, height: size }} className="relative inline-block">
     <div
       style={{ transformOrigin: `${0.5 * size}px ${0.5 * size}px` }}
-      className="animate-loader-spin-1 origin-[]"
+      className="animate-loader-spin-1"
     >
       <div
         style={{
