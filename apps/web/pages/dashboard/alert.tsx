@@ -101,7 +101,6 @@ const Alert: NextPage = () => {
             onClick={() =>
               sendTestDonation.mutate({
                 from,
-                to: address,
                 amount: ethers.utils.parseUnits(amount, "ether").toString(),
                 message,
               })
