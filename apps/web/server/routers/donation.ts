@@ -1,10 +1,10 @@
 import { protectedProcedure, router } from "@server/trpc";
 import { serverEnv } from "@env/server";
 import {
-  AddressFormat,
   MessageFormat,
   AmountFormat,
   NicknameFormat,
+  AddressFormat,
 } from "@server/input-formats";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
@@ -15,16 +15,15 @@ export const donationRouter = router({
     .input(
       z
         .object({
-          from: NicknameFormat.optional(),
-          to: AddressFormat,
           amount: AmountFormat,
+          from: NicknameFormat.or(AddressFormat).optional(),
           message: MessageFormat.optional(),
         })
         .optional()
     )
     .mutation(async ({ ctx, input }) => {
       const address = ctx.session.user.name!; // protectedProcedure always returns existing user
-      const donation = input || { ...DEFAULT_TEST_DONATION, to: address };
+      const donation = { to: address, ...DEFAULT_TEST_DONATION, ...input };
 
       const response = await fetch(`${serverEnv.EVENTS_SERVER_URL}/test`, {
         method: "POST",

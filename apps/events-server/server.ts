@@ -46,28 +46,21 @@ const emitNewDonationEvent = async (donation: NewDonationEventObject) => {
   app.log.info(`New donation: ${JSON.stringify(donation)}`);
   const socketId = clients.get(donation.to);
   const profile = await prisma.profile.findFirst({
-    where: {address: donation.to},
+    where: { address: donation.to },
   });
 
-  if (
-    socketId &&
-    donation.amount.gte(
-      BigNumber.from(profile?.minShowAmount.toString() ?? DEFAULT_SHOW_AMOUNT)
-    )
-  ) {
+  const minShowAmount = BigNumber.from(
+    profile?.minShowAmount?.toString() || DEFAULT_SHOW_AMOUNT
+  );
+  console.log("minShowAmount", minShowAmount.toString());
+  console.log("donation.amount", donation.amount.toString());
+
+  if (socketId && donation.amount.gte(minShowAmount)) {
     app.io
       .to(socketId)
       .emit("new-donation", toDonationObjectForWidget(donation));
   }
 };
-
-DonationsStoreContract.on<NewDonationEvent>(
-  DonationsStoreContract.filters.NewDonation(),
-  (...donationArray) => {
-    const donation = castToDonationObject(donationArray);
-    emitNewDonationEvent(donation);
-  }
-);
 
 app.post("/test", (req, res) => {
   if (req.headers.authorization !== process.env.EVENT_SECRET) {
