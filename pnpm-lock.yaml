@@ -88,6 +88,8 @@ importers:
     specifiers:
       '@donum/contracts': workspace:*
       '@donum/eslint-config-custom': workspace:*
+      '@donum/prisma': workspace:*
+      '@donum/shared': workspace:*
       '@donum/tsconfig': workspace:*
       '@fastify/cors': ^8.2.0
       eslint: ^8.28.0
@@ -100,6 +102,8 @@ importers:
       typescript: 4.9.3
     dependencies:
       '@donum/contracts': link:../contracts
+      '@donum/prisma': link:../../packages/prisma
+      '@donum/shared': link:../../packages/shared
       '@fastify/cors': 8.2.0
       ethers: 5.7.2
       fastify: 4.10.0
