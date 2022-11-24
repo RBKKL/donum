@@ -6,7 +6,10 @@ import { Input } from "@components/Input";
 import { TextField } from "@components/TextField";
 import { EthIcon } from "@components/icons/EthIcon";
 import { useSendDonation } from "@hooks/useSendDonation";
-import { MESSAGE_MAX_LENGTH } from "@donum/shared/constants";
+import {
+  DEFAULT_DONATION_AMOUNT,
+  MESSAGE_MAX_LENGTH,
+} from "@donum/shared/constants";
 import { formatTokenAmount, isNumber } from "@donum/shared/helpers";
 import { DonationModal } from "@components/DonationModal";
 import { Address, useAccount, useBalance } from "wagmi";
@@ -17,8 +20,6 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ethers } from "ethers";
 import { trpc } from "@lib/trpc";
 import { Loader } from "@components/Loader";
-
-const DEFAULT_DONATION_AMOUNT = "0.001";
 
 const SendDonationPage: NextPage = () => {
   const router = useRouter();
@@ -96,7 +97,7 @@ const SendDonationPage: NextPage = () => {
     <div className="flex w-full flex-col items-center text-center">
       <RecipientProfile
         avatarUrl={profile.avatarUrl}
-        nickname={profile.nickname || ""}
+        nickname={profile.nickname}
         address={recipientAddress}
         shortAddress
       />

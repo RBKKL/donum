@@ -2,7 +2,10 @@ import Fastify from "fastify";
 import socketioServer from "fastify-socket.io";
 import corsPlugin from "@fastify/cors";
 import { BiMap } from "mnemonist";
-import type { NewDonationEvent } from "@donum/contracts/types/DonationsStore";
+import type {
+  NewDonationEvent,
+  NewDonationEventObject,
+} from "@donum/contracts/types/DonationsStore";
 import { castToDonationObject } from "@donum/contracts/helpers";
 import { DonationsStoreContract } from "./donations-store-contract";
 import { toDonationObjectForWidget } from "./utils";
@@ -39,26 +42,45 @@ app.ready((err) => {
   });
 });
 
+const emitNewDonationEvent = async (donation: NewDonationEventObject) => {
+  app.log.info(`New donation: ${JSON.stringify(donation)}`);
+  const socketId = clients.get(donation.to);
+  const profile = await prisma.profile.findFirst({
+    where: { address: donation.to },
+  });
+
+  const minShowAmount = BigNumber.from(
+    profile?.minShowAmount?.toString() || DEFAULT_SHOW_AMOUNT
+  );
+  console.log("minShowAmount", minShowAmount.toString());
+  console.log("donation.amount", donation.amount.toString());
+
+  if (socketId && donation.amount.gte(minShowAmount)) {
+    app.io
+      .to(socketId)
+      .emit("new-donation", toDonationObjectForWidget(donation));
+  }
+};
+
+app.post("/test", (req, res) => {
+  if (req.headers.authorization !== process.env.EVENT_SECRET) {
+    res.status(403).send("Wrong secret");
+    return;
+  }
+  const testDonation = JSON.parse(req.body as string);
+
+  emitNewDonationEvent({
+    ...testDonation,
+    amount: BigNumber.from(testDonation.amount),
+  });
+  res.status(200).send();
+});
+
 DonationsStoreContract.on<NewDonationEvent>(
   DonationsStoreContract.filters.NewDonation(),
-  async (...donationArray) => {
+  (...donationArray) => {
     const donation = castToDonationObject(donationArray);
-    app.log.info(`New donation: ${JSON.stringify(donation)}`);
-    const socketId = clients.get(donation.to);
-    const profile = await prisma.profile.findFirst({
-      where: { address: donation.to },
-    });
-
-    if (
-      socketId &&
-      donation.amount.gte(
-        BigNumber.from(profile?.minShowAmount.toString() ?? DEFAULT_SHOW_AMOUNT)
-      )
-    ) {
-      app.io
-        .to(socketId)
-        .emit("new-donation", toDonationObjectForWidget(donation));
-    }
+    emitNewDonationEvent(donation);
   }
 );
 

@@ -13,6 +13,9 @@ const Home: NextPage = () => {
       <Link href={routes.dashboard} className="mt-3">
         <Button text="Dashboard" />
       </Link>
+      <Link href={routes.alert} className="mt-3">
+        <Button text="Test alert" />
+      </Link>
     </div>
   );
 };
