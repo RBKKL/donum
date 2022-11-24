@@ -32,7 +32,6 @@ app.ready((err) => {
       `Connected to server with id: ${socket.id}, address: ${socket.handshake.auth.address}`
     );
     clients.set(socket.handshake.auth.address, socket.id);
-    prisma.profile.findMany();
     socket.on("disconnect", () => {
       app.log.info(`Client with id: ${socket.id} disconnected`);
       clients.inverse.delete(socket.id);
