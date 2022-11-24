@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "@donum/contracts": "workspace:*",
+    "@donum/prisma": "workspace:*",
+    "@donum/shared": "workspace:*",
     "@fastify/cors": "^8.2.0",
     "ethers": "^5.7.2",
     "fastify": "^4.10.0",
