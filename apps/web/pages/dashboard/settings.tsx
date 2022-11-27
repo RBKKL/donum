@@ -164,6 +164,7 @@ const EditDonationPage: NextPage = () => {
         <Input
           value={newMinShowAmount}
           onChange={setNewMinShowAmount}
+          placeholder={ethers.utils.formatEther(profile.data.minShowAmount)}
           textSize="small"
           rightCorner={
             <div className="flex flex-col items-end">

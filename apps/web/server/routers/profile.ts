@@ -9,7 +9,7 @@ import {
 } from "@server/input-formats";
 import { TRPCError } from "@trpc/server";
 import { Prisma } from "@donum/prisma";
-import { populateProfileWithDefaultValues } from "@lib/profile";
+import { populateProfileWithDefaultValues, Profile } from "@lib/profile";
 
 export const profileRouter = router({
   me: protectedProcedure.query(async ({ ctx }) => {
@@ -63,28 +63,14 @@ export const profileRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      // TODO: make this endpoint create profile if it doesn't exist
       let profile = await ctx.prisma.profile.findFirst({
         where: { address: input.address },
       });
 
-      if (!profile) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message:
-            "No account connected with this wallet, create account first",
-        });
-      }
-
-      if (input.address !== ctx.session.user.name) {
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "You can't edit someone else's profile",
-        });
-      }
+      const updatedData = profile ?? ({} as Profile);
 
       if (input.nickname === "") {
-        profile.nickname = null;
+        updatedData.nickname = null;
       }
       if (input.nickname) {
         const sameNicknameCheck = await ctx.prisma.profile.findFirst({
@@ -97,24 +83,31 @@ export const profileRouter = router({
           });
         }
 
-        profile.nickname = input.nickname;
+        updatedData.nickname = input.nickname;
       }
 
       if (input.description || input.description === "") {
-        profile.description = input.description;
+        updatedData.description = input.description;
       }
 
       if (input.minShowAmount) {
-        profile.minShowAmount = new Prisma.Decimal(input.minShowAmount);
+        updatedData.minShowAmount = new Prisma.Decimal(input.minShowAmount);
       }
 
-      profile = await ctx.prisma.profile.update({
+      profile = await ctx.prisma.profile.upsert({
         where: { address: input.address },
-        data: {
-          nickname: profile.nickname,
-          description: profile.description,
+        update: {
+          nickname: updatedData.nickname,
+          description: updatedData.description,
           avatarUrl: input.avatarUrl,
-          minShowAmount: profile.minShowAmount,
+          minShowAmount: updatedData.minShowAmount,
+        },
+        create: {
+          address: input.address,
+          nickname: updatedData.nickname,
+          description: updatedData.description,
+          avatarUrl: input.avatarUrl,
+          minShowAmount: updatedData.minShowAmount,
         },
       });
 
