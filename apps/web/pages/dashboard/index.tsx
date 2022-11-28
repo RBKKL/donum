@@ -11,12 +11,19 @@ import { Loader } from "@components/Loader";
 import { useSession } from "next-auth/react";
 import { trpc } from "@lib/trpc";
 import { routes } from "@lib/routes";
+import { getDonationsStatsByPeriod } from "@lib/getDonationsStatsByPeriod";
+import { BigNumber } from "ethers";
+import { DONATION_STATS_PERIOD_OPTIONS } from "@donum/shared/constants";
+import { SelectDonationPeriod } from "@components/SelectDonationPeriod";
+import { useState } from "react";
 
 const DashboardPage: NextPage = () => {
   const { data: session } = useSession();
   // session, user and name can't be null here, because it's secured page and Layout will show warning
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const recipientAddress = session!.user!.name!;
+
+  const [currentStatsPeriod, setCurrentStatsPeriod] = useState(0); // default value is all time
 
   const sendTestDonation = trpc.donation.sendTestDonation.useMutation();
 
@@ -65,17 +72,22 @@ const DashboardPage: NextPage = () => {
     if (isDonationsError) return <div>Error!</div>;
     if (!donations) return <div>No donations yet!</div>;
 
-    const totalDonationsAmount = getTotalDonationsAmount(donations);
-    const totalDonationsCount = donations.length;
+    const [donationsAmount, donationsCount] = currentStatsPeriod
+      ? getDonationsStatsByPeriod(
+          donations,
+          BigNumber.from(Date.now() - currentStatsPeriod),
+          BigNumber.from(Date.now())
+        )
+      : [getTotalDonationsAmount(donations), donations.length];
 
     const data = [
       {
         title: "Total donations amount",
-        value: `${totalDonationsAmount} ETH`,
+        value: `${donationsAmount} ETH`,
       },
       {
         title: "Total donations count",
-        value: totalDonationsCount,
+        value: donationsCount,
       },
     ];
 
@@ -116,9 +128,17 @@ const DashboardPage: NextPage = () => {
           </Link>
         </div>
         <div className="flex flex-col items-center pt-10">
-          <h2 className="text-center text-2xl font-semibold text-white">
-            Statistics
-          </h2>
+          <div className="flex">
+            <h2 className="text-center text-2xl font-semibold text-white">
+              Statistics by
+            </h2>
+            <SelectDonationPeriod
+            className="ml-2"
+              options={DONATION_STATS_PERIOD_OPTIONS}
+              selected={currentStatsPeriod}
+              onSelect={setCurrentStatsPeriod}
+            />
+          </div>
           {renderDonationsStats()}
         </div>
       </div>
