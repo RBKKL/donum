@@ -16,7 +16,7 @@ const DashboardPage: NextPage = () => {
   const { data: session } = useSession();
   // session, user and name can't be null here, because it's secured page and Layout will show warning
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const recipientAddress = session!.user!.name!;
+  const recipientAddress = session?.user?.name;
 
   const sendTestDonation = trpc.donation.sendTestDonation.useMutation();
 
@@ -25,7 +25,7 @@ const DashboardPage: NextPage = () => {
     isLoading: isDonationsLoading,
     isError: isDonationsError,
     error: donationsError,
-  } = useLiveDonationsHistory(recipientAddress);
+  } = useLiveDonationsHistory(recipientAddress || "");
 
   const {
     data: profile,
@@ -97,7 +97,7 @@ const DashboardPage: NextPage = () => {
         <RecipientProfile
           avatarUrl={profile.avatarUrl}
           nickname={profile.nickname}
-          address={recipientAddress}
+          address={recipientAddress || ""}
           showAddress={!profile.nickname}
           shortAddress
         />
@@ -131,5 +131,13 @@ const DashboardPage: NextPage = () => {
     </div>
   );
 };
+
+export async function getStaticProps() {
+  return {
+    props: {
+      protected: true,
+    },
+  };
+}
 
 export default DashboardPage;
