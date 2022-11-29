@@ -11,7 +11,7 @@ import { Loader } from "@components/Loader";
 import { useSession } from "next-auth/react";
 import { trpc } from "@lib/trpc";
 import { routes } from "@lib/routes";
-import { getDonationsStatsByPeriod } from "@lib/getDonationsStatsByPeriod";
+import { getDonationsStatsByPeriod } from "@lib/statistics";
 import { BigNumber } from "ethers";
 import { DONATION_STATS_PERIOD_OPTIONS } from "@donum/shared/constants";
 import { SelectDonationPeriod } from "@components/SelectDonationPeriod";
@@ -94,7 +94,7 @@ const DashboardPage: NextPage = () => {
     return (
       <>
         {data.map((item, index) => (
-          <div key={index} className="flex flex-col items-center pt-4">
+          <div key={index} className="flex flex-col items-center">
             <div className="text-xl font-bold">{item.value}</div>
             <div className="text-sm text-gray-400">{item.title}</div>
           </div>
@@ -128,12 +128,12 @@ const DashboardPage: NextPage = () => {
           </Link>
         </div>
         <div className="flex flex-col items-center pt-10">
-          <div className="flex">
+          <div className="flex items-center pb-4">
             <h2 className="text-center text-2xl font-semibold text-white">
-              Statistics by
+              Statistics
             </h2>
             <SelectDonationPeriod
-            className="ml-2"
+              className="ml-2"
               options={DONATION_STATS_PERIOD_OPTIONS}
               selected={currentStatsPeriod}
               onSelect={setCurrentStatsPeriod}
