@@ -38,6 +38,7 @@ export const SelectDonationPeriod: FC<SelectDonationPeriodProps> = ({
             <Select.Viewport>
               {options.map((option) => (
                 <Select.Item
+                  key={option.value}
                   className="cursor-pointer text-2xl hover:text-yellow-500 hover:outline-none focus:outline-none"
                   value={"" + option.value}
                 >
