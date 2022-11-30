@@ -13,8 +13,11 @@ import { trpc } from "@lib/trpc";
 import { routes } from "@lib/routes";
 import { getDonationsStatsByPeriod } from "@lib/statistics";
 import { BigNumber } from "ethers";
-import { DONATION_STATS_PERIOD_OPTIONS } from "@donum/shared/constants";
-import { SelectDonationPeriod } from "@components/SelectDonationPeriod";
+import {
+  DONATION_STATS_PERIOD_OPTIONS,
+  Periods,
+} from "@donum/shared/constants";
+import { Select } from "@components/Select";
 import { useState } from "react";
 
 const DashboardPage: NextPage = () => {
@@ -23,7 +26,9 @@ const DashboardPage: NextPage = () => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const recipientAddress = session!.user!.name!;
 
-  const [currentStatsPeriod, setCurrentStatsPeriod] = useState(0); // default value is all time
+  const [currentStatsPeriod, setCurrentStatsPeriod] = useState<string>(
+    Periods.ALLTIME
+  );
 
   const sendTestDonation = trpc.donation.sendTestDonation.useMutation();
 
@@ -72,10 +77,10 @@ const DashboardPage: NextPage = () => {
     if (isDonationsError) return <div>Error!</div>;
     if (!donations) return <div>No donations yet!</div>;
 
-    const [donationsAmount, donationsCount] = currentStatsPeriod
+    const [donationsAmount, donationsCount] = +currentStatsPeriod
       ? getDonationsStatsByPeriod(
           donations,
-          BigNumber.from(Date.now() - currentStatsPeriod),
+          BigNumber.from(Date.now() - +currentStatsPeriod),
           BigNumber.from(Date.now())
         )
       : [getTotalDonationsAmount(donations), donations.length];
@@ -127,17 +132,18 @@ const DashboardPage: NextPage = () => {
             />
           </Link>
         </div>
-        <div className="flex flex-col items-center pt-10">
-          <div className="flex items-center pb-4">
+        <div className="flex w-80 flex-col items-center pt-10">
+          <div className="flex items-center self-start pl-12 pb-4">
             <h2 className="text-center text-2xl font-semibold text-white">
               Statistics
             </h2>
-            <SelectDonationPeriod
-              className="ml-2"
-              options={DONATION_STATS_PERIOD_OPTIONS}
-              selected={currentStatsPeriod}
-              onSelect={setCurrentStatsPeriod}
-            />
+            <div className="ml-2">
+              <Select
+                options={DONATION_STATS_PERIOD_OPTIONS}
+                selected={currentStatsPeriod}
+                onSelect={setCurrentStatsPeriod}
+              />
+            </div>
           </div>
           {renderDonationsStats()}
         </div>

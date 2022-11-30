@@ -34,15 +34,18 @@ export const DEFAULT_TEST_DONATION = {
   message: "This is a test donation",
 };
 
-const DAY_IN_MS = 86400000;
-const WEEK_IN_MS = 604800000;
-const MONTH_IN_MS = 2592000000;
-const YEAR_IN_MS = 31449600000;
+export enum Periods {
+  ALLTIME = "0",
+  DAY = "86400000",
+  WEEK = "604800000",
+  MONTH = "2592000000",
+  YEAR = "31449600000",
+}
 
 export const DONATION_STATS_PERIOD_OPTIONS = [
-  { value: 0, text: "all time" },
-  { value: DAY_IN_MS, text: "24 hours" },
-  { value: WEEK_IN_MS, text: "7 days" },
-  { value: MONTH_IN_MS, text: "30 days" },
-  { value: YEAR_IN_MS, text: "year" },
+  { value: Periods.ALLTIME, text: "all time" },
+  { value: Periods.DAY, text: "24 hours" },
+  { value: Periods.WEEK, text: "7 days" },
+  { value: Periods.MONTH, text: "30 days" },
+  { value: Periods.YEAR, text: "year" },
 ];
