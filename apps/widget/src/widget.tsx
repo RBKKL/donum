@@ -1,15 +1,29 @@
 import { onMount, onError, onCleanup, Switch, Match } from "solid-js";
-import { createStore } from "solid-js/store";
+import { createStore, produce } from "solid-js/store";
 import { io, Socket } from "socket.io-client";
 import { DonationAlert } from "./donation-alert";
-import { DonationInfo, WidgetStore } from "./types";
-import { DEFAULT_ALERT_DURATION } from "@donum/shared/constants";
+import { DonationInfo, DonationMetadata, WidgetStore } from "./types";
+import {
+  DEFAULT_ALERT_DURATION,
+  DEFAULT_ALERT_IMAGE,
+  DEFAULT_ALERT_SOUND,
+  DEFAULT_PAUSE_BETWEEN_ALERTS_DURATION,
+} from "@donum/shared/constants";
+
+const getDonationMetadataByType = (donationType: string): DonationMetadata => {
+  // TODO: return metadata depending on donation type
+  return {
+    soundSrc: DEFAULT_ALERT_SOUND,
+    imageSrc: DEFAULT_ALERT_IMAGE,
+    duration: DEFAULT_ALERT_DURATION,
+  };
+};
 
 export const Widget = () => {
   const [store, setStore] = createStore<WidgetStore>({
-    imageSrc: "/assets/default_image.gif",
-    soundSrc:
-      "http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3",
+    donations: [],
+    isShowingDonation: false,
+    isBetweenDonations: false,
   });
 
   const setError = (error: Error) => {
@@ -20,13 +34,51 @@ export const Widget = () => {
     setStore("socket", socket);
   };
 
-  const showDonation = (donation: DonationInfo) => {
+  const showDonations = () => {
+    if (
+      store.isShowingDonation ||
+      store.isBetweenDonations ||
+      store.donations.length < 1
+    ) {
+      return;
+    }
+
+    setStore("isShowingDonation", true);
+    const notificationDuration = getDonationMetadataByType(
+      store.donations[0].type
+    ).duration;
+
+    setTimeout(() => {
+      setStore("isShowingDonation", false);
+      setStore("isBetweenDonations", true);
+      setStore(
+        "donations",
+        produce((donations) => {
+          donations.shift();
+        })
+      );
+    }, notificationDuration);
+    setTimeout(() => {
+      setStore("isBetweenDonations", false);
+      if (store.donations.length > 0) {
+        showDonations();
+      }
+    }, notificationDuration + DEFAULT_PAUSE_BETWEEN_ALERTS_DURATION);
+  };
+
+  const addDonation = (donation: DonationInfo) => {
     console.log(`new donation: ${donation}`);
-    setStore("donationInfo", donation);
-    setTimeout(
-      () => setStore("donationInfo", undefined),
-      DEFAULT_ALERT_DURATION
+
+    // TODO: set donation.type depending on donation.amount or something else
+    donation.type = "default";
+
+    setStore(
+      "donations",
+      produce((donations) => {
+        donations.push(donation);
+      })
     );
+    showDonations();
   };
 
   onMount(() => {
@@ -48,7 +100,7 @@ export const Widget = () => {
     });
 
     socket.on("new-donation", (donation) => {
-      showDonation(donation);
+      addDonation(donation);
     });
   });
 
@@ -62,13 +114,12 @@ export const Widget = () => {
 
   return (
     <Switch>
-      <Match when={!!store.donationInfo}>
+      <Match when={store.isShowingDonation}>
         <DonationAlert
-          // donationInfo won't be undefined here, because of the Match
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          donationInfo={store.donationInfo!}
-          imageSrc={store.imageSrc}
-          soundSrc={store.soundSrc}
+          // need cast for disable warning, actually store.donations.peek() is never undefined here
+          donationInfo={store.donations[0]}
+          imageSrc={getDonationMetadataByType(store.donations[0].type).imageSrc}
+          soundSrc={getDonationMetadataByType(store.donations[0].type).soundSrc}
         />
       </Match>
       <Match when={!!store.error}>Error: {store.error?.message}</Match>
