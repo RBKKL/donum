@@ -3,13 +3,16 @@ import { createStore } from "solid-js/store";
 import { io, Socket } from "socket.io-client";
 import { DonationAlert } from "./donation-alert";
 import { DonationInfo, WidgetStore } from "./types";
-import { DEFAULT_ALERT_DURATION } from "@donum/shared/constants";
+import {
+  DEFAULT_ALERT_DURATION,
+  DEFAULT_DONATION_IMAGE_URL,
+  DEFAULT_DONATION_SOUND_URL,
+} from "@donum/shared/constants";
 
 export const Widget = () => {
   const [store, setStore] = createStore<WidgetStore>({
-    imageSrc: "/assets/default_image.gif",
-    soundSrc:
-      "http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3",
+    imageSrc: DEFAULT_DONATION_IMAGE_URL,
+    soundSrc: DEFAULT_DONATION_SOUND_URL,
   });
 
   const setError = (error: Error) => {
@@ -49,6 +52,10 @@ export const Widget = () => {
     socket.on("init-picture", (pictureUrl) => {
       setStore("imageSrc", pictureUrl);
     });
+    socket.on("init-sound", (soundUrl) => {
+      console.log(soundUrl);
+      setStore("soundSrc", soundUrl);
+    });
 
     socket.on("new-donation", (donation) => {
       showDonation(donation);
@@ -73,6 +80,7 @@ export const Widget = () => {
           imageSrc={store.imageSrc}
           soundSrc={store.soundSrc}
         />
+        <div>{store.soundSrc}</div>
       </Match>
       <Match when={!!store.error}>Error: {store.error?.message}</Match>
     </Switch>

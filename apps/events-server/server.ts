@@ -40,6 +40,7 @@ app.ready((err) => {
       where: { address: socket.handshake.auth.address },
     });
     app.io.to(socket.id).emit("init-picture", profile?.notificationImageUrl);
+    app.io.to(socket.id).emit("init-sound", profile?.notificationSoundUrl);
 
     socket.on("disconnect", () => {
       app.log.info(`Client with id: ${socket.id} disconnected`);

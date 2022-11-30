@@ -13,12 +13,15 @@ export const DEFAULT_ALERT_DURATION = 5000; // 5 seconds
 export const DEFAULT_SHOW_AMOUNT = "1000000000000000"; // 0.001 ETH
 
 export const AVATAR_MAX_SIZE = 1024 * 1024 * 10; // 10MB
+export const SOUND_MAX_SIZE = 1024 * 1024 * 20; // 20MB
 
 export const AVATAR_ACCEPTABLE_FILE_TYPES = [
   "image/png",
   "image/gif",
   "image/jpeg",
 ];
+
+export const SOUND_ACCEPTABLE_FILE_TYPES = ["audio/mpeg", "audio/mp3"];
 
 export enum SessionStatus {
   UNAUTHENTICATED = "unauthenticated",
@@ -33,3 +36,7 @@ export const DEFAULT_TEST_DONATION = {
   amount: "1234567890000000000", // 1.23456789 ETH,
   message: "This is a test donation",
 };
+
+export const DEFAULT_DONATION_IMAGE_URL = "/assets/default_image.gif";
+export const DEFAULT_DONATION_SOUND_URL =
+  "http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3";

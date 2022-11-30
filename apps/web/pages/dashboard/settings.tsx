@@ -9,6 +9,7 @@ import {
   NICKNAME_MIN_LENGTH,
   NICKNAME_CHECK_ALLOWANCE_DEBOUNCE,
   AVATAR_ACCEPTABLE_FILE_TYPES,
+  SOUND_ACCEPTABLE_FILE_TYPES,
 } from "@donum/shared/constants";
 import React, { useState, useEffect } from "react";
 import { isCorrectNickname, isNumber } from "@donum/shared/helpers";
@@ -30,9 +31,10 @@ const EditDonationPage: NextPage = () => {
   const [newDescription, setNewDescription] = useState("");
   const [newMinShowAmount, setNewMinShowAmount] = useState("");
   const [availableNickname, setAvailableNickname] = useState(false);
-
-  const [notificationImageUrl, setNotificationImageUrl] = useState(""); // empty string is for typescript
+  const [notificationImageUrl, setNotificationImageUrl] = useState("");
   const [notificationImageFile, setNotificationImageFile] = useState<File>();
+  const [notificationSoundUrl, setNotificationSoundUrl] = useState("");
+  const [notificationSoundFile, setNotificationSoundFile] = useState<File>();
 
   const { data: session } = useSession();
   // session, user and name can't be null here, because it's secured page and Layout will show warning
@@ -77,6 +79,11 @@ const EditDonationPage: NextPage = () => {
     setNotificationImageUrl(URL.createObjectURL(newNotificationImageFile));
   };
 
+  const setNotificationSound = (newNotificationSoundFile: File) => {
+    setNotificationSoundFile(newNotificationSoundFile);
+    setNotificationSoundUrl(URL.createObjectURL(newNotificationSoundFile));
+  };
+
   const onSave = async () => {
     let avatarUrl: string | undefined;
     if (avatarFile) {
@@ -98,9 +105,20 @@ const EditDonationPage: NextPage = () => {
       ]);
     }
 
+    let notificationSoundUrl: string | undefined;
+    if (notificationSoundFile) {
+      [notificationSoundUrl] = await uploadFiles([
+        {
+          file: notificationSoundFile,
+          type: "sound",
+        },
+      ]);
+    }
+
     if (
       avatarUrl ||
       notificationImageUrl ||
+      notificationSoundUrl ||
       !newMinShowAmount ||
       isNumber(newMinShowAmount)
     ) {
@@ -114,6 +132,7 @@ const EditDonationPage: NextPage = () => {
             ? ethers.utils.parseUnits(newMinShowAmount, "ether").toString()
             : undefined,
         notificationImageUrl,
+        notificationSoundUrl,
       });
     }
   };
@@ -198,6 +217,7 @@ const EditDonationPage: NextPage = () => {
             </div>
           }
         />
+
         <h3>Notification image</h3>
         <input
           type="file"
@@ -205,7 +225,11 @@ const EditDonationPage: NextPage = () => {
           accept={AVATAR_ACCEPTABLE_FILE_TYPES.join(",")}
         />
         <h3>Notification sound</h3>
-        <input type="file" />
+        <input
+          type="file"
+          onChange={(e) => setNotificationSound(e.target.files![0])}
+          accept={SOUND_ACCEPTABLE_FILE_TYPES.join(",")}
+        />
         <div className="flex flex-row-reverse">
           <Button
             text="Save"

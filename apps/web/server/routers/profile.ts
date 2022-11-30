@@ -6,6 +6,7 @@ import {
   NicknameFormat,
   AvatarUrlFormat,
   AmountFormat,
+  SoundUrlFormat,
 } from "@server/input-formats";
 import { TRPCError } from "@trpc/server";
 import { Prisma } from "@donum/prisma";
@@ -61,6 +62,7 @@ export const profileRouter = router({
         avatarUrl: AvatarUrlFormat.optional(),
         minShowAmount: AmountFormat.optional(),
         notificationImageUrl: AvatarUrlFormat.optional(),
+        notificationSoundUrl: SoundUrlFormat.optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -103,6 +105,7 @@ export const profileRouter = router({
           avatarUrl: input.avatarUrl,
           minShowAmount: updatedData.minShowAmount,
           notificationImageUrl: input.notificationImageUrl,
+          notificationSoundUrl: input.notificationSoundUrl,
         },
         create: {
           address: input.address,
@@ -111,6 +114,7 @@ export const profileRouter = router({
           avatarUrl: input.avatarUrl,
           minShowAmount: updatedData.minShowAmount,
           notificationImageUrl: input.notificationImageUrl,
+          notificationSoundUrl: input.notificationSoundUrl,
         },
       });
 

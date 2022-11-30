@@ -1,14 +1,16 @@
 import {
   AVATAR_ACCEPTABLE_FILE_TYPES,
   AVATAR_MAX_SIZE,
+  SOUND_ACCEPTABLE_FILE_TYPES,
+  SOUND_MAX_SIZE,
 } from "@donum/shared/constants";
 import { serverEnv } from "@env/server";
-import { AVATARS_BUCKET_NAME } from "@server/storage";
+import { AVATARS_BUCKET_NAME, SOUNDS_BUCKET_NAME } from "@server/storage";
 import { Options } from "formidable";
 import Keyv from "keyv";
 import { v4 as uuidv4 } from "uuid";
 
-export const UploadTypes = ["avatar"] as const;
+export const UploadTypes = ["avatar", "sound"] as const;
 export type UploadType = typeof UploadTypes[number];
 
 type UploadConfig = {
@@ -27,6 +29,11 @@ export const uploadConfig: Record<UploadType, UploadConfig> = {
     allowedMimeTypes: AVATAR_ACCEPTABLE_FILE_TYPES,
     maxFileSize: AVATAR_MAX_SIZE,
     bucketName: AVATARS_BUCKET_NAME,
+  },
+  sound: {
+    allowedMimeTypes: SOUND_ACCEPTABLE_FILE_TYPES,
+    maxFileSize: SOUND_MAX_SIZE,
+    bucketName: SOUNDS_BUCKET_NAME,
   },
 };
 
