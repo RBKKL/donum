@@ -10,7 +10,7 @@ import {
   DEFAULT_PAUSE_BETWEEN_ALERTS_DURATION,
 } from "@donum/shared/constants";
 
-// @typescript-eslint/no-unused-vars
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const getDonationMetadataByType = (donationType: string): DonationMetadata => {
   // TODO: return metadata depending on donation type
   return {
