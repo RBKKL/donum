@@ -34,10 +34,10 @@ export const DEFAULT_TEST_DONATION = {
   message: "This is a test donation",
 };
 
-const DAY_IN_MS = 86400000;
-const WEEK_IN_MS = 604800000;
-const MONTH_IN_MS = 2592000000;
-const YEAR_IN_MS = 31449600000;
+export const DAY_IN_MS = 86400000;
+export const WEEK_IN_MS = 604800000;
+export const MONTH_IN_MS = 2592000000;
+export const YEAR_IN_MS = 31449600000;
 
 export const DONATION_STATS_PERIOD_OPTIONS = [
   { value: 0, text: "all time" },

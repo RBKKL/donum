@@ -16,6 +16,7 @@ import { BigNumber } from "ethers";
 import { DONATION_STATS_PERIOD_OPTIONS } from "@donum/shared/constants";
 import { SelectDonationPeriod } from "@components/SelectDonationPeriod";
 import { useState } from "react";
+import { Chart } from "@components/Chart";
 
 const DashboardPage: NextPage = () => {
   const { data: session } = useSession();
@@ -105,7 +106,7 @@ const DashboardPage: NextPage = () => {
 
   return (
     <div className="flex w-full flex-col justify-between self-start lg:flex-row">
-      <div className="flex min-w-[30%] flex-col items-center">
+      <div className="flex min-w-[50%] flex-col items-center">
         <RecipientProfile
           avatarUrl={profile.avatarUrl}
           nickname={profile.nickname}
@@ -133,7 +134,7 @@ const DashboardPage: NextPage = () => {
               Statistics by
             </h2>
             <SelectDonationPeriod
-            className="ml-2"
+              className="ml-2"
               options={DONATION_STATS_PERIOD_OPTIONS}
               selected={currentStatsPeriod}
               onSelect={setCurrentStatsPeriod}
@@ -141,6 +142,7 @@ const DashboardPage: NextPage = () => {
           </div>
           {renderDonationsStats()}
         </div>
+        <Chart donations={donations} period={currentStatsPeriod} />
       </div>
       <div className="flex grow flex-col items-center pt-10 lg:pt-0">
         <p className="mb-3 text-2xl font-semibold text-white">

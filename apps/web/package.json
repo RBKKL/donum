@@ -35,6 +35,7 @@
         "react-modal": "^3.16.1",
         "react-textarea-autosize": "^8.4.0",
         "react-use": "^17.4.0",
+        "recharts": "^2.1.16",
         "siwe": "^2.1.3",
         "superjson": "^1.11.0",
         "uuid": "^9.0.0",
