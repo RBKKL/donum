@@ -30,11 +30,17 @@ app.ready((err) => {
     throw err;
   }
 
-  app.io.on("connection", (socket) => {
+  app.io.on("connection", async (socket) => {
     app.log.info(
       `Connected to server with id: ${socket.id}, address: ${socket.handshake.auth.address}`
     );
     clients.set(socket.handshake.auth.address, socket.id);
+
+    const profile = await prisma.profile.findFirst({
+      where: { address: socket.handshake.auth.address },
+    });
+    app.io.to(socket.id).emit("init-picture", profile?.notificationImageUrl);
+
     socket.on("disconnect", () => {
       app.log.info(`Client with id: ${socket.id} disconnected`);
       clients.inverse.delete(socket.id);

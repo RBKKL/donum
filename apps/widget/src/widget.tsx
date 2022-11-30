@@ -35,7 +35,6 @@ export const Widget = () => {
     if (!address) {
       throw new Error("No address was provided in search params");
     }
-
     const socket = io("http://localhost:8000", {
       auth: {
         address,
@@ -45,6 +44,10 @@ export const Widget = () => {
 
     socket.on("connect", () => {
       console.log(`Connected to server with id: ${socket.id}`);
+    });
+
+    socket.on("init-picture", (pictureUrl) => {
+      setStore("imageSrc", pictureUrl);
     });
 
     socket.on("new-donation", (donation) => {

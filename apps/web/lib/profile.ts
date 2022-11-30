@@ -6,6 +6,7 @@ export type Profile = {
   description?: string;
   avatarUrl?: string | null;
   minShowAmount?: Prisma.Decimal;
+  notificationImageUrl?: string | null;
 };
 
 export type PopulatedProfile = {
@@ -14,6 +15,7 @@ export type PopulatedProfile = {
   description: string;
   avatarUrl: string;
   minShowAmount: string;
+  notificationImageUrl: string;
 };
 
 export const populateProfileWithDefaultValues = (
@@ -24,4 +26,5 @@ export const populateProfileWithDefaultValues = (
   description: profile.description ?? "",
   avatarUrl: profile.avatarUrl ?? "/default_avatar.gif",
   minShowAmount: profile.minShowAmount?.toString() ?? "1000000000000000", // default is 0.001 ETH
+  notificationImageUrl: profile.notificationImageUrl ?? "",
 });

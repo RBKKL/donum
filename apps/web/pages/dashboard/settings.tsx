@@ -8,6 +8,7 @@ import {
   NICKNAME_MAX_LENGTH,
   NICKNAME_MIN_LENGTH,
   NICKNAME_CHECK_ALLOWANCE_DEBOUNCE,
+  AVATAR_ACCEPTABLE_FILE_TYPES,
 } from "@donum/shared/constants";
 import React, { useState, useEffect } from "react";
 import { isCorrectNickname, isNumber } from "@donum/shared/helpers";
@@ -29,6 +30,9 @@ const EditDonationPage: NextPage = () => {
   const [newDescription, setNewDescription] = useState("");
   const [newMinShowAmount, setNewMinShowAmount] = useState("");
   const [availableNickname, setAvailableNickname] = useState(false);
+
+  const [notificationImageUrl, setNotificationImageUrl] = useState(""); // empty string is for typescript
+  const [notificationImageFile, setNotificationImageFile] = useState<File>();
 
   const { data: session } = useSession();
   // session, user and name can't be null here, because it's secured page and Layout will show warning
@@ -68,6 +72,11 @@ const EditDonationPage: NextPage = () => {
     setAvatarUrl(URL.createObjectURL(newAvatarFile));
   };
 
+  const setNotificationImage = (newNotificationImageFile: File) => {
+    setNotificationImageFile(newNotificationImageFile);
+    setNotificationImageUrl(URL.createObjectURL(newNotificationImageFile));
+  };
+
   const onSave = async () => {
     let avatarUrl: string | undefined;
     if (avatarFile) {
@@ -78,7 +87,23 @@ const EditDonationPage: NextPage = () => {
         },
       ]);
     }
-    if (avatarUrl || !newMinShowAmount || isNumber(newMinShowAmount)) {
+
+    let notificationImageUrl: string | undefined;
+    if (notificationImageFile) {
+      [notificationImageUrl] = await uploadFiles([
+        {
+          file: notificationImageFile,
+          type: "avatar",
+        },
+      ]);
+    }
+
+    if (
+      avatarUrl ||
+      notificationImageUrl ||
+      !newMinShowAmount ||
+      isNumber(newMinShowAmount)
+    ) {
       editProfile.mutate({
         address,
         nickname: newNickname,
@@ -88,6 +113,7 @@ const EditDonationPage: NextPage = () => {
           newMinShowAmount !== ""
             ? ethers.utils.parseUnits(newMinShowAmount, "ether").toString()
             : undefined,
+        notificationImageUrl,
       });
     }
   };
@@ -173,7 +199,11 @@ const EditDonationPage: NextPage = () => {
           }
         />
         <h3>Notification image</h3>
-        <input type="file" />
+        <input
+          type="file"
+          onChange={(e) => setNotificationImage(e.target.files![0])}
+          accept={AVATAR_ACCEPTABLE_FILE_TYPES.join(",")}
+        />
         <h3>Notification sound</h3>
         <input type="file" />
         <div className="flex flex-row-reverse">

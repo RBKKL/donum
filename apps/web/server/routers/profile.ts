@@ -60,6 +60,7 @@ export const profileRouter = router({
         description: DescriptionFormat.optional(),
         avatarUrl: AvatarUrlFormat.optional(),
         minShowAmount: AmountFormat.optional(),
+        notificationImageUrl: AvatarUrlFormat.optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -101,6 +102,7 @@ export const profileRouter = router({
           description: updatedData.description,
           avatarUrl: input.avatarUrl,
           minShowAmount: updatedData.minShowAmount,
+          notificationImageUrl: input.notificationImageUrl,
         },
         create: {
           address: input.address,
@@ -108,6 +110,7 @@ export const profileRouter = router({
           description: updatedData.description,
           avatarUrl: input.avatarUrl,
           minShowAmount: updatedData.minShowAmount,
+          notificationImageUrl: input.notificationImageUrl,
         },
       });
 

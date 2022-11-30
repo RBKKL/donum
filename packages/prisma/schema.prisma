@@ -20,6 +20,7 @@ model Profile {
   // default value - 0.001 ETH
   // values are stored in WEI
   minShowAmount       Decimal  @db.Decimal(78, 0)  @default(1000000000000000)
+  notificationImageUrl String?
 }
 
 model ReservedWords {
