@@ -33,3 +33,16 @@ export const DEFAULT_TEST_DONATION = {
   amount: "1234567890000000000", // 1.23456789 ETH,
   message: "This is a test donation",
 };
+
+const DAY_IN_MS = 86400000;
+const WEEK_IN_MS = 604800000;
+const MONTH_IN_MS = 2592000000;
+const YEAR_IN_MS = 31449600000;
+
+export const DONATION_STATS_PERIOD_OPTIONS = [
+  { value: 0, text: "all time" },
+  { value: DAY_IN_MS, text: "24 hours" },
+  { value: WEEK_IN_MS, text: "7 days" },
+  { value: MONTH_IN_MS, text: "30 days" },
+  { value: YEAR_IN_MS, text: "year" },
+];
