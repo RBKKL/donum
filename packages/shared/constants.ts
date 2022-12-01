@@ -40,3 +40,19 @@ export const DEFAULT_TEST_DONATION = {
 export const DEFAULT_DONATION_IMAGE_URL = "/assets/default_image.gif";
 export const DEFAULT_DONATION_SOUND_URL =
   "http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3";
+
+export enum Periods {
+  ALLTIME = "0",
+  DAY = "86400000",
+  WEEK = "604800000",
+  MONTH = "2592000000",
+  YEAR = "31449600000",
+}
+
+export const DONATION_STATS_PERIOD_OPTIONS = [
+  { value: Periods.ALLTIME, text: "all time" },
+  { value: Periods.DAY, text: "24 hours" },
+  { value: Periods.WEEK, text: "7 days" },
+  { value: Periods.MONTH, text: "30 days" },
+  { value: Periods.YEAR, text: "year" },
+];
