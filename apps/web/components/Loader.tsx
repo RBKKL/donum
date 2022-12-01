@@ -1,12 +1,21 @@
+import classNames from "classnames";
 import { FC } from "react";
 
 interface LoaderProps {
   size?: number;
   color?: string;
+  className?: string;
 }
 
-export const Loader: FC<LoaderProps> = ({ size = 80, color = "white" }) => (
-  <div style={{ width: size, height: size }} className="relative inline-block">
+export const Loader: FC<LoaderProps> = ({
+  size = 80,
+  color = "white",
+  className = "",
+}) => (
+  <div
+    style={{ width: size, height: size }}
+    className={classNames("relative inline-block", className)}
+  >
     <div
       style={{ transformOrigin: `${0.5 * size}px ${0.5 * size}px` }}
       className="animate-loader-spin-1"

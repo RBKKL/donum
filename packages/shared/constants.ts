@@ -39,3 +39,19 @@ export const DEFAULT_TEST_DONATION = {
   amount: "1234567890000000000", // 1.23456789 ETH,
   message: "This is a test donation",
 };
+
+export enum Periods {
+  ALLTIME = "0",
+  DAY = "86400000",
+  WEEK = "604800000",
+  MONTH = "2592000000",
+  YEAR = "31449600000",
+}
+
+export const DONATION_STATS_PERIOD_OPTIONS = [
+  { value: Periods.ALLTIME, text: "all time" },
+  { value: Periods.DAY, text: "24 hours" },
+  { value: Periods.WEEK, text: "7 days" },
+  { value: Periods.MONTH, text: "30 days" },
+  { value: Periods.YEAR, text: "year" },
+];
