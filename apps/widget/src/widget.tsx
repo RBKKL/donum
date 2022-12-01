@@ -1,31 +1,15 @@
 import { onMount, onError, onCleanup, Switch, Match } from "solid-js";
-import { createStore, produce } from "solid-js/store";
+import {createStore, unwrap} from "solid-js/store";
 import { io, Socket } from "socket.io-client";
 import { DonationAlert } from "./donation-alert";
-import { DonationInfo, DonationMetadata, WidgetStore } from "./types";
-import {
-  DEFAULT_ALERT_DURATION,
-  DEFAULT_ALERT_IMAGE,
-  DEFAULT_ALERT_SOUND,
-  DEFAULT_PAUSE_BETWEEN_ALERTS_DURATION,
-} from "@donum/shared/constants";
-
-/* eslint-disable @typescript-eslint/no-unused-vars */
-const getDonationMetadataByType = (donationType: string): DonationMetadata => {
-  // TODO: return metadata depending on donation type
-  return {
-    soundSrc: DEFAULT_ALERT_SOUND,
-    imageSrc: DEFAULT_ALERT_IMAGE,
-    duration: DEFAULT_ALERT_DURATION,
-  };
-};
+import { DonationInfo, WidgetStore } from "./types";
+import {getDonationMetadataByType} from "./utils";
+import {donationQueueMachine} from "./queue-machine";
+import {useMachine} from "./useMachine";
 
 export const Widget = () => {
-  const [store, setStore] = createStore<WidgetStore>({
-    donations: [],
-    isShowingDonation: false,
-    isBetweenDonations: false,
-  });
+  const [store, setStore] = createStore<WidgetStore>({});
+  const [state, send] = useMachine(donationQueueMachine);
 
   const setError = (error: Error) => {
     setStore("error", error);
@@ -35,51 +19,14 @@ export const Widget = () => {
     setStore("socket", socket);
   };
 
-  const showDonations = () => {
-    if (
-      store.isShowingDonation ||
-      store.isBetweenDonations ||
-      store.donations.length < 1
-    ) {
-      return;
-    }
-
-    setStore("isShowingDonation", true);
-    const notificationDuration = getDonationMetadataByType(
-      store.donations[0].type
-    ).duration;
-
-    setTimeout(() => {
-      setStore("isShowingDonation", false);
-      setStore("isBetweenDonations", true);
-      setStore(
-        "donations",
-        produce((donations) => {
-          donations.shift();
-        })
-      );
-    }, notificationDuration);
-    setTimeout(() => {
-      setStore("isBetweenDonations", false);
-      if (store.donations.length > 0) {
-        showDonations();
-      }
-    }, notificationDuration + DEFAULT_PAUSE_BETWEEN_ALERTS_DURATION);
-  };
-
   const addDonation = (donation: DonationInfo) => {
-    console.log(`new donation: ${donation}`);
+    console.log("new donation:");
+    console.log(donation);
 
     // TODO: set donation.type depending on donation.amount or something else
     donation.type = "default";
 
-    setStore(
-      "donations",
-      produce((donations) => {
-        donations.push(donation);
-      })
-    );
-    showDonations();
+    send("ADD_TO_QUEUE", donation);
   };
 
   onMount(() => {
@@ -115,12 +62,12 @@ export const Widget = () => {
 
   return (
     <Switch>
-      <Match when={store.isShowingDonation}>
+      <Match when={state.matches("showingDonation")}>
         <DonationAlert
           // need cast for disable warning, actually store.donations.peek() is never undefined here
-          donationInfo={store.donations[0]}
-          imageSrc={getDonationMetadataByType(store.donations[0].type).imageSrc}
-          soundSrc={getDonationMetadataByType(store.donations[0].type).soundSrc}
+          donationInfo={state.context.queue[0]}
+          imageSrc={getDonationMetadataByType(state.context.queue[0].type).imageSrc}
+          soundSrc={getDonationMetadataByType(state.context.queue[0].type).soundSrc}
         />
       </Match>
       <Match when={!!store.error}>Error: {store.error?.message}</Match>

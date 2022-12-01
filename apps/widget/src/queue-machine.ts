@@ -1,5 +1,7 @@
-import {DonationInfo} from "./types";
-import {assign, createMachine} from "xstate";
+import { DonationInfo } from "./types";
+import { assign, createMachine } from "xstate";
+import { DEFAULT_PAUSE_BETWEEN_ALERTS_DURATION } from "@donum/shared/constants";
+import {getDonationMetadataByType, wait} from "./utils";
 
 export type QueueMachineEvent =
   | {
@@ -13,7 +15,7 @@ export interface QueueMachineContext {
 
 export const donationQueueMachine = createMachine<QueueMachineContext, QueueMachineEvent>({
     id: 'donationQueue',
-    initial: 'checkingIfThereAreMoreItems',
+    initial: 'checkingIfThereAreMoreDonations',
     context: {
       queue: [],
     },
@@ -21,48 +23,48 @@ export const donationQueueMachine = createMachine<QueueMachineContext, QueueMach
       idle: {
         on: {
           ADD_TO_QUEUE: {
-            actions: 'addItemToQueue',
-            target: 'executingItem',
+            actions: 'addDonationToQueue',
+            target: 'showingDonation',
           },
         },
       },
-      executingItem: {
+      showingDonation: {
         on: {
           ADD_TO_QUEUE: {
-            actions: 'addItemToQueue',
+            actions: 'addDonationToQueue',
           },
         },
         invoke: {
-          src: 'executeOldestItemInQueue',
+          src: 'showOldestDonationInQueue',
           onDone: {
-            target: 'awaitingAfterExecution',
-            actions: ['removeOldestItemFromQueue'],
+            target: 'awaitingAfterShowingDonation',
+            actions: ['removeOldestDonationFromQueue'],
           },
         },
       },
-      awaitingAfterExecution: {
+      awaitingAfterShowingDonation: {
         on: {
           ADD_TO_QUEUE: {
-            actions: 'addItemToQueue',
+            actions: 'addDonationToQueue',
           },
         },
         invoke: {
-          src: 'awaitAfterExec',
+          src: 'awaitAfterDonationShow',
           onDone: {
-            target: 'checkingIfThereAreMoreItems',
+            target: 'checkingIfThereAreMoreDonations',
           },
         },
       },
-      checkingIfThereAreMoreItems: {
+      checkingIfThereAreMoreDonations: {
         on: {
           ADD_TO_QUEUE: {
-            actions: 'addItemToQueue',
+            actions: 'addDonationToQueue',
           },
         },
         always: [
           {
-            cond: 'thereAreMoreItemsInTheQueue',
-            target: 'executingItem',
+            cond: 'thereAreMoreDonationsInTheQueue',
+            target: 'showingDonation',
           },
           {
             target: 'idle',
@@ -73,36 +75,35 @@ export const donationQueueMachine = createMachine<QueueMachineContext, QueueMach
   },
   {
     guards: {
-      thereAreMoreItemsInTheQueue: (context) => {
+      thereAreMoreDonationsInTheQueue: (context) => {
         return context.queue.length > 0;
       },
     },
     services: {
-      executeOldestItemInQueue: async (context) => {
-        const oldestItem = context.queue[0];
-        if (!oldestItem) return;
-        await wait(2000);
+      showOldestDonationInQueue: async (context) => {
+        const oldestDonation = context.queue[0];
+        if (!oldestDonation) {
+          return;
+        }
+        await wait(getDonationMetadataByType(oldestDonation.type).duration);
       },
-      awaitAfterExec: async (context) => {
-        await wait(1000);
+      awaitAfterDonationShow: async () => {
+        await wait(DEFAULT_PAUSE_BETWEEN_ALERTS_DURATION);
       },
     },
     actions: {
-      addItemToQueue: assign((context, event) => {
+      addDonationToQueue: assign((context, event) => {
         if (event.type !== 'ADD_TO_QUEUE') {
           return {};
         }
         return {
           queue: [
             ...context.queue,
-            ...(event.items?.map((item) => ({
-              ...item,
-              timeAdded: new Date().toISOString(),
-            })) || []),
+            ...event.items,
           ],
         };
       }),
-      removeOldestItemFromQueue: assign((context) => {
+      removeOldestDonationFromQueue: assign((context) => {
         const [, ...newQueue] = context.queue;
         return {
           queue: newQueue,

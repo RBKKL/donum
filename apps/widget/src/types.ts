@@ -1,4 +1,5 @@
 import { Socket } from "socket.io-client";
+import {AnyStateMachine} from "xstate";
 
 export interface DonationInfo {
   from: string;
@@ -17,8 +18,4 @@ export interface DonationMetadata {
 export interface WidgetStore {
   socket?: Socket;
   error?: Error;
-  donations: Array<DonationInfo>;
-  isShowingDonation: boolean;
-  // when true indicating that prev donation is already shown, but it's too early to show next donation
-  isBetweenDonations: boolean;
 }
