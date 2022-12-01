@@ -39,10 +39,14 @@ export const WEEK_IN_MS = 604800000;
 export const MONTH_IN_MS = 2592000000;
 export const YEAR_IN_MS = 31449600000;
 
-export const DONATION_STATS_PERIOD_OPTIONS = [
-  { value: 0, text: "all time" },
+export const DONATION_CHARTS_PERIOD_OPTIONS = [
   { value: DAY_IN_MS, text: "24 hours" },
   { value: WEEK_IN_MS, text: "7 days" },
   { value: MONTH_IN_MS, text: "30 days" },
   { value: YEAR_IN_MS, text: "year" },
+];
+
+export const DONATION_STATS_PERIOD_OPTIONS = [
+  { value: 0, text: "all time" },
+  ...DONATION_CHARTS_PERIOD_OPTIONS,
 ];

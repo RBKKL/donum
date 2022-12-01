@@ -13,7 +13,11 @@ import { trpc } from "@lib/trpc";
 import { routes } from "@lib/routes";
 import { getDonationsStatsByPeriod } from "@lib/getDonationsStatsByPeriod";
 import { BigNumber } from "ethers";
-import { DONATION_STATS_PERIOD_OPTIONS } from "@donum/shared/constants";
+import {
+  DAY_IN_MS,
+  DONATION_CHARTS_PERIOD_OPTIONS,
+  DONATION_STATS_PERIOD_OPTIONS,
+} from "@donum/shared/constants";
 import { SelectDonationPeriod } from "@components/SelectDonationPeriod";
 import { useState } from "react";
 import { Chart } from "@components/Chart";
@@ -25,6 +29,7 @@ const DashboardPage: NextPage = () => {
   const recipientAddress = session!.user!.name!;
 
   const [currentStatsPeriod, setCurrentStatsPeriod] = useState(0); // default value is all time
+  const [currentChartsPeriod, setCurrentChartsPeriod] = useState(DAY_IN_MS); // default value is day
 
   const sendTestDonation = trpc.donation.sendTestDonation.useMutation();
 
@@ -104,6 +109,21 @@ const DashboardPage: NextPage = () => {
     );
   };
 
+  const renderDonationsCharts = () => {
+    if (isDonationsLoading) return <Loader size={40} />;
+    if (isDonationsError) return <div>Error!</div>;
+    if (!donations) return <div>No donations yet!</div>;
+
+    return (
+      <>
+        <h2>Donations count</h2>
+        <Chart donations={donations} period={currentChartsPeriod} />
+        <h2>Donations amount</h2>
+        <Chart donations={donations} period={currentChartsPeriod} amountMode />
+      </>
+    );
+  };
+
   return (
     <div className="flex w-full flex-col justify-between self-start lg:flex-row">
       <div className="flex min-w-[50%] flex-col items-center">
@@ -142,7 +162,20 @@ const DashboardPage: NextPage = () => {
           </div>
           {renderDonationsStats()}
         </div>
-        <Chart donations={donations} period={currentStatsPeriod} />
+        <div className="flex w-full flex-col items-center">
+          <div className="flex">
+            <h2 className="text-center text-2xl font-semibold text-white">
+              Dynamics by
+            </h2>
+            <SelectDonationPeriod
+              className="ml-2"
+              options={DONATION_CHARTS_PERIOD_OPTIONS}
+              selected={currentChartsPeriod}
+              onSelect={setCurrentChartsPeriod}
+            />
+          </div>
+          {renderDonationsCharts()}
+        </div>
       </div>
       <div className="flex grow flex-col items-center pt-10 lg:pt-0">
         <p className="mb-3 text-2xl font-semibold text-white">
