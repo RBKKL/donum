@@ -12,7 +12,8 @@
   "dependencies": {
     "@donum/shared": "workspace:*",
     "socket.io-client": "^4.5.3",
-    "solid-js": "^1.6.2"
+    "solid-js": "^1.6.2",
+    "xstate": "^4.34.0"
   },
   "devDependencies": {
     "@donum/tsconfig": "workspace:*",
