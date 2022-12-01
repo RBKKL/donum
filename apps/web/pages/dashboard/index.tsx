@@ -11,12 +11,24 @@ import { Loader } from "@components/Loader";
 import { useSession } from "next-auth/react";
 import { trpc } from "@lib/trpc";
 import { routes } from "@lib/routes";
+import { getDonationsStatsByPeriod } from "@lib/statistics";
+import { BigNumber } from "ethers";
+import {
+  DONATION_STATS_PERIOD_OPTIONS,
+  Periods,
+} from "@donum/shared/constants";
+import { Select } from "@components/Select";
+import { useState } from "react";
 
 const DashboardPage: NextPage = () => {
   const { data: session } = useSession();
   // session, user and name can't be null here, because it's secured page and Layout will show warning
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const recipientAddress = session!.user!.name!;
+
+  const [currentStatsPeriod, setCurrentStatsPeriod] = useState<string>(
+    Periods.ALLTIME
+  );
 
   const sendTestDonation = trpc.donation.sendTestDonation.useMutation();
 
@@ -65,24 +77,29 @@ const DashboardPage: NextPage = () => {
     if (isDonationsError) return <div>Error!</div>;
     if (!donations) return <div>No donations yet!</div>;
 
-    const totalDonationsAmount = getTotalDonationsAmount(donations);
-    const totalDonationsCount = donations.length;
+    const [donationsAmount, donationsCount] = +currentStatsPeriod
+      ? getDonationsStatsByPeriod(
+          donations,
+          BigNumber.from(Date.now() - +currentStatsPeriod),
+          BigNumber.from(Date.now())
+        )
+      : [getTotalDonationsAmount(donations), donations.length];
 
     const data = [
       {
         title: "Total donations amount",
-        value: `${totalDonationsAmount} ETH`,
+        value: `${donationsAmount} ETH`,
       },
       {
         title: "Total donations count",
-        value: totalDonationsCount,
+        value: donationsCount,
       },
     ];
 
     return (
       <>
         {data.map((item, index) => (
-          <div key={index} className="flex flex-col items-center pt-4">
+          <div key={index} className="flex flex-col items-center">
             <div className="text-xl font-bold">{item.value}</div>
             <div className="text-sm text-gray-400">{item.title}</div>
           </div>
@@ -115,10 +132,19 @@ const DashboardPage: NextPage = () => {
             />
           </Link>
         </div>
-        <div className="flex flex-col items-center pt-10">
-          <h2 className="text-center text-2xl font-semibold text-white">
-            Statistics
-          </h2>
+        <div className="flex w-80 flex-col items-center pt-10">
+          <div className="flex items-center self-start pl-12 pb-4">
+            <h2 className="text-center text-2xl font-semibold text-white">
+              Statistics
+            </h2>
+            <div className="ml-2">
+              <Select
+                options={DONATION_STATS_PERIOD_OPTIONS}
+                selected={currentStatsPeriod}
+                onSelect={setCurrentStatsPeriod}
+              />
+            </div>
+          </div>
           {renderDonationsStats()}
         </div>
       </div>
