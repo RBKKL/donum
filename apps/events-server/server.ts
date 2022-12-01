@@ -12,7 +12,6 @@ import { toDonationObjectForWidget } from "./utils";
 import { prisma } from "@donum/prisma";
 import { BigNumber } from "ethers";
 import { DEFAULT_SHOW_AMOUNT } from "@donum/shared/constants";
-import { Socket } from "socket.io";
 
 const clients = new BiMap<string, string>(); // address <-> socketId
 
