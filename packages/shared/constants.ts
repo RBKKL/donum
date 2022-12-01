@@ -13,12 +13,20 @@ export const DEFAULT_ALERT_DURATION = 5000; // 5 seconds
 export const DEFAULT_SHOW_AMOUNT = "1000000000000000"; // 0.001 ETH
 
 export const AVATAR_MAX_SIZE = 1024 * 1024 * 10; // 10MB
+export const NOTIFICATION_IMAGE_MAX_SIZE = 1024 * 1024 * 10; // 10MB
 export const SOUND_MAX_SIZE = 1024 * 1024 * 20; // 20MB
 
 export const AVATAR_ACCEPTABLE_FILE_TYPES = [
   "image/png",
   "image/gif",
   "image/jpeg",
+];
+
+export const NOTIFICATION_IMAGE_ACCEPTABLE_FILE_TYPES = [
+  "image/png",
+  "image/gif",
+  "image/jpeg",
+  "video/mp4",
 ];
 
 export const SOUND_ACCEPTABLE_FILE_TYPES = ["audio/mpeg", "audio/mp3"];

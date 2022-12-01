@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@donum/shared": "workspace:*",
-    "@donum/prisma": "workspace:*",
     "socket.io-client": "^4.5.3",
     "solid-js": "^1.6.2"
   },

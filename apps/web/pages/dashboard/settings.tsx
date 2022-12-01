@@ -8,8 +8,8 @@ import {
   NICKNAME_MAX_LENGTH,
   NICKNAME_MIN_LENGTH,
   NICKNAME_CHECK_ALLOWANCE_DEBOUNCE,
-  AVATAR_ACCEPTABLE_FILE_TYPES,
   SOUND_ACCEPTABLE_FILE_TYPES,
+  NOTIFICATION_IMAGE_ACCEPTABLE_FILE_TYPES,
 } from "@donum/shared/constants";
 import React, { useState, useEffect } from "react";
 import { isCorrectNickname, isNumber } from "@donum/shared/helpers";
@@ -73,14 +73,6 @@ const EditDonationPage: NextPage = () => {
     setAvatarUrl(URL.createObjectURL(newAvatarFile));
   };
 
-  const setNotificationImage = (newNotificationImageFile: File) => {
-    setNotificationImageFile(newNotificationImageFile);
-  };
-
-  const setNotificationSound = (newNotificationSoundFile: File) => {
-    setNotificationSoundFile(newNotificationSoundFile);
-  };
-
   const onSave = async () => {
     let avatarUrl: string | undefined;
     if (avatarFile) {
@@ -102,7 +94,7 @@ const EditDonationPage: NextPage = () => {
       [notificationImageUrl] = await uploadFiles([
         {
           file: notificationImageFile,
-          type: "avatar",
+          type: "notificationImage",
         },
       ]);
     }
@@ -231,13 +223,13 @@ const EditDonationPage: NextPage = () => {
         <h3>Notification image</h3>
         <input
           type="file"
-          onChange={(e) => setNotificationImage(e.target.files![0])}
-          accept={AVATAR_ACCEPTABLE_FILE_TYPES.join(",")}
+          onChange={(e) => setNotificationImageFile(e.target.files![0])}
+          accept={NOTIFICATION_IMAGE_ACCEPTABLE_FILE_TYPES.join(",")}
         />
         <h3>Notification sound</h3>
         <input
           type="file"
-          onChange={(e) => setNotificationSound(e.target.files![0])}
+          onChange={(e) => setNotificationSoundFile(e.target.files![0])}
           accept={SOUND_ACCEPTABLE_FILE_TYPES.join(",")}
         />
         <div className="flex flex-row-reverse">

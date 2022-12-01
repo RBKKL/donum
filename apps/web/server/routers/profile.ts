@@ -7,7 +7,7 @@ import {
   AvatarUrlFormat,
   AmountFormat,
   SoundUrlFormat,
-  NumberFormat,
+  NotificationDurationFormat,
 } from "@server/input-formats";
 import { TRPCError } from "@trpc/server";
 import { Prisma } from "@donum/prisma";
@@ -63,7 +63,7 @@ export const profileRouter = router({
         description: DescriptionFormat.optional(),
         avatarUrl: AvatarUrlFormat.optional(),
         minShowAmount: AmountFormat.optional(),
-        notificationDuration: NumberFormat.optional(),
+        notificationDuration: NotificationDurationFormat.optional(),
         notificationImageUrl: AvatarUrlFormat.optional(),
         notificationSoundUrl: SoundUrlFormat.optional(),
       })
