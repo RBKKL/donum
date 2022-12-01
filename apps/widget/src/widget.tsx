@@ -3,13 +3,17 @@ import { createStore } from "solid-js/store";
 import { io, Socket } from "socket.io-client";
 import { DonationAlert } from "./donation-alert";
 import { DonationInfo, WidgetStore } from "./types";
-import { DEFAULT_ALERT_DURATION } from "@donum/shared/constants";
+import {
+  DEFAULT_ALERT_DURATION,
+  DEFAULT_DONATION_IMAGE_URL,
+  DEFAULT_DONATION_SOUND_URL,
+} from "@donum/shared/constants";
 
 export const Widget = () => {
   const [store, setStore] = createStore<WidgetStore>({
-    imageSrc: "/assets/default_image.gif",
-    soundSrc:
-      "http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3",
+    duration: DEFAULT_ALERT_DURATION,
+    imageSrc: DEFAULT_DONATION_IMAGE_URL,
+    soundSrc: DEFAULT_DONATION_SOUND_URL,
   });
 
   const setError = (error: Error) => {
@@ -25,7 +29,7 @@ export const Widget = () => {
     setStore("donationInfo", donation);
     setTimeout(
       () => setStore("donationInfo", undefined),
-      DEFAULT_ALERT_DURATION
+      store.duration * 1000
     );
   };
 
@@ -35,7 +39,6 @@ export const Widget = () => {
     if (!address) {
       throw new Error("No address was provided in search params");
     }
-
     const socket = io("http://localhost:8000", {
       auth: {
         address,
@@ -46,6 +49,15 @@ export const Widget = () => {
     socket.on("connect", () => {
       console.log(`Connected to server with id: ${socket.id}`);
     });
+
+    socket.on(
+      "change-settings",
+      (notificationImageUrl, notificationSoundUrl, notificationDuration) => {
+        setStore("imageSrc", notificationImageUrl);
+        setStore("soundSrc", notificationSoundUrl);
+        setStore("duration", notificationDuration);
+      }
+    );
 
     socket.on("new-donation", (donation) => {
       showDonation(donation);
