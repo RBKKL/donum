@@ -11,6 +11,7 @@ import {
 
 export const Widget = () => {
   const [store, setStore] = createStore<WidgetStore>({
+    duration: DEFAULT_ALERT_DURATION,
     imageSrc: DEFAULT_DONATION_IMAGE_URL,
     soundSrc: DEFAULT_DONATION_SOUND_URL,
   });
@@ -28,7 +29,7 @@ export const Widget = () => {
     setStore("donationInfo", donation);
     setTimeout(
       () => setStore("donationInfo", undefined),
-      DEFAULT_ALERT_DURATION
+      store.duration * 1000
     );
   };
 
@@ -49,13 +50,14 @@ export const Widget = () => {
       console.log(`Connected to server with id: ${socket.id}`);
     });
 
-    socket.on("init-picture", (pictureUrl) => {
-      setStore("imageSrc", pictureUrl);
-    });
-    socket.on("init-sound", (soundUrl) => {
-      console.log(soundUrl);
-      setStore("soundSrc", soundUrl);
-    });
+    socket.on(
+      "change-settings",
+      (notificationImageUrl, notificationSoundUrl, notificationDuration) => {
+        setStore("imageSrc", notificationImageUrl);
+        setStore("soundSrc", notificationSoundUrl);
+        setStore("duration", notificationDuration);
+      }
+    );
 
     socket.on("new-donation", (donation) => {
       showDonation(donation);
@@ -80,7 +82,6 @@ export const Widget = () => {
           imageSrc={store.imageSrc}
           soundSrc={store.soundSrc}
         />
-        <div>{store.soundSrc}</div>
       </Match>
       <Match when={!!store.error}>Error: {store.error?.message}</Match>
     </Switch>

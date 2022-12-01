@@ -31,6 +31,7 @@ const EditDonationPage: NextPage = () => {
   const [newDescription, setNewDescription] = useState("");
   const [newMinShowAmount, setNewMinShowAmount] = useState("");
   const [availableNickname, setAvailableNickname] = useState(false);
+  const [notificationDuration, setNotificationDuration] = useState("");
   const [notificationImageUrl, setNotificationImageUrl] = useState("");
   const [notificationImageFile, setNotificationImageFile] = useState<File>();
   const [notificationSoundUrl, setNotificationSoundUrl] = useState("");
@@ -95,6 +96,11 @@ const EditDonationPage: NextPage = () => {
       ]);
     }
 
+    let donateDuration: number | undefined;
+    if (isNumber(notificationDuration)) {
+      donateDuration = Number(notificationDuration);
+    }
+
     let notificationImageUrl: string | undefined;
     if (notificationImageFile) {
       [notificationImageUrl] = await uploadFiles([
@@ -117,6 +123,7 @@ const EditDonationPage: NextPage = () => {
 
     if (
       avatarUrl ||
+      donateDuration ||
       notificationImageUrl ||
       notificationSoundUrl ||
       !newMinShowAmount ||
@@ -131,6 +138,7 @@ const EditDonationPage: NextPage = () => {
           newMinShowAmount !== ""
             ? ethers.utils.parseUnits(newMinShowAmount, "ether").toString()
             : undefined,
+        notificationDuration: donateDuration,
         notificationImageUrl,
         notificationSoundUrl,
       });
@@ -217,7 +225,13 @@ const EditDonationPage: NextPage = () => {
             </div>
           }
         />
-
+        <h3>Notification duration</h3>
+        <Input
+          value={notificationDuration}
+          onChange={setNotificationDuration}
+          placeholder={"5"}
+          textSize="small"
+        />
         <h3>Notification image</h3>
         <input
           type="file"

@@ -10,6 +10,7 @@ export interface WidgetStore {
   socket?: Socket;
   error?: Error;
   donationInfo?: DonationInfo;
+  duration: number;
   imageSrc: string;
   soundSrc: string;
 }

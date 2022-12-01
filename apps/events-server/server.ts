@@ -12,6 +12,7 @@ import { toDonationObjectForWidget } from "./utils";
 import { prisma } from "@donum/prisma";
 import { BigNumber } from "ethers";
 import { DEFAULT_SHOW_AMOUNT } from "@donum/shared/constants";
+import { Socket } from "socket.io";
 
 const clients = new BiMap<string, string>(); // address <-> socketId
 
@@ -39,8 +40,14 @@ app.ready((err) => {
     const profile = await prisma.profile.findFirst({
       where: { address: socket.handshake.auth.address },
     });
-    app.io.to(socket.id).emit("init-picture", profile?.notificationImageUrl);
-    app.io.to(socket.id).emit("init-sound", profile?.notificationSoundUrl);
+    app.io
+      .to(socket.id)
+      .emit(
+        "change-settings",
+        profile?.notificationImageUrl,
+        profile?.notificationSoundUrl,
+        profile?.notificationDuration
+      );
 
     socket.on("disconnect", () => {
       app.log.info(`Client with id: ${socket.id} disconnected`);
@@ -80,6 +87,32 @@ app.post("/test", (req, res) => {
     ...testDonation,
     amount: BigNumber.from(testDonation.amount),
   });
+  res.status(200).send();
+});
+
+app.post("/change-settings", async (req, res) => {
+  if (req.headers.authorization !== process.env.EVENT_SECRET) {
+    res.status(403).send("Wrong secret");
+    return;
+  }
+  const {
+    address,
+    notificationImageUrl,
+    notificationSoundUrl,
+    notificationDuration,
+  } = JSON.parse(req.body as string);
+
+  const clientSocketId = clients.get(address);
+  clientSocketId &&
+    app.io
+      .to(clientSocketId)
+      .emit(
+        "change-settings",
+        notificationImageUrl,
+        notificationSoundUrl,
+        notificationDuration
+      );
+
   res.status(200).send();
 });
 

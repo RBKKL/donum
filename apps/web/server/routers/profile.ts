@@ -7,10 +7,12 @@ import {
   AvatarUrlFormat,
   AmountFormat,
   SoundUrlFormat,
+  NumberFormat,
 } from "@server/input-formats";
 import { TRPCError } from "@trpc/server";
 import { Prisma } from "@donum/prisma";
 import { populateProfileWithDefaultValues, Profile } from "@lib/profile";
+import { serverEnv } from "@env/server";
 
 export const profileRouter = router({
   me: protectedProcedure.query(async ({ ctx }) => {
@@ -61,6 +63,7 @@ export const profileRouter = router({
         description: DescriptionFormat.optional(),
         avatarUrl: AvatarUrlFormat.optional(),
         minShowAmount: AmountFormat.optional(),
+        notificationDuration: NumberFormat.optional(),
         notificationImageUrl: AvatarUrlFormat.optional(),
         notificationSoundUrl: SoundUrlFormat.optional(),
       })
@@ -97,6 +100,10 @@ export const profileRouter = router({
         updatedData.minShowAmount = new Prisma.Decimal(input.minShowAmount);
       }
 
+      if (input.notificationDuration) {
+        updatedData.notificationDuration = input.notificationDuration;
+      }
+
       profile = await ctx.prisma.profile.upsert({
         where: { address: input.address },
         update: {
@@ -104,6 +111,7 @@ export const profileRouter = router({
           description: updatedData.description,
           avatarUrl: input.avatarUrl,
           minShowAmount: updatedData.minShowAmount,
+          notificationDuration: updatedData.notificationDuration,
           notificationImageUrl: input.notificationImageUrl,
           notificationSoundUrl: input.notificationSoundUrl,
         },
@@ -113,10 +121,34 @@ export const profileRouter = router({
           description: updatedData.description,
           avatarUrl: input.avatarUrl,
           minShowAmount: updatedData.minShowAmount,
+          notificationDuration: updatedData.notificationDuration,
           notificationImageUrl: input.notificationImageUrl,
           notificationSoundUrl: input.notificationSoundUrl,
         },
       });
+
+      const response = await fetch(
+        `${serverEnv.EVENTS_SERVER_URL}/change-settings`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: serverEnv.EVENT_SECRET,
+          },
+          body: JSON.stringify({
+            address: input.address,
+            notificationImageUrl: profile.notificationImageUrl,
+            notificationSoundUrl: profile.notificationSoundUrl,
+            notificationDuration: profile.notificationDuration,
+          }),
+        }
+      );
+
+      if (response.status !== 200) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Wrong secret",
+        });
+      }
 
       return populateProfileWithDefaultValues(profile);
     }),
