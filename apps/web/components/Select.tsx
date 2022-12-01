@@ -17,7 +17,7 @@ export const Select: FC<SelectProps> = ({ options, selected, onSelect }) => {
   return (
     <RadixSelect.Root
       value={selected}
-      onValueChange={(newValue) => onSelect(newValue)}
+      onValueChange={onSelect}
     >
       <RadixSelect.Trigger className="flex items-center gap-4 rounded-xl border border-yellow-500 px-2 py-1 text-2xl text-yellow-500 focus:outline-none">
         <RadixSelect.Value>
