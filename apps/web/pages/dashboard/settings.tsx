@@ -32,9 +32,7 @@ const EditDonationPage: NextPage = () => {
   const [newMinShowAmount, setNewMinShowAmount] = useState("");
   const [availableNickname, setAvailableNickname] = useState(false);
   const [notificationDuration, setNotificationDuration] = useState("");
-  const [notificationImageUrl, setNotificationImageUrl] = useState("");
   const [notificationImageFile, setNotificationImageFile] = useState<File>();
-  const [notificationSoundUrl, setNotificationSoundUrl] = useState("");
   const [notificationSoundFile, setNotificationSoundFile] = useState<File>();
 
   const { data: session } = useSession();
@@ -77,12 +75,10 @@ const EditDonationPage: NextPage = () => {
 
   const setNotificationImage = (newNotificationImageFile: File) => {
     setNotificationImageFile(newNotificationImageFile);
-    setNotificationImageUrl(URL.createObjectURL(newNotificationImageFile));
   };
 
   const setNotificationSound = (newNotificationSoundFile: File) => {
     setNotificationSoundFile(newNotificationSoundFile);
-    setNotificationSoundUrl(URL.createObjectURL(newNotificationSoundFile));
   };
 
   const onSave = async () => {
