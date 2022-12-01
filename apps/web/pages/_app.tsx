@@ -13,6 +13,7 @@ import { clientEnv } from "@env/client";
 import { SessionProvider } from "next-auth/react";
 import { Session } from "next-auth";
 import { StrictMode } from "react";
+import { AuthCheck } from "@components/AuthCheck";
 
 const usedChains = [
   // chain.mainnet,
@@ -37,7 +38,7 @@ const wagmiClient = createClient({
   provider,
 });
 
-const MyApp: AppType<{ session: Session | null }> = ({
+const MyApp: AppType<{ session: Session | null; protected?: boolean }> = ({
   Component,
   pageProps,
 }) => {
@@ -50,7 +51,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
               <Head>
                 <title>{APP_NAME}</title>
               </Head>
-              <Component {...pageProps} />
+              <AuthCheck check={pageProps.protected}>
+                <Component {...pageProps} />
+              </AuthCheck>
             </Layout>
           </SessionProvider>
         </RainbowKitProvider>
