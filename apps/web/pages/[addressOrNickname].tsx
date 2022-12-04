@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { RecipientProfile } from "@components/RecipientProfile";
@@ -50,10 +50,12 @@ const SendDonationPage: NextPage = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [senderNickname, setSenderNickname] = useState("");
   const [donationAmount, setDonationAmount] = useState(DEFAULT_DONATION_AMOUNT);
   const [message, setMessage] = useState("");
 
   const { donate, isAvailable, isLoading, isError } = useSendDonation(
+    senderNickname,
     recipientAddress,
     donationAmount,
     message
@@ -105,6 +107,12 @@ const SendDonationPage: NextPage = () => {
         <p className="break-words px-4 pb-4 text-left text-sm">
           {profile.description}
         </p>
+        <Input
+          placeholder="Your nickname"
+          value={senderNickname}
+          onChange={setSenderNickname}
+          textSize="large"
+        />
         <Input
           value={donationAmount}
           downCorner={

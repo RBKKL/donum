@@ -22,7 +22,7 @@ const Alert: NextPage = () => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const address = session!.user!.name!;
 
-  const [from, setFrom] = useState("");
+  const [senderNickname, setSenderNickname] = useState("");
   const [amount, setAmount] = useState(DEFAULT_DONATION_AMOUNT);
   const [message, setMessage] = useState("");
   const {
@@ -67,9 +67,9 @@ const Alert: NextPage = () => {
           {profile.description}
         </p>
         <Input
-          placeholder="From"
-          value={from}
-          onChange={setFrom}
+          placeholder="Your nickname"
+          value={senderNickname}
+          onChange={setSenderNickname}
           textSize="large"
         />
         <Input
@@ -100,7 +100,7 @@ const Alert: NextPage = () => {
             text="Send test donation"
             onClick={() =>
               sendTestDonation.mutate({
-                from,
+                from: senderNickname,
                 amount: ethers.utils.parseUnits(amount, "ether").toString(),
                 message,
               })

@@ -16,7 +16,14 @@ export const useNewDonationEvent = (listener: NewDonationEventListener) => {
     abi: DonationsStoreABI,
     eventName: "NewDonation",
     listener(
-      ...newDonationArray: [Address, Address, BigNumber, BigNumber, string]
+      ...newDonationArray: [
+        Address,
+        string,
+        Address,
+        BigNumber,
+        BigNumber,
+        string
+      ]
     ) {
       listener(castToDonationObject(newDonationArray));
     },
