@@ -67,12 +67,6 @@ const Alert: NextPage = () => {
           {profile.description}
         </p>
         <Input
-          placeholder="Your nickname"
-          value={senderNickname}
-          onChange={setSenderNickname}
-          textSize="large"
-        />
-        <Input
           value={amount}
           onChange={onAmountChange}
           onBlur={setMinimumAmount}
@@ -82,6 +76,12 @@ const Alert: NextPage = () => {
               <EthIcon />
             </div>
           }
+        />
+        <Input
+          placeholder="Your nickname"
+          value={senderNickname}
+          onChange={setSenderNickname}
+          textSize="large"
         />
         <TextField
           placeholder="Type your message here..."

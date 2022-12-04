@@ -108,12 +108,6 @@ const SendDonationPage: NextPage = () => {
           {profile.description}
         </p>
         <Input
-          placeholder="Your nickname"
-          value={senderNickname}
-          onChange={setSenderNickname}
-          textSize="large"
-        />
-        <Input
           value={donationAmount}
           downCorner={
             <div className="w-full text-left text-xs text-gray-400">
@@ -138,6 +132,12 @@ const SendDonationPage: NextPage = () => {
               )}
             </div>
           }
+        />
+        <Input
+          placeholder="Nickname..."
+          value={senderNickname}
+          onChange={setSenderNickname}
+          textSize="large"
         />
         <TextField
           placeholder="Type your message here..."
