@@ -11,12 +11,29 @@ import { Loader } from "@components/Loader";
 import { useSession } from "next-auth/react";
 import { trpc } from "@lib/trpc";
 import { routes } from "@lib/routes";
+import { getDonationsStatsByPeriod } from "@lib/statistics";
+import { BigNumber } from "ethers";
+import {
+  DONATION_CHARTS_PERIOD_OPTIONS,
+  DONATION_STATS_PERIOD_OPTIONS,
+  Periods,
+} from "@donum/shared/constants";
+import { Select } from "@components/Select";
+import { useState } from "react";
+import { Chart } from "@components/Chart";
 
 const DashboardPage: NextPage = () => {
   const { data: session } = useSession();
   // session, user and name can't be null here, because it's secured page and Layout will show warning
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const recipientAddress = session!.user!.name!;
+  const recipientAddress = session?.user?.name;
+
+  const [currentStatsPeriod, setCurrentStatsPeriod] = useState<string>(
+    Periods.ALLTIME
+  );
+  const [currentChartsPeriod, setCurrentChartsPeriod] = useState<string>(
+    Periods.DAY
+  );
 
   const sendTestDonation = trpc.donation.sendTestDonation.useMutation();
 
@@ -25,7 +42,7 @@ const DashboardPage: NextPage = () => {
     isLoading: isDonationsLoading,
     isError: isDonationsError,
     error: donationsError,
-  } = useLiveDonationsHistory(recipientAddress);
+  } = useLiveDonationsHistory(recipientAddress || "");
 
   const {
     data: profile,
@@ -66,24 +83,29 @@ const DashboardPage: NextPage = () => {
     if (isDonationsError) return <div>Error!</div>;
     if (!donations) return <div>No donations yet!</div>;
 
-    const totalDonationsAmount = getTotalDonationsAmount(donations);
-    const totalDonationsCount = donations.length;
+    const [donationsAmount, donationsCount] = +currentStatsPeriod
+      ? getDonationsStatsByPeriod(
+          donations,
+          BigNumber.from(Date.now() - +currentStatsPeriod),
+          BigNumber.from(Date.now())
+        )
+      : [getTotalDonationsAmount(donations), donations.length];
 
     const data = [
       {
         title: "Total donations amount",
-        value: `${totalDonationsAmount} ETH`,
+        value: `${donationsAmount} ETH`,
       },
       {
         title: "Total donations count",
-        value: totalDonationsCount,
+        value: donationsCount,
       },
     ];
 
     return (
       <>
         {data.map((item, index) => (
-          <div key={index} className="flex flex-col items-center pt-4">
+          <div key={index} className="flex flex-col items-center">
             <div className="text-xl font-bold">{item.value}</div>
             <div className="text-sm text-gray-400">{item.title}</div>
           </div>
@@ -92,13 +114,28 @@ const DashboardPage: NextPage = () => {
     );
   };
 
+  const renderDonationsCharts = () => {
+    if (isDonationsLoading) return <Loader size={40} />;
+    if (isDonationsError) return <div>Error!</div>;
+    if (!donations) return <div>No donations yet!</div>;
+
+    return (
+      <>
+        <h2>Donations count</h2>
+        <Chart donations={donations} period={currentChartsPeriod} />
+        <h2>Donations amount</h2>
+        <Chart donations={donations} period={currentChartsPeriod} amountMode />
+      </>
+    );
+  };
+
   return (
     <div className="flex w-full flex-col justify-between self-start lg:flex-row">
-      <div className="flex min-w-[30%] flex-col items-center">
+      <div className="flex min-w-[50%] flex-col items-center">
         <RecipientProfile
           avatarUrl={profile.avatarUrl}
           nickname={profile.nickname}
-          address={recipientAddress}
+          address={recipientAddress || ""}
           showAddress={!profile.nickname}
           shortAddress
         />
@@ -116,11 +153,35 @@ const DashboardPage: NextPage = () => {
             />
           </Link>
         </div>
-        <div className="flex flex-col items-center pt-10">
-          <h2 className="text-center text-2xl font-semibold text-white">
-            Statistics
-          </h2>
+        <div className="flex w-80 flex-col items-center pt-10">
+          <div className="flex items-center self-start pl-12 pb-4">
+            <h2 className="text-center text-2xl font-semibold text-white">
+              Statistics
+            </h2>
+            <div className="ml-2">
+              <Select
+                options={DONATION_STATS_PERIOD_OPTIONS}
+                selected={currentStatsPeriod}
+                onSelect={setCurrentStatsPeriod}
+              />
+            </div>
+          </div>
           {renderDonationsStats()}
+        </div>
+        <div className="flex w-full flex-col items-center">
+          <div className="flex">
+            <h2 className="text-center text-2xl font-semibold text-white">
+              Dynamics
+            </h2>
+            <div className="ml-2">
+              <Select
+                options={DONATION_CHARTS_PERIOD_OPTIONS}
+                selected={currentChartsPeriod}
+                onSelect={setCurrentChartsPeriod}
+              />
+            </div>
+          </div>
+          {renderDonationsCharts()}
         </div>
       </div>
       <div className="flex grow flex-col items-center pt-10 lg:pt-0">
@@ -132,5 +193,13 @@ const DashboardPage: NextPage = () => {
     </div>
   );
 };
+
+export async function getStaticProps() {
+  return {
+    props: {
+      protected: true,
+    },
+  };
+}
 
 export default DashboardPage;

@@ -1,7 +1,7 @@
 import { FC, MouseEventHandler } from "react";
 import Image from "next/image";
 
-type IconSize = "small" | "normal" | "large";
+type IconSize = "extra-small" | "small" | "normal" | "large";
 
 interface BaseIconProps {
   src: string;
@@ -13,6 +13,7 @@ interface BaseIconProps {
 export type IconProps = Omit<BaseIconProps, "src" | "alt">;
 
 const sizes: Record<IconSize, number> = {
+  "extra-small": 12,
   small: 16,
   normal: 24,
   large: 32,

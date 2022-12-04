@@ -8,6 +8,8 @@ import {
   NICKNAME_MAX_LENGTH,
   NICKNAME_MIN_LENGTH,
   NICKNAME_CHECK_ALLOWANCE_DEBOUNCE,
+  SOUND_ACCEPTABLE_FILE_TYPES,
+  NOTIFICATION_IMAGE_ACCEPTABLE_FILE_TYPES,
 } from "@donum/shared/constants";
 import React, { useState, useEffect } from "react";
 import { isCorrectNickname, isNumber } from "@donum/shared/helpers";
@@ -29,6 +31,9 @@ const EditDonationPage: NextPage = () => {
   const [newDescription, setNewDescription] = useState("");
   const [newMinShowAmount, setNewMinShowAmount] = useState("");
   const [availableNickname, setAvailableNickname] = useState(false);
+  const [notificationDuration, setNotificationDuration] = useState("");
+  const [notificationImageFile, setNotificationImageFile] = useState<File>();
+  const [notificationSoundFile, setNotificationSoundFile] = useState<File>();
 
   const { data: session } = useSession();
   // session, user and name can't be null here, because it's secured page and Layout will show warning
@@ -78,7 +83,40 @@ const EditDonationPage: NextPage = () => {
         },
       ]);
     }
-    if (avatarUrl || !newMinShowAmount || isNumber(newMinShowAmount)) {
+
+    let donateDuration: number | undefined;
+    if (isNumber(notificationDuration)) {
+      donateDuration = Number(notificationDuration);
+    }
+
+    let notificationImageUrl: string | undefined;
+    if (notificationImageFile) {
+      [notificationImageUrl] = await uploadFiles([
+        {
+          file: notificationImageFile,
+          type: "notificationImage",
+        },
+      ]);
+    }
+
+    let notificationSoundUrl: string | undefined;
+    if (notificationSoundFile) {
+      [notificationSoundUrl] = await uploadFiles([
+        {
+          file: notificationSoundFile,
+          type: "sound",
+        },
+      ]);
+    }
+
+    if (
+      avatarUrl ||
+      donateDuration ||
+      notificationImageUrl ||
+      notificationSoundUrl ||
+      !newMinShowAmount ||
+      isNumber(newMinShowAmount)
+    ) {
       editProfile.mutate({
         address,
         nickname: newNickname,
@@ -88,6 +126,9 @@ const EditDonationPage: NextPage = () => {
           newMinShowAmount !== ""
             ? ethers.utils.parseUnits(newMinShowAmount, "ether").toString()
             : undefined,
+        notificationDuration: donateDuration,
+        notificationImageUrl,
+        notificationSoundUrl,
       });
     }
   };
@@ -164,6 +205,7 @@ const EditDonationPage: NextPage = () => {
         <Input
           value={newMinShowAmount}
           onChange={setNewMinShowAmount}
+          placeholder={ethers.utils.formatEther(profile.data.minShowAmount)}
           textSize="small"
           rightCorner={
             <div className="flex flex-col items-end">
@@ -171,10 +213,25 @@ const EditDonationPage: NextPage = () => {
             </div>
           }
         />
+        <h3>Notification duration</h3>
+        <Input
+          value={notificationDuration}
+          onChange={setNotificationDuration}
+          placeholder={"5"}
+          textSize="small"
+        />
         <h3>Notification image</h3>
-        <input type="file" />
+        <input
+          type="file"
+          onChange={(e) => setNotificationImageFile(e.target.files![0])}
+          accept={NOTIFICATION_IMAGE_ACCEPTABLE_FILE_TYPES.join(",")}
+        />
         <h3>Notification sound</h3>
-        <input type="file" />
+        <input
+          type="file"
+          onChange={(e) => setNotificationSoundFile(e.target.files![0])}
+          accept={SOUND_ACCEPTABLE_FILE_TYPES.join(",")}
+        />
         <div className="flex flex-row-reverse">
           <Button
             text="Save"
