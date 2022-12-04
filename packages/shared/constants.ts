@@ -57,10 +57,14 @@ export enum Periods {
   YEAR = "31449600000",
 }
 
-export const DONATION_STATS_PERIOD_OPTIONS = [
-  { value: Periods.ALLTIME, text: "all time" },
+export const DONATION_CHARTS_PERIOD_OPTIONS = [
   { value: Periods.DAY, text: "24 hours" },
   { value: Periods.WEEK, text: "7 days" },
   { value: Periods.MONTH, text: "30 days" },
   { value: Periods.YEAR, text: "year" },
+];
+
+export const DONATION_STATS_PERIOD_OPTIONS = [
+  { value: Periods.ALLTIME, text: "all time" },
+  ...DONATION_CHARTS_PERIOD_OPTIONS,
 ];
