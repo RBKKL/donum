@@ -2,7 +2,13 @@ import { StorageClient } from "@supabase/storage-js";
 import { serverEnv } from "@env/server";
 
 export const AVATARS_BUCKET_NAME = "avatars";
-const BUCKET_NAMES = [AVATARS_BUCKET_NAME]; // must contain all buckets names
+export const NOTIFICATION_IMAGES_BUCKET_NAME = "notification-images";
+export const SOUNDS_BUCKET_NAME = "sounds";
+const BUCKET_NAMES = [
+  AVATARS_BUCKET_NAME,
+  NOTIFICATION_IMAGES_BUCKET_NAME,
+  SOUNDS_BUCKET_NAME,
+]; // must contain all buckets names
 
 class BucketsStorage {
   private storageClient: StorageClient;

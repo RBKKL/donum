@@ -20,41 +20,36 @@ import {
   subMonths,
 } from "date-fns";
 import { NewDonationEventObject } from "@donum/contracts/types/DonationsStore";
-import {
-  DAY_IN_MS,
-  MONTH_IN_MS,
-  WEEK_IN_MS,
-  YEAR_IN_MS,
-} from "@donum/shared/constants";
 import { formatEther } from "ethers/lib/utils";
 import { BigNumber } from "ethers";
+import { Periods } from "@donum/shared/constants";
 
 interface ChartProps {
   donations: NewDonationEventObject[];
-  period: number;
+  period: string;
   amountMode?: boolean;
 }
 
 const paramsByPeriod = {
-  [DAY_IN_MS]: {
+  [Periods.DAY]: {
     rangeLength: 24,
     sub: subHours,
     start: startOfHour,
     formatString: "hh:mm",
   },
-  [WEEK_IN_MS]: {
+  [Periods.WEEK]: {
     rangeLength: 7,
     sub: subDays,
     start: startOfDay,
     formatString: "d.MM",
   },
-  [MONTH_IN_MS]: {
+  [Periods.MONTH]: {
     rangeLength: 30,
     sub: subDays,
     start: startOfDay,
     formatString: "d.MM",
   },
-  [YEAR_IN_MS]: {
+  [Periods.YEAR]: {
     rangeLength: 24,
     sub: subMonths,
     start: startOfMonth,
