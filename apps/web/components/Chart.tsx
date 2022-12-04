@@ -115,7 +115,7 @@ export const Chart: FC<ChartProps> = ({ donations, period, amountMode }) => {
           type="monotone"
           dataKey="amount"
           stroke="#EAB308"
-          strokeWidth={4}
+          strokeWidth={2}
           fillOpacity={0.1}
           fill="url(#gradient)"
           dot={<Dot />}
