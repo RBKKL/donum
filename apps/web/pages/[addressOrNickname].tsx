@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { RecipientProfile } from "@components/RecipientProfile";
@@ -54,10 +54,12 @@ const SendDonationPage: NextPage = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [senderNickname, setSenderNickname] = useState("");
   const [donationAmount, setDonationAmount] = useState(DEFAULT_DONATION_AMOUNT);
   const [message, setMessage] = useState("");
 
   const { donate, isAvailable, isLoading, isError } = useSendDonation(
+    senderNickname,
     recipientAddress,
     donationAmount,
     message
@@ -134,6 +136,12 @@ const SendDonationPage: NextPage = () => {
               )}
             </div>
           }
+        />
+        <Input
+          placeholder="Nickname..."
+          value={senderNickname}
+          onChange={setSenderNickname}
+          textSize="large"
         />
         <TextField
           placeholder="Type your message here..."

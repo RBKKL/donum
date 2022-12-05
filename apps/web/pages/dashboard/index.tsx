@@ -70,6 +70,7 @@ const DashboardPage: NextPage = () => {
       <DonationCard
         key={index}
         from={donation.from}
+        nickname={donation.nickname}
         timestamp={donation.timestamp}
         amount={donation.amount}
         message={donation.message}

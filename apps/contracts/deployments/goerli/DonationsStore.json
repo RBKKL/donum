@@ -1,14 +1,20 @@
 {
-  "address": "0xD48A735Ae54fdc8Be432b47868Dc4675773Fb1e7",
+  "address": "0x7757e69818Dc64b14e0aaffaae19B5e466735188",
   "abi": [
     {
       "anonymous": false,
       "inputs": [
         {
-          "indexed": false,
+          "indexed": true,
           "internalType": "address",
           "name": "from",
           "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "nickname",
+          "type": "string"
         },
         {
           "indexed": true,
@@ -41,6 +47,11 @@
     {
       "inputs": [
         {
+          "internalType": "string",
+          "name": "_nickname",
+          "type": "string"
+        },
+        {
           "internalType": "address",
           "name": "_to",
           "type": "address"
@@ -55,72 +66,30 @@
       "outputs": [],
       "stateMutability": "payable",
       "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "name": "recipients",
-      "outputs": [
-        {
-          "internalType": "string",
-          "name": "nickname",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "avatarURI",
-          "type": "string"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "string",
-          "name": "_nickname",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "_avatarURI",
-          "type": "string"
-        }
-      ],
-      "name": "setRecipientInfo",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
     }
   ],
-  "transactionHash": "0xbc75a59f9690c8180f8a1ff6c1395144c0320ff20c26e453c759f62ddfaa6804",
+  "transactionHash": "0xce74c9c1f7de9d6450d1c9dcf6f1a8c07e4b63e363a5ed86701e2a1fa3f71a7e",
   "receipt": {
     "to": null,
     "from": "0x7c49301dAe0eCD335fe04164a98Dcfde59472AB4",
-    "contractAddress": "0xD48A735Ae54fdc8Be432b47868Dc4675773Fb1e7",
-    "transactionIndex": 85,
-    "gasUsed": "406368",
+    "contractAddress": "0x7757e69818Dc64b14e0aaffaae19B5e466735188",
+    "transactionIndex": 67,
+    "gasUsed": "189559",
     "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-    "blockHash": "0x91ec2ce55ce049faca2597b160636e9b573d5dd8dfd5eb834ae061d22c3846e2",
-    "transactionHash": "0xbc75a59f9690c8180f8a1ff6c1395144c0320ff20c26e453c759f62ddfaa6804",
+    "blockHash": "0x913af146e4a201ffcd5173c0afaeafafa0eb0b2a848aacd799cc70b3a8d1d74b",
+    "transactionHash": "0xce74c9c1f7de9d6450d1c9dcf6f1a8c07e4b63e363a5ed86701e2a1fa3f71a7e",
     "logs": [],
-    "blockNumber": 7775128,
-    "cumulativeGasUsed": "23335430",
+    "blockNumber": 8072371,
+    "cumulativeGasUsed": "8495135",
     "status": 1,
     "byzantium": true
   },
   "args": [],
-  "numDeployments": 5,
-  "solcInputHash": "0588a35eb8482903af7fe4212da74759",
-  "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"message\",\"type\":\"string\"}],\"name\":\"NewDonation\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"_message\",\"type\":\"string\"}],\"name\":\"donate\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"recipients\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"nickname\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"avatarURI\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_nickname\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"_avatarURI\",\"type\":\"string\"}],\"name\":\"setRecipientInfo\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/DonationsStore.sol\":\"DonationsStore\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":1000},\"remappings\":[]},\"sources\":{\"contracts/DonationsStore.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\r\\npragma solidity ^0.8.0;\\r\\n\\r\\ncontract DonationsStore {\\r\\n    struct RecipientInfo {\\r\\n        string nickname;\\r\\n        string avatarURI;\\r\\n    }\\r\\n\\r\\n    event NewDonation(\\r\\n        address from,\\r\\n        address indexed to,\\r\\n        uint amount,\\r\\n        uint timestamp,\\r\\n        string message\\r\\n    );\\r\\n\\r\\n    mapping(address => RecipientInfo) public recipients;\\r\\n\\r\\n    function setRecipientInfo(string calldata _nickname, string calldata _avatarURI) external {\\r\\n        recipients[msg.sender].nickname = _nickname;\\r\\n        recipients[msg.sender].avatarURI = _avatarURI;\\r\\n    }\\r\\n\\r\\n    function donate(address _to, string calldata _message) external payable {\\r\\n        payable(_to).transfer(msg.value);\\r\\n        emit NewDonation(msg.sender, _to, msg.value, block.timestamp, _message);\\r\\n    }\\r\\n}\",\"keccak256\":\"0x026b006768dca128f633f00aea17ee1a19c4a9989b4df74da1ddcdc50c4f9b26\",\"license\":\"MIT\"}},\"version\":1}",
-  "bytecode": "0x608060405234801561001057600080fd5b50610664806100206000396000f3fe6080604052600436106100345760003560e01c806335dd089314610039578063429c14d71461005b578063eb8203121461006e575b600080fd5b34801561004557600080fd5b506100596100543660046102f7565b6100a5565b005b61005961006936600461038c565b6100e4565b34801561007a57600080fd5b5061008e6100893660046103df565b610182565b60405161009c929190610447565b60405180910390f35b3360009081526020819052604090206100bf848683610514565b503360009081526020819052604090206001016100dd828483610514565b5050505050565b60405173ffffffffffffffffffffffffffffffffffffffff8416903480156108fc02916000818181858888f19350505050158015610126573d6000803e3d6000fd5b508273ffffffffffffffffffffffffffffffffffffffff167fa374875f5df088cfb750bbe8b4e25db8ce7a7199d782713c5aaec7068e4d7bc233344286866040516101759594939291906105d4565b60405180910390a2505050565b60006020819052908152604090208054819061019d9061048b565b80601f01602080910402602001604051908101604052809291908181526020018280546101c99061048b565b80156102165780601f106101eb57610100808354040283529160200191610216565b820191906000526020600020905b8154815290600101906020018083116101f957829003601f168201915b50505050509080600101805461022b9061048b565b80601f01602080910402602001604051908101604052809291908181526020018280546102579061048b565b80156102a45780601f10610279576101008083540402835291602001916102a4565b820191906000526020600020905b81548152906001019060200180831161028757829003601f168201915b5050505050905082565b60008083601f8401126102c057600080fd5b50813567ffffffffffffffff8111156102d857600080fd5b6020830191508360208285010111156102f057600080fd5b9250929050565b6000806000806040858703121561030d57600080fd5b843567ffffffffffffffff8082111561032557600080fd5b610331888389016102ae565b9096509450602087013591508082111561034a57600080fd5b50610357878288016102ae565b95989497509550505050565b803573ffffffffffffffffffffffffffffffffffffffff8116811461038757600080fd5b919050565b6000806000604084860312156103a157600080fd5b6103aa84610363565b9250602084013567ffffffffffffffff8111156103c657600080fd5b6103d2868287016102ae565b9497909650939450505050565b6000602082840312156103f157600080fd5b6103fa82610363565b9392505050565b6000815180845260005b818110156104275760208185018101518683018201520161040b565b506000602082860101526020601f19601f83011685010191505092915050565b60408152600061045a6040830185610401565b828103602084015261046c8185610401565b95945050505050565b634e487b7160e01b600052604160045260246000fd5b600181811c9082168061049f57607f821691505b6020821081036104bf57634e487b7160e01b600052602260045260246000fd5b50919050565b601f82111561050f57600081815260208120601f850160051c810160208610156104ec5750805b601f850160051c820191505b8181101561050b578281556001016104f8565b5050505b505050565b67ffffffffffffffff83111561052c5761052c610475565b6105408361053a835461048b565b836104c5565b6000601f841160018114610574576000851561055c5750838201355b600019600387901b1c1916600186901b1783556100dd565b600083815260209020601f19861690835b828110156105a55786850135825560209485019460019092019101610585565b50868210156105c25760001960f88860031b161c19848701351681555b505060018560011b0183555050505050565b73ffffffffffffffffffffffffffffffffffffffff8616815284602082015283604082015260806060820152816080820152818360a0830137600081830160a090810191909152601f909201601f1916010194935050505056fea264697066735822122000bfc8521cd3c3c810f347e31c947d5e98075837fe9f03ef3f2b332131c55e9f64736f6c63430008110033",
-  "deployedBytecode": "0x6080604052600436106100345760003560e01c806335dd089314610039578063429c14d71461005b578063eb8203121461006e575b600080fd5b34801561004557600080fd5b506100596100543660046102f7565b6100a5565b005b61005961006936600461038c565b6100e4565b34801561007a57600080fd5b5061008e6100893660046103df565b610182565b60405161009c929190610447565b60405180910390f35b3360009081526020819052604090206100bf848683610514565b503360009081526020819052604090206001016100dd828483610514565b5050505050565b60405173ffffffffffffffffffffffffffffffffffffffff8416903480156108fc02916000818181858888f19350505050158015610126573d6000803e3d6000fd5b508273ffffffffffffffffffffffffffffffffffffffff167fa374875f5df088cfb750bbe8b4e25db8ce7a7199d782713c5aaec7068e4d7bc233344286866040516101759594939291906105d4565b60405180910390a2505050565b60006020819052908152604090208054819061019d9061048b565b80601f01602080910402602001604051908101604052809291908181526020018280546101c99061048b565b80156102165780601f106101eb57610100808354040283529160200191610216565b820191906000526020600020905b8154815290600101906020018083116101f957829003601f168201915b50505050509080600101805461022b9061048b565b80601f01602080910402602001604051908101604052809291908181526020018280546102579061048b565b80156102a45780601f10610279576101008083540402835291602001916102a4565b820191906000526020600020905b81548152906001019060200180831161028757829003601f168201915b5050505050905082565b60008083601f8401126102c057600080fd5b50813567ffffffffffffffff8111156102d857600080fd5b6020830191508360208285010111156102f057600080fd5b9250929050565b6000806000806040858703121561030d57600080fd5b843567ffffffffffffffff8082111561032557600080fd5b610331888389016102ae565b9096509450602087013591508082111561034a57600080fd5b50610357878288016102ae565b95989497509550505050565b803573ffffffffffffffffffffffffffffffffffffffff8116811461038757600080fd5b919050565b6000806000604084860312156103a157600080fd5b6103aa84610363565b9250602084013567ffffffffffffffff8111156103c657600080fd5b6103d2868287016102ae565b9497909650939450505050565b6000602082840312156103f157600080fd5b6103fa82610363565b9392505050565b6000815180845260005b818110156104275760208185018101518683018201520161040b565b506000602082860101526020601f19601f83011685010191505092915050565b60408152600061045a6040830185610401565b828103602084015261046c8185610401565b95945050505050565b634e487b7160e01b600052604160045260246000fd5b600181811c9082168061049f57607f821691505b6020821081036104bf57634e487b7160e01b600052602260045260246000fd5b50919050565b601f82111561050f57600081815260208120601f850160051c810160208610156104ec5750805b601f850160051c820191505b8181101561050b578281556001016104f8565b5050505b505050565b67ffffffffffffffff83111561052c5761052c610475565b6105408361053a835461048b565b836104c5565b6000601f841160018114610574576000851561055c5750838201355b600019600387901b1c1916600186901b1783556100dd565b600083815260209020601f19861690835b828110156105a55786850135825560209485019460019092019101610585565b50868210156105c25760001960f88860031b161c19848701351681555b505060018560011b0183555050505050565b73ffffffffffffffffffffffffffffffffffffffff8616815284602082015283604082015260806060820152816080820152818360a0830137600081830160a090810191909152601f909201601f1916010194935050505056fea264697066735822122000bfc8521cd3c3c810f347e31c947d5e98075837fe9f03ef3f2b332131c55e9f64736f6c63430008110033",
+  "numDeployments": 6,
+  "solcInputHash": "a54dcad9afed6082e3e09522d0798063",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"nickname\",\"type\":\"string\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"message\",\"type\":\"string\"}],\"name\":\"NewDonation\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_nickname\",\"type\":\"string\"},{\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"_message\",\"type\":\"string\"}],\"name\":\"donate\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/DonationsStore.sol\":\"DonationsStore\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":1000},\"remappings\":[]},\"sources\":{\"contracts/DonationsStore.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\r\\npragma solidity ^0.8.0;\\r\\n\\r\\ncontract DonationsStore {\\r\\n  event NewDonation(\\r\\n    address indexed from,\\r\\n    string nickname,\\r\\n    address indexed to,\\r\\n    uint256 amount,\\r\\n    uint256 timestamp,\\r\\n    string message\\r\\n  );\\r\\n\\r\\n  function donate(\\r\\n    string calldata _nickname,\\r\\n    address _to,\\r\\n    string calldata _message\\r\\n  ) external payable {\\r\\n    payable(_to).transfer(msg.value);\\r\\n    emit NewDonation(\\r\\n      msg.sender,\\r\\n      _nickname,\\r\\n      _to,\\r\\n      msg.value,\\r\\n      block.timestamp, // solhint-disable-line not-rely-on-time\\r\\n      _message\\r\\n    );\\r\\n  }\\r\\n}\\r\\n\",\"keccak256\":\"0xf47894c7148dbb4320c4bf367a1ca8559609b0b4be144dc819d60c9a5b6b86fa\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b50610277806100206000396000f3fe60806040526004361061001e5760003560e01c806316ae70d414610023575b600080fd5b61003661003136600461013a565b610038565b005b60405173ffffffffffffffffffffffffffffffffffffffff8416903480156108fc02916000818181858888f1935050505015801561007a573d6000803e3d6000fd5b508273ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff167f995362ce364fef4ba9a9c889a12e2f6649633ca7b6d7750f70c4dde49e3db6cb8787344288886040516100e296959493929190610201565b60405180910390a35050505050565b60008083601f84011261010357600080fd5b50813567ffffffffffffffff81111561011b57600080fd5b60208301915083602082850101111561013357600080fd5b9250929050565b60008060008060006060868803121561015257600080fd5b853567ffffffffffffffff8082111561016a57600080fd5b61017689838a016100f1565b90975095506020880135915073ffffffffffffffffffffffffffffffffffffffff821682146101a457600080fd5b909350604087013590808211156101ba57600080fd5b506101c7888289016100f1565b969995985093965092949392505050565b81835281816020850137506000828201602090810191909152601f909101601f19169091010190565b60808152600061021560808301888a6101d8565b86602084015285604084015282810360608401526102348185876101d8565b999850505050505050505056fea26469706673582212200f8d61af07a227165a4a43f4cd480fe926c6b48215c3aca632b06a805cb3fc3a64736f6c63430008110033",
+  "deployedBytecode": "0x60806040526004361061001e5760003560e01c806316ae70d414610023575b600080fd5b61003661003136600461013a565b610038565b005b60405173ffffffffffffffffffffffffffffffffffffffff8416903480156108fc02916000818181858888f1935050505015801561007a573d6000803e3d6000fd5b508273ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff167f995362ce364fef4ba9a9c889a12e2f6649633ca7b6d7750f70c4dde49e3db6cb8787344288886040516100e296959493929190610201565b60405180910390a35050505050565b60008083601f84011261010357600080fd5b50813567ffffffffffffffff81111561011b57600080fd5b60208301915083602082850101111561013357600080fd5b9250929050565b60008060008060006060868803121561015257600080fd5b853567ffffffffffffffff8082111561016a57600080fd5b61017689838a016100f1565b90975095506020880135915073ffffffffffffffffffffffffffffffffffffffff821682146101a457600080fd5b909350604087013590808211156101ba57600080fd5b506101c7888289016100f1565b969995985093965092949392505050565b81835281816020850137506000828201602090810191909152601f909101601f19169091010190565b60808152600061021560808301888a6101d8565b86602084015285604084015282810360608401526102348185876101d8565b999850505050505050505056fea26469706673582212200f8d61af07a227165a4a43f4cd480fe926c6b48215c3aca632b06a805cb3fc3a64736f6c63430008110033",
   "devdoc": {
     "kind": "dev",
     "methods": {},
@@ -132,57 +101,7 @@
     "version": 1
   },
   "storageLayout": {
-    "storage": [
-      {
-        "astId": 23,
-        "contract": "contracts/DonationsStore.sol:DonationsStore",
-        "label": "recipients",
-        "offset": 0,
-        "slot": "0",
-        "type": "t_mapping(t_address,t_struct(RecipientInfo)6_storage)"
-      }
-    ],
-    "types": {
-      "t_address": {
-        "encoding": "inplace",
-        "label": "address",
-        "numberOfBytes": "20"
-      },
-      "t_mapping(t_address,t_struct(RecipientInfo)6_storage)": {
-        "encoding": "mapping",
-        "key": "t_address",
-        "label": "mapping(address => struct DonationsStore.RecipientInfo)",
-        "numberOfBytes": "32",
-        "value": "t_struct(RecipientInfo)6_storage"
-      },
-      "t_string_storage": {
-        "encoding": "bytes",
-        "label": "string",
-        "numberOfBytes": "32"
-      },
-      "t_struct(RecipientInfo)6_storage": {
-        "encoding": "inplace",
-        "label": "struct DonationsStore.RecipientInfo",
-        "members": [
-          {
-            "astId": 3,
-            "contract": "contracts/DonationsStore.sol:DonationsStore",
-            "label": "nickname",
-            "offset": 0,
-            "slot": "0",
-            "type": "t_string_storage"
-          },
-          {
-            "astId": 5,
-            "contract": "contracts/DonationsStore.sol:DonationsStore",
-            "label": "avatarURI",
-            "offset": 0,
-            "slot": "1",
-            "type": "t_string_storage"
-          }
-        ],
-        "numberOfBytes": "64"
-      }
-    }
+    "storage": [],
+    "types": null
   }
 }

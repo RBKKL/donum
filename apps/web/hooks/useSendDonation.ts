@@ -10,6 +10,7 @@ import { getContractAddressByChainId } from "@donum/contracts/helpers";
 import { DonationsStoreABI } from "@donum/contracts/abi";
 
 export const useSendDonation = (
+  senderNickname: string,
   recipientAddress: Address,
   donationAmount: string,
   message: string
@@ -23,7 +24,7 @@ export const useSendDonation = (
     address: getContractAddressByChainId(chain?.id),
     abi: DonationsStoreABI,
     functionName: "donate",
-    args: [recipientAddress, message],
+    args: [senderNickname, recipientAddress, message],
     overrides: {
       value: ethers.utils.parseEther(donationAmount || "0"),
     },

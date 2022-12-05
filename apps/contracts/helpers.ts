@@ -4,6 +4,7 @@ import { CONTRACT_ADDRESSES } from "./constants";
 
 interface NewDonationEventObject {
   from: string;
+  nickname: string;
   to: string;
   amount: BigNumber;
   timestamp: BigNumber;
@@ -11,13 +12,22 @@ interface NewDonationEventObject {
 }
 
 export const castToDonationObject = (
-  donationArray: [string, string, BigNumber, BigNumber, string, ...unknown[]]
+  donationArray: [
+    string,
+    string,
+    string,
+    BigNumber,
+    BigNumber,
+    string,
+    ...unknown[]
+  ]
 ): NewDonationEventObject => ({
   from: donationArray[0],
-  to: donationArray[1],
-  amount: donationArray[2],
-  timestamp: donationArray[3],
-  message: donationArray[4],
+  nickname: donationArray[1],
+  to: donationArray[2],
+  amount: donationArray[3],
+  timestamp: donationArray[4],
+  message: donationArray[5],
 });
 
 export const getTotalDonationsAmount = (

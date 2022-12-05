@@ -1,12 +1,12 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
 import { CONTRACT_NAME } from "@donum/shared/constants";
-import { DonationsStore } from "../typechain-types";
+import { DonationsStore } from "../types";
 
 describe(CONTRACT_NAME, async () => {
   let donationsStore: DonationsStore;
 
-  const generateMessage = (length: number) => {
+  const generateString = (length: number) => {
     let result = "";
     const characters =
       "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ0123456789";
@@ -19,18 +19,22 @@ describe(CONTRACT_NAME, async () => {
     return result;
   };
 
-  const makeDonation = async () => {
+  const makeDonation = async (options?: {
+    nickname?: string;
+    message?: string;
+  }) => {
     const [owner, sender, recipient] = await ethers.getSigners();
     const amount = ethers.utils.parseEther("0.1");
-    const message = generateMessage(256);
+    const nickname = options?.nickname ?? generateString(64);
+    const message = options?.message ?? generateString(256);
 
     const txn = await donationsStore
       .connect(sender)
-      .donate(recipient.address, message, {
+      .donate(nickname, recipient.address, message, {
         value: amount,
       });
 
-    return { txn, owner, sender, recipient, amount, message };
+    return { txn, owner, sender, nickname, recipient, amount, message };
   };
 
   beforeEach(async () => {
@@ -47,11 +51,12 @@ describe(CONTRACT_NAME, async () => {
     const blockNumBefore = await ethers.provider.getBlockNumber();
     const blockBefore = await ethers.provider.getBlock(blockNumBefore);
     const timestampBefore = blockBefore.timestamp;
-    const { txn, sender, recipient, amount, message } = await makeDonation();
+    const { txn, sender, nickname, recipient, amount, message } =
+      await makeDonation();
 
     expect(txn)
       .to.emit(donationsStore, "NewDonation")
-      .withArgs(sender, recipient, amount, timestampBefore, message);
+      .withArgs(sender, nickname, recipient, amount, timestampBefore, message);
   });
 
   it("Should payout donations to recipients", async () => {
@@ -60,20 +65,17 @@ describe(CONTRACT_NAME, async () => {
     await expect(txn).to.changeEtherBalance(recipient, amount);
   });
 
-  it("Should set recipient info", async () => {
-    const [, sender] = await ethers.getSigners();
-    donationsStore = donationsStore.connect(sender);
-    const nickname = "Nixjke";
-    const avatarURI =
-      "https://static-cdn.jtvnw.net/jtv_user_pictures/c8ff98b9-b235-47c1-8079-ad10f5099dc2-profile_image-70x70.png";
+  it("Should handle empty nickname", async () => {
+    const blockNumBefore = await ethers.provider.getBlockNumber();
+    const blockBefore = await ethers.provider.getBlock(blockNumBefore);
+    const timestampBefore = blockBefore.timestamp;
+    const nickname = "";
+    const { txn, sender, recipient, amount, message } = await makeDonation({
+      nickname,
+    });
 
-    await donationsStore.setRecipientInfo(nickname, avatarURI);
-
-    const [storedNickname, storedAvatarURI] = await donationsStore.recipients(
-      sender.address
-    );
-
-    expect(storedNickname).to.equal(nickname);
-    expect(storedAvatarURI).to.equal(avatarURI);
+    expect(txn)
+      .to.emit(donationsStore, "NewDonation")
+      .withArgs(sender, nickname, recipient, amount, timestampBefore, message);
   });
 });
