@@ -1,5 +1,4 @@
 import { Socket } from "socket.io-client";
-import {AnyStateMachine} from "xstate";
 
 export interface DonationInfo {
   from: string;

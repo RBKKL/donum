@@ -1,21 +1,24 @@
 import { DonationInfo } from "./types";
 import { assign, createMachine } from "xstate";
 import { DEFAULT_PAUSE_BETWEEN_ALERTS_DURATION } from "@donum/shared/constants";
-import {getDonationMetadataByType, wait} from "./utils";
+import { getDonationMetadataByType, wait } from "./utils";
 
-export type QueueMachineEvent =
-  | {
-  type: 'ADD_TO_QUEUE';
-  items: DonationInfo[];
-}
+export type QueueMachineEvent = {
+  type: "ADD_TO_QUEUE";
+  item: DonationInfo;
+};
 
 export interface QueueMachineContext {
   queue: DonationInfo[];
 }
 
-export const donationQueueMachine = createMachine<QueueMachineContext, QueueMachineEvent>({
-    id: 'donationQueue',
-    initial: 'checkingIfThereAreMoreDonations',
+export const donationQueueMachine = createMachine<
+  QueueMachineContext,
+  QueueMachineEvent
+>(
+  {
+    id: "donationQueue",
+    initial: "checkingIfThereAreMoreDonations",
     context: {
       queue: [],
     },
@@ -23,51 +26,51 @@ export const donationQueueMachine = createMachine<QueueMachineContext, QueueMach
       idle: {
         on: {
           ADD_TO_QUEUE: {
-            actions: 'addDonationToQueue',
-            target: 'showingDonation',
+            actions: "addDonationToQueue",
+            target: "showingDonation",
           },
         },
       },
       showingDonation: {
         on: {
           ADD_TO_QUEUE: {
-            actions: 'addDonationToQueue',
+            actions: "addDonationToQueue",
           },
         },
         invoke: {
-          src: 'showOldestDonationInQueue',
+          src: "showOldestDonationInQueue",
           onDone: {
-            target: 'awaitingAfterShowingDonation',
-            actions: ['removeOldestDonationFromQueue'],
+            target: "awaitingAfterShowingDonation",
+            actions: ["removeOldestDonationFromQueue"],
           },
         },
       },
       awaitingAfterShowingDonation: {
         on: {
           ADD_TO_QUEUE: {
-            actions: 'addDonationToQueue',
+            actions: "addDonationToQueue",
           },
         },
         invoke: {
-          src: 'awaitAfterDonationShow',
+          src: "awaitAfterDonationShow",
           onDone: {
-            target: 'checkingIfThereAreMoreDonations',
+            target: "checkingIfThereAreMoreDonations",
           },
         },
       },
       checkingIfThereAreMoreDonations: {
         on: {
           ADD_TO_QUEUE: {
-            actions: 'addDonationToQueue',
+            actions: "addDonationToQueue",
           },
         },
         always: [
           {
-            cond: 'thereAreMoreDonationsInTheQueue',
-            target: 'showingDonation',
+            cond: "thereAreMoreDonationsInTheQueue",
+            target: "showingDonation",
           },
           {
-            target: 'idle',
+            target: "idle",
           },
         ],
       },
@@ -93,14 +96,11 @@ export const donationQueueMachine = createMachine<QueueMachineContext, QueueMach
     },
     actions: {
       addDonationToQueue: assign((context, event) => {
-        if (event.type !== 'ADD_TO_QUEUE') {
+        if (event.type !== "ADD_TO_QUEUE") {
           return {};
         }
         return {
-          queue: [
-            ...context.queue,
-            ...event.items,
-          ],
+          queue: [...context.queue, event.item],
         };
       }),
       removeOldestDonationFromQueue: assign((context) => {
@@ -110,4 +110,5 @@ export const donationQueueMachine = createMachine<QueueMachineContext, QueueMach
         };
       }),
     },
-  },);
+  }
+);

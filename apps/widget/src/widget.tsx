@@ -1,15 +1,14 @@
 import { onMount, onError, onCleanup, Switch, Match } from "solid-js";
-import {createStore, unwrap} from "solid-js/store";
+import { createStore } from "solid-js/store";
 import { io, Socket } from "socket.io-client";
 import { DonationAlert } from "./donation-alert";
 import { DonationInfo, WidgetStore } from "./types";
-import {getDonationMetadataByType} from "./utils";
-import {donationQueueMachine} from "./queue-machine";
-import {useMachine} from "./useMachine";
+import { getDonationMetadataByType } from "./utils";
+import { useDonationQueueMachine } from "./hooks/useDonationQueueMachine";
 
 export const Widget = () => {
   const [store, setStore] = createStore<WidgetStore>({});
-  const [state, send] = useMachine(donationQueueMachine);
+  const { state, addToQueue } = useDonationQueueMachine();
 
   const setError = (error: Error) => {
     setStore("error", error);
@@ -26,7 +25,7 @@ export const Widget = () => {
     // TODO: set donation.type depending on donation.amount or something else
     donation.type = "default";
 
-    send("ADD_TO_QUEUE", donation);
+    addToQueue(donation);
   };
 
   onMount(() => {
@@ -66,8 +65,12 @@ export const Widget = () => {
         <DonationAlert
           // need cast for disable warning, actually store.donations.peek() is never undefined here
           donationInfo={state.context.queue[0]}
-          imageSrc={getDonationMetadataByType(state.context.queue[0].type).imageSrc}
-          soundSrc={getDonationMetadataByType(state.context.queue[0].type).soundSrc}
+          imageSrc={
+            getDonationMetadataByType(state.context.queue[0].type).imageSrc
+          }
+          soundSrc={
+            getDonationMetadataByType(state.context.queue[0].type).soundSrc
+          }
         />
       </Match>
       <Match when={!!store.error}>Error: {store.error?.message}</Match>
