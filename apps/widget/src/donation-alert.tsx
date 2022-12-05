@@ -16,7 +16,7 @@ export const DonationAlert: Component<DonationAlertProps> = (props) => (
       <img class="donation__image" src={props.imageSrc} />
     </div>
     <h1 class="donation__title">
-      {formatAddress(props.donationInfo.from)} sent{" "}
+      {props.donationInfo.nickname || formatAddress(props.donationInfo.from)} sent{" "}
       {formatTokenAmount(props.donationInfo.amount)} ETH
     </h1>
     <p class="donation__message">{props.donationInfo.message}</p>
