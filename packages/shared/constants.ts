@@ -10,12 +10,6 @@ export const NICKNAME_MAX_LENGTH = 64;
 export const NICKNAME_CHECK_ALLOWANCE_DEBOUNCE = 500; // 0.5 seconds
 export const DESCRIPTION_MAX_LENGTH = 1024;
 
-export const DEFAULT_ALERT_DURATION = 5000; // 5 seconds
-export const DEFAULT_PAUSE_BETWEEN_ALERTS_DURATION = 1000; // 1 second
-export const DEFAULT_ALERT_SOUND =
-  "http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3";
-export const DEFAULT_ALERT_IMAGE = "/assets/default_image.gif";
-
 export const DEFAULT_SHOW_AMOUNT = "1000000000000000"; // 0.001 ETH
 
 export const AVATAR_MAX_SIZE = 1024 * 1024 * 10; // 10MB
@@ -51,6 +45,8 @@ export const DEFAULT_TEST_DONATION = {
   message: "This is a test donation",
 };
 
+export const DEFAULT_ALERT_DURATION = 5; // 5 seconds
+export const DEFAULT_PAUSE_BETWEEN_ALERTS_DURATION = 1; // 1 second
 export const DEFAULT_DONATION_IMAGE_URL = "/assets/default_image.gif";
 export const DEFAULT_DONATION_SOUND_URL =
   "http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3";

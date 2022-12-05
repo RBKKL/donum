@@ -5,8 +5,6 @@ export interface DonationInfo {
   nickname: string;
   amount: string;
   message: string;
-  // type of donation defines it's metadata (soundSrc, imageSrc etc)
-  type: string;
 }
 
 export interface DonationMetadata {
@@ -15,7 +13,14 @@ export interface DonationMetadata {
   soundSrc: string;
 }
 
+export interface DonationInfoWithMetadata
+  extends DonationInfo,
+    DonationMetadata {}
+
 export interface WidgetStore {
   socket?: Socket;
   error?: Error;
+  duration: number;
+  imageSrc: string;
+  soundSrc: string;
 }

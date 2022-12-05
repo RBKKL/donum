@@ -1,15 +1,15 @@
-import { DonationInfo } from "./types";
+import { DonationInfoWithMetadata } from "./types";
 import { assign, createMachine } from "xstate";
 import { DEFAULT_PAUSE_BETWEEN_ALERTS_DURATION } from "@donum/shared/constants";
-import { getDonationMetadataByType, wait } from "./utils";
+import { waitSeconds } from "./utils";
 
 export type QueueMachineEvent = {
   type: "ADD_TO_QUEUE";
-  item: DonationInfo;
+  item: DonationInfoWithMetadata;
 };
 
 export interface QueueMachineContext {
-  queue: DonationInfo[];
+  queue: DonationInfoWithMetadata[];
 }
 
 export const donationQueueMachine = createMachine<
@@ -88,10 +88,10 @@ export const donationQueueMachine = createMachine<
         if (!oldestDonation) {
           return;
         }
-        await wait(getDonationMetadataByType(oldestDonation.type).duration);
+        await waitSeconds(oldestDonation.duration);
       },
       awaitAfterDonationShow: async () => {
-        await wait(DEFAULT_PAUSE_BETWEEN_ALERTS_DURATION);
+        await waitSeconds(DEFAULT_PAUSE_BETWEEN_ALERTS_DURATION);
       },
     },
     actions: {
