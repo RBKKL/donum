@@ -27,7 +27,9 @@ export const DonationCard: FC<DonationCardProps> = ({
         {nickname ? (
           <>
             <span>{nickname} </span>
-            <span className="font-normal text-gray-400">({formatAddress(from)})</span>
+            <span className="font-normal text-gray-400">
+              ({formatAddress(from)})
+            </span>
           </>
         ) : (
           <span>{formatAddress(from)}</span>

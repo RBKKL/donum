@@ -3,6 +3,7 @@ import { createStore } from "solid-js/store";
 import { io, Socket } from "socket.io-client";
 import { DonationAlert } from "./donation-alert";
 import { DonationInfo, WidgetStore } from "./types";
+import { useDonationQueueMachine } from "./hooks/useDonationQueueMachine";
 import {
   DEFAULT_ALERT_DURATION,
   DEFAULT_DONATION_IMAGE_URL,
@@ -10,6 +11,7 @@ import {
 } from "@donum/shared/constants";
 
 export const Widget = () => {
+  const { state, addToQueue } = useDonationQueueMachine();
   const [store, setStore] = createStore<WidgetStore>({
     duration: DEFAULT_ALERT_DURATION,
     imageSrc: DEFAULT_DONATION_IMAGE_URL,
@@ -24,13 +26,16 @@ export const Widget = () => {
     setStore("socket", socket);
   };
 
-  const showDonation = (donation: DonationInfo) => {
-    console.log(`new donation: ${donation}`);
-    setStore("donationInfo", donation);
-    setTimeout(
-      () => setStore("donationInfo", undefined),
-      store.duration * 1000
-    );
+  const addDonation = (donation: DonationInfo) => {
+    console.log("new donation:");
+    console.log(donation);
+
+    addToQueue({
+      ...donation,
+      duration: store.duration,
+      soundSrc: store.soundSrc,
+      imageSrc: store.imageSrc,
+    });
   };
 
   onMount(() => {
@@ -39,6 +44,7 @@ export const Widget = () => {
     if (!address) {
       throw new Error("No address was provided in search params");
     }
+
     const socket = io("http://localhost:8000", {
       auth: {
         address,
@@ -53,14 +59,20 @@ export const Widget = () => {
     socket.on(
       "change-settings",
       (notificationImageUrl, notificationSoundUrl, notificationDuration) => {
-        setStore("imageSrc", notificationImageUrl);
-        setStore("soundSrc", notificationSoundUrl);
+        setStore(
+          "imageSrc",
+          notificationImageUrl || DEFAULT_DONATION_IMAGE_URL
+        );
+        setStore(
+          "soundSrc",
+          notificationSoundUrl || DEFAULT_DONATION_SOUND_URL
+        );
         setStore("duration", notificationDuration);
       }
     );
 
     socket.on("new-donation", (donation) => {
-      showDonation(donation);
+      addDonation(donation);
     });
   });
 
@@ -74,13 +86,10 @@ export const Widget = () => {
 
   return (
     <Switch>
-      <Match when={!!store.donationInfo}>
+      <Match when={state.matches("showingDonation")}>
         <DonationAlert
-          // donationInfo won't be undefined here, because of the Match
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          donationInfo={store.donationInfo!}
-          imageSrc={store.imageSrc}
-          soundSrc={store.soundSrc}
+          // need cast for disable warning, actually store.donations.peek() is never undefined here
+          donation={state.context.queue[0]}
         />
       </Match>
       <Match when={!!store.error}>Error: {store.error?.message}</Match>

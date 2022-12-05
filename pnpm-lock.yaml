@@ -227,10 +227,12 @@ importers:
       typescript: 4.9.3
       vite: ^3.2.4
       vite-plugin-solid: ^2.4.0
+      xstate: ^4.34.0
     dependencies:
       '@donum/shared': link:../../packages/shared
       socket.io-client: 4.5.3
       solid-js: 1.6.2
+      xstate: 4.34.0
     devDependencies:
       '@donum/tsconfig': link:../../packages/tsconfig
       eslint: 8.28.0
@@ -11214,6 +11216,10 @@ packages:
   /xmlhttprequest/1.8.0:
     resolution: {integrity: sha512-58Im/U0mlVBLM38NdZjHyhuMtCqa61469k2YP/AaPbvCoV9aQGUpbJBj1QRm2ytRiVQBD/fsw7L2bJGDVQswBA==}
     engines: {node: '>=0.4.0'}
+    dev: false
+
+  /xstate/4.34.0:
+    resolution: {integrity: sha512-MFnYz7cJrWuXSZ8IPkcCyLB1a2T3C71kzMeShXKmNaEjBR/JQebKZPHTtxHKZpymESaWO31rA3IQ30TC6LW+sw==}
     dev: false
 
   /xtend/4.0.2:
