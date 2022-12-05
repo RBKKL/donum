@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { RecipientProfile } from "@components/RecipientProfile";
@@ -10,7 +10,11 @@ import {
   DEFAULT_DONATION_AMOUNT,
   MESSAGE_MAX_LENGTH,
 } from "@donum/shared/constants";
-import { formatTokenAmount, isNumber } from "@donum/shared/helpers";
+import {
+  formatAddress,
+  formatTokenAmount,
+  isNumber,
+} from "@donum/shared/helpers";
 import { DonationModal } from "@components/DonationModal";
 import { Address, useAccount, useBalance } from "wagmi";
 import { Balance } from "@components/Balance";
@@ -50,10 +54,12 @@ const SendDonationPage: NextPage = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [senderNickname, setSenderNickname] = useState("");
   const [donationAmount, setDonationAmount] = useState(DEFAULT_DONATION_AMOUNT);
   const [message, setMessage] = useState("");
 
   const { donate, isAvailable, isLoading, isError } = useSendDonation(
+    senderNickname,
     recipientAddress,
     donationAmount,
     message
@@ -131,6 +137,12 @@ const SendDonationPage: NextPage = () => {
             </div>
           }
         />
+        <Input
+          placeholder="Nickname..."
+          value={senderNickname}
+          onChange={setSenderNickname}
+          textSize="large"
+        />
         <TextField
           placeholder="Type your message here..."
           value={message}
@@ -161,7 +173,7 @@ const SendDonationPage: NextPage = () => {
         isError={isError}
         isLoading={isLoading}
         donationAmount={donationAmount}
-        nickname={profile.nickname || profile.address}
+        nickname={profile.nickname || formatAddress(profile.address)}
       />
     </div>
   );

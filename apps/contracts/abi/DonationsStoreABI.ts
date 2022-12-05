@@ -3,10 +3,16 @@ export const DonationsStoreABI = [
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "address",
         "name": "from",
         "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "nickname",
+        "type": "string"
       },
       {
         "indexed": true,
@@ -39,6 +45,11 @@ export const DonationsStoreABI = [
   {
     "inputs": [
       {
+        "internalType": "string",
+        "name": "_nickname",
+        "type": "string"
+      },
+      {
         "internalType": "address",
         "name": "_to",
         "type": "address"
@@ -52,48 +63,6 @@ export const DonationsStoreABI = [
     "name": "donate",
     "outputs": [],
     "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "recipients",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "nickname",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "avatarURI",
-        "type": "string"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "_nickname",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "_avatarURI",
-        "type": "string"
-      }
-    ],
-    "name": "setRecipientInfo",
-    "outputs": [],
-    "stateMutability": "nonpayable",
     "type": "function"
   }
 ] as const;

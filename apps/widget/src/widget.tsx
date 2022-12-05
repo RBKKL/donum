@@ -5,10 +5,19 @@ import { DonationAlert } from "./donation-alert";
 import { DonationInfo, WidgetStore } from "./types";
 import { getDonationMetadataByType } from "./utils";
 import { useDonationQueueMachine } from "./hooks/useDonationQueueMachine";
+import {
+  DEFAULT_ALERT_DURATION,
+  DEFAULT_DONATION_IMAGE_URL,
+  DEFAULT_DONATION_SOUND_URL,
+} from "@donum/shared/constants";
 
 export const Widget = () => {
-  const [store, setStore] = createStore<WidgetStore>({});
   const { state, addToQueue } = useDonationQueueMachine();
+  const [store, setStore] = createStore<WidgetStore>({
+    duration: DEFAULT_ALERT_DURATION,
+    imageSrc: DEFAULT_DONATION_IMAGE_URL,
+    soundSrc: DEFAULT_DONATION_SOUND_URL,
+  });
 
   const setError = (error: Error) => {
     setStore("error", error);
@@ -45,6 +54,15 @@ export const Widget = () => {
     socket.on("connect", () => {
       console.log(`Connected to server with id: ${socket.id}`);
     });
+
+    socket.on(
+      "change-settings",
+      (notificationImageUrl, notificationSoundUrl, notificationDuration) => {
+        setStore("imageSrc", notificationImageUrl);
+        setStore("soundSrc", notificationSoundUrl);
+        setStore("duration", notificationDuration);
+      }
+    );
 
     socket.on("new-donation", (donation) => {
       addDonation(donation);

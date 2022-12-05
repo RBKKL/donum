@@ -47,6 +47,7 @@ export const useDonationsHistory = (recipientAddress: string) => {
 
       const donationsFilter = donationsStore.filters.NewDonation(
         null,
+        null,
         recipientAddress,
         null,
         null,

@@ -2,6 +2,7 @@ import { Socket } from "socket.io-client";
 
 export interface DonationInfo {
   from: string;
+  nickname: string;
   amount: string;
   message: string;
   // type of donation defines it's metadata (soundSrc, imageSrc etc)

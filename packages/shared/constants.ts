@@ -19,12 +19,23 @@ export const DEFAULT_ALERT_IMAGE = "/assets/default_image.gif";
 export const DEFAULT_SHOW_AMOUNT = "1000000000000000"; // 0.001 ETH
 
 export const AVATAR_MAX_SIZE = 1024 * 1024 * 10; // 10MB
+export const NOTIFICATION_IMAGE_MAX_SIZE = 1024 * 1024 * 10; // 10MB
+export const SOUND_MAX_SIZE = 1024 * 1024 * 20; // 20MB
 
 export const AVATAR_ACCEPTABLE_FILE_TYPES = [
   "image/png",
   "image/gif",
   "image/jpeg",
 ];
+
+export const NOTIFICATION_IMAGE_ACCEPTABLE_FILE_TYPES = [
+  "image/png",
+  "image/gif",
+  "image/jpeg",
+  "video/mp4",
+];
+
+export const SOUND_ACCEPTABLE_FILE_TYPES = ["audio/mpeg", "audio/mp3"];
 
 export enum SessionStatus {
   UNAUTHENTICATED = "unauthenticated",
@@ -40,6 +51,10 @@ export const DEFAULT_TEST_DONATION = {
   message: "This is a test donation",
 };
 
+export const DEFAULT_DONATION_IMAGE_URL = "/assets/default_image.gif";
+export const DEFAULT_DONATION_SOUND_URL =
+  "http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3";
+
 export enum Periods {
   ALLTIME = "0",
   DAY = "86400000",
@@ -48,10 +63,14 @@ export enum Periods {
   YEAR = "31449600000",
 }
 
-export const DONATION_STATS_PERIOD_OPTIONS = [
-  { value: Periods.ALLTIME, text: "all time" },
+export const DONATION_CHARTS_PERIOD_OPTIONS = [
   { value: Periods.DAY, text: "24 hours" },
   { value: Periods.WEEK, text: "7 days" },
   { value: Periods.MONTH, text: "30 days" },
   { value: Periods.YEAR, text: "year" },
+];
+
+export const DONATION_STATS_PERIOD_OPTIONS = [
+  { value: Periods.ALLTIME, text: "all time" },
+  ...DONATION_CHARTS_PERIOD_OPTIONS,
 ];

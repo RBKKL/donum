@@ -30,11 +30,24 @@ app.ready((err) => {
     throw err;
   }
 
-  app.io.on("connection", (socket) => {
+  app.io.on("connection", async (socket) => {
     app.log.info(
       `Connected to server with id: ${socket.id}, address: ${socket.handshake.auth.address}`
     );
     clients.set(socket.handshake.auth.address, socket.id);
+
+    const profile = await prisma.profile.findFirst({
+      where: { address: socket.handshake.auth.address },
+    });
+    app.io
+      .to(socket.id)
+      .emit(
+        "change-settings",
+        profile?.notificationImageUrl,
+        profile?.notificationSoundUrl,
+        profile?.notificationDuration
+      );
+
     socket.on("disconnect", () => {
       app.log.info(`Client with id: ${socket.id} disconnected`);
       clients.inverse.delete(socket.id);
@@ -73,6 +86,32 @@ app.post("/test", (req, res) => {
     ...testDonation,
     amount: BigNumber.from(testDonation.amount),
   });
+  res.status(200).send();
+});
+
+app.post("/change-settings", async (req, res) => {
+  if (req.headers.authorization !== process.env.EVENT_SECRET) {
+    res.status(403).send("Wrong secret");
+    return;
+  }
+  const {
+    address,
+    notificationImageUrl,
+    notificationSoundUrl,
+    notificationDuration,
+  } = JSON.parse(req.body as string);
+
+  const clientSocketId = clients.get(address);
+  clientSocketId &&
+    app.io
+      .to(clientSocketId)
+      .emit(
+        "change-settings",
+        notificationImageUrl,
+        notificationSoundUrl,
+        notificationDuration
+      );
+
   res.status(200).send();
 });
 
