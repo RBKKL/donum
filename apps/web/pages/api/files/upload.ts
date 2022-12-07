@@ -53,6 +53,7 @@ export default async function upload(
     const bucket = await buckets.from(bucketName);
     const { error: uploadError } = await bucket.upload(filename, fileBuffer, {
       upsert: true,
+      contentType: file.mimetype || undefined,
     });
 
     if (uploadError) {
