@@ -10,6 +10,7 @@ export interface DonationInfo {
 export interface DonationMetadata {
   duration: number;
   imageSrc: string;
+  imageType: "image" | "video";
   soundSrc: string;
 }
 
@@ -17,10 +18,7 @@ export interface DonationInfoWithMetadata
   extends DonationInfo,
     DonationMetadata {}
 
-export interface WidgetStore {
+export interface WidgetStore extends DonationMetadata {
   socket?: Socket;
   error?: Error;
-  duration: number;
-  imageSrc: string;
-  soundSrc: string;
 }

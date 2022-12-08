@@ -15,6 +15,7 @@ export const Widget = () => {
   const [store, setStore] = createStore<WidgetStore>({
     duration: DEFAULT_ALERT_DURATION,
     imageSrc: DEFAULT_DONATION_IMAGE_URL,
+    imageType: "image",
     soundSrc: DEFAULT_DONATION_SOUND_URL,
   });
 
@@ -35,6 +36,7 @@ export const Widget = () => {
       duration: store.duration,
       soundSrc: store.soundSrc,
       imageSrc: store.imageSrc,
+      imageType: store.imageType,
     });
   };
 
@@ -59,14 +61,17 @@ export const Widget = () => {
     socket.on(
       "change-settings",
       (notificationImageUrl, notificationSoundUrl, notificationDuration) => {
-        setStore(
-          "imageSrc",
-          notificationImageUrl || DEFAULT_DONATION_IMAGE_URL
-        );
-        setStore(
-          "soundSrc",
-          notificationSoundUrl || DEFAULT_DONATION_SOUND_URL
-        );
+        const imageSrc = notificationImageUrl || DEFAULT_DONATION_IMAGE_URL;
+        const soundSrc = notificationSoundUrl || DEFAULT_DONATION_SOUND_URL;
+
+        // determine type of notification image (TODO: maybe there is a better way to do so)
+        fetch(imageSrc).then((res) => {
+          if (res.headers.get("content-type")?.includes("video")) {
+            setStore("imageType", "video");
+          }
+        });
+        setStore("imageSrc", imageSrc);
+        setStore("soundSrc", soundSrc);
         setStore("duration", notificationDuration);
       }
     );

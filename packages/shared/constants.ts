@@ -16,20 +16,26 @@ export const AVATAR_MAX_SIZE = 1024 * 1024 * 10; // 10MB
 export const NOTIFICATION_IMAGE_MAX_SIZE = 1024 * 1024 * 10; // 10MB
 export const SOUND_MAX_SIZE = 1024 * 1024 * 20; // 20MB
 
-export const AVATAR_ACCEPTABLE_FILE_TYPES = [
-  "image/png",
-  "image/gif",
-  "image/jpeg",
+const image_formats = ["image/png", "image/gif", "image/jpeg", "image/webp"];
+const video_formats = ["video/mp4", "video/webm"];
+const audio_formats = [
+  "audio/mp4",
+  "video/mp4",
+  "audio/webm",
+  "video/webm",
+  "audio/mpeg",
+  "audio/ogg",
+  "audio/wav",
 ];
+
+export const AVATAR_ACCEPTABLE_FILE_TYPES = [...image_formats];
 
 export const NOTIFICATION_IMAGE_ACCEPTABLE_FILE_TYPES = [
-  "image/png",
-  "image/gif",
-  "image/jpeg",
-  "video/mp4",
+  ...image_formats,
+  ...video_formats,
 ];
 
-export const SOUND_ACCEPTABLE_FILE_TYPES = ["audio/mpeg", "audio/mp3"];
+export const SOUND_ACCEPTABLE_FILE_TYPES = [...audio_formats];
 
 export enum SessionStatus {
   UNAUTHENTICATED = "unauthenticated",
