@@ -1,7 +1,9 @@
+/* eslint-disable */
+// disable ESLint, because file was taken from example repo for XState Solid integration authored by creator of Solid
+// https://codesandbox.io/s/xstate-solid-example-dgpd7?from-embed=&file=/useMachine.js
 import { onCleanup, batch } from "solid-js";
 import { createStore, reconcile } from "solid-js/store";
 import { AnyStateMachine, interpret } from "xstate";
-// https://codesandbox.io/s/xstate-solid-example-dgpd7?from-embed=&file=/useMachine.js:0-1088
 
 // WARNING: This is a PoC and a bit hacky
 // I could have done a gone with treating the store as simple signal
