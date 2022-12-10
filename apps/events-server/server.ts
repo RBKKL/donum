@@ -37,7 +37,7 @@ app.ready((err) => {
     clients.set(socket.handshake.auth.address, socket.id);
 
     const profile = await prisma.profile.findFirst({
-      where: { address: socket.handshake.auth.address },
+      where: { address: socket.handshake.auth.address }, // TODO: add authentification
     });
     app.io
       .to(socket.id)
