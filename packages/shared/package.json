@@ -2,7 +2,8 @@
     "name": "@donum/shared",
     "private": true,
     "scripts": {
-        "lint": "tsc --noEmit && eslint ."
+        "lint": "tsc --noEmit && eslint .",
+        "clean": "rimraf .turbo node_modules"
     },
     "dependencies": {
         "@donum/tsconfig": "workspace:*",

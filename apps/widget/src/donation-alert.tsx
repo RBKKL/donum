@@ -10,6 +10,7 @@ interface DonationAlertProps {
 
 export const DonationAlert: Component<DonationAlertProps> = (props) => {
   console.log(props.donation);
+
   return (
     <div class="donation">
       <audio src={props.donation.soundSrc} autoplay />

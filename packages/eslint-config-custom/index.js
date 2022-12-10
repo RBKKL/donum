@@ -1,14 +1,18 @@
 /** @type {import('eslint').Linter.Config} */
 module.exports = {
   env: {
-    node: true,
-    browser: true,
     es2021: true,
+    node: true,
   },
   plugins: ["@typescript-eslint", "unused-imports"],
-  extends: ["plugin:@typescript-eslint/recommended", "prettier", "turbo"],
+  extends: [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "turbo",
+  ],
   rules: {
-    "no-console": "off",
+    "no-console": "warn",
     "prefer-const": "error",
     "@typescript-eslint/no-unused-vars": "error",
     "@typescript-eslint/no-explicit-any": "error",

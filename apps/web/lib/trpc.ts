@@ -6,7 +6,7 @@ import { serverEnv } from "@env/server";
 
 const getBaseUrl = () => {
   if (typeof window !== "undefined") return ""; // browser should use relative url
-  if (!!serverEnv.VERCEL_URL) return `https://${serverEnv.VERCEL_URL}`; // SSR should use vercel url
+  if (serverEnv.VERCEL_URL) return `https://${serverEnv.VERCEL_URL}`; // SSR should use vercel url
   return `http://localhost:${serverEnv.PORT}`; // dev SSR should use localhost
 };
 

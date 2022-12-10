@@ -2,6 +2,9 @@
     "name": "@donum/eslint-config-custom",
     "private": true,
     "main": "index.js",
+    "scripts": {
+        "clean": "rimraf .turbo node_modules"
+    },
     "dependencies": {
         "@typescript-eslint/eslint-plugin": "^5.46.0",
         "@typescript-eslint/parser": "^5.46.0",
