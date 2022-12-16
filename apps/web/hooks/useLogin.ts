@@ -2,11 +2,14 @@ import { useAccount, useNetwork, useSignMessage } from "wagmi";
 import { getCsrfToken, signIn } from "next-auth/react";
 import { SiweMessage } from "siwe";
 import { SIGN_IN_MESSAGE } from "@donum/shared/constants";
+import { useRouter } from "next/router";
 
 export const useLogin = () => {
   const { address } = useAccount();
   const { chain } = useNetwork();
   const { signMessageAsync } = useSignMessage();
+  const router = useRouter();
+  const { callbackUrl } = router.query;
 
   const login = async () => {
     try {
@@ -23,9 +26,12 @@ export const useLogin = () => {
         message: message.prepareMessage(),
       });
       await signIn("credentials", {
-        redirect: false,
+        redirect: true,
         message: JSON.stringify(message),
         signature,
+        callbackUrl: Array.isArray(callbackUrl)
+          ? callbackUrl[0]
+          : callbackUrl || "/",
       });
     } catch (e) {
       console.log(e);
