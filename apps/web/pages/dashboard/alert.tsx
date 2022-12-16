@@ -20,7 +20,7 @@ const Alert: NextPage = () => {
 
   // session, user and name can't be null here, because it's secured page and Layout will show warning
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const address = session!.user!.name!;
+  const address = session!.user!.address!;
 
   const [senderNickname, setSenderNickname] = useState("");
   const [amount, setAmount] = useState(DEFAULT_DONATION_AMOUNT);

@@ -22,7 +22,7 @@ export const donationRouter = router({
         .optional()
     )
     .mutation(async ({ ctx, input }) => {
-      const address = ctx.session.user.name!; // protectedProcedure always returns existing user
+      const address = ctx.session.user.address!; // protectedProcedure always returns existing user
       const donation = { to: address, ...DEFAULT_TEST_DONATION, ...input };
 
       const response = await fetch(`${serverEnv.EVENTS_SERVER_URL}/test`, {

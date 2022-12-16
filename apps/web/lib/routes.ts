@@ -3,5 +3,6 @@ export const routes = {
   dashboard: "/dashboard",
   alert: "/dashboard/alert",
   settings: "/dashboard/settings",
+  authorization: "/auth",
   donate: (addressOrNickname: string) => `/${addressOrNickname}`,
 };

@@ -38,7 +38,7 @@ const EditDonationPage: NextPage = () => {
   const { data: session } = useSession();
   // session, user and name can't be null here, because it's secured page and Layout will show warning
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const address = session!.user!.name!;
+  const address = session!.user!.address!;
   const profile = trpc.profile.byAddress.useQuery({ address });
   const editProfile = trpc.profile.edit.useMutation();
   const uploadFiles = useUploadFiles();

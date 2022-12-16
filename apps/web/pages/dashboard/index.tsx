@@ -26,7 +26,7 @@ const DashboardPage: NextPage = () => {
   const { data: session } = useSession();
   // session, user and name can't be null here, because it's secured page and Layout will show warning
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const recipientAddress = session?.user?.name;
+  const recipientAddress = session?.user?.address;
 
   const [currentStatsPeriod, setCurrentStatsPeriod] = useState<string>(
     Periods.ALLTIME
