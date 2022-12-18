@@ -16,7 +16,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "clean": "turbo run clean --parallel",
-    "test-playwright": "playwright test"
+    "test-playwright": "dotenv playwright test"
   },
   "dependencies": {
     "@donum/eslint-config-custom": "workspace:*",

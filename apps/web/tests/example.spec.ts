@@ -1,7 +1,10 @@
 import test, { expect } from "@playwright/test";
 
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+const homepageURL = process.env.WEBAPP_BASE_URL!;
+
 test("homepage has title and link to homepage", async ({ page }) => {
-  await page.goto("http://localhost:3000/"); //TODO: Подключить турбо для использования env переменных
+  await page.goto(homepageURL); //TODO: Подключить турбо для использования env переменных
 
   await expect(page).toHaveTitle(/Donum/);
 
@@ -11,5 +14,5 @@ test("homepage has title and link to homepage", async ({ page }) => {
 
   await linkToHomePage.click();
 
-  await expect(page).toHaveURL("http://localhost:3000/");
+  await expect(page).toHaveURL(homepageURL);
 });

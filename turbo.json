@@ -20,7 +20,8 @@
         "REDIS_URL",
         "EVENTS_SERVER_URL",
         "EVENT_SECRET",
-        "CI"
+        "CI",
+        "WIDGET_BASE_URL"
     ],
     "pipeline": {
         "build": {

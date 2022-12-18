@@ -1,7 +1,10 @@
 import test, { expect } from "@playwright/test";
 
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+const eventsServerURL = process.env.EVENTS_SERVER_URL!;
+
 test("events-server page with errors", async ({ page }) => {
-  await page.goto("http://localhost:8000");
+  await page.goto(eventsServerURL);
 
   const bodyTag = page.locator("body");
 

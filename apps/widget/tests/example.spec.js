@@ -1,7 +1,9 @@
 import test, { expect } from "@playwright/test";
 
+const widgetURL = process.env.WIDGET_BASE_URL;
+
 test("widget page with error caption", async ({ page }) => {
-  await page.goto("http://localhost:5173/");
+  await page.goto(widgetURL);
 
   await expect(page).toHaveTitle(/Donum widget/);
 
