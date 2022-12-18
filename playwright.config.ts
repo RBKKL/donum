@@ -7,6 +7,27 @@ import { devices } from "@playwright/test";
  */
 // require('dotenv').config();
 
+const webServer: PlaywrightTestConfig["webServer"] = [
+  {
+    command: "pnpm --filter @donum/web dev",
+    port: 3000,
+    timeout: 60000,
+    reuseExistingServer: !process.env.CI,
+  },
+  {
+    command: "pnpm --filter @donum/widget dev",
+    port: 5173,
+    timeout: 60000,
+    reuseExistingServer: !process.env.CI,
+  },
+  {
+    command: "pnpm --filter @donum/events-server dev",
+    port: 8000,
+    timeout: 60000,
+    reuseExistingServer: !process.env.CI,
+  },
+];
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -53,7 +74,7 @@ const config: PlaywrightTestConfig = {
     {
       name: "@donum/web",
       testDir: "./apps/web/tests",
-      testMatch: /.*\.spec\.ts?/,
+      testMatch: /.*\.spec\.tsx?/,
       use: {
         ...devices["Desktop Chrome"],
       },
@@ -61,7 +82,7 @@ const config: PlaywrightTestConfig = {
     {
       name: "@donum/events-server",
       testDir: "./apps/events-server/tests",
-      testMatch: /.*\.spec\.ts?/,
+      testMatch: /.*\.spec\.tsx?/,
       use: {
         ...devices["Desktop Chrome"],
       },
@@ -69,7 +90,7 @@ const config: PlaywrightTestConfig = {
     {
       name: "@donum/widget",
       testDir: "./apps/widget/tests",
-      testMatch: /.*\.spec\.ts?/,
+      testMatch: /.*\.spec\.jsx?/,
       use: {
         ...devices["Desktop Chrome"],
       },
@@ -107,11 +128,7 @@ const config: PlaywrightTestConfig = {
   /* Folder for test artifacts such as screenshots, videos, traces, etc. */
   // outputDir: 'test-results/',
 
-  /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   port: 3000,
-  // },
+  webServer,
 };
 
 export default config;
