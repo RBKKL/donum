@@ -4,7 +4,7 @@ import test, { expect } from "@playwright/test";
 const homepageURL = process.env.WEBAPP_BASE_URL!;
 
 test("homepage has title and link to homepage", async ({ page }) => {
-  await page.goto(homepageURL); //TODO: Подключить турбо для использования env переменных
+  await page.goto(homepageURL);
 
   await expect(page).toHaveTitle(/Donum/);
 
