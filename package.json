@@ -15,7 +15,8 @@
     "lint": "turbo run lint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "clean": "turbo run clean --parallel"
+    "clean": "turbo run clean --parallel",
+    "test-playwright": "playwright test"
   },
   "dependencies": {
     "@donum/eslint-config-custom": "workspace:*",
@@ -28,5 +29,8 @@
     "prettier-plugin-tailwindcss": "^0.2.1",
     "rimraf": "^3.0.2",
     "turbo": "^1.6.3"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.29.0"
   }
 }

@@ -6,6 +6,7 @@ importers:
     specifiers:
       '@donum/eslint-config-custom': workspace:*
       '@manypkg/cli': ^0.19.2
+      '@playwright/test': ^1.29.0
       dotenv-cli: ^6.0.0
       eslint: ^8.29.0
       open-cli: ^7.1.0
@@ -25,6 +26,8 @@ importers:
       prettier-plugin-tailwindcss: 0.2.1_prettier@2.8.1
       rimraf: 3.0.2
       turbo: 1.6.3
+    devDependencies:
+      '@playwright/test': 1.29.0
 
   apps/contracts:
     specifiers:
@@ -2755,6 +2758,15 @@ packages:
       picocolors: 1.0.0
       tiny-glob: 0.2.9
       tslib: 2.4.1
+    dev: true
+
+  /@playwright/test/1.29.0:
+    resolution: {integrity: sha512-gp5PVBenxTJsm2bATWDNc2CCnrL5OaA/MXQdJwwkGQtqTjmY+ZOqAdLqo49O9MLTDh2vYh+tHWDnmFsILnWaeA==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dependencies:
+      '@types/node': 18.11.12
+      playwright-core: 1.29.0
     dev: true
 
   /@prisma/client/4.7.1_prisma@4.7.1:
@@ -11043,6 +11055,12 @@ packages:
     dependencies:
       find-up: 3.0.0
     dev: false
+
+  /playwright-core/1.29.0:
+    resolution: {integrity: sha512-pboOm1m0RD6z1GtwAbEH60PYRfF87vKdzOSRw2RyO0Y0a7utrMyWN2Au1ojGvQr4umuBMODkKTv607YIRypDSQ==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dev: true
 
   /pngjs/3.4.0:
     resolution: {integrity: sha512-NCrCHhWmnQklfH4MtJMRjZ2a8c80qXeMlQMv2uVp9ISJMTt562SbGd6n2oq0PaPgKm7Z6pL9E2UlLIhC+SHL3w==}
