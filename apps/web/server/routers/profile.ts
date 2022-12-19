@@ -132,7 +132,7 @@ export const profileRouter = router({
         {
           method: "POST",
           headers: {
-            Authorization: serverEnv.EVENT_SECRET,
+            Authorization: serverEnv.EVENTS_SERVER_AUTH_TOKEN,
           },
           body: JSON.stringify({
             address: input.address,

@@ -65,7 +65,7 @@ class BucketsStorage {
 }
 
 export const buckets = new BucketsStorage(
-  serverEnv.STORAGE_URL,
-  serverEnv.SERVICE_KEY,
+  serverEnv.SUPABASE_STORAGE_URL,
+  serverEnv.SUPABASE_SERVICE_KEY,
   BUCKET_NAMES
 );
