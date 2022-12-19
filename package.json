@@ -11,16 +11,18 @@
     "build": "dotenv -- turbo run build",
     "dev": "dotenv -- turbo run dev --parallel",
     "test": "dotenv -- turbo run test",
+    "test:e2e": "dotenv -- playwright test",
     "generate": "turbo run generate",
     "lint": "turbo run lint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "clean": "turbo run clean --parallel",
-    "test-playwright": "dotenv playwright test"
+    "clean": "turbo run clean --parallel"
   },
   "dependencies": {
     "@donum/eslint-config-custom": "workspace:*",
     "@manypkg/cli": "^0.19.2",
+    "@playwright/test": "^1.29.0",
+    "@types/node": "18.11.12",
     "dotenv-cli": "^6.0.0",
     "eslint": "^8.29.0",
     "open-cli": "^7.1.0",
@@ -29,8 +31,5 @@
     "prettier-plugin-tailwindcss": "^0.2.1",
     "rimraf": "^3.0.2",
     "turbo": "^1.6.3"
-  },
-  "devDependencies": {
-    "@playwright/test": "^1.29.0"
   }
 }

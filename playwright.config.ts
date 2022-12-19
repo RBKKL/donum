@@ -9,7 +9,7 @@ import { devices } from "@playwright/test";
 
 const webServer: PlaywrightTestConfig["webServer"] = [
   {
-    command: "pnpm --filter @donum/web dev",
+    command: "pnpm --filter @donum/web dev:server",
     port: 3000,
     timeout: 60000,
     reuseExistingServer: !process.env.CI,
@@ -82,9 +82,9 @@ const config: PlaywrightTestConfig = {
     {
       name: "@donum/events-server",
       testDir: "./apps/events-server/tests",
-      testMatch: /.*\.spec\.tsx?/,
+      testMatch: /.*\.spec\.ts/,
       use: {
-        ...devices["Desktop Chrome"],
+        baseURL: process.env.EVENTS_SERVER_URL,
       },
     },
     {

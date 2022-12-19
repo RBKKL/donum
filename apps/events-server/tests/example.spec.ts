@@ -1,14 +1,9 @@
 import test, { expect } from "@playwright/test";
 
-// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-const eventsServerURL = process.env.EVENTS_SERVER_URL!;
-
-test("events-server page with errors", async ({ page }) => {
-  await page.goto(eventsServerURL);
-
-  const bodyTag = page.locator("body");
-
-  await expect(bodyTag).toContainText(
-    `{"message":"Route GET:/ not found","error":"Not Found","statusCode":404}`
-  );
+test("events-server return unauthenticated on test donation", async ({
+  request,
+}) => {
+  const res = await request.post("/test");
+  expect(res.status()).toBe(403);
+  expect(await res.text()).toContain("Wrong secret");
 });
