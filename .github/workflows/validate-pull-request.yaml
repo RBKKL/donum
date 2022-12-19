@@ -1,7 +1,21 @@
 name: Validate pull request
+
 on:
   pull_request:
     types: [opened, edited, synchronize]
+
+env:
+  DATABASE_URL: "postgresql://postgres:postgres@localhost:54322/postgres"
+  SUPABASE_STORAGE_URL: "http://localhost:54321/storage/v1"
+  SUPABASE_SERVICE_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSJ9.vI9obAHOGyVVKa3pD--kJlyxp-Z2zV9UUMAhKpNLAcU"
+  NEXTAUTH_URL: "http://localhost:3000"
+  NEXTAUTH_SECRET: "secret"
+  WEBAPP_BASE_URL: "http://localhost:3000"
+  REDIS_URL: "redis://localhost:6379"
+  EVENTS_SERVER_URL: "http://localhost:8000"
+  EVENTS_SERVER_AUTH_TOKEN: "u7x!A%D*G-KaPdRgUkXp2s5v8y/B?E(H"
+  WIDGET_BASE_URL: "http://localhost:5173"
+
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -41,3 +55,17 @@ jobs:
 
       - name: Check formatting, Lint, Test
         run: pnpm turbo format:check lint test
+
+      - name: Install Playwright Browsers
+        run: pnpm playwright install --with-deps
+
+      - name: Run Playwright tests
+        run: pnpm test:e2e
+
+      - name: Upload Playwright artifacts
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30

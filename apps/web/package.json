@@ -3,6 +3,7 @@
     "private": true,
     "scripts": {
         "dev": "open-cli http://localhost:3000 && next dev",
+        "dev:server": "next dev",
         "build": "next build",
         "start": "next start",
         "lint": "TIMING=1 tsc && eslint .",

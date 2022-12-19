@@ -49,3 +49,8 @@ apps/contracts/deployments/**/solcinputs
 
 # Turborepo
 .turbo
+
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/

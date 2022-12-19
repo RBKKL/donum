@@ -28,7 +28,7 @@ export const donationRouter = router({
       const response = await fetch(`${serverEnv.EVENTS_SERVER_URL}/test`, {
         method: "POST",
         headers: {
-          Authorization: serverEnv.EVENT_SECRET,
+          Authorization: serverEnv.EVENTS_SERVER_AUTH_TOKEN,
         },
         body: JSON.stringify(donation),
       });

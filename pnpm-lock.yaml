@@ -6,6 +6,8 @@ importers:
     specifiers:
       '@donum/eslint-config-custom': workspace:*
       '@manypkg/cli': ^0.19.2
+      '@playwright/test': ^1.29.0
+      '@types/node': 18.11.12
       dotenv-cli: ^6.0.0
       eslint: ^8.29.0
       open-cli: ^7.1.0
@@ -17,6 +19,8 @@ importers:
     dependencies:
       '@donum/eslint-config-custom': link:packages/eslint-config-custom
       '@manypkg/cli': 0.19.2
+      '@playwright/test': 1.29.0
+      '@types/node': 18.11.12
       dotenv-cli: 6.0.0
       eslint: 8.29.0
       open-cli: 7.1.0
@@ -2756,6 +2760,15 @@ packages:
       tiny-glob: 0.2.9
       tslib: 2.4.1
     dev: true
+
+  /@playwright/test/1.29.0:
+    resolution: {integrity: sha512-gp5PVBenxTJsm2bATWDNc2CCnrL5OaA/MXQdJwwkGQtqTjmY+ZOqAdLqo49O9MLTDh2vYh+tHWDnmFsILnWaeA==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dependencies:
+      '@types/node': 18.11.12
+      playwright-core: 1.29.0
+    dev: false
 
   /@prisma/client/4.7.1_prisma@4.7.1:
     resolution: {integrity: sha512-/GbnOwIPtjiveZNUzGXOdp7RxTEkHL4DZP3vBaFNadfr6Sf0RshU5EULFzVaSi9i9PIK9PYd+1Rn7z2B2npb9w==}
@@ -11042,6 +11055,12 @@ packages:
     engines: {node: '>=6'}
     dependencies:
       find-up: 3.0.0
+    dev: false
+
+  /playwright-core/1.29.0:
+    resolution: {integrity: sha512-pboOm1m0RD6z1GtwAbEH60PYRfF87vKdzOSRw2RyO0Y0a7utrMyWN2Au1ojGvQr4umuBMODkKTv607YIRypDSQ==}
+    engines: {node: '>=14'}
+    hasBin: true
     dev: false
 
   /pngjs/3.4.0:
