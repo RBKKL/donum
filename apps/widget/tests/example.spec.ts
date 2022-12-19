@@ -1,11 +1,9 @@
 import test, { expect } from "@playwright/test";
 
-const widgetURL = process.env.WIDGET_BASE_URL;
+test("widget: error when no address in search params", async ({ page }) => {
+  await page.goto("/");
 
-test("widget page with error caption", async ({ page }) => {
-  await page.goto(widgetURL);
-
-  await expect(page).toHaveTitle(/Donum widget/);
+  await expect(page).toHaveTitle("Donum widget");
 
   const bodyTag = page.locator("body");
 
