@@ -1,6 +1,7 @@
 {
   "name": "donum-monorepo",
   "description": "Donum monorepo",
+  "type": "module",
   "private": true,
   "packageManager": "pnpm@7.18.0",
   "engines": {

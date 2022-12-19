@@ -91,7 +91,7 @@ const config: PlaywrightTestConfig = {
     {
       name: "@donum/widget",
       testDir: "./apps/widget/tests",
-      testMatch: /.*\.spec\.jsx?/,
+      testMatch: /.*\.spec\.tsx?/,
       use: {
         ...devices["Desktop Chrome"],
         baseURL: process.env.WIDGET_BASE_URL ?? "http://localhost:5173",
