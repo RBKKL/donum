@@ -85,7 +85,7 @@ const config: PlaywrightTestConfig = {
       testDir: "./apps/events-server/tests",
       testMatch: /.*\.spec\.ts/,
       use: {
-        baseURL: process.env.EVENTS_SERVER_URL,
+        baseURL: process.env.EVENTS_SERVER_URL ?? "http://localhost:8000",
       },
     },
     {
