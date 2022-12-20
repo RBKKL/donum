@@ -26,6 +26,7 @@ import {
   populateProfileWithDefaultValues,
 } from "@lib/profile";
 import { prisma } from "@donum/prisma";
+import { GetServerSidePropsContext } from "next";
 
 interface ProfileProps {
   profile: PopulatedProfile | null;
@@ -164,8 +165,8 @@ function SendDonationPage({ profile }: ProfileProps) {
   );
 }
 
-export async function getServerSideProps(context: any) {
-  const addressOrNickname = await context.query.addressOrNickname;
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const addressOrNickname = (await context.query.addressOrNickname) as string;
   const isAddress = ethers.utils.isAddress(addressOrNickname);
 
   const prismaProfile = isAddress
