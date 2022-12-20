@@ -1,4 +1,3 @@
-import { NextPage } from "next";
 import { Button } from "@components/Button";
 import { ethers } from "ethers";
 import { useSession } from "next-auth/react";
@@ -14,8 +13,9 @@ import { isNumber } from "@donum/shared/helpers";
 import { TextField } from "@components/TextField";
 import { trpc } from "@lib/trpc";
 import { Loader } from "@components/Loader";
+import type { ExtendedNextPage } from "pages/_app";
 
-const Alert: NextPage = () => {
+const CustomTestDonationPage: ExtendedNextPage = () => {
   const { data: session } = useSession();
 
   // session, user and name can't be null here, because it's secured page and Layout will show warning
@@ -111,5 +111,6 @@ const Alert: NextPage = () => {
     </div>
   );
 };
+CustomTestDonationPage.requireAuth = true;
 
-export default Alert;
+export default CustomTestDonationPage;

@@ -1,6 +1,8 @@
 import "@styles/globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
-import type { AppType } from "next/app";
+import { type ReactElement, type ReactNode } from "react";
+import type { NextPage } from "next";
+import type { AppProps } from "next/app";
 import Head from "next/head";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { WagmiConfig, configureChains, createClient, chain } from "wagmi";
@@ -11,9 +13,7 @@ import { Layout } from "@components/Layout";
 import { trpc } from "@lib/trpc";
 import { clientEnv } from "@env/client";
 import { SessionProvider } from "next-auth/react";
-import { Session } from "next-auth";
-import { StrictMode } from "react";
-import { AuthCheck } from "@components/AuthCheck";
+import { AuthGuard } from "@components/AuthGuard";
 
 const usedChains = [
   // chain.mainnet,
@@ -38,27 +38,36 @@ const wagmiClient = createClient({
   provider,
 });
 
-const MyApp: AppType<{ session: Session | null; protected?: boolean }> = ({
-  Component,
-  pageProps,
-}) => {
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type ExtendedNextPage<P = {}, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: ReactElement) => ReactNode;
+  requireAuth?: boolean;
+};
+
+type ExtendedAppProps = AppProps & {
+  Component: ExtendedNextPage;
+};
+
+const MyApp = ({ Component, pageProps }: ExtendedAppProps) => {
   return (
-    <StrictMode>
-      <WagmiConfig client={wagmiClient}>
-        <RainbowKitProvider chains={chains}>
-          <SessionProvider session={pageProps.session}>
-            <Layout>
-              <Head>
-                <title>{APP_NAME}</title>
-              </Head>
-              <AuthCheck check={pageProps.protected}>
+    <WagmiConfig client={wagmiClient}>
+      <RainbowKitProvider chains={chains}>
+        <SessionProvider session={pageProps.session}>
+          <Layout>
+            <Head>
+              <title>{APP_NAME}</title>
+            </Head>
+            {Component.requireAuth ? (
+              <AuthGuard>
                 <Component {...pageProps} />
-              </AuthCheck>
-            </Layout>
-          </SessionProvider>
-        </RainbowKitProvider>
-      </WagmiConfig>
-    </StrictMode>
+              </AuthGuard>
+            ) : (
+              <Component {...pageProps} />
+            )}
+          </Layout>
+        </SessionProvider>
+      </RainbowKitProvider>
+    </WagmiConfig>
   );
 };
 

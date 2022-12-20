@@ -3,6 +3,14 @@ export const routes = {
   dashboard: "/dashboard",
   alert: "/dashboard/alert",
   settings: "/dashboard/settings",
-  authorization: "/auth",
+  authorization: (callbackUrl: string | undefined = undefined) => {
+    let url = "/auth";
+    if (callbackUrl) {
+      const params = new URLSearchParams({ callbackUrl });
+      url += `?${params.toString()}`;
+    }
+
+    return url;
+  },
   donate: (addressOrNickname: string) => `/${addressOrNickname}`,
 };

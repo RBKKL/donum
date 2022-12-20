@@ -4,19 +4,24 @@ import { useAccount } from "wagmi";
 import { SessionStatus } from "@donum/shared/constants";
 import { Loader } from "./Loader";
 import { ConnectWalletWarning } from "@components/ConnectWalletWarning";
+import { useRouter } from "next/router";
+import { routes } from "@lib/routes";
 
-export const AuthCheck: FC<{
+export const AuthGuard: FC<{
   children: ReactNode;
-  check?: boolean;
-}> = ({ children, check }) => {
+}> = ({ children }) => {
+  const router = useRouter();
   const { status } = useSession();
   const { isConnected } = useAccount();
 
-  if (!check) return <>{children}</>;
+  if (!isConnected) return <ConnectWalletWarning />;
 
   if (status === SessionStatus.LOADING) return <Loader />;
 
-  if (!isConnected) return <ConnectWalletWarning />;
+  if (status === SessionStatus.UNAUTHENTICATED) {
+    router.push(routes.authorization(router.asPath));
+    return null;
+  }
 
   return <>{children}</>;
 };

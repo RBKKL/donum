@@ -16,7 +16,7 @@ const Home: NextPage = () => {
       <Link href={routes.alert} className="mt-3">
         <Button text="Test alert" />
       </Link>
-      <Link href={routes.authorization} className="mt-3">
+      <Link href={routes.authorization()} className="mt-3">
         <Button text="Authorization" />
       </Link>
     </div>
