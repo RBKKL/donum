@@ -1,7 +1,6 @@
 import { Button } from "@components/Button";
 import { TextField } from "@components/TextField";
 import { trpc } from "@lib/trpc";
-import { NextPage } from "next";
 import { useRouter } from "next/router";
 import {
   DESCRIPTION_MAX_LENGTH,
@@ -22,8 +21,9 @@ import { AvatarUploader } from "@components/AvatarUploader";
 import { useUploadFiles } from "@hooks/useUploadFiles";
 import { useSession } from "next-auth/react";
 import { useDebounce } from "react-use";
+import type { ExtendedNextPage } from "pages/_app";
 
-const EditDonationPage: NextPage = () => {
+const EditDonationPage: ExtendedNextPage = () => {
   const router = useRouter();
   const [newNickname, setNewNickname] = useState("");
   const [avatarUrl, setAvatarUrl] = useState(""); // empty string is for typescript
@@ -38,7 +38,7 @@ const EditDonationPage: NextPage = () => {
   const { data: session } = useSession();
   // session, user and name can't be null here, because it's secured page and Layout will show warning
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const address = session!.user!.name!;
+  const address = session!.user!.address!;
   const profile = trpc.profile.byAddress.useQuery({ address });
   const editProfile = trpc.profile.edit.useMutation();
   const uploadFiles = useUploadFiles();
@@ -248,5 +248,6 @@ const EditDonationPage: NextPage = () => {
     </div>
   );
 };
+EditDonationPage.requireAuth = true;
 
 export default EditDonationPage;

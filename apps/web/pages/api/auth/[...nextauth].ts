@@ -14,6 +14,16 @@ type GetAuthOptionsFn = (
   req: NextApiRequest | GetServerSidePropsContext["req"]
 ) => NextAuthOptions;
 
+declare module "next-auth" {
+  interface User {
+    address?: string;
+  }
+
+  interface Session {
+    user: User;
+  }
+}
+
 export const getAuthOptions: GetAuthOptionsFn = (req) => ({
   providers: [
     CredentialsProvider({
@@ -47,15 +57,20 @@ export const getAuthOptions: GetAuthOptionsFn = (req) => ({
   secret: serverEnv.NEXTAUTH_SECRET,
   callbacks: {
     async session({ session, token }: { session: Session; token: JWT }) {
-      if (!session.user) {
+      if (!session.user || !token.sub) {
         return session;
       }
 
-      session.user.name = token.sub;
+      session.user.address = token.sub;
       return session;
     },
   },
+  pages: {
+    signIn: "/auth",
+  },
 });
 
-export default async (req: NextApiRequest, res: NextApiResponse) =>
+const handler = async (req: NextApiRequest, res: NextApiResponse) =>
   await NextAuth(req, res, getAuthOptions(req));
+
+export default handler;

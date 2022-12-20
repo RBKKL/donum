@@ -1,33 +1,26 @@
 import { FC, ReactNode } from "react";
-import { useLogin } from "@hooks/useLogin";
 import { useSession } from "next-auth/react";
 import { useAccount } from "wagmi";
 import { SessionStatus } from "@donum/shared/constants";
 import { Loader } from "./Loader";
 import { ConnectWalletWarning } from "@components/ConnectWalletWarning";
-import { Button } from "./Button";
+import { useRouter } from "next/router";
+import { routes } from "@lib/routes";
 
-export const AuthCheck: FC<{
+export const AuthGuard: FC<{
   children: ReactNode;
-  check?: boolean;
-}> = ({ children, check }) => {
-  const { login } = useLogin();
+}> = ({ children }) => {
+  const router = useRouter();
   const { status } = useSession();
   const { isConnected } = useAccount();
 
-  if (!check) return <>{children}</>;
+  if (!isConnected) return <ConnectWalletWarning />;
 
   if (status === SessionStatus.LOADING) return <Loader />;
 
-  if (!isConnected) return <ConnectWalletWarning />;
-
   if (status === SessionStatus.UNAUTHENTICATED) {
-    return (
-      <div className="flex flex-col">
-        <div>Login to see this page</div>
-        <Button onClick={login} text="Login" />
-      </div>
-    );
+    router.push(routes.authorization(router.asPath));
+    return null;
   }
 
   return <>{children}</>;

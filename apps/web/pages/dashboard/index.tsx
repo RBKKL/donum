@@ -1,4 +1,3 @@
-import { NextPage } from "next";
 import { DonationCard } from "@components/DonationCard";
 import { RecipientProfile } from "@components/RecipientProfile";
 import { getTotalDonationsAmount } from "@donum/contracts/helpers";
@@ -21,12 +20,13 @@ import {
 import { Select } from "@components/Select";
 import { useState } from "react";
 import { Chart } from "@components/Chart";
+import type { ExtendedNextPage } from "pages/_app";
 
-const DashboardPage: NextPage = () => {
+const DashboardPage: ExtendedNextPage = () => {
   const { data: session } = useSession();
   // session, user and name can't be null here, because it's secured page and Layout will show warning
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const recipientAddress = session?.user?.name;
+  const recipientAddress = session?.user?.address;
 
   const [currentStatsPeriod, setCurrentStatsPeriod] = useState<string>(
     Periods.ALLTIME
@@ -193,13 +193,6 @@ const DashboardPage: NextPage = () => {
     </div>
   );
 };
-
-export async function getStaticProps() {
-  return {
-    props: {
-      protected: true,
-    },
-  };
-}
+DashboardPage.requireAuth = true;
 
 export default DashboardPage;
