@@ -82,7 +82,7 @@ const SendDonationPage: NextPage<ProfileProps> = ({ profile }) => {
   };
 
   if (!profile) {
-    return <div>No such profile: {addressOrNickname}</div>;
+    return <div>No profile with such nickname: {addressOrNickname}</div>;
   }
 
   return (
