@@ -26,13 +26,13 @@ import {
   populateProfileWithDefaultValues,
 } from "@lib/profile";
 import { prisma } from "@donum/prisma";
-import { GetServerSidePropsContext } from "next";
+import type { GetServerSidePropsContext, NextPage } from "next";
 
 interface ProfileProps {
-  profile: PopulatedProfile | null;
+  profile?: PopulatedProfile;
 }
 
-function SendDonationPage({ profile }: ProfileProps) {
+const SendDonationPage: NextPage<ProfileProps> = ({ profile }) => {
   const router = useRouter();
   const addressOrNickname = router.query.addressOrNickname as string;
 
@@ -163,25 +163,32 @@ function SendDonationPage({ profile }: ProfileProps) {
       />
     </div>
   );
-}
+};
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const addressOrNickname = (await context.query.addressOrNickname) as string;
   const isAddress = ethers.utils.isAddress(addressOrNickname);
 
-  const prismaProfile = isAddress
-    ? await prisma.profile.findFirst({ where: { address: addressOrNickname } })
-    : await prisma.profile.findFirst({
-        where: { nickname: addressOrNickname },
-      });
-  const isProfileFound = !!prismaProfile;
-  const profile = isProfileFound
-    ? populateProfileWithDefaultValues(prismaProfile)
-    : null;
+  const searchBy = isAddress ? "address" : "nickname";
+  const prismaProfile = await prisma.profile.findFirst({
+    where: { [searchBy]: addressOrNickname },
+  });
 
+  // if nickname is provided and there is no profile with such nickname - return empty props
+  if (!prismaProfile && !isAddress) {
+    return {
+      props: {},
+    };
+  }
+
+  // else there is a profile with such nickname or address is provided, so return populated profile
   return {
     props: {
-      profile,
+      profile: populateProfileWithDefaultValues(
+        prismaProfile ?? {
+          address: addressOrNickname,
+        }
+      ),
     },
   };
 }
