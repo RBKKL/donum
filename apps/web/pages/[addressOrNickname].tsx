@@ -35,10 +35,6 @@ function SendDonationPage({ profile }: ProfileProps) {
   const router = useRouter();
   const addressOrNickname = router.query.addressOrNickname as string;
 
-  if (!profile) {
-    return <div>No such profile: {addressOrNickname}</div>;
-  }
-
   const recipientAddress = (profile?.address || addressOrNickname) as Address;
   const minShowAmount = profile?.minShowAmount || "0";
 
@@ -83,6 +79,10 @@ function SendDonationPage({ profile }: ProfileProps) {
     setIsModalOpen(true);
     donate();
   };
+
+  if (!profile) {
+    return <div>No such profile: {addressOrNickname}</div>;
+  }
 
   return (
     <div className="flex w-full flex-col items-center text-center">
