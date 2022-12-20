@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { RecipientProfile } from "@components/RecipientProfile";
 import { Input } from "@components/Input";
@@ -22,26 +21,20 @@ import { parseUnits } from "ethers/lib/utils";
 import { Button } from "@components/Button";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ethers } from "ethers";
-import { trpc } from "@lib/trpc";
-import { Loader } from "@components/Loader";
+import {
+  PopulatedProfile,
+  populateProfileWithDefaultValues,
+} from "@lib/profile";
+import { prisma } from "@donum/prisma";
+import type { GetServerSidePropsContext, NextPage } from "next";
 
-const SendDonationPage: NextPage = () => {
+interface ProfileProps {
+  profile?: PopulatedProfile;
+}
+
+const SendDonationPage: NextPage<ProfileProps> = ({ profile }) => {
   const router = useRouter();
   const addressOrNickname = router.query.addressOrNickname as string;
-  const isAddress = ethers.utils.isAddress(addressOrNickname);
-
-  const {
-    data: profile,
-    isLoading: isProfileLoading,
-    isError: isProfileError,
-    error: profileError,
-  } = isAddress
-    ? trpc.profile.byAddress.useQuery({
-        address: addressOrNickname,
-      })
-    : trpc.profile.byNickname.useQuery({
-        nickname: addressOrNickname,
-      });
 
   const recipientAddress = (profile?.address || addressOrNickname) as Address;
   const minShowAmount = profile?.minShowAmount || "0";
@@ -65,17 +58,6 @@ const SendDonationPage: NextPage = () => {
     message
   );
 
-  if (isProfileLoading) return <Loader />;
-
-  if (isProfileError) {
-    console.log(profileError);
-    return <div>Error!</div>;
-  }
-
-  if (!profile) {
-    return <div>No such profile: {addressOrNickname}</div>;
-  }
-
   const isValidDonationAmount =
     isNumber(donationAmount) &&
     balanceData?.value?.gt(parseUnits(donationAmount, balanceData.decimals)) &&
@@ -98,6 +80,10 @@ const SendDonationPage: NextPage = () => {
     setIsModalOpen(true);
     donate();
   };
+
+  if (!profile) {
+    return <div>No profile with such nickname: {addressOrNickname}</div>;
+  }
 
   return (
     <div className="flex w-full flex-col items-center text-center">
@@ -178,5 +164,33 @@ const SendDonationPage: NextPage = () => {
     </div>
   );
 };
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const addressOrNickname = (await context.query.addressOrNickname) as string;
+  const isAddress = ethers.utils.isAddress(addressOrNickname);
+
+  const searchBy = isAddress ? "address" : "nickname";
+  const prismaProfile = await prisma.profile.findFirst({
+    where: { [searchBy]: addressOrNickname },
+  });
+
+  // if nickname is provided and there is no profile with such nickname - return empty props
+  if (!prismaProfile && !isAddress) {
+    return {
+      props: {},
+    };
+  }
+
+  // else there is a profile with such nickname or address is provided, so return populated profile
+  return {
+    props: {
+      profile: populateProfileWithDefaultValues(
+        prismaProfile ?? {
+          address: addressOrNickname,
+        }
+      ),
+    },
+  };
+}
 
 export default SendDonationPage;

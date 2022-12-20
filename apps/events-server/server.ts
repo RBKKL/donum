@@ -76,7 +76,7 @@ const emitNewDonationEvent = async (donation: NewDonationEventObject) => {
 };
 
 app.post("/test", (req, res) => {
-  if (req.headers.authorization !== process.env.EVENT_SECRET) {
+  if (req.headers.authorization !== process.env.EVENTS_SERVER_AUTH_TOKEN) {
     res.status(403).send("Wrong secret");
     return;
   }
@@ -90,7 +90,7 @@ app.post("/test", (req, res) => {
 });
 
 app.post("/change-settings", async (req, res) => {
-  if (req.headers.authorization !== process.env.EVENT_SECRET) {
+  if (req.headers.authorization !== process.env.EVENTS_SERVER_AUTH_TOKEN) {
     res.status(403).send("Wrong secret");
     return;
   }

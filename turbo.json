@@ -11,16 +11,17 @@
         "NODE_ENV",
         "PORT",
         "VERCEL_URL",
-        "STORAGE_URL",
-        "SERVICE_KEY",
+        "SUPABASE_STORAGE_URL",
+        "SUPABASE_SERVICE_KEY",
         "DATABASE_URL",
         "NEXTAUTH_URL",
         "NEXTAUTH_SECRET",
         "WEBAPP_BASE_URL",
         "REDIS_URL",
         "EVENTS_SERVER_URL",
-        "EVENT_SECRET",
-        "CI"
+        "EVENTS_SERVER_AUTH_TOKEN",
+        "CI",
+        "WIDGET_BASE_URL"
     ],
     "pipeline": {
         "build": {
