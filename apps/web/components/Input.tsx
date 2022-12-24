@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import {forwardRef} from "react";
 import type { ReactNode, ChangeEvent } from "react";
+
 export interface InputProps {
   value?: string;
   downCorner?: ReactNode;
