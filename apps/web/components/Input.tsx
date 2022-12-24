@@ -28,7 +28,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(({
   textWeight = "normal",
   ...props
 }, ref) => {
-
   const onChangeWrapper = (e: ChangeEvent<HTMLInputElement>) => {
     if (onChangeRaw) {
       onChangeRaw(e);
@@ -73,5 +72,4 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(({
     </div>
   );
 });
-
 Input.displayName = "Input";
