@@ -17,7 +17,7 @@ import {
 import { DonationModal } from "@components/DonationModal";
 import { Address, useAccount, useBalance } from "wagmi";
 import { Balance } from "@components/Balance";
-import { parseUnits } from "ethers/lib/utils";
+import { formatEther, parseUnits } from "ethers/lib/utils";
 import { Button } from "@components/Button";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ethers } from "ethers";
@@ -27,6 +27,7 @@ import {
 } from "@lib/profile";
 import { prisma } from "@donum/prisma";
 import type { GetServerSidePropsContext, NextPage } from "next";
+import { AmountInput } from "@components/AmountInput";
 
 interface ProfileProps {
   profile?: PopulatedProfile;
@@ -48,7 +49,9 @@ const SendDonationPage: NextPage<ProfileProps> = ({ profile }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [senderNickname, setSenderNickname] = useState("");
-  const [donationAmount, setDonationAmount] = useState(DEFAULT_DONATION_AMOUNT);
+  const [donationAmount, setDonationAmount] = useState(
+    profile ? formatEther(profile.minShowAmount) : DEFAULT_DONATION_AMOUNT
+  );
   const [message, setMessage] = useState("");
 
   const { donate, isAvailable, isLoading, isError } = useSendDonation(
@@ -62,9 +65,6 @@ const SendDonationPage: NextPage<ProfileProps> = ({ profile }) => {
     isNumber(donationAmount) &&
     balanceData?.value?.gt(parseUnits(donationAmount, balanceData.decimals)) &&
     parseUnits(donationAmount, balanceData.decimals).gt(0);
-
-  const onDonationAmountChange = (amount: string) =>
-    (isNumber(amount) || amount == "") && setDonationAmount(amount);
 
   const onDonationMessageChange = (message: string) => {
     setMessage(message);
@@ -97,7 +97,7 @@ const SendDonationPage: NextPage<ProfileProps> = ({ profile }) => {
         <p className="break-words px-4 pb-4 text-left text-sm">
           {profile.description}
         </p>
-        <Input
+        <AmountInput
           value={donationAmount}
           downCorner={
             <div className="w-full text-left text-xs text-gray-400">
@@ -105,7 +105,7 @@ const SendDonationPage: NextPage<ProfileProps> = ({ profile }) => {
               {formatTokenAmount(minShowAmount)}
             </div>
           }
-          onChange={onDonationAmountChange}
+          onChange={setDonationAmount}
           onBlur={setMinimumAmount}
           error={isConnected && !isValidDonationAmount}
           textSize="large"
