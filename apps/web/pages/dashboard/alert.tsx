@@ -2,10 +2,7 @@ import { Button } from "@components/Button";
 import { ethers } from "ethers";
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
-import {
-  DEFAULT_DONATION_AMOUNT,
-  MESSAGE_MAX_LENGTH,
-} from "@donum/shared/constants";
+import { MESSAGE_MAX_LENGTH } from "@donum/shared/constants";
 import { RecipientProfile } from "@components/RecipientProfile";
 import { Input } from "@components/Input";
 import { EthIcon } from "@components/icons/EthIcon";
@@ -23,7 +20,7 @@ const CustomTestDonationPage: ExtendedNextPage = () => {
   const address = session!.user!.address!;
 
   const [senderNickname, setSenderNickname] = useState("");
-  const [amount, setAmount] = useState(DEFAULT_DONATION_AMOUNT);
+  const [amount, setAmount] = useState("0.01");
   const [message, setMessage] = useState("");
   const {
     data: profile,

@@ -6,7 +6,7 @@ import { TextField } from "@components/TextField";
 import { EthIcon } from "@components/icons/EthIcon";
 import { useSendDonation } from "@hooks/useSendDonation";
 import {
-  DEFAULT_DONATION_AMOUNT,
+  DEFAULT_SHOW_AMOUNT,
   MESSAGE_MAX_LENGTH,
 } from "@donum/shared/constants";
 import {
@@ -50,7 +50,7 @@ const SendDonationPage: NextPage<ProfileProps> = ({ profile }) => {
 
   const [senderNickname, setSenderNickname] = useState("");
   const [donationAmount, setDonationAmount] = useState(
-    profile ? formatEther(profile.minShowAmount) : DEFAULT_DONATION_AMOUNT
+    formatEther(profile?.minShowAmount ?? DEFAULT_SHOW_AMOUNT)
   );
   const [message, setMessage] = useState("");
 
@@ -68,12 +68,6 @@ const SendDonationPage: NextPage<ProfileProps> = ({ profile }) => {
 
   const onDonationMessageChange = (message: string) => {
     setMessage(message);
-  };
-
-  const setMinimumAmount = () => {
-    if (!donationAmount || Number(donationAmount) === 0) {
-      setDonationAmount("0.0");
-    }
   };
 
   const onSendBtnClick = () => {
@@ -106,9 +100,9 @@ const SendDonationPage: NextPage<ProfileProps> = ({ profile }) => {
             </div>
           }
           onChange={setDonationAmount}
-          onBlur={setMinimumAmount}
           error={isConnected && !isValidDonationAmount}
           textSize="large"
+          placeholder="0"
           rightCorner={
             <div className="flex flex-col items-end">
               <EthIcon />
