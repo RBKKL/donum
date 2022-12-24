@@ -6,7 +6,7 @@ import { TextField } from "@components/TextField";
 import { EthIcon } from "@components/icons/EthIcon";
 import { useSendDonation } from "@hooks/useSendDonation";
 import {
-  DEFAULT_DONATION_AMOUNT,
+  DEFAULT_SHOW_AMOUNT,
   MESSAGE_MAX_LENGTH,
 } from "@donum/shared/constants";
 import {
@@ -17,7 +17,7 @@ import {
 import { DonationModal } from "@components/DonationModal";
 import { Address, useAccount, useBalance } from "wagmi";
 import { Balance } from "@components/Balance";
-import { parseUnits } from "ethers/lib/utils";
+import { formatEther, parseUnits } from "ethers/lib/utils";
 import { Button } from "@components/Button";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ethers } from "ethers";
@@ -27,6 +27,7 @@ import {
 } from "@lib/profile";
 import { prisma } from "@donum/prisma";
 import type { GetServerSidePropsContext, NextPage } from "next";
+import { AmountInput } from "@components/AmountInput";
 
 interface ProfileProps {
   profile?: PopulatedProfile;
@@ -48,7 +49,9 @@ const SendDonationPage: NextPage<ProfileProps> = ({ profile }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [senderNickname, setSenderNickname] = useState("");
-  const [donationAmount, setDonationAmount] = useState(DEFAULT_DONATION_AMOUNT);
+  const [donationAmount, setDonationAmount] = useState(
+    formatEther(profile?.minShowAmount ?? DEFAULT_SHOW_AMOUNT)
+  );
   const [message, setMessage] = useState("");
 
   const { donate, isAvailable, isLoading, isError } = useSendDonation(
@@ -63,17 +66,8 @@ const SendDonationPage: NextPage<ProfileProps> = ({ profile }) => {
     balanceData?.value?.gt(parseUnits(donationAmount, balanceData.decimals)) &&
     parseUnits(donationAmount, balanceData.decimals).gt(0);
 
-  const onDonationAmountChange = (amount: string) =>
-    (isNumber(amount) || amount == "") && setDonationAmount(amount);
-
   const onDonationMessageChange = (message: string) => {
     setMessage(message);
-  };
-
-  const setMinimumAmount = () => {
-    if (!donationAmount || Number(donationAmount) === 0) {
-      setDonationAmount("0.0");
-    }
   };
 
   const onSendBtnClick = () => {
@@ -97,7 +91,7 @@ const SendDonationPage: NextPage<ProfileProps> = ({ profile }) => {
         <p className="break-words px-4 pb-4 text-left text-sm">
           {profile.description}
         </p>
-        <Input
+        <AmountInput
           value={donationAmount}
           downCorner={
             <div className="w-full text-left text-xs text-gray-400">
@@ -105,10 +99,10 @@ const SendDonationPage: NextPage<ProfileProps> = ({ profile }) => {
               {formatTokenAmount(minShowAmount)}
             </div>
           }
-          onChange={onDonationAmountChange}
-          onBlur={setMinimumAmount}
+          onChange={setDonationAmount}
           error={isConnected && !isValidDonationAmount}
           textSize="large"
+          placeholder="0"
           rightCorner={
             <div className="flex flex-col items-end">
               <EthIcon />

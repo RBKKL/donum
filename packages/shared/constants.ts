@@ -2,7 +2,6 @@ export const APP_NAME = "Donum";
 export const CONTRACT_NAME = "DonationsStore";
 export const SIGN_IN_MESSAGE =
   "This will cost you nothing\nBelow is the technical information";
-export const DEFAULT_DONATION_AMOUNT = "0.001";
 
 export const MESSAGE_MAX_LENGTH = 256;
 export const NICKNAME_MIN_LENGTH = 3;
@@ -11,6 +10,7 @@ export const NICKNAME_CHECK_ALLOWANCE_DEBOUNCE = 500; // 0.5 seconds
 export const DESCRIPTION_MAX_LENGTH = 1024;
 
 export const DEFAULT_SHOW_AMOUNT = "1000000000000000"; // 0.001 ETH
+export const MAX_DONATION_AMOUNT_LENGTH = 79; // 79 digits
 
 export const AVATAR_MAX_SIZE = 1024 * 1024 * 10; // 10MB
 export const NOTIFICATION_IMAGE_MAX_SIZE = 1024 * 1024 * 10; // 10MB

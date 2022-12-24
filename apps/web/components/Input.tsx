@@ -1,11 +1,14 @@
 import classNames from "classnames";
-import { FC, ReactNode } from "react";
-interface InputProps {
+import {forwardRef} from "react";
+import type { ReactNode, ChangeEvent } from "react";
+
+export interface InputProps {
   value?: string;
   downCorner?: ReactNode;
   rightCorner?: ReactNode;
   error?: boolean;
   onChange?: (value: string) => void;
+  onChangeRaw?: (event: ChangeEvent<HTMLInputElement>) => void;
   onBlur?: () => void;
   variant?: "normal" | "underlined";
   textSize?: "small" | "normal" | "large";
@@ -14,16 +17,26 @@ interface InputProps {
   placeholder?: string;
 }
 
-export const Input: FC<InputProps> = ({
+export const Input = forwardRef<HTMLInputElement, InputProps>(({
   downCorner,
   onChange,
+  onChangeRaw,
   rightCorner,
   error,
   variant = "normal",
   textSize = "normal",
   textWeight = "normal",
   ...props
-}) => {
+}, ref) => {
+  const onChangeWrapper = (e: ChangeEvent<HTMLInputElement>) => {
+    if (onChangeRaw) {
+      onChangeRaw(e);
+    }
+    else if (onChange) {
+      onChange(e.target.value);
+    }
+  }
+
   return (
     <div
       className={classNames(
@@ -49,7 +62,8 @@ export const Input: FC<InputProps> = ({
             { "text-center": variant === "underlined" },
             { "font-semibold": textWeight === "semibold" }
           )}
-          onChange={(e) => onChange?.(e.target.value)}
+          ref={ref}
+          onChange={onChangeWrapper}
           {...props}
         />
         {downCorner}
@@ -57,4 +71,5 @@ export const Input: FC<InputProps> = ({
       {rightCorner}
     </div>
   );
-};
+});
+Input.displayName = "Input";
