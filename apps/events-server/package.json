@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "tsx watch --clear-screen=false server.ts",
-    "build": "tsc --build --verbose",
+    "start": "tsx server.ts",
     "lint": "tsc --noEmit && eslint .",
     "clean": "tsc --build --clean && rimraf .turbo node_modules dist"
   },
