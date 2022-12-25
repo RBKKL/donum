@@ -1,3 +1,5 @@
+import { clientEnv } from "@env/client";
+
 export const routes = {
   home: "/",
   dashboard: "/dashboard",
@@ -13,5 +15,6 @@ export const routes = {
     return url;
   },
   donate: (addressOrNickname: string) => `/${addressOrNickname}`,
-  widget: (url: string, address: string) => `${url}/?address=${address}`,
+  widget: (address: string) =>
+    `${clientEnv.WIDGET_BASE_URL}/?address=${address}`,
 };
