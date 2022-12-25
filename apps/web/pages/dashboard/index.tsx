@@ -27,7 +27,7 @@ const DashboardPage: ExtendedNextPage = () => {
   const { data: session } = useSession();
   // session, user and name can't be null here, because it's secured page and Layout will show warning
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const recipientAddress = session?.user?.address;
+  const recipientAddress = session!.user!.address!;
 
   const [currentStatsPeriod, setCurrentStatsPeriod] = useState<string>(
     Periods.ALLTIME
@@ -43,7 +43,7 @@ const DashboardPage: ExtendedNextPage = () => {
     isLoading: isDonationsLoading,
     isError: isDonationsError,
     error: donationsError,
-  } = useLiveDonationsHistory(recipientAddress || "");
+  } = useLiveDonationsHistory(recipientAddress);
 
   const {
     data: profile,
@@ -132,7 +132,7 @@ const DashboardPage: ExtendedNextPage = () => {
 
   const openWidget = () =>
     window.open(
-      routes.widget(clientEnv.WIDGET_BASE_URL, recipientAddress || ""),
+      routes.widget(clientEnv.WIDGET_BASE_URL, recipientAddress),
       "Popup",
       "resizable, width=600, height=600"
     );
@@ -143,7 +143,7 @@ const DashboardPage: ExtendedNextPage = () => {
         <RecipientProfile
           avatarUrl={profile.avatarUrl}
           nickname={profile.nickname}
-          address={recipientAddress || ""}
+          address={recipientAddress}
           showAddress={!profile.nickname}
           shortAddress
         />
@@ -154,7 +154,7 @@ const DashboardPage: ExtendedNextPage = () => {
             onClick={() => sendTestDonation.mutate()}
           />
           <Link
-            href={routes.donate(profile.nickname || recipientAddress || "")}
+            href={routes.donate(profile.nickname || recipientAddress)}
             target="_blank"
           >
             <Button text="Open donation page" size="small" />
