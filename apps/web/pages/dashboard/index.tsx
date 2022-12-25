@@ -130,6 +130,13 @@ const DashboardPage: ExtendedNextPage = () => {
     );
   };
 
+  const openWidget = () =>
+    window.open(
+      routes.widget(clientEnv.WIDGET_BASE_URL, recipientAddress || ""),
+      "Popup",
+      "resizable, width=600, height=600"
+    );
+
   return (
     <div className="flex w-full flex-col justify-between self-start lg:flex-row">
       <div className="flex min-w-[50%] flex-col items-center">
@@ -149,20 +156,7 @@ const DashboardPage: ExtendedNextPage = () => {
           <Link href={routes.donate(recipientAddress || "")} target="_blank">
             <Button text="Open donation page" size="small" />
           </Link>
-          <Button
-            text="Open widget"
-            size="small"
-            onClick={() =>
-              window.open(
-                routes.widget(
-                  clientEnv.WIDGET_BASE_URL,
-                  recipientAddress || ""
-                ),
-                "Popup",
-                "resizable, width=600, height=600"
-              )
-            }
-          />
+          <Button text="Open widget" size="small" onClick={openWidget} />
           <Link href={routes.settings}>
             <Button
               text="Settings"

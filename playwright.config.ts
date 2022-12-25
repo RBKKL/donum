@@ -94,7 +94,8 @@ const config: PlaywrightTestConfig = {
       testMatch: /.*\.spec\.tsx?/,
       use: {
         ...devices["Desktop Chrome"],
-        baseURL: process.env.WIDGET_BASE_URL ?? "http://localhost:5173",
+        baseURL:
+          process.env.NEXT_PUBLIC_WIDGET_BASE_URL ?? "http://localhost:5173",
       },
     },
 
