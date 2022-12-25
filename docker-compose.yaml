@@ -1,8 +1,0 @@
-version: '3.7'
-
-services:
-  redis-stack:
-    image: redis/redis-stack:6.2.6-rc1
-    ports:
-      - 6379:6379
-      - 8001:8001

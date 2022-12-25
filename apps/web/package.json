@@ -13,7 +13,7 @@
         "@donum/contracts": "workspace:*",
         "@donum/prisma": "workspace:*",
         "@donum/shared": "workspace:*",
-        "@keyv/redis": "^2.5.4",
+        "@keyv/postgres": "^1.4.1",
         "@next/font": "^13.0.6",
         "@radix-ui/react-select": "^1.1.2",
         "@rainbow-me/rainbowkit": "^0.8.0",
