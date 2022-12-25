@@ -153,7 +153,10 @@ const DashboardPage: ExtendedNextPage = () => {
             size="small"
             onClick={() => sendTestDonation.mutate()}
           />
-          <Link href={routes.donate(recipientAddress || "")} target="_blank">
+          <Link
+            href={routes.donate(profile.nickname || recipientAddress || "")}
+            target="_blank"
+          >
             <Button text="Open donation page" size="small" />
           </Link>
           <Button text="Open widget" size="small" onClick={openWidget} />
