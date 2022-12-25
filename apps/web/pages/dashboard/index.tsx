@@ -1,7 +1,7 @@
 import { DonationCard } from "@components/DonationCard";
 import { RecipientProfile } from "@components/RecipientProfile";
 import { getTotalDonationsAmount } from "@donum/contracts/helpers";
-import { reverseArray } from "@donum/shared/helpers";
+import { formatNickname, reverseArray } from "@donum/shared/helpers";
 import { useLiveDonationsHistory } from "@hooks/useLiveDonationsHistory";
 import { Button } from "@components/Button";
 import { EditIcon } from "@components/icons/EditIcon";
@@ -21,7 +21,6 @@ import { Select } from "@components/Select";
 import { useState } from "react";
 import { Chart } from "@components/Chart";
 import type { ExtendedNextPage } from "pages/_app";
-import { clientEnv } from "@env/client";
 
 const DashboardPage: ExtendedNextPage = () => {
   const { data: session } = useSession();
@@ -71,7 +70,7 @@ const DashboardPage: ExtendedNextPage = () => {
       <DonationCard
         key={index}
         from={donation.from}
-        nickname={donation.nickname}
+        nickname={formatNickname(donation.nickname)}
         timestamp={donation.timestamp}
         amount={donation.amount}
         message={donation.message}

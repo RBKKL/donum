@@ -51,3 +51,9 @@ export const isCorrectNickname = (nickname: string) => {
     nickname.match(/^(\w)*$/)
   );
 };
+
+export const formatNickname = (nickname: string) => {
+  return nickname.length > NICKNAME_MAX_LENGTH
+    ? `${nickname.slice(0, NICKNAME_MAX_LENGTH)}\u2026`
+    : nickname;
+};
