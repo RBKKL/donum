@@ -21,6 +21,7 @@ import { Select } from "@components/Select";
 import { useState } from "react";
 import { Chart } from "@components/Chart";
 import type { ExtendedNextPage } from "pages/_app";
+import { clientEnv } from "@env/client";
 
 const DashboardPage: ExtendedNextPage = () => {
   const { data: session } = useSession();
@@ -144,6 +145,23 @@ const DashboardPage: ExtendedNextPage = () => {
             text="Send test donation alert"
             size="small"
             onClick={() => sendTestDonation.mutate()}
+          />
+          <Link href={routes.donate(recipientAddress || "")} target="_blank">
+            <Button text="Open donation page" size="small" />
+          </Link>
+          <Button
+            text="Open widget"
+            size="small"
+            onClick={() =>
+              window.open(
+                routes.widget(
+                  clientEnv.WIDGET_BASE_URL,
+                  recipientAddress || ""
+                ),
+                "Popup",
+                "resizable, width=600, height=600"
+              )
+            }
           />
           <Link href={routes.settings}>
             <Button

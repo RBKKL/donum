@@ -13,4 +13,5 @@ export const routes = {
     return url;
   },
   donate: (addressOrNickname: string) => `/${addressOrNickname}`,
+  widget: (url: string, address: string) => `${url}/?address=${address}`,
 };
