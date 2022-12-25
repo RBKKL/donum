@@ -21,7 +21,7 @@
         "EVENTS_SERVER_URL",
         "EVENTS_SERVER_AUTH_TOKEN",
         "CI",
-        "WIDGET_BASE_URL"
+        "NEXT_PUBLIC_WIDGET_BASE_URL"
     ],
     "pipeline": {
         "build": {

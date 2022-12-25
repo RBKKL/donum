@@ -21,6 +21,7 @@ import { Select } from "@components/Select";
 import { useState } from "react";
 import { Chart } from "@components/Chart";
 import type { ExtendedNextPage } from "pages/_app";
+import { clientEnv } from "@env/client";
 
 const DashboardPage: ExtendedNextPage = () => {
   const { data: session } = useSession();
@@ -129,6 +130,13 @@ const DashboardPage: ExtendedNextPage = () => {
     );
   };
 
+  const openWidget = () =>
+    window.open(
+      routes.widget(clientEnv.WIDGET_BASE_URL, recipientAddress || ""),
+      "Popup",
+      "resizable, width=600, height=600"
+    );
+
   return (
     <div className="flex w-full flex-col justify-between self-start lg:flex-row">
       <div className="flex min-w-[50%] flex-col items-center">
@@ -145,6 +153,10 @@ const DashboardPage: ExtendedNextPage = () => {
             size="small"
             onClick={() => sendTestDonation.mutate()}
           />
+          <Link href={routes.donate(recipientAddress || "")} target="_blank">
+            <Button text="Open donation page" size="small" />
+          </Link>
+          <Button text="Open widget" size="small" onClick={openWidget} />
           <Link href={routes.settings}>
             <Button
               text="Settings"
