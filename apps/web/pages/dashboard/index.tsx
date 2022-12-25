@@ -167,8 +167,8 @@ const DashboardPage: ExtendedNextPage = () => {
             />
           </Link>
         </div>
-        <div className="flex w-80 flex-col items-center pt-10">
-          <div className="flex items-center self-start pl-12 pb-4">
+        <div className="flex flex-col items-center pt-10">
+          <div className="flex w-[17rem] items-center pb-4">
             <h2 className="text-center text-2xl font-semibold text-white">
               Statistics
             </h2>
@@ -182,8 +182,8 @@ const DashboardPage: ExtendedNextPage = () => {
           </div>
           {renderDonationsStats()}
         </div>
-        <div className="flex w-full flex-col items-center">
-          <div className="flex">
+        <div className="flex w-full flex-col items-center pt-10">
+          <div className="flex w-[17rem] items-center">
             <h2 className="text-center text-2xl font-semibold text-white">
               Dynamics
             </h2>
