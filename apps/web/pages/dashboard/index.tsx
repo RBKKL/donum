@@ -122,9 +122,9 @@ const DashboardPage: ExtendedNextPage = () => {
 
     return (
       <>
-        <h2>Donations count</h2>
+        <h2 className="mt-4 mb-2">Donations count</h2>
         <Chart donations={donations} period={currentChartsPeriod} />
-        <h2>Donations amount</h2>
+        <h2 className="mt-4 mb-2">Donations amount</h2>
         <Chart donations={donations} period={currentChartsPeriod} amountMode />
       </>
     );
