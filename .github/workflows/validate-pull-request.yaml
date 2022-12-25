@@ -11,7 +11,6 @@ env:
   NEXTAUTH_URL: "http://localhost:3000"
   NEXTAUTH_SECRET: "secret"
   WEBAPP_BASE_URL: "http://localhost:3000"
-  REDIS_URL: "redis://localhost:6379"
   EVENTS_SERVER_URL: "http://localhost:8000"
   EVENTS_SERVER_AUTH_TOKEN: "u7x!A%D*G-KaPdRgUkXp2s5v8y/B?E(H"
   NEXT_PUBLIC_WIDGET_BASE_URL: "http://localhost:5173"
