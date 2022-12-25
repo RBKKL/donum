@@ -132,7 +132,7 @@ const DashboardPage: ExtendedNextPage = () => {
 
   const openWidget = () =>
     window.open(
-      routes.widget(clientEnv.WIDGET_BASE_URL, recipientAddress),
+      routes.widget(recipientAddress),
       "Popup",
       "resizable, width=600, height=600"
     );
