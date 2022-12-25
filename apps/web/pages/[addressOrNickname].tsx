@@ -8,6 +8,7 @@ import { useSendDonation } from "@hooks/useSendDonation";
 import {
   DEFAULT_SHOW_AMOUNT,
   MESSAGE_MAX_LENGTH,
+  NICKNAME_MAX_LENGTH,
 } from "@donum/shared/constants";
 import {
   formatAddress,
@@ -122,6 +123,7 @@ const SendDonationPage: NextPage<ProfileProps> = ({ profile }) => {
           value={senderNickname}
           onChange={setSenderNickname}
           textSize="large"
+          maxLength={NICKNAME_MAX_LENGTH}
         />
         <TextField
           placeholder="Type your message here..."

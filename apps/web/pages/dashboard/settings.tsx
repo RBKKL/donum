@@ -217,7 +217,7 @@ const EditDonationPage: ExtendedNextPage = () => {
         <Input
           value={notificationDuration}
           onChange={setNotificationDuration}
-          placeholder={"5"}
+          placeholder={profile.data.notificationDuration.toString()}
           textSize="small"
         />
         <h3>Notification image</h3>

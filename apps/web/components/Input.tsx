@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import {forwardRef} from "react";
+import { forwardRef } from "react";
 import type { ReactNode, ChangeEvent } from "react";
 
 export interface InputProps {
@@ -17,59 +17,63 @@ export interface InputProps {
   placeholder?: string;
 }
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(({
-  downCorner,
-  onChange,
-  onChangeRaw,
-  rightCorner,
-  error,
-  variant = "normal",
-  textSize = "normal",
-  textWeight = "normal",
-  ...props
-}, ref) => {
-  const onChangeWrapper = (e: ChangeEvent<HTMLInputElement>) => {
-    if (onChangeRaw) {
-      onChangeRaw(e);
-    }
-    else if (onChange) {
-      onChange(e.target.value);
-    }
-  }
+export const Input = forwardRef<HTMLInputElement, InputProps>(
+  (
+    {
+      downCorner,
+      onChange,
+      onChangeRaw,
+      rightCorner,
+      error,
+      variant = "normal",
+      textSize = "normal",
+      textWeight = "normal",
+      ...props
+    },
+    ref
+  ) => {
+    const onChangeWrapper = (e: ChangeEvent<HTMLInputElement>) => {
+      if (onChangeRaw) {
+        onChangeRaw(e);
+      } else if (onChange) {
+        onChange(e.target.value);
+      }
+    };
 
-  return (
-    <div
-      className={classNames(
-        "flex items-center justify-between px-4 pt-2 pb-1",
-        { "rounded-2xl bg-zinc-700": variant === "normal" },
-        {
-          "outline outline-2 outline-red-500": variant === "normal" && error,
-        },
-        { "border-b-2": variant === "underlined" },
-        { "border-gray-400": variant === "underlined" && !error },
-        {
-          "border-red-500": variant === "underlined" && error,
-        }
-      )}
-    >
-      <div className={classNames("flex w-full flex-col")}>
-        <input
-          className={classNames(
-            "mr-2 flex bg-transparent outline-none",
-            { "text-base": textSize === "small" },
-            { "text-xl": textSize === "normal" },
-            { "text-2xl": textSize === "large" },
-            { "text-center": variant === "underlined" },
-            { "font-semibold": textWeight === "semibold" }
-          )}
-          ref={ref}
-          onChange={onChangeWrapper}
-          {...props}
-        />
-        {downCorner}
+    return (
+      <div
+        className={classNames(
+          "flex items-center justify-between px-4 pt-2 pb-1",
+          { "rounded-2xl bg-zinc-700": variant === "normal" },
+          {
+            "outline outline-2 outline-red-500": variant === "normal" && error,
+          },
+          { "border-b-2": variant === "underlined" },
+          { "border-gray-400": variant === "underlined" && !error },
+          {
+            "border-red-500": variant === "underlined" && error,
+          }
+        )}
+      >
+        <div className={classNames("flex w-full flex-col")}>
+          <input
+            className={classNames(
+              "mr-2 flex bg-transparent outline-none",
+              { "text-base": textSize === "small" },
+              { "text-xl": textSize === "normal" },
+              { "text-2xl": textSize === "large" },
+              { "text-center": variant === "underlined" },
+              { "font-semibold": textWeight === "semibold" }
+            )}
+            ref={ref}
+            onChange={onChangeWrapper}
+            {...props}
+          />
+          {downCorner}
+        </div>
+        {rightCorner}
       </div>
-      {rightCorner}
-    </div>
-  );
-});
+    );
+  }
+);
 Input.displayName = "Input";

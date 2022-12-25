@@ -33,8 +33,8 @@ export const DonationModal: FC<DonationModalProps> = ({
         </div>
         <div className="flex w-full flex-col items-center">
           <p className="mb-1 text-lg font-semibold">Waiting for confirmation</p>
-          <p className="mb-2 text-lg font-semibold">
-            Donating {donationAmount} ETH to {nickname}
+          <p className="mb-2 text-center text-lg font-semibold">
+            Donating {Number(donationAmount).toFixed(8)} ETH to {nickname}
           </p>
           <p className="mb-2 text-xs">
             Confirm this transaction in your wallet

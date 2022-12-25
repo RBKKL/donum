@@ -1,7 +1,7 @@
 import { DonationCard } from "@components/DonationCard";
 import { RecipientProfile } from "@components/RecipientProfile";
 import { getTotalDonationsAmount } from "@donum/contracts/helpers";
-import { reverseArray } from "@donum/shared/helpers";
+import { formatNickname, reverseArray } from "@donum/shared/helpers";
 import { useLiveDonationsHistory } from "@hooks/useLiveDonationsHistory";
 import { Button } from "@components/Button";
 import { EditIcon } from "@components/icons/EditIcon";
@@ -21,7 +21,6 @@ import { Select } from "@components/Select";
 import { useState } from "react";
 import { Chart } from "@components/Chart";
 import type { ExtendedNextPage } from "pages/_app";
-import { clientEnv } from "@env/client";
 
 const DashboardPage: ExtendedNextPage = () => {
   const { data: session } = useSession();
@@ -71,7 +70,7 @@ const DashboardPage: ExtendedNextPage = () => {
       <DonationCard
         key={index}
         from={donation.from}
-        nickname={donation.nickname}
+        nickname={formatNickname(donation.nickname)}
         timestamp={donation.timestamp}
         amount={donation.amount}
         message={donation.message}
@@ -122,9 +121,9 @@ const DashboardPage: ExtendedNextPage = () => {
 
     return (
       <>
-        <h2>Donations count</h2>
+        <h2 className="mt-4 mb-2">Donations count</h2>
         <Chart donations={donations} period={currentChartsPeriod} />
-        <h2>Donations amount</h2>
+        <h2 className="mt-4 mb-2">Donations amount</h2>
         <Chart donations={donations} period={currentChartsPeriod} amountMode />
       </>
     );
@@ -148,11 +147,6 @@ const DashboardPage: ExtendedNextPage = () => {
           shortAddress
         />
         <div className="flex flex-col items-center gap-2">
-          <Button
-            text="Send test donation alert"
-            size="small"
-            onClick={() => sendTestDonation.mutate()}
-          />
           <Link
             href={routes.donate(profile.nickname || recipientAddress)}
             target="_blank"
@@ -160,6 +154,11 @@ const DashboardPage: ExtendedNextPage = () => {
             <Button text="Open donation page" size="small" />
           </Link>
           <Button text="Open widget" size="small" onClick={openWidget} />
+          <Button
+            text="Send test donation alert"
+            size="small"
+            onClick={() => sendTestDonation.mutate()}
+          />
           <Link href={routes.settings}>
             <Button
               text="Settings"
