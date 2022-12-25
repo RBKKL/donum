@@ -107,7 +107,10 @@ export const Chart: FC<ChartProps> = ({ donations, period, amountMode }) => {
           </linearGradient>
         </defs>
         <XAxis dataKey="date" angle={-10} stroke="#FFFFFF" />
-        <YAxis stroke="#FFFFFF" />
+        <YAxis
+          stroke="#FFFFFF"
+          domain={[0, (dataMax: number) => dataMax * 1.1]}
+        />
         <Tooltip content={<CustomTooltip />} />
         <CartesianGrid stroke="#3F3F46" opacity={0.5} />
         <Area
