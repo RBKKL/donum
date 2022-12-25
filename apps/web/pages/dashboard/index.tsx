@@ -148,15 +148,15 @@ const DashboardPage: ExtendedNextPage = () => {
           shortAddress
         />
         <div className="flex flex-col items-center gap-2">
+          <Link href={routes.donate(recipientAddress || "")} target="_blank">
+            <Button text="Open donation page" size="small" />
+          </Link>
+          <Button text="Open widget" size="small" onClick={openWidget} />
           <Button
             text="Send test donation alert"
             size="small"
             onClick={() => sendTestDonation.mutate()}
           />
-          <Link href={routes.donate(recipientAddress || "")} target="_blank">
-            <Button text="Open donation page" size="small" />
-          </Link>
-          <Button text="Open widget" size="small" onClick={openWidget} />
           <Link href={routes.settings}>
             <Button
               text="Settings"
