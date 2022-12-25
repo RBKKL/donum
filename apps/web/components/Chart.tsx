@@ -50,7 +50,7 @@ const paramsByPeriod = {
     formatString: "d.MM",
   },
   [Periods.YEAR]: {
-    rangeLength: 24,
+    rangeLength: 12,
     sub: subMonths,
     start: startOfMonth,
     formatString: "MM.yyyy",
