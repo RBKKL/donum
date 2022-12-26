@@ -1,0 +1,56 @@
+# dependencies
+node_modules
+
+# testing
+coverage
+coverage.json
+
+# next.js
+.next
+out
+
+# production
+build
+dist
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# local env files
+.env*.local
+.env
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# typechain
+apps/contracts/types
+
+# hardhat 
+apps/contracts/cache
+apps/contracts/artifacts
+apps/contracts/contractsInfo.json
+apps/contracts/deployments/**/solcinputs
+
+# IDE
+.idea
+.vscode
+
+# Turborepo
+.turbo
+
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/

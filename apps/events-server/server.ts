@@ -125,7 +125,10 @@ DonationsStoreContract.on<NewDonationEvent>(
 
 const start = async () => {
   try {
-    await app.listen({ port: 8000 });
+    await app.listen({
+      host: "0.0.0.0",
+      port: Number(process.env.PORT) || 8000,
+    });
   } catch (err) {
     app.log.error(`Got error on app.listen: ${err}`);
     process.exit(1);
