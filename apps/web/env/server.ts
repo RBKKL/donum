@@ -12,4 +12,4 @@ export const serverEnv = {
   DATABASE_URL: process.env.DATABASE_URL ?? "",
   EVENTS_SERVER_URL: process.env.EVENTS_SERVER_URL ?? "",
   EVENTS_SERVER_AUTH_TOKEN: process.env.EVENTS_SERVER_AUTH_TOKEN ?? "",
-};
+} as const;
