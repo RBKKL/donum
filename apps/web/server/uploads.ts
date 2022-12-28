@@ -14,6 +14,8 @@ import {
 } from "@server/storage";
 import { Options } from "formidable";
 import Keyv from "keyv";
+import KeyvRedis from "@keyv/redis";
+import KeyvPostgres from "@keyv/postgres";
 import { v4 as uuidv4 } from "uuid";
 
 export const UploadTypes = ["avatar", "notificationImage", "sound"] as const;
@@ -25,9 +27,16 @@ type UploadConfig = {
   bucketName: string;
 };
 
-export const uploadsStore = new Keyv<UploadType>(serverEnv.KEYV_URL, {
-  ttl: 1000 * 60, // 1 minute
+let keyvStore;
+if (serverEnv.KEYV_URL.startsWith("redis")) {
+  keyvStore = new KeyvRedis(serverEnv.KEYV_URL);
+} else {
+  keyvStore = new KeyvPostgres(serverEnv.KEYV_URL);
+}
+export const uploadsStore = new Keyv<UploadType>({
+  store: keyvStore,
   namespace: "uploads",
+  ttl: 1000 * 60, // 1 minute
 });
 
 export const uploadConfig: Record<UploadType, UploadConfig> = {
