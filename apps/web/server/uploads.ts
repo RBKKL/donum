@@ -25,7 +25,7 @@ type UploadConfig = {
   bucketName: string;
 };
 
-export const uploadsStore = new Keyv<UploadType>(serverEnv.DATABASE_URL, {
+export const uploadsStore = new Keyv<UploadType>(serverEnv.KEYV_URL, {
   ttl: 1000 * 60, // 1 minute
   namespace: "uploads",
 });

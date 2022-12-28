@@ -26,7 +26,7 @@ export const serverEnv = {
       devDefault: "secret",
     }),
     DATABASE_URL: url({
-      devDefault: "postgres://postgres:postgres@localhost:5432/postgres",
+      devDefault: "postgresql://postgres:postgres@localhost:54322/postgres",
     }),
     EVENTS_SERVER_URL: url({
       devDefault: "http://localhost:8000",
@@ -34,6 +34,9 @@ export const serverEnv = {
     }),
     EVENTS_SERVER_AUTH_TOKEN: str({
       devDefault: "secret-auth-token",
+    }),
+    KEYV_URL: url({
+      devDefault: "postgresql://postgres:postgres@localhost:54322/postgres",
     }),
   }),
 } as const;
