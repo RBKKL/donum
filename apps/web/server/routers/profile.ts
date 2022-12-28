@@ -17,15 +17,17 @@ import { serverEnv } from "@env/server";
 export const profileRouter = router({
   me: protectedProcedure.query(async ({ ctx }) => {
     const address = ctx.session.user.address!; // protectedProcedure always returns existing user
-    const profile = await ctx.prisma.profile.findFirst({
-      where: { address },
-    });
+    return populateProfileWithDefaultValues({ address });
 
-    if (!profile) {
-      return populateProfileWithDefaultValues({ address });
-    }
+    // const profile = await ctx.prisma.profile.findFirst({
+    //   where: { address },
+    // });
 
-    return populateProfileWithDefaultValues(profile);
+    // if (!profile) {
+    //   return populateProfileWithDefaultValues({ address });
+    // }
+
+    // return populateProfileWithDefaultValues(profile);
   }),
   byNickname: publicProcedure
     .input(z.object({ nickname: NicknameFormat }))
