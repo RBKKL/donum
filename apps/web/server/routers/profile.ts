@@ -15,20 +15,17 @@ import { populateProfileWithDefaultValues, Profile } from "@lib/profile";
 import { serverEnv } from "@env/server";
 
 export const profileRouter = router({
-  me: publicProcedure.query(async () => {
-    return populateProfileWithDefaultValues({
-      address: "0xAC0772000aa52CbF8a8dB501cC8caC03cDF01bf6",
+  me: protectedProcedure.query(async ({ ctx }) => {
+    const address = ctx.session.user.address!; // protectedProcedure always returns existing user
+    const profile = await ctx.prisma.profile.findFirst({
+      where: { address },
     });
 
-    // const profile = await ctx.prisma.profile.findFirst({
-    //   where: { address },
-    // });
+    if (!profile) {
+      return populateProfileWithDefaultValues({ address });
+    }
 
-    // if (!profile) {
-    //   return populateProfileWithDefaultValues({ address });
-    // }
-
-    // return populateProfileWithDefaultValues(profile);
+    return populateProfileWithDefaultValues(profile);
   }),
   byNickname: publicProcedure
     .input(z.object({ nickname: NicknameFormat }))
