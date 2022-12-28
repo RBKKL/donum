@@ -14,6 +14,6 @@ module.exports = {
     ignoreDuringBuilds: !!process.env.CI,
   },
   images: {
-    domains: ["localhost"],
+    domains: ["localhost", "bvizuwjbhqlyqyoggyys.supabase.co"],
   },
 };
