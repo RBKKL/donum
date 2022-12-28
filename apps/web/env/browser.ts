@@ -10,8 +10,6 @@ export const browserEnv = envsafe({
   }),
   WEBAPP_BASE_URL: url({
     devDefault: "http://localhost:3000",
-    input: process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : process.env.NEXT_PUBLIC_WEBAPP_BASE_URL,
+    input: process.env.NEXT_PUBLIC_WEBAPP_BASE_URL,
   }),
 });
