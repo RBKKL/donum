@@ -12,6 +12,7 @@
     "@donum/prisma": "workspace:*",
     "@donum/shared": "workspace:*",
     "@fastify/cors": "^8.2.0",
+    "envsafe": "^2.0.3",
     "ethers": "^5.7.2",
     "fastify": "^4.10.2",
     "fastify-socket.io": "^4.0.0",

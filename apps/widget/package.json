@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@donum/shared": "workspace:*",
+    "envsafe": "^2.0.3",
     "socket.io-client": "^4.5.4",
     "solid-js": "^1.6.4",
     "xstate": "^4.35.0"

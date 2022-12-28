@@ -77,7 +77,8 @@ const config: PlaywrightTestConfig = {
       testMatch: /.*\.spec\.tsx?/,
       use: {
         ...devices["Desktop Chrome"],
-        baseURL: process.env.WEBAPP_BASE_URL ?? "http://localhost:3000",
+        baseURL:
+          process.env.NEXT_PUBLIC_WEBAPP_BASE_URL ?? "http://localhost:3000",
       },
     },
     {
@@ -85,7 +86,7 @@ const config: PlaywrightTestConfig = {
       testDir: "./apps/events-server/tests",
       testMatch: /.*\.spec\.ts/,
       use: {
-        baseURL: process.env.EVENTS_SERVER_URL ?? "http://localhost:8000",
+        baseURL: process.env.VITE_EVENTS_SERVER_URL ?? "http://localhost:8000",
       },
     },
     {

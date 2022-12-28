@@ -11,7 +11,7 @@ import { publicProvider } from "wagmi/providers/public";
 import { APP_NAME } from "@donum/shared/constants";
 import { Layout } from "@components/Layout";
 import { trpc } from "@lib/trpc";
-import { clientEnv } from "@env/client";
+import { browserEnv } from "@env/browser";
 import { SessionProvider } from "next-auth/react";
 import { AuthGuard } from "@components/AuthGuard";
 
@@ -23,7 +23,7 @@ const usedChains = [
 ];
 
 const { chains, provider } = configureChains(usedChains, [
-  infuraProvider({ apiKey: clientEnv.INFURA_ID }),
+  infuraProvider({ apiKey: browserEnv.INFURA_ID }),
   publicProvider(),
 ]);
 

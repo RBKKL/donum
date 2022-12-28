@@ -9,7 +9,7 @@ import {
   DEFAULT_DONATION_IMAGE_URL,
   DEFAULT_DONATION_SOUND_URL,
 } from "@donum/shared/constants";
-import { clientEnv } from "./client-env";
+import { env } from "./env";
 
 export const Widget = () => {
   const { state, addToQueue } = useDonationQueueMachine();
@@ -48,7 +48,7 @@ export const Widget = () => {
       throw new Error("No address was provided in search params");
     }
 
-    const socket = io(clientEnv.EVENTS_SERVER_URL, {
+    const socket = io(env.EVENTS_SERVER_URL, {
       auth: {
         address,
       },

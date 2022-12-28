@@ -12,6 +12,7 @@ import { toDonationObjectForWidget } from "./utils";
 import { prisma } from "@donum/prisma";
 import { BigNumber } from "ethers";
 import { DEFAULT_SHOW_AMOUNT } from "@donum/shared/constants";
+import { env } from "./env";
 
 const clients = new BiMap<string, string>(); // address <-> socketId
 
@@ -76,7 +77,7 @@ const emitNewDonationEvent = async (donation: NewDonationEventObject) => {
 };
 
 app.post("/test", (req, res) => {
-  if (req.headers.authorization !== process.env.EVENTS_SERVER_AUTH_TOKEN) {
+  if (req.headers.authorization !== env.EVENTS_SERVER_AUTH_TOKEN) {
     res.status(403).send("Wrong secret");
     return;
   }
@@ -90,7 +91,7 @@ app.post("/test", (req, res) => {
 });
 
 app.post("/change-settings", async (req, res) => {
-  if (req.headers.authorization !== process.env.EVENTS_SERVER_AUTH_TOKEN) {
+  if (req.headers.authorization !== env.EVENTS_SERVER_AUTH_TOKEN) {
     res.status(403).send("Wrong secret");
     return;
   }
@@ -126,8 +127,8 @@ DonationsStoreContract.on<NewDonationEvent>(
 const start = async () => {
   try {
     await app.listen({
-      host: "0.0.0.0",
-      port: Number(process.env.PORT) || 8000,
+      host: env.EVENTS_SERVER_HOST,
+      port: env.PORT,
     });
   } catch (err) {
     app.log.error(`Got error on app.listen: ${err}`);

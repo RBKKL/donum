@@ -26,6 +26,7 @@
         "bn.js": "^5.2.1",
         "classnames": "^2.3.2",
         "date-fns": "^2.29.3",
+        "envsafe": "^2.0.3",
         "ethers": "^5.7.2",
         "formidable": "^2.1.1",
         "keyv": "^4.5.2",

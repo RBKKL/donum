@@ -1,4 +1,4 @@
-import { clientEnv } from "@env/client";
+import { browserEnv } from "@env/browser";
 
 export const routes = {
   home: "/",
@@ -16,5 +16,5 @@ export const routes = {
   },
   donate: (addressOrNickname: string) => `/${addressOrNickname}`,
   widget: (address: string) =>
-    `${clientEnv.WIDGET_BASE_URL}/?address=${address}`,
+    `${browserEnv.WIDGET_BASE_URL}/?address=${address}`,
 };

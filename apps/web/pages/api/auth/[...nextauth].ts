@@ -36,7 +36,7 @@ export const getAuthOptions: GetAuthOptionsFn = (req) => ({
           const message = new SiweMessage(
             JSON.parse(credentials?.message || "{}")
           );
-          const nextAuthUrl = new URL(serverEnv.NEXTAUTH_URL || "");
+          const nextAuthUrl = new URL(serverEnv.NEXTAUTH_URL);
 
           const result = await message.verify({
             signature: credentials?.signature || "",
