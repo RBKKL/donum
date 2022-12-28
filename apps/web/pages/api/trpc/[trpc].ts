@@ -14,6 +14,6 @@ export default trpcNext.createNextApiHandler({
         }
       : undefined,
   batching: {
-    enabled: true,
+    enabled: false,
   },
 });
