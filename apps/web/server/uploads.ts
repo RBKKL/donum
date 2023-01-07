@@ -31,7 +31,7 @@ let keyvStore;
 if (serverEnv.KEYV_URL.startsWith("redis")) {
   keyvStore = new KeyvRedis(serverEnv.KEYV_URL);
 } else {
-  keyvStore = new KeyvPostgres(serverEnv.KEYV_URL);
+  keyvStore = new KeyvPostgres({ uri: serverEnv.KEYV_URL });
 }
 export const uploadsStore = new Keyv<UploadType>({
   store: keyvStore,
