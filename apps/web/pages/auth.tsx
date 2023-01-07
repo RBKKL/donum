@@ -13,7 +13,7 @@ const Auth: NextPage = () => {
   if (status === SessionStatus.LOADING) return <Loader />;
 
   return (
-    <div className="flex h-96 w-full flex-col items-center justify-center pt-1 text-center">
+    <div className="flex w-full flex-col items-center justify-center pt-1 text-center">
       {status === SessionStatus.UNAUTHENTICATED ? (
         <>
           <p className="mb-3 text-lg font-bold">Sign in</p>
