@@ -16,8 +16,4 @@ module.exports = {
   images: {
     domains: ["localhost", "bvizuwjbhqlyqyoggyys.supabase.co"],
   },
-  webpack: (config) => {
-    config.externals = [...(config.externals || []), "@prisma/client"];
-    return config;
-  },
 };

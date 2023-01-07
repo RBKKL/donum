@@ -9,7 +9,6 @@ import {
 } from "next";
 import { JWT } from "next-auth/jwt";
 import { serverEnv } from "@env/server";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "@donum/prisma/index";
 
 type GetAuthOptionsFn = (
@@ -27,7 +26,6 @@ declare module "next-auth" {
 }
 
 export const getAuthOptions: GetAuthOptionsFn = (req) => ({
-  adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
       credentials: {
@@ -66,6 +64,14 @@ export const getAuthOptions: GetAuthOptionsFn = (req) => ({
 
       session.user.address = token.sub;
       return session;
+    },
+    signIn: async ({ user }) => {
+      const address = user.id;
+      if (!(await prisma.profile.findFirst({ where: { address } }))) {
+        await prisma.profile.create({ data: { address } });
+      }
+
+      return true;
     },
   },
   pages: {
