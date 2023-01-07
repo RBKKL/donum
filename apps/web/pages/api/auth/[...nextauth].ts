@@ -9,7 +9,7 @@ import {
 } from "next";
 import { JWT } from "next-auth/jwt";
 import { serverEnv } from "@env/server";
-import { prisma } from "@donum/prisma/index";
+import { prisma } from "@donum/prisma";
 
 type GetAuthOptionsFn = (
   req: NextApiRequest | GetServerSidePropsContext["req"]
