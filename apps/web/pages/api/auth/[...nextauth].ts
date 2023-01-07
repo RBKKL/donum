@@ -9,6 +9,8 @@ import {
 } from "next";
 import { JWT } from "next-auth/jwt";
 import { serverEnv } from "@env/server";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { prisma } from "@donum/prisma/index";
 
 type GetAuthOptionsFn = (
   req: NextApiRequest | GetServerSidePropsContext["req"]
@@ -25,6 +27,7 @@ declare module "next-auth" {
 }
 
 export const getAuthOptions: GetAuthOptionsFn = (req) => ({
+  adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
       credentials: {
