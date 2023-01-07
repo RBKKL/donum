@@ -5,7 +5,8 @@ import type { NextPage } from "next";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { WagmiConfig, configureChains, createClient, chain } from "wagmi";
+import { WagmiConfig, configureChains, createClient } from "wagmi";
+import { goerli } from "wagmi/chains";
 import { infuraProvider } from "wagmi/providers/infura";
 import { publicProvider } from "wagmi/providers/public";
 import { APP_NAME } from "@donum/shared/constants";
@@ -16,10 +17,9 @@ import { SessionProvider } from "next-auth/react";
 import { AuthGuard } from "@components/AuthGuard";
 
 const usedChains = [
-  // chain.mainnet,
-  // chain.polygon,
-  chain.goerli, // Ethereum's Goerli Testnet
-  chain.localhost, // Hardhat localhost network
+  // mainnet,
+  // polygon,
+  goerli, // Ethereum's Goerli Testnet
 ];
 
 const { chains, provider } = configureChains(usedChains, [
