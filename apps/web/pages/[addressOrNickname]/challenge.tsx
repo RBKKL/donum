@@ -52,7 +52,7 @@ const SendChallengePage: NextPage<ProfileProps> = ({ profile }) => {
   const [awardAmount, setAwardAmount] = useState("");
   const [message, setMessage] = useState("");
 
-  // нужен сделать хук useSendChallenge
+  // TODO: change to useSendChallenge when it will be ready
   const { donate, isAvailable, isLoading, isError } = useSendDonation(
     senderNickname,
     recipientAddress,
@@ -60,7 +60,7 @@ const SendChallengePage: NextPage<ProfileProps> = ({ profile }) => {
     message
   );
 
-  // для корректности нужно учитывать не тольк award amount, но и minShowAmount
+  // TODO: учитывать не только award amount, но и minShowAmount
   const isValidAwardAmount =
     isNumber(awardAmount) &&
     balanceData?.value?.gt(parseUnits(awardAmount, balanceData.decimals)) &&

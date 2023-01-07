@@ -57,3 +57,6 @@ apps/contracts/abi
 # data files
 *.json
 *.yaml
+
+# Playwright
+playwright-report/
