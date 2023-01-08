@@ -50,6 +50,12 @@ export enum ChallengeStatus {
   WAITING = "waiting",
 }
 
+export enum ButtonColor {
+  PRIMARY = "bg-yellow-500",
+  SUCCESS = "bg-green",
+  ERROR = "bg-red",
+}
+
 export const DEFAULT_ADDRESS = "0xAC0772000aa52CbF8a8dB501cC8caC03cDF01bf6";
 
 export const DEFAULT_TEST_DONATION = {

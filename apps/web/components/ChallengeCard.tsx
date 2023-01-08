@@ -5,8 +5,9 @@ import {
   formatTimestamp,
   formatTokenAmount,
 } from "@donum/shared/helpers";
-import { ChallengeStatus } from "@donum/shared/constants";
-import classNames from "classnames";
+import { ButtonColor, ChallengeStatus } from "@donum/shared/constants";
+import { Button } from "@components/Button";
+
 interface ChallengeCardProps {
   from: string;
   nickname: string;
@@ -24,7 +25,7 @@ export const ChallengeCard: FC<ChallengeCardProps> = ({
   message,
   status,
 }) => (
-  <div className="m my-3 flex w-[62vw] flex-col rounded-2xl bg-zinc-700 px-4 py-2 text-sm">
+  <div className="my-3 flex w-full flex-col rounded-2xl bg-zinc-700 px-4 py-2 text-sm">
     <div className="mb-2.5 flex justify-between text-white">
       <p className="font-medium">
         {nickname ? (
@@ -55,26 +56,26 @@ export const ChallengeCard: FC<ChallengeCardProps> = ({
     )}
     {status === ChallengeStatus.WAITING && (
       <div className="flex flex-row justify-center text-xl">
-        <button
+        <Button
+          text={"Confirm"}
+          size={"normal"}
+          fullWidth={true}
+          color={ButtonColor.SUCCESS}
+          className="mr-1.5"
           onClick={() => {
             console.log("accepting challenge...");
           }}
-          className={classNames(
-            "px- bg-green mr-1.5 flex w-full items-center justify-center rounded-3xl py-2 px-8 font-semibold"
-          )}
-        >
-          Confirm
-        </button>
-        <button
+        />
+        <Button
+          text={"Denay"}
+          size={"normal"}
+          fullWidth={true}
+          color={ButtonColor.ERROR}
+          className="ml-1.5"
           onClick={() => {
             console.log("rejecting challenge...");
           }}
-          className={classNames(
-            "bg-red ml-1.5 flex w-full items-center justify-center rounded-3xl py-2 px-8 font-semibold"
-          )}
-        >
-          Denay
-        </button>
+        />
       </div>
     )}
   </div>
