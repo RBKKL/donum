@@ -1,24 +1,24 @@
-import { DonationInfoWithMetadata } from "./types";
+import { EventInfoWithMetadata } from "./types";
 import { assign, createMachine } from "xstate";
 import { DEFAULT_PAUSE_BETWEEN_ALERTS_DURATION } from "@donum/shared/constants";
 import { waitSeconds } from "./utils";
 
 export type QueueMachineEvent = {
   type: "ADD_TO_QUEUE";
-  item: DonationInfoWithMetadata;
+  item: EventInfoWithMetadata;
 };
 
 export interface QueueMachineContext {
-  queue: DonationInfoWithMetadata[];
+  queue: EventInfoWithMetadata[];
 }
 
-export const donationQueueMachine = createMachine<
+export const eventQueueMachine = createMachine<
   QueueMachineContext,
   QueueMachineEvent
 >(
   {
-    id: "donationQueue",
-    initial: "checkingIfThereAreMoreDonations",
+    id: "eventsQueue",
+    initial: "checkingIfThereAreMoreEvents",
     context: {
       queue: [],
     },
@@ -26,48 +26,48 @@ export const donationQueueMachine = createMachine<
       idle: {
         on: {
           ADD_TO_QUEUE: {
-            actions: "addDonationToQueue",
-            target: "showingDonation",
+            actions: "addEventToQueue",
+            target: "showingEvent",
           },
         },
       },
-      showingDonation: {
+      showingEvent: {
         on: {
           ADD_TO_QUEUE: {
-            actions: "addDonationToQueue",
+            actions: "addEventToQueue",
           },
         },
         invoke: {
-          src: "showOldestDonationInQueue",
+          src: "showOldestEventInQueue",
           onDone: {
-            target: "awaitingAfterShowingDonation",
-            actions: ["removeOldestDonationFromQueue"],
+            target: "awaitingAfterShowingEvent",
+            actions: ["removeOldestEventFromQueue"],
           },
         },
       },
-      awaitingAfterShowingDonation: {
+      awaitingAfterShowingEvent: {
         on: {
           ADD_TO_QUEUE: {
-            actions: "addDonationToQueue",
+            actions: "addEventToQueue",
           },
         },
         invoke: {
-          src: "awaitAfterDonationShow",
+          src: "awaitAfterEventShow",
           onDone: {
-            target: "checkingIfThereAreMoreDonations",
+            target: "checkingIfThereAreMoreEvents",
           },
         },
       },
-      checkingIfThereAreMoreDonations: {
+      checkingIfThereAreMoreEvents: {
         on: {
           ADD_TO_QUEUE: {
-            actions: "addDonationToQueue",
+            actions: "addEventToQueue",
           },
         },
         always: [
           {
-            cond: "thereAreMoreDonationsInTheQueue",
-            target: "showingDonation",
+            cond: "thereAreMoreEventsInTheQueue",
+            target: "showingEvent",
           },
           {
             target: "idle",
@@ -78,24 +78,24 @@ export const donationQueueMachine = createMachine<
   },
   {
     guards: {
-      thereAreMoreDonationsInTheQueue: (context) => {
+      thereAreMoreEventsInTheQueue: (context) => {
         return context.queue.length > 0;
       },
     },
     services: {
-      showOldestDonationInQueue: async (context) => {
-        const oldestDonation = context.queue[0];
-        if (!oldestDonation) {
+      showOldestEventInQueue: async (context) => {
+        const oldestEvent = context.queue[0];
+        if (!oldestEvent) {
           return;
         }
-        await waitSeconds(oldestDonation.duration);
+        await waitSeconds(oldestEvent.duration);
       },
-      awaitAfterDonationShow: async () => {
+      awaitAfterEventShow: async () => {
         await waitSeconds(DEFAULT_PAUSE_BETWEEN_ALERTS_DURATION);
       },
     },
     actions: {
-      addDonationToQueue: assign((context, event) => {
+      addEventToQueue: assign((context, event) => {
         if (event.type !== "ADD_TO_QUEUE") {
           return {};
         }
@@ -103,7 +103,7 @@ export const donationQueueMachine = createMachine<
           queue: [...context.queue, event.item],
         };
       }),
-      removeOldestDonationFromQueue: assign((context) => {
+      removeOldestEventFromQueue: assign((context) => {
         const [, ...newQueue] = context.queue;
         return {
           queue: newQueue,
