@@ -1,9 +1,9 @@
 import { onMount, onError, onCleanup, Switch, Match } from "solid-js";
 import { createStore } from "solid-js/store";
 import { io, Socket } from "socket.io-client";
-import { DonationAlert } from "./donation-alert";
-import { DonationInfo, WidgetStore } from "./types";
-import { useDonationQueueMachine } from "./hooks/useDonationQueueMachine";
+import { EventAlert } from "./event-alert";
+import { ChallengeInfo, DonationInfo, WidgetStore } from "./types";
+import { useEventQueueMachine } from "./hooks/useEventQueueMachine";
 import {
   DEFAULT_ALERT_DURATION,
   DEFAULT_DONATION_IMAGE_URL,
@@ -12,7 +12,7 @@ import {
 import { env } from "./env";
 
 export const Widget = () => {
-  const { state, addToQueue } = useDonationQueueMachine();
+  const { state, addToQueue } = useEventQueueMachine();
   const [store, setStore] = createStore<WidgetStore>({
     duration: DEFAULT_ALERT_DURATION,
     imageSrc: DEFAULT_DONATION_IMAGE_URL,
@@ -34,6 +34,19 @@ export const Widget = () => {
 
     addToQueue({
       ...donation,
+      duration: store.duration,
+      soundSrc: store.soundSrc,
+      imageSrc: store.imageSrc,
+      imageType: store.imageType,
+    });
+  };
+
+  const addChallenge = (challenge: ChallengeInfo) => {
+    console.log("new challenge");
+    console.log(challenge);
+
+    addToQueue({
+      ...challenge,
       duration: store.duration,
       soundSrc: store.soundSrc,
       imageSrc: store.imageSrc,
@@ -80,6 +93,18 @@ export const Widget = () => {
     socket.on("new-donation", (donation) => {
       addDonation(donation);
     });
+
+    socket.on("challenge-proposal", (challenge) => {
+      addChallenge(challenge);
+    });
+
+    socket.on("challenge-fail", (challenge) => {
+      addChallenge(challenge);
+    });
+
+    socket.on("challenge-complete", (challenge) => {
+      addChallenge(challenge);
+    });
   });
 
   onError((error) => {
@@ -92,10 +117,10 @@ export const Widget = () => {
 
   return (
     <Switch>
-      <Match when={state.matches("showingDonation")}>
-        <DonationAlert
+      <Match when={state.matches("showingEvent")}>
+        <EventAlert
           // need cast for disable warning, actually store.donations.peek() is never undefined here
-          donation={state.context.queue[0]}
+          event={state.context.queue[0]}
         />
       </Match>
       <Match when={!!store.error}>Error: {store.error?.message}</Match>
