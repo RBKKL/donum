@@ -3,24 +3,29 @@ import socketioServer from "fastify-socket.io";
 import corsPlugin from "@fastify/cors";
 import { BiMap } from "mnemonist";
 import type {
+  ChallengeCompletedEvent,
+  ChallengeFailedEvent,
   ChallengeProposedEvent,
-  ChallengeProposedEventObject,
   NewDonationEvent,
   NewDonationEventObject,
 } from "@donum/contracts/types/DonationsStore";
 import {
-  castToProposedChallengeObject,
+  castProposedChallengeObject,
   castToDonationObject,
+  castDoneChallengeObject,
+  ChallengeObject,
 } from "@donum/contracts/helpers";
 import { DonationsStoreContract } from "./donations-store-contract";
 import {
-  toProposalChallengeForWidget,
+  ChallengeStatus,
+  toChallengeForWidget,
   toDonationObjectForWidget,
 } from "./utils";
 import { prisma } from "@donum/prisma";
 import { BigNumber } from "ethers";
 import { DEFAULT_SHOW_AMOUNT } from "@donum/shared/constants";
 import { env } from "./env";
+import { log } from "util";
 
 const clients = new BiMap<string, string>(); // address <-> socketId
 
@@ -64,9 +69,20 @@ app.ready((err) => {
   });
 });
 
-const emitChallengeProposedEvent = async (
-  challenge: ChallengeProposedEventObject
+const emitChallengeDoneEvent = async (
+  challenge: ChallengeObject,
+  status: ChallengeStatus
 ) => {
+  app.log.info(`Challenge ${status}: ${JSON.stringify(challenge)}`);
+  const socketId = clients.get(challenge.to);
+  if (socketId) {
+    app.io
+      .to(socketId)
+      .emit(`"challenge-${status}"`, toChallengeForWidget(challenge, status));
+  }
+};
+
+const emitChallengeProposedEvent = async (challenge: ChallengeObject) => {
   app.log.info(`New challenge: ${JSON.stringify(challenge)}`);
   const socketId = clients.get(challenge.to);
   const profile = await prisma.profile.findFirst({
@@ -80,10 +96,13 @@ const emitChallengeProposedEvent = async (
   console.log("donation.amount", challenge.proposalPrice.toString());
 
   if (socketId && challenge.proposalPrice.gte(minShowAmount)) {
-    console.log(toProposalChallengeForWidget(challenge));
+    console.log(toChallengeForWidget(challenge, ChallengeStatus.PROPOSAL));
     app.io
       .to(socketId)
-      .emit("challenge-proposal", toProposalChallengeForWidget(challenge));
+      .emit(
+        "challenge-proposed",
+        toChallengeForWidget(challenge, ChallengeStatus.PROPOSAL)
+      );
   }
 };
 
@@ -158,21 +177,32 @@ DonationsStoreContract.on<NewDonationEvent>(
 DonationsStoreContract.on<ChallengeProposedEvent>(
   DonationsStoreContract.filters.ChallengeProposed(),
   (...challengeArray) => {
-    const challenge = castToProposedChallengeObject(challengeArray);
+    console.log("GAVNOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+    app.log.info("GAVNOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+    const challenge = castProposedChallengeObject(challengeArray);
     emitChallengeProposedEvent(challenge);
   }
 );
 
-// DonationsStoreContract.on<ChallengeFailedEvent>(
-//   DonationsStoreContract.filters.ChallengeFailed(),
-//   (...challengeArray) => {
-//     const challenge = castToFailedChallengeObject(challengeArray);
-//     const socketId = clients.get(challenge.to);
-//     if (socketId) {
-//       app.io.to(socketId).emit("challenge-failed", challenge.id);
-//     }
-//   }
-// );
+DonationsStoreContract.on<ChallengeFailedEvent>(
+  DonationsStoreContract.filters.ChallengeFailed(),
+  (...challengeArray) => {
+    console.log("GAVNOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+    app.log.info("GAVNOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+    const challenge = castDoneChallengeObject(challengeArray);
+    emitChallengeDoneEvent(challenge, ChallengeStatus.FAIL);
+  }
+);
+
+DonationsStoreContract.on<ChallengeCompletedEvent>(
+  DonationsStoreContract.filters.ChallengeCompleted(),
+  (...challengeArray) => {
+    console.log("GAVNOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+    app.log.info("GAVNOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+    const challenge = castDoneChallengeObject(challengeArray);
+    emitChallengeDoneEvent(challenge, ChallengeStatus.COMPLETE);
+  }
+);
 
 const start = async () => {
   try {

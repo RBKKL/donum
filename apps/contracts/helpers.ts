@@ -2,10 +2,12 @@ import { BigNumber } from "ethers";
 import { formatTokenAmount } from "@donum/shared/helpers";
 import { CONTRACT_ADDRESSES } from "./constants";
 import {
+  ChallengeCompletedEvent,
   ChallengeFailedEvent,
   ChallengeFailedEventObject,
   ChallengeProposedEvent,
   ChallengeProposedEventObject,
+  DonationsStore,
 } from "./types/DonationsStore";
 
 interface NewDonationEventObject {
@@ -17,7 +19,18 @@ interface NewDonationEventObject {
   message: string;
 }
 
-export const castToProposedChallengeObject = (
+export interface ChallengeObject {
+  from: string;
+  nickname: string;
+  to: string;
+  proposalPrice: BigNumber;
+  timestamp: BigNumber;
+  terms: string;
+  award: BigNumber;
+  index: BigNumber;
+}
+
+export const castProposedChallengeObject = (
   challenge: [
     string,
     string,
@@ -29,7 +42,7 @@ export const castToProposedChallengeObject = (
     BigNumber,
     ChallengeProposedEvent
   ]
-): ChallengeProposedEventObject => {
+): ChallengeObject => {
   return {
     from: challenge[0],
     nickname: challenge[1],
@@ -42,13 +55,24 @@ export const castToProposedChallengeObject = (
   };
 };
 
-export const castToFailedChallengeObject = (
-  challenge: [string, string, BigNumber, BigNumber, ChallengeFailedEvent]
-): ChallengeFailedEventObject => {
+export const castDoneChallengeObject = (
+  challenge: [
+    string,
+    string,
+    BigNumber,
+    BigNumber,
+    DonationsStore.ChallengeStructOutput,
+    ChallengeFailedEvent | ChallengeCompletedEvent
+  ]
+): ChallengeObject => {
   return {
     from: challenge[0],
+    nickname: challenge[0],
     to: challenge[1],
+    proposalPrice: BigNumber.from(challenge[4].award),
     timestamp: BigNumber.from(challenge[2]),
+    terms: challenge[4].terms,
+    award: BigNumber.from(challenge[4].award),
     index: BigNumber.from(challenge[3]),
   };
 };

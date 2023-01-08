@@ -1,7 +1,5 @@
-import {
-  ChallengeProposedEventObject,
-  NewDonationEventObject,
-} from "@donum/contracts/types/DonationsStore";
+import { NewDonationEventObject } from "@donum/contracts/types/DonationsStore";
+import { ChallengeObject } from "@donum/contracts/helpers";
 
 export const toDonationObjectForWidget = (donation: NewDonationEventObject) => {
   return {
@@ -12,14 +10,15 @@ export const toDonationObjectForWidget = (donation: NewDonationEventObject) => {
   };
 };
 
-enum ChallengeStatus {
-  PROPOSAL = "proposal",
-  FAIL = "fail",
-  COMPLETE = "complete",
+export enum ChallengeStatus {
+  PROPOSAL = "proposed",
+  FAIL = "failed",
+  COMPLETE = "completed",
 }
 
-export const toProposalChallengeForWidget = (
-  challenge: ChallengeProposedEventObject
+export const toChallengeForWidget = (
+  challenge: ChallengeObject,
+  status: ChallengeStatus
 ) => {
   return {
     from: challenge.from,
@@ -27,6 +26,6 @@ export const toProposalChallengeForWidget = (
     amount: challenge.proposalPrice.toString(),
     message: challenge.terms,
     award: challenge.award.toString(),
-    status: ChallengeStatus.PROPOSAL,
+    status: status,
   };
 };
