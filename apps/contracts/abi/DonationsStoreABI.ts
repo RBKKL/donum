@@ -25,6 +25,39 @@ export const DonationsStoreABI = [
         "internalType": "uint256",
         "name": "index",
         "type": "uint256"
+      },
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "timestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "terms",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "award",
+            "type": "uint256"
+          },
+          {
+            "internalType": "enum DonationsStore.ChallengeStatus",
+            "name": "status",
+            "type": "uint8"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct DonationsStore.Challenge",
+        "name": "challenge",
+        "type": "tuple"
       }
     ],
     "name": "ChallengeCompleted",
@@ -56,6 +89,39 @@ export const DonationsStoreABI = [
         "internalType": "uint256",
         "name": "index",
         "type": "uint256"
+      },
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "timestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "terms",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "award",
+            "type": "uint256"
+          },
+          {
+            "internalType": "enum DonationsStore.ChallengeStatus",
+            "name": "status",
+            "type": "uint8"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct DonationsStore.Challenge",
+        "name": "challenge",
+        "type": "tuple"
       }
     ],
     "name": "ChallengeFailed",
