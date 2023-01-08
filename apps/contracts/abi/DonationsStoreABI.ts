@@ -29,6 +29,11 @@ export const DonationsStoreABI = [
       {
         "components": [
           {
+            "internalType": "string",
+            "name": "nickname",
+            "type": "string"
+          },
+          {
             "internalType": "address",
             "name": "to",
             "type": "address"
@@ -92,6 +97,11 @@ export const DonationsStoreABI = [
       },
       {
         "components": [
+          {
+            "internalType": "string",
+            "name": "nickname",
+            "type": "string"
+          },
           {
             "internalType": "address",
             "name": "to",
@@ -287,6 +297,11 @@ export const DonationsStoreABI = [
       {
         "components": [
           {
+            "internalType": "string",
+            "name": "nickname",
+            "type": "string"
+          },
+          {
             "internalType": "address",
             "name": "to",
             "type": "address"
@@ -363,6 +378,11 @@ export const DonationsStoreABI = [
     ],
     "name": "proposedChallenges",
     "outputs": [
+      {
+        "internalType": "string",
+        "name": "nickname",
+        "type": "string"
+      },
       {
         "internalType": "address",
         "name": "to",

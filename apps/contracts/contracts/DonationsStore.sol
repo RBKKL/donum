@@ -9,6 +9,7 @@ contract DonationsStore {
   }
 
   struct Challenge {
+    string nickname;
     address to;
     uint256 timestamp;
     string terms;
@@ -79,7 +80,14 @@ contract DonationsStore {
     uint256 proposalPrice = msg.value - _award;
     payable(_to).transfer(proposalPrice);
     proposedChallenges[msg.sender].push(
-      Challenge(_to, block.timestamp, _terms, _award, ChallengeStatus.Proposed)
+      Challenge(
+        _nickname,
+        _to,
+        block.timestamp,
+        _terms,
+        _award,
+        ChallengeStatus.Proposed
+      )
     );
     emit ChallengeProposed(
       msg.sender,

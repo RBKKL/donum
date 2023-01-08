@@ -4,9 +4,7 @@ import { CONTRACT_ADDRESSES } from "./constants";
 import {
   ChallengeCompletedEvent,
   ChallengeFailedEvent,
-  ChallengeFailedEventObject,
   ChallengeProposedEvent,
-  ChallengeProposedEventObject,
   DonationsStore,
 } from "./types/DonationsStore";
 

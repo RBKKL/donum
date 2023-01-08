@@ -45,9 +45,9 @@ export enum SessionStatus {
 }
 
 export enum ChallengeStatus {
-  DONE = "done",
-  FAILED = "failed",
-  WAITING = "waiting",
+  WAITING,
+  DONE,
+  FAILED,
 }
 
 export const DEFAULT_ADDRESS = "0xAC0772000aa52CbF8a8dB501cC8caC03cDF01bf6";
