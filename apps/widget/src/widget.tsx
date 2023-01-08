@@ -117,7 +117,7 @@ export const Widget = () => {
 
   return (
     <Switch>
-      <Match when={state.matches("showingDonation")}>
+      <Match when={state.matches("showingEvent")}>
         <EventAlert
           // need cast for disable warning, actually store.donations.peek() is never undefined here
           event={state.context.queue[0]}

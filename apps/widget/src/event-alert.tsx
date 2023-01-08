@@ -24,10 +24,15 @@ export const EventAlert: Component<EventAlertProps> = (props) => {
         {formatTokenAmount(props.event.amount)} ETH
       </h1>
       <p class="donation__message">{props.event.message}</p>
-      {props.event?.award &&
-        <p class="donation__title"> challenge award: {formatTokenAmount(props.event.award)} ETH</p>
-        <p class="donation__title"> {props.event.status} </p>
-      }
+      {props.event?.award && (
+        <>
+          <p class="donation__title">
+            {" "}
+            challenge award: {formatTokenAmount(props.event.award)} ETH
+          </p>
+          <p class="donation__title"> {props.event.status} </p>
+        </>
+      )}
     </div>
   );
 };
