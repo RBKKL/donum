@@ -112,4 +112,10 @@ contract DonationsStore {
     payable(msg.sender).transfer(challenge.award);
     emit ChallengeFailed(msg.sender, challenge.to, block.timestamp, _index); // solhint-disable-line not-rely-on-time
   }
+
+  function getProposedChallenges(
+    address _donater
+  ) external view returns (Challenge[] memory) {
+    return proposedChallenges[_donater];
+  }
 }

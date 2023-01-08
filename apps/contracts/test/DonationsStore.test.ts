@@ -134,4 +134,13 @@ describe(CONTRACT_NAME, async () => {
         0
       );
   });
+
+  it("Should return proposed challenges", async () => {
+    const { sender } = await proposeChallenge();
+    await proposeChallenge();
+
+    expect(
+      (await donationsStore.getProposedChallenges(sender.address)).length
+    ).equal(2);
+  });
 });

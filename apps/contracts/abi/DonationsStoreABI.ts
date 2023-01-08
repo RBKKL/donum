@@ -211,6 +211,52 @@ export const DonationsStoreABI = [
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "_donater",
+        "type": "address"
+      }
+    ],
+    "name": "getProposedChallenges",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "timestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "terms",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "award",
+            "type": "uint256"
+          },
+          {
+            "internalType": "enum DonationsStore.ChallengeStatus",
+            "name": "status",
+            "type": "uint8"
+          }
+        ],
+        "internalType": "struct DonationsStore.Challenge[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "string",
         "name": "_nickname",
         "type": "string"
