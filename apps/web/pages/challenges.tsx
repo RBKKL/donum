@@ -12,7 +12,7 @@ const SentChallengesPage: ExtendedNextPage = () => {
     isLoading: isProfileLoading,
     isError: isProfileError,
     error: profileError,
-  } = trpc.profile.me.useQuery();
+  } = trpc.profile.me.useQuery(); // TODO: remove it and use wagmi
 
   const senderAddress = profile?.address || "";
 

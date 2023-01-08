@@ -59,21 +59,57 @@ export const castToChallengeProposedEventObject = (
 });
 
 export const castToChallengeCompletedEventObject = (
-  challengeCompletedArray: [string, string, BigNumber, BigNumber, ...unknown[]]
+  challengeCompletedArray: [
+    string,
+    string,
+    BigNumber,
+    BigNumber,
+    {
+      nickname: string;
+      to: string;
+      timestamp: BigNumber;
+      terms: string;
+      award: BigNumber;
+      status: number;
+    },
+    ...unknown[]
+  ]
 ): ChallengeCompletedEventObject => ({
   from: challengeCompletedArray[0],
   to: challengeCompletedArray[1],
   timestamp: challengeCompletedArray[2],
   index: challengeCompletedArray[3],
+  // TODO: fix types
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  challenge: challengeCompletedArray[4],
 });
 
 export const castToChallengeFailedEventObject = (
-  challengeFailedArray: [string, string, BigNumber, BigNumber, ...unknown[]]
+  challengeFailedArray: [
+    string,
+    string,
+    BigNumber,
+    BigNumber,
+    {
+      nickname: string;
+      to: string;
+      timestamp: BigNumber;
+      terms: string;
+      award: BigNumber;
+      status: number;
+    },
+    ...unknown[]
+  ]
 ): ChallengeFailedEventObject => ({
   from: challengeFailedArray[0],
   to: challengeFailedArray[1],
   timestamp: challengeFailedArray[2],
   index: challengeFailedArray[3],
+  // TODO: fix types
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  challenge: challengeFailedArray[4],
 });
 
 export const getTotalDonationsAmount = (

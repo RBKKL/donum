@@ -4,9 +4,21 @@ import { useChallengeProposedEvent } from "@hooks/useChallengeProposedEvent";
 import { ChallengeStatus } from "@donum/shared/constants";
 import { useChallengeCompletedEvent } from "@hooks/useChallengeCompletedEvent";
 import { useChallengeFailedEvent } from "@hooks/useChallengeFailedEvent";
+import type { BigNumber } from "ethers";
+import type { Address } from "wagmi";
 
 export const useLiveSentChallengesHistory = (senderAddress: string) => {
-  const [challenges, setChallenges] = useState<readonly unknown[]>([]);
+  const [challenges, setChallenges] = useState<
+    // TODO: change this
+    readonly {
+      nickname: string;
+      to: Address;
+      timestamp: BigNumber;
+      terms: string;
+      award: BigNumber;
+      status: number;
+    }[]
+  >([]);
 
   const {
     data: initialChallenges,
@@ -24,7 +36,8 @@ export const useLiveSentChallengesHistory = (senderAddress: string) => {
       setChallenges([
         ...challenges,
         {
-          to: challenge.to,
+          to: challenge.to as Address,
+          nickname: challenge.nickname,
           award: challenge.award,
           terms: challenge.terms,
           timestamp: challenge.timestamp,
@@ -36,15 +49,35 @@ export const useLiveSentChallengesHistory = (senderAddress: string) => {
 
   useChallengeCompletedEvent((challenge) => {
     if (challenge.from === senderAddress) {
-      challenges[challenge.index.toNumber()].status = ChallengeStatus.DONE;
-      setChallenges(challenges);
+      setChallenges(
+        challenges.map((c, idx) => {
+          if (idx === challenge.index.toNumber()) {
+            return {
+              ...c,
+              status: ChallengeStatus.DONE,
+            };
+          }
+
+          return c;
+        })
+      );
     }
   });
 
   useChallengeFailedEvent((challenge) => {
     if (challenge.from === senderAddress) {
-      challenges[challenge.index.toNumber()].status = ChallengeStatus.FAILED;
-      setChallenges(challenges);
+      setChallenges(
+        challenges.map((c, idx) => {
+          if (idx === challenge.index.toNumber()) {
+            return {
+              ...c,
+              status: ChallengeStatus.FAILED,
+            };
+          }
+
+          return c;
+        })
+      );
     }
   });
 

@@ -1,6 +1,5 @@
 import { ChallengeFailedEventObject } from "@donum/contracts/types/DonationsStore";
-import { Address, useContractEvent, useNetwork } from "wagmi";
-import { BigNumber } from "ethers";
+import { useContractEvent, useNetwork } from "wagmi";
 import {
   castToChallengeFailedEventObject,
   getContractAddressByChainId,
@@ -19,9 +18,7 @@ export const useChallengeFailedEvent = (
     address: getContractAddressByChainId(chain?.id),
     abi: DonationsStoreABI,
     eventName: "ChallengeFailed",
-    listener(
-      ...challengeFailedArray: [Address, Address, BigNumber, BigNumber]
-    ) {
+    listener(...challengeFailedArray) {
       listener(castToChallengeFailedEventObject(challengeFailedArray));
     },
   });

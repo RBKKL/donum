@@ -1,7 +1,9 @@
 import { ChallengeCompletedEventObject } from "@donum/contracts/types/DonationsStore";
-import { Address, useContractEvent, useNetwork } from "wagmi";
-import { BigNumber } from "ethers";
-import {castToChallengeCompletedEventObject, getContractAddressByChainId} from "@donum/contracts/helpers";
+import { useContractEvent, useNetwork } from "wagmi";
+import {
+  castToChallengeCompletedEventObject,
+  getContractAddressByChainId,
+} from "@donum/contracts/helpers";
 import { DonationsStoreABI } from "@donum/contracts/abi";
 
 type ChallengeCompletedEventListener = (
@@ -16,9 +18,7 @@ export const useChallengeCompletedEvent = (
     address: getContractAddressByChainId(chain?.id),
     abi: DonationsStoreABI,
     eventName: "ChallengeCompleted",
-    listener(
-      ...challengeCompletedArray: [Address, Address, BigNumber, BigNumber]
-    ) {
+    listener(...challengeCompletedArray) {
       listener(castToChallengeCompletedEventObject(challengeCompletedArray));
     },
   });
