@@ -12,13 +12,7 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
   const deployment = await deploy(CONTRACT_NAME, {
     from: deployer,
     log: true,
-  });
-
-  // wait 5 blocks for the contract to be verified
-  console.log("Waiting 5 blocks for the contract to be verified...");
-  await hre.network.provider.request({
-    method: "evm_mine",
-    params: [5],
+    waitConfirmations: 10, // wait 10 blocks for the contract to be verified
   });
 
   // verify the contract

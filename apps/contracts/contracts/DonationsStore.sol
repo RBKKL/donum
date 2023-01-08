@@ -9,6 +9,7 @@ contract DonationsStore {
   }
 
   struct Challenge {
+    string nickname;
     address to;
     uint256 timestamp;
     string terms;
@@ -42,14 +43,16 @@ contract DonationsStore {
     address indexed from,
     address indexed to,
     uint256 timestamp,
-    uint256 index
+    uint256 index,
+    Challenge challenge
   );
 
   event ChallengeFailed(
     address indexed from,
     address indexed to,
     uint256 timestamp,
-    uint256 index
+    uint256 index,
+    Challenge challenge
   );
 
   function donate(
@@ -77,7 +80,14 @@ contract DonationsStore {
     uint256 proposalPrice = msg.value - _award;
     payable(_to).transfer(proposalPrice);
     proposedChallenges[msg.sender].push(
-      Challenge(_to, block.timestamp, _terms, _award, ChallengeStatus.Proposed)
+      Challenge(
+        _nickname,
+        _to,
+        block.timestamp,
+        _terms,
+        _award,
+        ChallengeStatus.Proposed
+      )
     );
     emit ChallengeProposed(
       msg.sender,
@@ -99,7 +109,13 @@ contract DonationsStore {
     );
     challenge.status = ChallengeStatus.Completed;
     payable(challenge.to).transfer(challenge.award);
-    emit ChallengeCompleted(msg.sender, challenge.to, block.timestamp, _index); // solhint-disable-line not-rely-on-time
+    emit ChallengeCompleted(
+      msg.sender,
+      challenge.to,
+      block.timestamp, // solhint-disable-line not-rely-on-time
+      _index,
+      challenge
+    );
   }
 
   function failChallenge(uint256 _index) external {
@@ -110,7 +126,13 @@ contract DonationsStore {
     );
     challenge.status = ChallengeStatus.Failed;
     payable(msg.sender).transfer(challenge.award);
-    emit ChallengeFailed(msg.sender, challenge.to, block.timestamp, _index); // solhint-disable-line not-rely-on-time
+    emit ChallengeFailed(
+      msg.sender,
+      challenge.to,
+      block.timestamp, // solhint-disable-line not-rely-on-time
+      _index,
+      challenge
+    );
   }
 
   function getProposedChallenges(
