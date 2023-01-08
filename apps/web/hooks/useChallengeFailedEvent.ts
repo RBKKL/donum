@@ -1,14 +1,12 @@
-import { ChallengeFailedEventObject } from "@donum/contracts/types/DonationsStore";
 import { useContractEvent, useNetwork } from "wagmi";
 import {
-  castToChallengeFailedEventObject,
+  castDoneChallengeObject,
+  ChallengeObject,
   getContractAddressByChainId,
 } from "@donum/contracts/helpers";
 import { DonationsStoreABI } from "@donum/contracts/abi";
 
-type ChallengeFailedEventListener = (
-  challenge: ChallengeFailedEventObject
-) => void;
+type ChallengeFailedEventListener = (challenge: ChallengeObject) => void;
 
 export const useChallengeFailedEvent = (
   listener: ChallengeFailedEventListener
@@ -19,7 +17,7 @@ export const useChallengeFailedEvent = (
     abi: DonationsStoreABI,
     eventName: "ChallengeFailed",
     listener(...challengeFailedArray) {
-      listener(castToChallengeFailedEventObject(challengeFailedArray));
+      listener(castDoneChallengeObject(challengeFailedArray));
     },
   });
 };

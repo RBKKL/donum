@@ -1,12 +1,6 @@
 import { BigNumber } from "ethers";
 import { formatTokenAmount } from "@donum/shared/helpers";
 import { CONTRACT_ADDRESSES } from "./constants";
-import {
-  ChallengeCompletedEvent,
-  ChallengeFailedEvent,
-  ChallengeProposedEvent,
-  DonationsStore,
-} from "./types/DonationsStore";
 
 interface NewDonationEventObject {
   from: string;
@@ -38,7 +32,7 @@ export const castProposedChallengeObject = (
     string,
     BigNumber,
     BigNumber,
-    ChallengeProposedEvent
+    ...unknown[]
   ]
 ): ChallengeObject => {
   return {
@@ -59,8 +53,15 @@ export const castDoneChallengeObject = (
     string,
     BigNumber,
     BigNumber,
-    DonationsStore.ChallengeStructOutput,
-    ChallengeFailedEvent | ChallengeCompletedEvent
+    {
+      nickname: string;
+      to: string;
+      timestamp: BigNumber;
+      terms: string;
+      award: BigNumber;
+      status: number;
+    },
+    ...unknown[]
   ]
 ): ChallengeObject => {
   return {

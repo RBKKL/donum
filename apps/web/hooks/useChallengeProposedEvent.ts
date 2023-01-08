@@ -2,7 +2,7 @@ import { ChallengeProposedEventObject } from "@donum/contracts/types/DonationsSt
 import { Address, useContractEvent, useNetwork } from "wagmi";
 import { BigNumber } from "ethers";
 import {
-  castToChallengeProposedEventObject,
+  castProposedChallengeObject,
   getContractAddressByChainId,
 } from "@donum/contracts/helpers";
 import { DonationsStoreABI } from "@donum/contracts/abi";
@@ -31,7 +31,7 @@ export const useChallengeProposedEvent = (
         BigNumber
       ]
     ) {
-      listener(castToChallengeProposedEventObject(challengeProposedArray));
+      listener(castProposedChallengeObject(challengeProposedArray));
     },
   });
 };
