@@ -3,8 +3,9 @@
     "private": true,
     "scripts": {
         "generate": "hardhat compile && hardhat run scripts/generate_abi.ts",
-        "test": "dotenv -- hardhat test",
-        "deploy:goerli": "dotenv -- hardhat deploy --network goerli",
+        "with-env": "dotenv -e ../../.env",
+        "test": "pnpm with-env -- hardhat test",
+        "deploy:goerli": "pnpm with-env -- hardhat deploy --network goerli",
         "clean": "hardhat clean && rimraf .turbo node_modules cache",
         "lint": "solhint 'contracts/**/*.sol'",
         "postinstall": "pnpm generate"
