@@ -25,7 +25,6 @@ import { prisma } from "@donum/prisma";
 import { BigNumber } from "ethers";
 import { DEFAULT_SHOW_AMOUNT } from "@donum/shared/constants";
 import { env } from "./env";
-import { log } from "util";
 
 const clients = new BiMap<string, string>(); // address <-> socketId
 
@@ -177,9 +176,9 @@ DonationsStoreContract.on<NewDonationEvent>(
 DonationsStoreContract.on<ChallengeProposedEvent>(
   DonationsStoreContract.filters.ChallengeProposed(),
   (...challengeArray) => {
-    console.log("GAVNOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-    app.log.info("GAVNOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
     const challenge = castProposedChallengeObject(challengeArray);
+    console.log(BigNumber.from(challenge.index).toString());
+    app.log.info(BigNumber.from(challenge.index).toString());
     emitChallengeProposedEvent(challenge);
   }
 );
@@ -187,8 +186,6 @@ DonationsStoreContract.on<ChallengeProposedEvent>(
 DonationsStoreContract.on<ChallengeFailedEvent>(
   DonationsStoreContract.filters.ChallengeFailed(),
   (...challengeArray) => {
-    console.log("GAVNOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-    app.log.info("GAVNOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
     const challenge = castDoneChallengeObject(challengeArray);
     emitChallengeDoneEvent(challenge, ChallengeStatus.FAIL);
   }
@@ -197,8 +194,6 @@ DonationsStoreContract.on<ChallengeFailedEvent>(
 DonationsStoreContract.on<ChallengeCompletedEvent>(
   DonationsStoreContract.filters.ChallengeCompleted(),
   (...challengeArray) => {
-    console.log("GAVNOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-    app.log.info("GAVNOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
     const challenge = castDoneChallengeObject(challengeArray);
     emitChallengeDoneEvent(challenge, ChallengeStatus.COMPLETE);
   }

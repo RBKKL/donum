@@ -94,15 +94,15 @@ export const Widget = () => {
       addDonation(donation);
     });
 
-    socket.on("challenge-proposal", (challenge) => {
+    socket.on("challenge-proposed", (challenge) => {
       addChallenge(challenge);
     });
 
-    socket.on("challenge-fail", (challenge) => {
+    socket.on("challenge-failed", (challenge) => {
       addChallenge(challenge);
     });
 
-    socket.on("challenge-complete", (challenge) => {
+    socket.on("challenge-completed", (challenge) => {
       addChallenge(challenge);
     });
   });

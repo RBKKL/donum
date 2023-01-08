@@ -30,12 +30,12 @@ export const EventAlert: Component<EventAlertProps> = (props) => {
             {" "}
             challenge award: {formatTokenAmount(props.event.award)} ETH
           </p>
-          {props.event.status === "proposal" ? (
+          {props.event.status === "proposed" ? (
             <p class="event__status" style={{ color: "rgb(234 179 8)" }}>
               {" "}
               New challenge!
             </p>
-          ) : props.event.status === "complete" ? (
+          ) : props.event.status === "completed" ? (
             <p class="event__status" style={{ color: "rgb(181,255,35)" }}>
               {" "}
               Challenge completed!
