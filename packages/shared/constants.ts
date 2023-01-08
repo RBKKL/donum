@@ -44,6 +44,12 @@ export enum SessionStatus {
   LOADING = "loading",
 }
 
+export enum ChallengeStatus {
+  DONE = "done",
+  FAILED = "failed",
+  WAITING = "waiting",
+}
+
 export const DEFAULT_ADDRESS = "0xAC0772000aa52CbF8a8dB501cC8caC03cDF01bf6";
 
 export const DEFAULT_TEST_DONATION = {
