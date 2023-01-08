@@ -77,7 +77,7 @@ const emitChallengeDoneEvent = async (
   if (socketId) {
     app.io
       .to(socketId)
-      .emit(`"challenge-${status}"`, toChallengeForWidget(challenge, status));
+      .emit(`challenge-${status}`, toChallengeForWidget(challenge, status));
   }
 };
 
