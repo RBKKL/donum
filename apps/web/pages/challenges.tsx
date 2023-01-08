@@ -1,10 +1,10 @@
 import React from "react";
 import { ChallengeCard } from "@components/ChallengeCard";
 import type { ExtendedNextPage } from "./_app";
-import { useSentChallengesHistory } from "@hooks/useSentChallengesHistory";
 import { Loader } from "@components/Loader";
 import { trpc } from "@lib/trpc";
 import { BigNumber } from "ethers";
+import { useLiveSentChallengesHistory } from "@hooks/useLiveSentChallengesHistory";
 
 const SentChallengesPage: ExtendedNextPage = () => {
   const {
@@ -16,12 +16,8 @@ const SentChallengesPage: ExtendedNextPage = () => {
 
   const senderAddress = profile?.address || "";
 
-  const {
-    data: challenges,
-    isLoading,
-    isError,
-    error,
-  } = useSentChallengesHistory(senderAddress);
+  const { challenges, isLoading, isError, error } =
+    useLiveSentChallengesHistory(senderAddress);
 
   if (isLoading || isProfileLoading) return <Loader />;
 

@@ -47,6 +47,7 @@ export const ChallengeCard: FC<ChallengeCardProps> = ({
   if (isConfirmError || isRejectError) {
     console.log(confirmError);
     console.log(rejectError);
+    return <div>Error!</div>;
   }
 
   return (
