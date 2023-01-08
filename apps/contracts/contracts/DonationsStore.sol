@@ -10,11 +10,13 @@ contract DonationsStore {
 
   struct Challenge {
     address to;
+    uint256 timestamp;
+    string terms;
     uint256 award;
     ChallengeStatus status;
   }
 
-  mapping(address => Challenge[]) proposedChallenges; // donater address => challenges
+  mapping(address => Challenge[]) public proposedChallenges; // donater address => challenges
 
   event NewDonation(
     address indexed from,
@@ -75,7 +77,7 @@ contract DonationsStore {
     uint256 proposalPrice = msg.value - _award;
     payable(_to).transfer(proposalPrice);
     proposedChallenges[msg.sender].push(
-      Challenge(_to, _award, ChallengeStatus.Proposed)
+      Challenge(_to, block.timestamp, _terms, _award, ChallengeStatus.Proposed)
     );
     emit ChallengeProposed(
       msg.sender,
