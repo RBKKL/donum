@@ -7,8 +7,12 @@ import {
 } from "@donum/shared/helpers";
 import { ChallengeStatus } from "@donum/shared/constants";
 import { Button } from "@components/Button";
+import { useConfirmChallenge } from "@hooks/useConfirmChallenge";
+import { useRejectChallenge } from "@hooks/useRejectChallenge";
+import { Loader } from "@components/Loader";
 
 interface ChallengeCardProps {
+  index: BigNumber;
   from: string;
   nickname: string;
   timestamp: BigNumber;
@@ -18,6 +22,7 @@ interface ChallengeCardProps {
 }
 
 export const ChallengeCard: FC<ChallengeCardProps> = ({
+  index,
   from,
   nickname,
   timestamp,
@@ -25,13 +30,25 @@ export const ChallengeCard: FC<ChallengeCardProps> = ({
   message,
   status,
 }) => {
-  const handleConfirm = () => {
-    console.log("accepting challenge...");
-  };
+  const {
+    confirmChallenge,
+    isError: isConfirmError,
+    isLoading: isConfirmLoading,
+    error: confirmError,
+  } = useConfirmChallenge(index);
 
-  const handleReject = () => {
-    console.log("rejecting challenge...");
-  };
+  const {
+    rejectChallenge,
+    isError: isRejectError,
+    isLoading: isRejectLoading,
+    error: rejectError,
+  } = useRejectChallenge(index);
+
+  if (isConfirmError || isRejectError) {
+    console.log(confirmError);
+    console.log(rejectError);
+    return <div>Error!</div>;
+  }
 
   return (
     <div className="flex w-full flex-col rounded-2xl bg-zinc-700 px-4 py-2 text-sm">
@@ -65,20 +82,27 @@ export const ChallengeCard: FC<ChallengeCardProps> = ({
       )}
       {status === ChallengeStatus.WAITING && (
         <div className="flex flex-row justify-center gap-4 text-xl">
-          <Button
-            text="Confirm"
-            size="normal"
-            color="success"
-            fullWidth
-            onClick={handleConfirm}
-          />
-          <Button
-            text="Reject"
-            size="normal"
-            color="error"
-            fullWidth
-            onClick={handleReject}
-          />
+          {isConfirmLoading || isRejectLoading ? (
+            //TODO: make normik loading (waiting for transaction to end)
+            <Loader />
+          ) : (
+            <>
+              <Button
+                text="Confirm"
+                size="normal"
+                color="success"
+                fullWidth
+                onClick={confirmChallenge}
+              />
+              <Button
+                text="Reject"
+                size="normal"
+                color="error"
+                fullWidth
+                onClick={rejectChallenge}
+              />
+            </>
+          )}
         </div>
       )}
     </div>

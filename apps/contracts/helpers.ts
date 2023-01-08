@@ -1,6 +1,11 @@
 import { BigNumber } from "ethers";
 import { formatTokenAmount } from "../../packages/shared/helpers";
 import { CONTRACT_ADDRESSES } from "./constants";
+import {
+  ChallengeCompletedEventObject,
+  ChallengeFailedEventObject,
+  ChallengeProposedEventObject,
+} from "./types/DonationsStore";
 
 interface NewDonationEventObject {
   from: string;
@@ -28,6 +33,83 @@ export const castToDonationObject = (
   amount: donationArray[3],
   timestamp: donationArray[4],
   message: donationArray[5],
+});
+
+export const castToChallengeProposedEventObject = (
+  challengeProposedArray: [
+    string,
+    string,
+    string,
+    BigNumber,
+    BigNumber,
+    string,
+    BigNumber,
+    BigNumber,
+    ...unknown[]
+  ]
+): ChallengeProposedEventObject => ({
+  from: challengeProposedArray[0],
+  nickname: challengeProposedArray[1],
+  to: challengeProposedArray[2],
+  proposalPrice: challengeProposedArray[3],
+  timestamp: challengeProposedArray[4],
+  terms: challengeProposedArray[5],
+  award: challengeProposedArray[6],
+  index: challengeProposedArray[7],
+});
+
+export const castToChallengeCompletedEventObject = (
+  challengeCompletedArray: [
+    string,
+    string,
+    BigNumber,
+    BigNumber,
+    {
+      nickname: string;
+      to: string;
+      timestamp: BigNumber;
+      terms: string;
+      award: BigNumber;
+      status: number;
+    },
+    ...unknown[]
+  ]
+): ChallengeCompletedEventObject => ({
+  from: challengeCompletedArray[0],
+  to: challengeCompletedArray[1],
+  timestamp: challengeCompletedArray[2],
+  index: challengeCompletedArray[3],
+  // TODO: fix types
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  challenge: challengeCompletedArray[4],
+});
+
+export const castToChallengeFailedEventObject = (
+  challengeFailedArray: [
+    string,
+    string,
+    BigNumber,
+    BigNumber,
+    {
+      nickname: string;
+      to: string;
+      timestamp: BigNumber;
+      terms: string;
+      award: BigNumber;
+      status: number;
+    },
+    ...unknown[]
+  ]
+): ChallengeFailedEventObject => ({
+  from: challengeFailedArray[0],
+  to: challengeFailedArray[1],
+  timestamp: challengeFailedArray[2],
+  index: challengeFailedArray[3],
+  // TODO: fix types
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  challenge: challengeFailedArray[4],
 });
 
 export const getTotalDonationsAmount = (
