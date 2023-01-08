@@ -1,11 +1,6 @@
 import { BigNumber } from "ethers";
-import { formatTokenAmount } from "../../packages/shared/helpers";
+import { formatTokenAmount } from "@donum/shared/helpers";
 import { CONTRACT_ADDRESSES } from "./constants";
-import {
-  ChallengeCompletedEventObject,
-  ChallengeFailedEventObject,
-  ChallengeProposedEventObject,
-} from "./types/DonationsStore";
 
 interface NewDonationEventObject {
   from: string;
@@ -15,6 +10,71 @@ interface NewDonationEventObject {
   timestamp: BigNumber;
   message: string;
 }
+
+export interface ChallengeObject {
+  from: string;
+  nickname: string;
+  to: string;
+  proposalPrice: BigNumber;
+  timestamp: BigNumber;
+  terms: string;
+  award: BigNumber;
+  index: BigNumber;
+}
+
+export const castProposedChallengeObject = (
+  challenge: [
+    string,
+    string,
+    string,
+    BigNumber,
+    BigNumber,
+    string,
+    BigNumber,
+    BigNumber,
+    ...unknown[]
+  ]
+): ChallengeObject => {
+  return {
+    from: challenge[0],
+    nickname: challenge[1],
+    to: challenge[2],
+    proposalPrice: BigNumber.from(challenge[3]),
+    timestamp: BigNumber.from(challenge[4]),
+    terms: challenge[5],
+    award: BigNumber.from(challenge[6]),
+    index: BigNumber.from(challenge[7]),
+  };
+};
+
+export const castDoneChallengeObject = (
+  challenge: [
+    string,
+    string,
+    BigNumber,
+    BigNumber,
+    {
+      nickname: string;
+      to: string;
+      timestamp: BigNumber;
+      terms: string;
+      award: BigNumber;
+      status: number;
+    },
+    ...unknown[]
+  ]
+): ChallengeObject => {
+  return {
+    from: challenge[0],
+    nickname: challenge[0],
+    to: challenge[1],
+    proposalPrice: BigNumber.from(challenge[4].award),
+    timestamp: BigNumber.from(challenge[2]),
+    terms: challenge[4].terms,
+    award: BigNumber.from(challenge[4].award),
+    index: BigNumber.from(challenge[3]),
+  };
+};
 
 export const castToDonationObject = (
   donationArray: [
@@ -33,83 +93,6 @@ export const castToDonationObject = (
   amount: donationArray[3],
   timestamp: donationArray[4],
   message: donationArray[5],
-});
-
-export const castToChallengeProposedEventObject = (
-  challengeProposedArray: [
-    string,
-    string,
-    string,
-    BigNumber,
-    BigNumber,
-    string,
-    BigNumber,
-    BigNumber,
-    ...unknown[]
-  ]
-): ChallengeProposedEventObject => ({
-  from: challengeProposedArray[0],
-  nickname: challengeProposedArray[1],
-  to: challengeProposedArray[2],
-  proposalPrice: challengeProposedArray[3],
-  timestamp: challengeProposedArray[4],
-  terms: challengeProposedArray[5],
-  award: challengeProposedArray[6],
-  index: challengeProposedArray[7],
-});
-
-export const castToChallengeCompletedEventObject = (
-  challengeCompletedArray: [
-    string,
-    string,
-    BigNumber,
-    BigNumber,
-    {
-      nickname: string;
-      to: string;
-      timestamp: BigNumber;
-      terms: string;
-      award: BigNumber;
-      status: number;
-    },
-    ...unknown[]
-  ]
-): ChallengeCompletedEventObject => ({
-  from: challengeCompletedArray[0],
-  to: challengeCompletedArray[1],
-  timestamp: challengeCompletedArray[2],
-  index: challengeCompletedArray[3],
-  // TODO: fix types
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  challenge: challengeCompletedArray[4],
-});
-
-export const castToChallengeFailedEventObject = (
-  challengeFailedArray: [
-    string,
-    string,
-    BigNumber,
-    BigNumber,
-    {
-      nickname: string;
-      to: string;
-      timestamp: BigNumber;
-      terms: string;
-      award: BigNumber;
-      status: number;
-    },
-    ...unknown[]
-  ]
-): ChallengeFailedEventObject => ({
-  from: challengeFailedArray[0],
-  to: challengeFailedArray[1],
-  timestamp: challengeFailedArray[2],
-  index: challengeFailedArray[3],
-  // TODO: fix types
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  challenge: challengeFailedArray[4],
 });
 
 export const getTotalDonationsAmount = (
