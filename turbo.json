@@ -20,6 +20,7 @@
         "NEXT_PUBLIC_WEBAPP_BASE_URL",
         "NEXT_PUBLIC_WIDGET_BASE_URL",
         "VITE_EVENTS_SERVER_URL",
+        "ETHERSCAN_API_KEY",
         "CI"
     ],
     "pipeline": {
