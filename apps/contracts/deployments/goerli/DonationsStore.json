@@ -1,6 +1,123 @@
 {
-  "address": "0x7757e69818Dc64b14e0aaffaae19B5e466735188",
+  "address": "0x2483De81e39576ff372F878684b30d64eA3cD27A",
   "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "index",
+          "type": "uint256"
+        }
+      ],
+      "name": "ChallengeCompleted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "index",
+          "type": "uint256"
+        }
+      ],
+      "name": "ChallengeFailed",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "nickname",
+          "type": "string"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "proposalPrice",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "terms",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "award",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "index",
+          "type": "uint256"
+        }
+      ],
+      "name": "ChallengeProposed",
+      "type": "event"
+    },
     {
       "anonymous": false,
       "inputs": [
@@ -47,6 +164,19 @@
     {
       "inputs": [
         {
+          "internalType": "uint256",
+          "name": "_index",
+          "type": "uint256"
+        }
+      ],
+      "name": "completeChallenge",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "string",
           "name": "_nickname",
           "type": "string"
@@ -66,30 +196,71 @@
       "outputs": [],
       "stateMutability": "payable",
       "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_index",
+          "type": "uint256"
+        }
+      ],
+      "name": "failChallenge",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_nickname",
+          "type": "string"
+        },
+        {
+          "internalType": "address",
+          "name": "_to",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "_terms",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_award",
+          "type": "uint256"
+        }
+      ],
+      "name": "proposeChallenge",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
     }
   ],
-  "transactionHash": "0xce74c9c1f7de9d6450d1c9dcf6f1a8c07e4b63e363a5ed86701e2a1fa3f71a7e",
+  "transactionHash": "0x378a0ea17f601702eac77db5ec68ddf1f1fe8ac58f9441d740d9534de1a61cdc",
   "receipt": {
     "to": null,
-    "from": "0x7c49301dAe0eCD335fe04164a98Dcfde59472AB4",
-    "contractAddress": "0x7757e69818Dc64b14e0aaffaae19B5e466735188",
-    "transactionIndex": 67,
-    "gasUsed": "189559",
+    "from": "0xAC0772000aa52CbF8a8dB501cC8caC03cDF01bf6",
+    "contractAddress": "0x2483De81e39576ff372F878684b30d64eA3cD27A",
+    "transactionIndex": 43,
+    "gasUsed": "484436",
     "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-    "blockHash": "0x913af146e4a201ffcd5173c0afaeafafa0eb0b2a848aacd799cc70b3a8d1d74b",
-    "transactionHash": "0xce74c9c1f7de9d6450d1c9dcf6f1a8c07e4b63e363a5ed86701e2a1fa3f71a7e",
+    "blockHash": "0x5fc201cc08995fa3a6c634c386732446ffa3eca8751650244fd54b3d026a9af0",
+    "transactionHash": "0x378a0ea17f601702eac77db5ec68ddf1f1fe8ac58f9441d740d9534de1a61cdc",
     "logs": [],
-    "blockNumber": 8072371,
-    "cumulativeGasUsed": "8495135",
+    "blockNumber": 8277040,
+    "cumulativeGasUsed": "7979537",
     "status": 1,
     "byzantium": true
   },
   "args": [],
-  "numDeployments": 6,
-  "solcInputHash": "a54dcad9afed6082e3e09522d0798063",
-  "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"nickname\",\"type\":\"string\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"message\",\"type\":\"string\"}],\"name\":\"NewDonation\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_nickname\",\"type\":\"string\"},{\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"_message\",\"type\":\"string\"}],\"name\":\"donate\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/DonationsStore.sol\":\"DonationsStore\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":1000},\"remappings\":[]},\"sources\":{\"contracts/DonationsStore.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\r\\npragma solidity ^0.8.0;\\r\\n\\r\\ncontract DonationsStore {\\r\\n  event NewDonation(\\r\\n    address indexed from,\\r\\n    string nickname,\\r\\n    address indexed to,\\r\\n    uint256 amount,\\r\\n    uint256 timestamp,\\r\\n    string message\\r\\n  );\\r\\n\\r\\n  function donate(\\r\\n    string calldata _nickname,\\r\\n    address _to,\\r\\n    string calldata _message\\r\\n  ) external payable {\\r\\n    payable(_to).transfer(msg.value);\\r\\n    emit NewDonation(\\r\\n      msg.sender,\\r\\n      _nickname,\\r\\n      _to,\\r\\n      msg.value,\\r\\n      block.timestamp, // solhint-disable-line not-rely-on-time\\r\\n      _message\\r\\n    );\\r\\n  }\\r\\n}\\r\\n\",\"keccak256\":\"0xf47894c7148dbb4320c4bf367a1ca8559609b0b4be144dc819d60c9a5b6b86fa\",\"license\":\"MIT\"}},\"version\":1}",
-  "bytecode": "0x608060405234801561001057600080fd5b50610277806100206000396000f3fe60806040526004361061001e5760003560e01c806316ae70d414610023575b600080fd5b61003661003136600461013a565b610038565b005b60405173ffffffffffffffffffffffffffffffffffffffff8416903480156108fc02916000818181858888f1935050505015801561007a573d6000803e3d6000fd5b508273ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff167f995362ce364fef4ba9a9c889a12e2f6649633ca7b6d7750f70c4dde49e3db6cb8787344288886040516100e296959493929190610201565b60405180910390a35050505050565b60008083601f84011261010357600080fd5b50813567ffffffffffffffff81111561011b57600080fd5b60208301915083602082850101111561013357600080fd5b9250929050565b60008060008060006060868803121561015257600080fd5b853567ffffffffffffffff8082111561016a57600080fd5b61017689838a016100f1565b90975095506020880135915073ffffffffffffffffffffffffffffffffffffffff821682146101a457600080fd5b909350604087013590808211156101ba57600080fd5b506101c7888289016100f1565b969995985093965092949392505050565b81835281816020850137506000828201602090810191909152601f909101601f19169091010190565b60808152600061021560808301888a6101d8565b86602084015285604084015282810360608401526102348185876101d8565b999850505050505050505056fea26469706673582212200f8d61af07a227165a4a43f4cd480fe926c6b48215c3aca632b06a805cb3fc3a64736f6c63430008110033",
-  "deployedBytecode": "0x60806040526004361061001e5760003560e01c806316ae70d414610023575b600080fd5b61003661003136600461013a565b610038565b005b60405173ffffffffffffffffffffffffffffffffffffffff8416903480156108fc02916000818181858888f1935050505015801561007a573d6000803e3d6000fd5b508273ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff167f995362ce364fef4ba9a9c889a12e2f6649633ca7b6d7750f70c4dde49e3db6cb8787344288886040516100e296959493929190610201565b60405180910390a35050505050565b60008083601f84011261010357600080fd5b50813567ffffffffffffffff81111561011b57600080fd5b60208301915083602082850101111561013357600080fd5b9250929050565b60008060008060006060868803121561015257600080fd5b853567ffffffffffffffff8082111561016a57600080fd5b61017689838a016100f1565b90975095506020880135915073ffffffffffffffffffffffffffffffffffffffff821682146101a457600080fd5b909350604087013590808211156101ba57600080fd5b506101c7888289016100f1565b969995985093965092949392505050565b81835281816020850137506000828201602090810191909152601f909101601f19169091010190565b60808152600061021560808301888a6101d8565b86602084015285604084015282810360608401526102348185876101d8565b999850505050505050505056fea26469706673582212200f8d61af07a227165a4a43f4cd480fe926c6b48215c3aca632b06a805cb3fc3a64736f6c63430008110033",
+  "numDeployments": 7,
+  "solcInputHash": "70686979fa57487ff955aeac163773a5",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"}],\"name\":\"ChallengeCompleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"}],\"name\":\"ChallengeFailed\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"nickname\",\"type\":\"string\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"proposalPrice\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"terms\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"award\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"}],\"name\":\"ChallengeProposed\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"nickname\",\"type\":\"string\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"message\",\"type\":\"string\"}],\"name\":\"NewDonation\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_index\",\"type\":\"uint256\"}],\"name\":\"completeChallenge\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_nickname\",\"type\":\"string\"},{\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"_message\",\"type\":\"string\"}],\"name\":\"donate\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_index\",\"type\":\"uint256\"}],\"name\":\"failChallenge\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_nickname\",\"type\":\"string\"},{\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"_terms\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"_award\",\"type\":\"uint256\"}],\"name\":\"proposeChallenge\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/DonationsStore.sol\":\"DonationsStore\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":1000},\"remappings\":[]},\"sources\":{\"contracts/DonationsStore.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.0;\\n\\ncontract DonationsStore {\\n  enum ChallengeStatus {\\n    Proposed,\\n    Completed,\\n    Failed\\n  }\\n\\n  struct Challenge {\\n    address to;\\n    uint256 award;\\n    ChallengeStatus status;\\n  }\\n\\n  mapping(address => Challenge[]) proposedChallenges; // donater address => challenges\\n\\n  event NewDonation(\\n    address indexed from,\\n    string nickname,\\n    address indexed to,\\n    uint256 amount,\\n    uint256 timestamp,\\n    string message\\n  );\\n\\n  event ChallengeProposed(\\n    address indexed from,\\n    string nickname,\\n    address indexed to,\\n    uint256 proposalPrice,\\n    uint256 timestamp,\\n    string terms,\\n    uint256 award,\\n    uint256 index\\n  );\\n\\n  event ChallengeCompleted(\\n    address indexed from,\\n    address indexed to,\\n    uint256 timestamp,\\n    uint256 index\\n  );\\n\\n  event ChallengeFailed(\\n    address indexed from,\\n    address indexed to,\\n    uint256 timestamp,\\n    uint256 index\\n  );\\n\\n  function donate(\\n    string calldata _nickname,\\n    address _to,\\n    string calldata _message\\n  ) external payable {\\n    payable(_to).transfer(msg.value);\\n    emit NewDonation(\\n      msg.sender,\\n      _nickname,\\n      _to,\\n      msg.value,\\n      block.timestamp, // solhint-disable-line not-rely-on-time\\n      _message\\n    );\\n  }\\n\\n  function proposeChallenge(\\n    string calldata _nickname,\\n    address _to,\\n    string calldata _terms,\\n    uint256 _award\\n  ) external payable {\\n    uint256 proposalPrice = msg.value - _award;\\n    payable(_to).transfer(proposalPrice);\\n    proposedChallenges[msg.sender].push(\\n      Challenge(_to, _award, ChallengeStatus.Proposed)\\n    );\\n    emit ChallengeProposed(\\n      msg.sender,\\n      _nickname,\\n      _to,\\n      proposalPrice,\\n      block.timestamp, // solhint-disable-line not-rely-on-time\\n      _terms,\\n      _award,\\n      proposedChallenges[msg.sender].length - 1\\n    );\\n  }\\n\\n  function completeChallenge(uint256 _index) external {\\n    Challenge storage challenge = proposedChallenges[msg.sender][_index];\\n    require(\\n      challenge.status == ChallengeStatus.Proposed,\\n      \\\"Challenge already finished\\\"\\n    );\\n    challenge.status = ChallengeStatus.Completed;\\n    payable(challenge.to).transfer(challenge.award);\\n    emit ChallengeCompleted(msg.sender, challenge.to, block.timestamp, _index); // solhint-disable-line not-rely-on-time\\n  }\\n\\n  function failChallenge(uint256 _index) external {\\n    Challenge storage challenge = proposedChallenges[msg.sender][_index];\\n    require(\\n      challenge.status == ChallengeStatus.Proposed,\\n      \\\"Challenge already finished\\\"\\n    );\\n    challenge.status = ChallengeStatus.Failed;\\n    payable(msg.sender).transfer(challenge.award);\\n    emit ChallengeFailed(msg.sender, challenge.to, block.timestamp, _index); // solhint-disable-line not-rely-on-time\\n  }\\n}\\n\",\"keccak256\":\"0x9e161ead3947a8cfba1155c78fc7e78eb110e9c64203369f68ad75bc59d74ef6\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b506107cf806100206000396000f3fe60806040526004361061003f5760003560e01c806316ae70d4146100445780637e616eb914610059578063a7817bbc1461006c578063ea77b6641461008c575b600080fd5b610057610052366004610569565b6100ac565b005b6100576100673660046105ed565b61013e565b34801561007857600080fd5b50610057610087366004610679565b6102ab565b34801561009857600080fd5b506100576100a7366004610679565b6103e5565b6040516001600160a01b038416903480156108fc02916000818181858888f193505050501580156100e1573d6000803e3d6000fd5b50826001600160a01b0316336001600160a01b03167f995362ce364fef4ba9a9c889a12e2f6649633ca7b6d7750f70c4dde49e3db6cb87873442888860405161012f969594939291906106bb565b60405180910390a35050505050565b600061014a82346106fb565b6040519091506001600160a01b0386169082156108fc029083906000818181858888f19350505050158015610183573d6000803e3d6000fd5b503360009081526020818152604080832081516060810183526001600160a01b038a8116825281850188815293820186815283546001808201865594885295909620825160039096020180547fffffffffffffffffffffffff0000000000000000000000000000000000000000169590911694909417845591518382015592516002808401805493959293909260ff1990911691849081111561022857610228610722565b021790555050336000818152602081905260409020546001600160a01b03881692507f645f06cf638c825947c065f8742db4b943628b79a6109487a3310ab46a117af6908a908a90869042908b908b908b90610286906001906106fb565b60405161029a989796959493929190610738565b60405180910390a350505050505050565b3360009081526020819052604081208054839081106102cc576102cc610783565b600091825260208220600390910201915060028083015460ff16908111156102f6576102f6610722565b146103485760405162461bcd60e51b815260206004820152601a60248201527f4368616c6c656e676520616c72656164792066696e697368656400000000000060448201526064015b60405180910390fd5b60028101805460ff191660019081179091558154908201546040516001600160a01b03909216916108fc82150291906000818181858888f19350505050158015610396573d6000803e3d6000fd5b50805460408051428152602081018590526001600160a01b039092169133917f793cd657799b9183ecbe97a9e0752529016bb80c446ae0c22ad427eee04c339891015b60405180910390a35050565b33600090815260208190526040812080548390811061040657610406610783565b600091825260208220600390910201915060028083015460ff169081111561043057610430610722565b1461047d5760405162461bcd60e51b815260206004820152601a60248201527f4368616c6c656e676520616c72656164792066696e6973686564000000000000604482015260640161033f565b6002818101805460ff19169091179055600181015460405133916108fc811502916000818181858888f193505050501580156104bd573d6000803e3d6000fd5b50805460408051428152602081018590526001600160a01b039092169133917f820cb138e772438ec3d2222a042038967e2cfcd73b75fa7bf4c36cce0469693f91016103d9565b60008083601f84011261051657600080fd5b50813567ffffffffffffffff81111561052e57600080fd5b60208301915083602082850101111561054657600080fd5b9250929050565b80356001600160a01b038116811461056457600080fd5b919050565b60008060008060006060868803121561058157600080fd5b853567ffffffffffffffff8082111561059957600080fd5b6105a589838a01610504565b90975095508591506105b96020890161054d565b945060408801359150808211156105cf57600080fd5b506105dc88828901610504565b969995985093965092949392505050565b6000806000806000806080878903121561060657600080fd5b863567ffffffffffffffff8082111561061e57600080fd5b61062a8a838b01610504565b909850965086915061063e60208a0161054d565b9550604089013591508082111561065457600080fd5b5061066189828a01610504565b979a9699509497949695606090950135949350505050565b60006020828403121561068b57600080fd5b5035919050565b81835281816020850137506000828201602090810191909152601f909101601f19169091010190565b6080815260006106cf60808301888a610692565b86602084015285604084015282810360608401526106ee818587610692565b9998505050505050505050565b8181038181111561071c57634e487b7160e01b600052601160045260246000fd5b92915050565b634e487b7160e01b600052602160045260246000fd5b60c08152600061074c60c083018a8c610692565b886020840152876040840152828103606084015261076b818789610692565b6080840195909552505060a001529695505050505050565b634e487b7160e01b600052603260045260246000fdfea2646970667358221220b273aeadf24f37f1b335a135c57ca9b03ddb78dc6bd7a29b65f6238308a2ba4564736f6c63430008110033",
+  "deployedBytecode": "0x60806040526004361061003f5760003560e01c806316ae70d4146100445780637e616eb914610059578063a7817bbc1461006c578063ea77b6641461008c575b600080fd5b610057610052366004610569565b6100ac565b005b6100576100673660046105ed565b61013e565b34801561007857600080fd5b50610057610087366004610679565b6102ab565b34801561009857600080fd5b506100576100a7366004610679565b6103e5565b6040516001600160a01b038416903480156108fc02916000818181858888f193505050501580156100e1573d6000803e3d6000fd5b50826001600160a01b0316336001600160a01b03167f995362ce364fef4ba9a9c889a12e2f6649633ca7b6d7750f70c4dde49e3db6cb87873442888860405161012f969594939291906106bb565b60405180910390a35050505050565b600061014a82346106fb565b6040519091506001600160a01b0386169082156108fc029083906000818181858888f19350505050158015610183573d6000803e3d6000fd5b503360009081526020818152604080832081516060810183526001600160a01b038a8116825281850188815293820186815283546001808201865594885295909620825160039096020180547fffffffffffffffffffffffff0000000000000000000000000000000000000000169590911694909417845591518382015592516002808401805493959293909260ff1990911691849081111561022857610228610722565b021790555050336000818152602081905260409020546001600160a01b03881692507f645f06cf638c825947c065f8742db4b943628b79a6109487a3310ab46a117af6908a908a90869042908b908b908b90610286906001906106fb565b60405161029a989796959493929190610738565b60405180910390a350505050505050565b3360009081526020819052604081208054839081106102cc576102cc610783565b600091825260208220600390910201915060028083015460ff16908111156102f6576102f6610722565b146103485760405162461bcd60e51b815260206004820152601a60248201527f4368616c6c656e676520616c72656164792066696e697368656400000000000060448201526064015b60405180910390fd5b60028101805460ff191660019081179091558154908201546040516001600160a01b03909216916108fc82150291906000818181858888f19350505050158015610396573d6000803e3d6000fd5b50805460408051428152602081018590526001600160a01b039092169133917f793cd657799b9183ecbe97a9e0752529016bb80c446ae0c22ad427eee04c339891015b60405180910390a35050565b33600090815260208190526040812080548390811061040657610406610783565b600091825260208220600390910201915060028083015460ff169081111561043057610430610722565b1461047d5760405162461bcd60e51b815260206004820152601a60248201527f4368616c6c656e676520616c72656164792066696e6973686564000000000000604482015260640161033f565b6002818101805460ff19169091179055600181015460405133916108fc811502916000818181858888f193505050501580156104bd573d6000803e3d6000fd5b50805460408051428152602081018590526001600160a01b039092169133917f820cb138e772438ec3d2222a042038967e2cfcd73b75fa7bf4c36cce0469693f91016103d9565b60008083601f84011261051657600080fd5b50813567ffffffffffffffff81111561052e57600080fd5b60208301915083602082850101111561054657600080fd5b9250929050565b80356001600160a01b038116811461056457600080fd5b919050565b60008060008060006060868803121561058157600080fd5b853567ffffffffffffffff8082111561059957600080fd5b6105a589838a01610504565b90975095508591506105b96020890161054d565b945060408801359150808211156105cf57600080fd5b506105dc88828901610504565b969995985093965092949392505050565b6000806000806000806080878903121561060657600080fd5b863567ffffffffffffffff8082111561061e57600080fd5b61062a8a838b01610504565b909850965086915061063e60208a0161054d565b9550604089013591508082111561065457600080fd5b5061066189828a01610504565b979a9699509497949695606090950135949350505050565b60006020828403121561068b57600080fd5b5035919050565b81835281816020850137506000828201602090810191909152601f909101601f19169091010190565b6080815260006106cf60808301888a610692565b86602084015285604084015282810360608401526106ee818587610692565b9998505050505050505050565b8181038181111561071c57634e487b7160e01b600052601160045260246000fd5b92915050565b634e487b7160e01b600052602160045260246000fd5b60c08152600061074c60c083018a8c610692565b886020840152876040840152828103606084015261076b818789610692565b6080840195909552505060a001529695505050505050565b634e487b7160e01b600052603260045260246000fdfea2646970667358221220b273aeadf24f37f1b335a135c57ca9b03ddb78dc6bd7a29b65f6238308a2ba4564736f6c63430008110033",
   "devdoc": {
     "kind": "dev",
     "methods": {},
@@ -101,7 +272,76 @@
     "version": 1
   },
   "storageLayout": {
-    "storage": [],
-    "types": null
+    "storage": [
+      {
+        "astId": 19,
+        "contract": "contracts/DonationsStore.sol:DonationsStore",
+        "label": "proposedChallenges",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_mapping(t_address,t_array(t_struct(Challenge)13_storage)dyn_storage)"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_array(t_struct(Challenge)13_storage)dyn_storage": {
+        "base": "t_struct(Challenge)13_storage",
+        "encoding": "dynamic_array",
+        "label": "struct DonationsStore.Challenge[]",
+        "numberOfBytes": "32"
+      },
+      "t_enum(ChallengeStatus)5": {
+        "encoding": "inplace",
+        "label": "enum DonationsStore.ChallengeStatus",
+        "numberOfBytes": "1"
+      },
+      "t_mapping(t_address,t_array(t_struct(Challenge)13_storage)dyn_storage)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => struct DonationsStore.Challenge[])",
+        "numberOfBytes": "32",
+        "value": "t_array(t_struct(Challenge)13_storage)dyn_storage"
+      },
+      "t_struct(Challenge)13_storage": {
+        "encoding": "inplace",
+        "label": "struct DonationsStore.Challenge",
+        "members": [
+          {
+            "astId": 7,
+            "contract": "contracts/DonationsStore.sol:DonationsStore",
+            "label": "to",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address"
+          },
+          {
+            "astId": 9,
+            "contract": "contracts/DonationsStore.sol:DonationsStore",
+            "label": "award",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 12,
+            "contract": "contracts/DonationsStore.sol:DonationsStore",
+            "label": "status",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_enum(ChallengeStatus)5"
+          }
+        ],
+        "numberOfBytes": "96"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
   }
 }
