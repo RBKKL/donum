@@ -1,10 +1,10 @@
 import React from "react";
-import { ChallengeStatus } from "@donum/shared/constants";
 import { BigNumber } from "ethers";
-import type { NextPage } from "next";
+import { ChallengeStatus } from "@donum/shared/constants";
 import { ChallengeCard } from "@components/ChallengeCard";
+import type { ExtendedNextPage } from "./_app";
 
-const SentChallengesPage: NextPage = () => {
+const SentChallengesPage: ExtendedNextPage = () => {
   const challenges = [
     {
       donatorAddress: "0x5FbD1231230aa3",
@@ -38,7 +38,7 @@ const SentChallengesPage: NextPage = () => {
       <div className="pb-2 text-center text-2xl font-semibold">
         Sent challenges
       </div>
-      <div className="flex w-[62vw] flex-col">
+      <div className="flex w-full max-w-3xl flex-col gap-4">
         {challenges.map((challenge, index) => (
           <ChallengeCard
             key={index}
@@ -54,5 +54,6 @@ const SentChallengesPage: NextPage = () => {
     </div>
   );
 };
+SentChallengesPage.requireAuth = true;
 
 export default SentChallengesPage;

@@ -3,6 +3,7 @@ import { browserEnv } from "@env/browser";
 export const routes = {
   home: "/",
   dashboard: "/dashboard",
+  challenges: "/challenges",
   alert: "/dashboard/alert",
   settings: "/dashboard/settings",
   authorization: (callbackUrl: string | undefined = undefined) => {

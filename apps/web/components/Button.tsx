@@ -25,10 +25,14 @@ export const Button: FC<ButtonProps> = ({
   <button
     className={classNames(
       "flex w-full items-center justify-center rounded-full py-2 font-semibold transition-opacity disabled:opacity-50",
+      // size
       {
         "sm:w-fit": !fullWidth,
         "px-4 text-base": size === "small",
         "px-8 text-xl": size === "normal",
+      },
+      // color
+      {
         "bg-yellow-500": color === "primary",
         "bg-green": color === "success",
         "bg-red": color === "error",
