@@ -1,6 +1,5 @@
 import classNames from "classnames";
 import { FC, ReactNode } from "react";
-import { ButtonColor } from "@donum/shared/constants";
 
 interface ButtonProps {
   disabled?: boolean;
@@ -9,7 +8,7 @@ interface ButtonProps {
   text: string;
   icon?: ReactNode;
   size?: "small" | "normal";
-  color?: ButtonColor;
+  color?: "primary" | "success" | "error";
   className?: string;
 }
 
@@ -20,7 +19,7 @@ export const Button: FC<ButtonProps> = ({
   text,
   icon,
   size = "normal",
-  color = ButtonColor.PRIMARY,
+  color = "primary",
   className = "",
 }) => (
   <button
@@ -30,8 +29,10 @@ export const Button: FC<ButtonProps> = ({
         "sm:w-fit": !fullWidth,
         "px-4 text-base": size === "small",
         "px-8 text-xl": size === "normal",
+        "bg-yellow-500": color === "primary",
+        "bg-green": color === "success",
+        "bg-red": color === "error",
       },
-      color,
       className
     )}
     disabled={disabled}

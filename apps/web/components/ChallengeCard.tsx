@@ -5,7 +5,7 @@ import {
   formatTimestamp,
   formatTokenAmount,
 } from "@donum/shared/helpers";
-import { ButtonColor, ChallengeStatus } from "@donum/shared/constants";
+import { ChallengeStatus } from "@donum/shared/constants";
 import { Button } from "@components/Button";
 
 interface ChallengeCardProps {
@@ -60,7 +60,7 @@ export const ChallengeCard: FC<ChallengeCardProps> = ({
           text={"Confirm"}
           size={"normal"}
           fullWidth={true}
-          color={ButtonColor.SUCCESS}
+          color={"success"}
           className="mr-1.5"
           onClick={() => {
             console.log("accepting challenge...");
@@ -70,7 +70,7 @@ export const ChallengeCard: FC<ChallengeCardProps> = ({
           text={"Denay"}
           size={"normal"}
           fullWidth={true}
-          color={ButtonColor.ERROR}
+          color={"error"}
           className="ml-1.5"
           onClick={() => {
             console.log("rejecting challenge...");
