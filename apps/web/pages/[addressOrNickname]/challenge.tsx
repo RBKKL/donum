@@ -4,7 +4,6 @@ import { RecipientProfile } from "@components/RecipientProfile";
 import { Input } from "@components/Input";
 import { TextField } from "@components/TextField";
 import { EthIcon } from "@components/icons/EthIcon";
-import { useSendDonation } from "@hooks/useSendDonation";
 import {
   CHALLENGE_MAX_LENGTH,
   DEFAULT_SHOW_AMOUNT,
@@ -15,7 +14,6 @@ import {
   formatTokenAmount,
   isNumber,
 } from "@donum/shared/helpers";
-import { DonationModal } from "@components/DonationModal";
 import { Address, useAccount, useBalance } from "wagmi";
 import { Balance } from "@components/Balance";
 import { parseUnits } from "ethers/lib/utils";
@@ -29,6 +27,9 @@ import {
 import { prisma } from "@donum/prisma";
 import type { GetServerSidePropsContext, NextPage } from "next";
 import { AmountInput } from "@components/AmountInput";
+import { useProposeChallenge } from "@hooks/useProposeChallenge";
+import { ChallengeModal } from "@components/ChallengeModal";
+import { routes } from "@lib/routes";
 
 interface ProfileProps {
   profile?: PopulatedProfile;
@@ -39,6 +40,7 @@ const SendChallengePage: NextPage<ProfileProps> = ({ profile }) => {
   const addressOrNickname = router.query.addressOrNickname as string;
 
   const recipientAddress = (profile?.address || addressOrNickname) as Address;
+  const proposalPrice = ethers.utils.formatEther(profile?.minShowAmount || "0");
 
   const { address, isConnected } = useAccount();
   const { data: balanceData } = useBalance({
@@ -50,15 +52,16 @@ const SendChallengePage: NextPage<ProfileProps> = ({ profile }) => {
 
   const [senderNickname, setSenderNickname] = useState("");
   const [awardAmount, setAwardAmount] = useState("");
-  const [message, setMessage] = useState("");
+  const [terms, setTerms] = useState("");
 
-  // TODO: change to useSendChallenge when it will be ready
-  const { donate, isAvailable, isLoading, isError } = useSendDonation(
-    senderNickname,
-    recipientAddress,
-    awardAmount,
-    message
-  );
+  const { proposeChallenge, isAvailable, isLoading, isError } =
+    useProposeChallenge(
+      senderNickname,
+      recipientAddress,
+      proposalPrice,
+      terms,
+      awardAmount
+    );
 
   // TODO: учитывать не только award amount, но и minShowAmount
   const isValidAwardAmount =
@@ -67,13 +70,12 @@ const SendChallengePage: NextPage<ProfileProps> = ({ profile }) => {
     parseUnits(awardAmount, balanceData.decimals).gte(0);
 
   const onTermsMessageChange = (message: string) => {
-    setMessage(message);
+    setTerms(message);
   };
 
   const onChallengeBtnClick = () => {
     setIsModalOpen(true);
-    // challenge()
-    donate();
+    proposeChallenge();
   };
 
   if (!profile) {
@@ -105,13 +107,13 @@ const SendChallengePage: NextPage<ProfileProps> = ({ profile }) => {
         />
         <TextField
           placeholder="Type your terms here..."
-          value={message}
+          value={terms}
           onChange={onTermsMessageChange}
           minRows={5}
           maxLength={CHALLENGE_MAX_LENGTH}
           footer={
             <p className="flex flex-row-reverse text-xs text-gray-400">
-              {message.length}/{CHALLENGE_MAX_LENGTH}
+              {terms.length}/{CHALLENGE_MAX_LENGTH}
             </p>
           }
         />
@@ -147,13 +149,15 @@ const SendChallengePage: NextPage<ProfileProps> = ({ profile }) => {
           )}
         </div>
       </div>
-      <DonationModal
+      <ChallengeModal
         isOpen={isModalOpen}
         setIsOpen={setIsModalOpen}
         isError={isError}
         isLoading={isLoading}
-        donationAmount={awardAmount}
+        proposalPrice={proposalPrice}
+        awardAmount={awardAmount}
         nickname={profile.nickname || formatAddress(profile.address)}
+        onSuccess={() => router.push(routes.challenges)}
       />
     </div>
   );

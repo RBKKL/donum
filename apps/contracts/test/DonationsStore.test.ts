@@ -37,6 +37,34 @@ describe(CONTRACT_NAME, async () => {
     return { txn, owner, sender, nickname, recipient, amount, message };
   };
 
+  const proposeChallenge = async (options?: {
+    nickname?: string;
+    terms?: string;
+  }) => {
+    const [owner, sender, recipient] = await ethers.getSigners();
+    const proposalPrice = ethers.utils.parseEther("0.01");
+    const awardAmount = ethers.utils.parseEther("1.0");
+    const nickname = options?.nickname ?? generateString(64);
+    const terms = options?.terms ?? generateString(256);
+
+    const txn = await donationsStore
+      .connect(sender)
+      .proposeChallenge(nickname, recipient.address, terms, awardAmount, {
+        value: proposalPrice.add(awardAmount),
+      });
+
+    return {
+      txn,
+      owner,
+      sender,
+      nickname,
+      recipient,
+      proposalPrice,
+      terms,
+      awardAmount,
+    };
+  };
+
   beforeEach(async () => {
     const [owner] = await ethers.getSigners();
     const contractFactory = await ethers.getContractFactory(
@@ -77,5 +105,33 @@ describe(CONTRACT_NAME, async () => {
     expect(txn)
       .to.emit(donationsStore, "NewDonation")
       .withArgs(sender, nickname, recipient, amount, timestampBefore, message);
+  });
+
+  it("Should emit challenge proposed event", async () => {
+    const blockNumBefore = await ethers.provider.getBlockNumber();
+    const blockBefore = await ethers.provider.getBlock(blockNumBefore);
+    const timestampBefore = blockBefore.timestamp;
+    const {
+      txn,
+      sender,
+      nickname,
+      recipient,
+      proposalPrice,
+      awardAmount,
+      terms,
+    } = await proposeChallenge();
+
+    expect(txn)
+      .to.emit(donationsStore, "ChallengeProposed")
+      .withArgs(
+        sender,
+        nickname,
+        recipient,
+        proposalPrice,
+        timestampBefore,
+        terms,
+        awardAmount,
+        0
+      );
   });
 });

@@ -16,6 +16,8 @@ export const routes = {
     return url;
   },
   donate: (addressOrNickname: string) => `/${addressOrNickname}`,
+  proposeChallenge: (addressOrNickname: string) =>
+    `/${addressOrNickname}/challenge`,
   widget: (address: string) =>
     `${browserEnv.WIDGET_BASE_URL}/?address=${address}`,
 };

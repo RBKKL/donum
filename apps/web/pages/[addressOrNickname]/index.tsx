@@ -29,6 +29,8 @@ import {
 import { prisma } from "@donum/prisma";
 import type { GetServerSidePropsContext, NextPage } from "next";
 import { AmountInput } from "@components/AmountInput";
+import Link from "next/link";
+import { routes } from "@lib/routes";
 
 interface ProfileProps {
   profile?: PopulatedProfile;
@@ -92,6 +94,9 @@ const SendDonationPage: NextPage<ProfileProps> = ({ profile }) => {
         <p className="break-words pb-2 text-left text-sm">
           {profile.description}
         </p>
+        <Link href={routes.proposeChallenge(addressOrNickname)}>
+          <Button text="Challenge me!" />
+        </Link>
         <AmountInput
           value={donationAmount}
           downCorner={
