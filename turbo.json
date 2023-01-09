@@ -20,6 +20,10 @@
         "NEXT_PUBLIC_WEBAPP_BASE_URL",
         "NEXT_PUBLIC_WIDGET_BASE_URL",
         "VITE_EVENTS_SERVER_URL",
+        "ETHERSCAN_API_KEY",
+        "ETHERSCAN_API_KEY",
+        "NEXT_PUBLIC_VERCEL_ENV",
+        "NEXT_PUBLIC_VERCEL_URL",
         "CI"
     ],
     "pipeline": {
