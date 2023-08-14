@@ -1,6 +1,6 @@
 # Donum
 
-Make donations to streamers with cryptocurrency
+[Donum](https://donum.me) is a platform to make donations to streamers with cryptocurrency
 
 ## Getting Started
 
