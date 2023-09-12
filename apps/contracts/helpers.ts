@@ -1,5 +1,5 @@
 import { BigNumber } from "ethers";
-import { formatTokenAmount } from "../../packages/shared/helpers";
+import { formatTokenAmount } from "@donum/shared/helpers";
 import { CONTRACT_ADDRESSES } from "./constants";
 
 interface NewDonationEventObject {
@@ -10,6 +10,71 @@ interface NewDonationEventObject {
   timestamp: BigNumber;
   message: string;
 }
+
+export interface ChallengeObject {
+  from: string;
+  nickname: string;
+  to: string;
+  proposalPrice: BigNumber;
+  timestamp: BigNumber;
+  terms: string;
+  award: BigNumber;
+  index: BigNumber;
+}
+
+export const castProposedChallengeObject = (
+  challenge: [
+    string,
+    string,
+    string,
+    BigNumber,
+    BigNumber,
+    string,
+    BigNumber,
+    BigNumber,
+    ...unknown[]
+  ]
+): ChallengeObject => {
+  return {
+    from: challenge[0],
+    nickname: challenge[1],
+    to: challenge[2],
+    proposalPrice: BigNumber.from(challenge[3]),
+    timestamp: BigNumber.from(challenge[4]),
+    terms: challenge[5],
+    award: BigNumber.from(challenge[6]),
+    index: BigNumber.from(challenge[7]),
+  };
+};
+
+export const castDoneChallengeObject = (
+  challenge: [
+    string,
+    string,
+    BigNumber,
+    BigNumber,
+    {
+      nickname: string;
+      to: string;
+      timestamp: BigNumber;
+      terms: string;
+      award: BigNumber;
+      status: number;
+    },
+    ...unknown[]
+  ]
+): ChallengeObject => {
+  return {
+    from: challenge[0],
+    nickname: challenge[0],
+    to: challenge[1],
+    proposalPrice: BigNumber.from(challenge[4].award),
+    timestamp: BigNumber.from(challenge[2]),
+    terms: challenge[4].terms,
+    award: BigNumber.from(challenge[4].award),
+    index: BigNumber.from(challenge[3]),
+  };
+};
 
 export const castToDonationObject = (
   donationArray: [

@@ -4,6 +4,7 @@ export const SIGN_IN_MESSAGE =
   "This will cost you nothing\nBelow is the technical information";
 
 export const MESSAGE_MAX_LENGTH = 256;
+export const CHALLENGE_MAX_LENGTH = 256;
 export const NICKNAME_MIN_LENGTH = 3;
 export const NICKNAME_MAX_LENGTH = 64;
 export const NICKNAME_CHECK_ALLOWANCE_DEBOUNCE = 500; // 0.5 seconds
@@ -41,6 +42,12 @@ export enum SessionStatus {
   UNAUTHENTICATED = "unauthenticated",
   AUTHENTICATED = "authenticated",
   LOADING = "loading",
+}
+
+export enum ChallengeStatus {
+  WAITING,
+  DONE,
+  FAILED,
 }
 
 export const DEFAULT_ADDRESS = "0xAC0772000aa52CbF8a8dB501cC8caC03cDF01bf6";

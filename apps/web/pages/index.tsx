@@ -5,9 +5,12 @@ import { routes } from "@lib/routes";
 
 const Home: NextPage = () => {
   return (
-    <div className="flex h-96 w-full flex-col items-center justify-center pt-1 text-center">
+    <div className="flex w-full flex-col items-center justify-center pt-1 text-center">
       <Link href={routes.dashboard} className="mt-3">
         <Button text="Dashboard" />
+      </Link>
+      <Link href={routes.challenges} className="mt-3">
+        <Button text="Sent challenges" />
       </Link>
       <Link href={routes.alert} className="mt-3">
         <Button text="Test alert" />

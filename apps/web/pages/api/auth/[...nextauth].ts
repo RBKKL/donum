@@ -9,6 +9,7 @@ import {
 } from "next";
 import { JWT } from "next-auth/jwt";
 import { serverEnv } from "@env/server";
+import { prisma } from "@donum/prisma";
 
 type GetAuthOptionsFn = (
   req: NextApiRequest | GetServerSidePropsContext["req"]
@@ -36,11 +37,10 @@ export const getAuthOptions: GetAuthOptionsFn = (req) => ({
           const message = new SiweMessage(
             JSON.parse(credentials?.message || "{}")
           );
-          const nextAuthUrl = new URL(serverEnv.NEXTAUTH_URL);
-
+          const appUrl = new URL(serverEnv.WEBAPP_BASE_URL);
           const result = await message.verify({
             signature: credentials?.signature || "",
-            domain: nextAuthUrl.host,
+            domain: appUrl.host,
             nonce: await getCsrfToken({ req }),
           });
 
@@ -63,6 +63,14 @@ export const getAuthOptions: GetAuthOptionsFn = (req) => ({
 
       session.user.address = token.sub;
       return session;
+    },
+    signIn: async ({ user }) => {
+      const address = user.id;
+      if (!(await prisma.profile.findFirst({ where: { address } }))) {
+        await prisma.profile.create({ data: { address } });
+      }
+
+      return true;
     },
   },
   pages: {

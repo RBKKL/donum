@@ -14,6 +14,10 @@ module.exports = {
       fontFamily: {
         inter: ["var(--font-inter)", ...fontFamily.sans],
       },
+      colors: {
+        red: "#B91C1C",
+        green: "#15803D",
+      },
       animation: {
         "loader-spin-1":
           "spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) -36ms infinite",

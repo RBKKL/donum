@@ -4,10 +4,9 @@ import { RecipientProfile } from "@components/RecipientProfile";
 import { Input } from "@components/Input";
 import { TextField } from "@components/TextField";
 import { EthIcon } from "@components/icons/EthIcon";
-import { useSendDonation } from "@hooks/useSendDonation";
 import {
+  CHALLENGE_MAX_LENGTH,
   DEFAULT_SHOW_AMOUNT,
-  MESSAGE_MAX_LENGTH,
   NICKNAME_MAX_LENGTH,
 } from "@donum/shared/constants";
 import {
@@ -15,10 +14,9 @@ import {
   formatTokenAmount,
   isNumber,
 } from "@donum/shared/helpers";
-import { DonationModal } from "@components/DonationModal";
 import { Address, useAccount, useBalance } from "wagmi";
 import { Balance } from "@components/Balance";
-import { formatEther, parseUnits } from "ethers/lib/utils";
+import { parseUnits } from "ethers/lib/utils";
 import { Button } from "@components/Button";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ethers } from "ethers";
@@ -29,17 +27,20 @@ import {
 import { prisma } from "@donum/prisma";
 import type { GetServerSidePropsContext, NextPage } from "next";
 import { AmountInput } from "@components/AmountInput";
+import { useProposeChallenge } from "@hooks/useProposeChallenge";
+import { ChallengeModal } from "@components/ChallengeModal";
+import { routes } from "@lib/routes";
 
 interface ProfileProps {
   profile?: PopulatedProfile;
 }
 
-const SendDonationPage: NextPage<ProfileProps> = ({ profile }) => {
+const SendChallengePage: NextPage<ProfileProps> = ({ profile }) => {
   const router = useRouter();
   const addressOrNickname = router.query.addressOrNickname as string;
 
   const recipientAddress = (profile?.address || addressOrNickname) as Address;
-  const minShowAmount = profile?.minShowAmount || "0";
+  const proposalPrice = ethers.utils.formatEther(profile?.minShowAmount || "0");
 
   const { address, isConnected } = useAccount();
   const { data: balanceData } = useBalance({
@@ -50,30 +51,31 @@ const SendDonationPage: NextPage<ProfileProps> = ({ profile }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [senderNickname, setSenderNickname] = useState("");
-  const [donationAmount, setDonationAmount] = useState(
-    formatEther(profile?.minShowAmount ?? DEFAULT_SHOW_AMOUNT)
-  );
-  const [message, setMessage] = useState("");
+  const [awardAmount, setAwardAmount] = useState("");
+  const [terms, setTerms] = useState("");
 
-  const { donate, isAvailable, isLoading, isError } = useSendDonation(
-    senderNickname,
-    recipientAddress,
-    donationAmount,
-    message
-  );
+  const { proposeChallenge, isAvailable, isLoading, isError } =
+    useProposeChallenge(
+      senderNickname,
+      recipientAddress,
+      proposalPrice,
+      terms,
+      awardAmount
+    );
 
-  const isValidDonationAmount =
-    isNumber(donationAmount) &&
-    balanceData?.value?.gt(parseUnits(donationAmount, balanceData.decimals)) &&
-    parseUnits(donationAmount, balanceData.decimals).gt(0);
+  // TODO: учитывать не только award amount, но и minShowAmount
+  const isValidAwardAmount =
+    isNumber(awardAmount) &&
+    balanceData?.value?.gt(parseUnits(awardAmount, balanceData.decimals)) &&
+    parseUnits(awardAmount, balanceData.decimals).gte(0);
 
-  const onDonationMessageChange = (message: string) => {
-    setMessage(message);
+  const onTermsMessageChange = (message: string) => {
+    setTerms(message);
   };
 
-  const onSendBtnClick = () => {
+  const onChallengeBtnClick = () => {
     setIsModalOpen(true);
-    donate();
+    proposeChallenge();
   };
 
   if (!profile) {
@@ -89,21 +91,38 @@ const SendDonationPage: NextPage<ProfileProps> = ({ profile }) => {
         shortAddress
       />
       <div className="flex w-full flex-col gap-4 pt-2 sm:max-w-4xl">
-        <p className="break-words px-4 pb-4 text-left text-sm">
+        <p className="break-words pb-2 text-left text-sm">
           {profile.description}
         </p>
-        <AmountInput
-          value={donationAmount}
-          downCorner={
-            <div className="w-full text-left text-xs text-gray-400">
-              Minimal amount to show donation:{" "}
-              {formatTokenAmount(minShowAmount)}
-            </div>
-          }
-          onChange={setDonationAmount}
-          error={isConnected && !isValidDonationAmount}
+        <p className="break-words pb-2 text-left text-lg">
+          Challenge proposal price:{" "}
+          {formatTokenAmount(profile?.minShowAmount || DEFAULT_SHOW_AMOUNT)} ETH
+        </p>
+        <Input
+          placeholder="Anonymous"
+          value={senderNickname}
+          onChange={setSenderNickname}
           textSize="large"
-          placeholder="0"
+          maxLength={NICKNAME_MAX_LENGTH}
+        />
+        <TextField
+          placeholder="Type your terms here..."
+          value={terms}
+          onChange={onTermsMessageChange}
+          minRows={5}
+          maxLength={CHALLENGE_MAX_LENGTH}
+          footer={
+            <p className="flex flex-row-reverse text-xs text-gray-400">
+              {terms.length}/{CHALLENGE_MAX_LENGTH}
+            </p>
+          }
+        />
+        <AmountInput
+          value={awardAmount}
+          onChange={setAwardAmount}
+          error={awardAmount !== "" && isConnected && !isValidAwardAmount}
+          textSize="large"
+          placeholder="Award amount..."
           rightCorner={
             <div className="flex flex-col items-end">
               <EthIcon />
@@ -118,44 +137,27 @@ const SendDonationPage: NextPage<ProfileProps> = ({ profile }) => {
             </div>
           }
         />
-        <Input
-          placeholder="Nickname..."
-          value={senderNickname}
-          onChange={setSenderNickname}
-          textSize="large"
-          maxLength={NICKNAME_MAX_LENGTH}
-        />
-        <TextField
-          placeholder="Type your message here..."
-          value={message}
-          onChange={onDonationMessageChange}
-          minRows={5}
-          maxLength={MESSAGE_MAX_LENGTH}
-          footer={
-            <p className="flex flex-row-reverse text-xs text-gray-400">
-              {message.length}/{MESSAGE_MAX_LENGTH}
-            </p>
-          }
-        />
         <div className="flex flex-row-reverse">
           {isConnected ? (
             <Button
-              text="Send"
+              text="Challenge"
               disabled={!isAvailable}
-              onClick={onSendBtnClick}
+              onClick={onChallengeBtnClick}
             />
           ) : (
             <ConnectButton />
           )}
         </div>
       </div>
-      <DonationModal
+      <ChallengeModal
         isOpen={isModalOpen}
         setIsOpen={setIsModalOpen}
         isError={isError}
         isLoading={isLoading}
-        donationAmount={donationAmount}
+        proposalPrice={proposalPrice}
+        awardAmount={awardAmount}
         nickname={profile.nickname || formatAddress(profile.address)}
+        onSuccess={() => router.push(routes.challenges)}
       />
     </div>
   );
@@ -189,4 +191,4 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   };
 }
 
-export default SendDonationPage;
+export default SendChallengePage;
