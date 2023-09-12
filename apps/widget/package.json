@@ -13,16 +13,16 @@
   "dependencies": {
     "@donum/shared": "workspace:*",
     "envsafe": "^2.0.3",
-    "socket.io-client": "^4.5.4",
-    "solid-js": "^1.6.8",
-    "xstate": "^4.35.2"
+    "socket.io-client": "^4.7.2",
+    "solid-js": "^1.7.11",
+    "xstate": "^4.38.2"
   },
   "devDependencies": {
     "@donum/tsconfig": "workspace:*",
-    "eslint": "^8.31.0",
-    "eslint-plugin-solid": "^0.9.1",
-    "typescript": "4.9.4",
-    "vite": "^4.0.4",
-    "vite-plugin-solid": "^2.5.0"
+    "eslint": "^8.49.0",
+    "eslint-plugin-solid": "^0.13.0",
+    "typescript": "5.2.2",
+    "vite": "^4.4.9",
+    "vite-plugin-solid": "^2.7.0"
   }
 }
