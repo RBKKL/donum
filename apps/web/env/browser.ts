@@ -10,6 +10,12 @@ export const browserEnv = envsafe({
   }),
   WEBAPP_BASE_URL: url({
     devDefault: "http://localhost:3000",
-    input: process.env.NEXT_PUBLIC_WEBAPP_BASE_URL,
+    input: (() => {
+      if (process.env.NEXT_PUBLIC_VERCEL_ENV === "preview") {
+        return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
+      }
+
+      return process.env.NEXT_PUBLIC_WEBAPP_BASE_URL;
+    })(),
   }),
 });
