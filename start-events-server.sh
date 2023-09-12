@@ -1,3 +1,7 @@
 #!/usr/bin/sh
 
-EVENTS_SERVER_AUTH_TOKEN=xBf9D3MY2Yp1Jywb DATABASE_URL=postgresql://postgres:DkDVHPeaPHsFvLpO@db.bvizuwjbhqlyqyoggyys.supabase.co:5432/postgres pnpm -F @donum/events-server start > logs.log 2>&1 &
+# env variables needed:
+# EVENTS_SERVER_AUTH_TOKEN
+# DATABASE_URL
+
+pnpm -F @donum/events-server start > logs.log 2>&1 &
