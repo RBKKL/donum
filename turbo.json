@@ -1,27 +1,12 @@
 {
     "$schema": "https://turbo.build/schema.json",
-    "globalDependencies": [
+    "globalDotEnv": [
         ".env"
     ],
     "globalEnv": [
-        "PRIVATE_KEY",
-        "INFURA_ID",
         "REPORT_GAS",
-        "NEXT_PUBLIC_INFURA_ID",
         "NODE_ENV",
         "PORT",
-        "SUPABASE_STORAGE_URL",
-        "SUPABASE_SERVICE_KEY",
-        "NEXTAUTH_URL",
-        "NEXTAUTH_SECRET",
-        "DATABASE_URL",
-        "KEYV_URL",
-        "EVENTS_SERVER_AUTH_TOKEN",
-        "NEXT_PUBLIC_WEBAPP_BASE_URL",
-        "NEXT_PUBLIC_WIDGET_BASE_URL",
-        "VITE_EVENTS_SERVER_URL",
-        "ETHERSCAN_API_KEY",
-        "ETHERSCAN_API_KEY",
         "NEXT_PUBLIC_VERCEL_ENV",
         "NEXT_PUBLIC_VERCEL_URL",
         "CI"
