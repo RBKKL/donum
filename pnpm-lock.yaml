@@ -141,7 +141,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/shared
       '@fastify/cors':
-        specifier: ^8.2.0
+        specifier: ^8.3.0
         version: 8.3.0
       envsafe:
         specifier: ^2.0.3
@@ -150,7 +150,7 @@ importers:
         specifier: ^5.7.2
         version: 5.7.2
       fastify:
-        specifier: ^4.11.0
+        specifier: ^4.23.0
         version: 4.23.0
       fastify-socket.io:
         specifier: ^4.0.0
@@ -159,10 +159,10 @@ importers:
         specifier: ^0.39.5
         version: 0.39.5
       socket.io:
-        specifier: ^4.5.4
+        specifier: ^4.7.2
         version: 4.7.2
       tsx:
-        specifier: ^3.12.1
+        specifier: ^3.12.8
         version: 3.12.8
     devDependencies:
       '@donum/eslint-config-custom':
@@ -172,11 +172,11 @@ importers:
         specifier: workspace:*
         version: link:../../packages/tsconfig
       eslint:
-        specifier: ^8.31.0
+        specifier: ^8.49.0
         version: 8.49.0
       typescript:
-        specifier: 4.9.4
-        version: 4.9.4
+        specifier: 5.2.2
+        version: 5.2.2
 
   apps/web:
     dependencies:
@@ -11804,7 +11804,6 @@ packages:
     resolution: {integrity: sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==}
     engines: {node: '>=14.17'}
     hasBin: true
-    dev: false
 
   /typical@4.0.0:
     resolution: {integrity: sha512-VAH4IvQ7BDFYglMd7BPRDfLgxZZX4O4TFcRDA6EN5X7erNJJq+McIEp8np9aVtxrCJ6qx4GTYVfOWNjcqwZgRw==}
