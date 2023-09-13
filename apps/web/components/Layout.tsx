@@ -13,7 +13,7 @@ export const Layout: FC<{
   children: ReactNode;
 }> = ({ children }) => (
   <div
-    className={`flex min-h-screen flex-col px-2 pt-3 pb-32 sm:px-8 ${inter.variable} font-inter`}
+    className={`flex min-h-screen flex-col px-2 pb-32 pt-3 sm:px-8 ${inter.variable} font-inter`}
   >
     <Header />
     <main className="flex grow items-center justify-center pt-12">

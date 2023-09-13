@@ -25,7 +25,7 @@ export const TextField: FC<TextFieldProps> = ({
     className={classNames(
       "flex",
       {
-        "flex-col rounded-md border-2 border-gray-400 py-2 px-3":
+        "flex-col rounded-md border-2 border-gray-400 px-3 py-2":
           variant === "outlined",
       },
       {

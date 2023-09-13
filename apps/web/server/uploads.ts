@@ -19,7 +19,7 @@ import KeyvPostgres from "@keyv/postgres";
 import { v4 as uuidv4 } from "uuid";
 
 export const UploadTypes = ["avatar", "notificationImage", "sound"] as const;
-export type UploadType = typeof UploadTypes[number];
+export type UploadType = (typeof UploadTypes)[number];
 
 type UploadConfig = {
   allowedMimeTypes: string[];

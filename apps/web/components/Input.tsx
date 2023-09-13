@@ -43,7 +43,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div
         className={classNames(
-          "flex items-center justify-between px-4 pt-2 pb-1",
+          "flex items-center justify-between px-4 pb-1 pt-2",
           { "rounded-2xl bg-zinc-700": variant === "normal" },
           {
             "outline outline-2 outline-red-500": variant === "normal" && error,

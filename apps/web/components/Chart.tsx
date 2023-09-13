@@ -61,8 +61,10 @@ const Dot: FC<DotProps> = ({ cx, cy }) => (
   <circle cx={cx} cy={cy} r={4} fill="#EAB308" />
 );
 
-const CustomTooltip: FC<TooltipProps<number, string>> = ({ active, payload }) =>
-  active ? <p>{payload?.[0]?.value}</p> : null;
+const CustomTooltip: FC<TooltipProps<number, string>> = ({
+  active,
+  payload,
+}) => (active ? <p>{payload?.[0]?.value}</p> : null);
 
 export const Chart: FC<ChartProps> = ({ donations, period, amountMode }) => {
   if (!period) return <div />;

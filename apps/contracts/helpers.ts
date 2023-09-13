@@ -19,7 +19,7 @@ export const castToDonationObject = (
     BigNumber,
     BigNumber,
     string,
-    ...unknown[]
+    ...unknown[],
   ]
 ): NewDonationEventObject => ({
   from: donationArray[0],

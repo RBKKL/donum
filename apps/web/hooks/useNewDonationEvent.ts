@@ -22,7 +22,7 @@ export const useNewDonationEvent = (listener: NewDonationEventListener) => {
         Address,
         BigNumber,
         BigNumber,
-        string
+        string,
       ]
     ) {
       listener(castToDonationObject(newDonationArray));
