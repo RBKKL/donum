@@ -15,7 +15,6 @@
         "@donum/shared": "workspace:*",
         "@keyv/postgres": "^1.4.9",
         "@keyv/redis": "^2.7.0",
-        "@next/font": "^13.4.19",
         "@radix-ui/react-select": "^1.2.2",
         "@rainbow-me/rainbowkit": "^0.8.1",
         "@supabase/storage-js": "^2.5.4",
