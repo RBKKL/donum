@@ -1,9 +1,6 @@
 /** @type {import('prettier').Config} */
-module.exports = {
-  plugins: [
-    require("prettier-plugin-tailwindcss"),
-    require("prettier-plugin-solidity"),
-  ],
+export default {
+  plugins: ["prettier-plugin-tailwindcss", "prettier-plugin-solidity"],
   printWidth: 80,
   trailingComma: "es5",
   tabWidth: 2,
