@@ -334,6 +334,9 @@ importers:
       '@donum/shared':
         specifier: workspace:*
         version: link:../../packages/shared
+      '@xstate/solid':
+        specifier: ^0.1.3
+        version: 0.1.3(solid-js@1.7.11)(xstate@4.38.2)
       envsafe:
         specifier: ^2.0.3
         version: 2.0.3
@@ -3719,6 +3722,22 @@ packages:
 
   /@xobotyi/scrollbar-width@1.9.5:
     resolution: {integrity: sha512-N8tkAACJx2ww8vFMneJmaAgmjAG1tnVBZJRLRcx061tmsLRZHSEZSLuGWnwPtunsSLvSqXQ2wfp7Mgqg1I+2dQ==}
+    dev: false
+
+  /@xstate/solid@0.1.3(solid-js@1.7.11)(xstate@4.38.2):
+    resolution: {integrity: sha512-Rp5JXD49Xj/v4OHL6WN5Wy/iqe/RSHtwj9zs583MG1AFrYYNXABMG4XdRzheC5efPl2TlqvX9FiZC4PDnoSljw==}
+    peerDependencies:
+      '@xstate/fsm': ^2.0.0
+      solid-js: ^1.6.0
+      xstate: ^4.37.0
+    peerDependenciesMeta:
+      '@xstate/fsm':
+        optional: true
+      xstate:
+        optional: true
+    dependencies:
+      solid-js: 1.7.11
+      xstate: 4.38.2
     dev: false
 
   /JSONStream@1.3.5:
