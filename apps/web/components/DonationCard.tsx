@@ -1,5 +1,4 @@
 import { FC } from "react";
-import { BigNumber } from "ethers";
 import {
   formatAddress,
   formatTimestamp,
@@ -9,8 +8,8 @@ import {
 interface DonationCardProps {
   from: string;
   nickname: string;
-  timestamp: BigNumber;
-  amount: BigNumber;
+  timestamp: bigint;
+  amount: bigint;
   message: string;
 }
 

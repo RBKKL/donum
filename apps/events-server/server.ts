@@ -2,19 +2,22 @@ import Fastify from "fastify";
 import socketioServer from "fastify-socket.io";
 import corsPlugin from "@fastify/cors";
 import { BiMap } from "mnemonist";
-import type {
-  NewDonationEvent,
-  NewDonationEventObject,
-} from "@donum/contracts/types/DonationsStore";
+import { NewDonationEvent } from "@donum/contracts/types/DonationsStore";
 import { castToDonationObject } from "@donum/contracts/helpers";
 import { DonationsStoreContract } from "./donations-store-contract";
 import { toDonationObjectForWidget } from "./utils";
 import { prisma } from "@donum/prisma";
-import { BigNumber } from "ethers";
 import { DEFAULT_SHOW_AMOUNT } from "@donum/shared/constants";
 import { env } from "./env";
 
 const clients = new BiMap<string, string>(); // address <-> socketId
+
+const logDonationMsg = (donation: NewDonationEvent.OutputObject) => {
+  return `New donation: ${JSON.stringify(
+    donation,
+    (_, value) => (typeof value === "bigint" ? value.toString() : value) // bigints are not supported by JSON.stringify
+  )}`;
+};
 
 const app = Fastify({ logger: true });
 const cors = {
@@ -56,20 +59,22 @@ app.ready((err) => {
   });
 });
 
-const emitNewDonationEvent = async (donation: NewDonationEventObject) => {
-  app.log.info(`New donation: ${JSON.stringify(donation)}`);
+const emitNewDonationEvent = async (
+  donation: NewDonationEvent.OutputObject
+) => {
+  app.log.info(logDonationMsg(donation));
   const socketId = clients.get(donation.to);
   const profile = await prisma.profile.findFirst({
     where: { address: donation.to },
   });
 
-  const minShowAmount = BigNumber.from(
+  const minShowAmount = BigInt(
     profile?.minShowAmount?.toString() || DEFAULT_SHOW_AMOUNT
   );
   console.log("minShowAmount", minShowAmount.toString());
   console.log("donation.amount", donation.amount.toString());
 
-  if (socketId && donation.amount.gte(minShowAmount)) {
+  if (socketId && donation.amount >= minShowAmount) {
     app.io
       .to(socketId)
       .emit("new-donation", toDonationObjectForWidget(donation));
@@ -85,7 +90,7 @@ app.post("/test", (req, res) => {
 
   emitNewDonationEvent({
     ...testDonation,
-    amount: BigNumber.from(testDonation.amount),
+    amount: BigInt(testDonation.amount),
   });
   res.status(200).send();
 });
@@ -116,8 +121,8 @@ app.post("/change-settings", async (req, res) => {
   res.status(200).send();
 });
 
-DonationsStoreContract.on<NewDonationEvent>(
-  DonationsStoreContract.filters.NewDonation(),
+DonationsStoreContract.on(
+  DonationsStoreContract.filters.NewDonation,
   (...donationArray) => {
     const donation = castToDonationObject(donationArray);
     emitNewDonationEvent(donation);

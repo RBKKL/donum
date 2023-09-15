@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { NewDonationEventObject } from "@donum/contracts/types/DonationsStore";
+import { NewDonationEvent } from "@donum/contracts/types/DonationsStore";
 import { useDonationsHistory } from "@hooks/useDonationsHistory";
 import { useNewDonationEvent } from "./useNewDonationEvent";
 
 export const useLiveDonationsHistory = (recipientAddress: string) => {
-  const [donations, setDonations] = useState<NewDonationEventObject[]>([]);
+  const [donations, setDonations] = useState<NewDonationEvent.OutputObject[]>(
+    []
+  );
 
   const {
     donations: initialDonations,

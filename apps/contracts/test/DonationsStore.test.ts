@@ -24,7 +24,7 @@ describe(CONTRACT_NAME, async () => {
     message?: string;
   }) => {
     const [owner, sender, recipient] = await ethers.getSigners();
-    const amount = ethers.utils.parseEther("0.1");
+    const amount = ethers.parseEther("0.1");
     const nickname = options?.nickname ?? generateString(64);
     const message = options?.message ?? generateString(256);
 
@@ -44,13 +44,13 @@ describe(CONTRACT_NAME, async () => {
       owner
     );
     donationsStore = await contractFactory.deploy();
-    await donationsStore.deployed();
+    await donationsStore.waitForDeployment();
   });
 
   it("Should emit donation event", async () => {
     const blockNumBefore = await ethers.provider.getBlockNumber();
     const blockBefore = await ethers.provider.getBlock(blockNumBefore);
-    const timestampBefore = blockBefore.timestamp;
+    const timestampBefore = blockBefore?.timestamp;
     const { txn, sender, nickname, recipient, amount, message } =
       await makeDonation();
 
@@ -68,7 +68,7 @@ describe(CONTRACT_NAME, async () => {
   it("Should handle empty nickname", async () => {
     const blockNumBefore = await ethers.provider.getBlockNumber();
     const blockBefore = await ethers.provider.getBlock(blockNumBefore);
-    const timestampBefore = blockBefore.timestamp;
+    const timestampBefore = blockBefore?.timestamp;
     const nickname = "";
     const { txn, sender, recipient, amount, message } = await makeDonation({
       nickname,

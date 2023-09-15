@@ -3,9 +3,8 @@ import {
   DESCRIPTION_MAX_LENGTH,
   MESSAGE_MAX_LENGTH,
 } from "@donum/shared/constants";
-import { ethers } from "ethers";
 import { BN } from "bn.js";
-import { isCorrectNickname } from "@donum/shared/helpers";
+import { isCorrectNickname, isEthAddress } from "@donum/shared/helpers";
 
 export const NicknameFormat = z
   .string()
@@ -13,11 +12,9 @@ export const NicknameFormat = z
     message: "Invalid nickname format",
   });
 
-export const AddressFormat = z
-  .string()
-  .refine((val) => ethers.utils.isAddress(val), {
-    message: "String must be in wallet format",
-  });
+export const AddressFormat = z.string().refine((val) => isEthAddress(val), {
+  message: "String must be in wallet format",
+});
 
 export const DescriptionFormat = z.string().max(DESCRIPTION_MAX_LENGTH);
 

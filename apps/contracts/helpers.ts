@@ -1,27 +1,10 @@
-import { BigNumber } from "ethers";
 import { formatTokenAmount } from "../../packages/shared/helpers";
 import { CONTRACT_ADDRESSES } from "./constants";
-
-interface NewDonationEventObject {
-  from: string;
-  nickname: string;
-  to: string;
-  amount: BigNumber;
-  timestamp: BigNumber;
-  message: string;
-}
+import { NewDonationEvent } from "./types/DonationsStore";
 
 export const castToDonationObject = (
-  donationArray: [
-    string,
-    string,
-    string,
-    BigNumber,
-    BigNumber,
-    string,
-    ...unknown[],
-  ]
-): NewDonationEventObject => ({
+  donationArray: [...NewDonationEvent.OutputTuple, ...unknown[]]
+): NewDonationEvent.OutputObject => ({
   from: donationArray[0],
   nickname: donationArray[1],
   to: donationArray[2],
@@ -31,16 +14,14 @@ export const castToDonationObject = (
 });
 
 export const getTotalDonationsAmount = (
-  donations: NewDonationEventObject[]
+  donations: NewDonationEvent.OutputObject[]
 ): string => {
-  return formatTokenAmount(
-    donations.reduce((a, b) => b.amount.add(a), BigNumber.from(0))
-  );
+  return formatTokenAmount(donations.reduce((acc, d) => acc + d.amount, 0n));
 };
 
 export const getContractAddressByChainId = (
-  chainId: number | undefined
-): string | undefined => {
+  chainId: number | undefined // FIXME: remove undefined
+): `0x${string}` | undefined => {
   if (!chainId) return undefined;
-  return CONTRACT_ADDRESSES[chainId];
+  return CONTRACT_ADDRESSES[chainId] as `0x${string}`;
 };

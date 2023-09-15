@@ -124,7 +124,7 @@ const EditDonationPage: ExtendedNextPage = () => {
         description: newDescription,
         minShowAmount:
           newMinShowAmount !== ""
-            ? ethers.utils.parseUnits(newMinShowAmount, "ether").toString()
+            ? ethers.parseUnits(newMinShowAmount, "ether").toString()
             : undefined,
         notificationDuration: donateDuration,
         notificationImageUrl,
@@ -205,7 +205,7 @@ const EditDonationPage: ExtendedNextPage = () => {
         <Input
           value={newMinShowAmount}
           onChange={setNewMinShowAmount}
-          placeholder={ethers.utils.formatEther(profile.data.minShowAmount)}
+          placeholder={ethers.formatEther(profile.data.minShowAmount)}
           textSize="small"
           rightCorner={
             <div className="flex flex-col items-end">

@@ -11,7 +11,6 @@ import { useSession } from "next-auth/react";
 import { trpc } from "@lib/trpc";
 import { routes } from "@lib/routes";
 import { getDonationsStatsByPeriod } from "@lib/statistics";
-import { BigNumber } from "ethers";
 import {
   DONATION_CHARTS_PERIOD_OPTIONS,
   DONATION_STATS_PERIOD_OPTIONS,
@@ -86,8 +85,8 @@ const DashboardPage: ExtendedNextPage = () => {
     const [donationsAmount, donationsCount] = +currentStatsPeriod
       ? getDonationsStatsByPeriod(
           donations,
-          BigNumber.from(Date.now() - +currentStatsPeriod),
-          BigNumber.from(Date.now())
+          BigInt(Date.now() - +currentStatsPeriod),
+          BigInt(Date.now())
         )
       : [getTotalDonationsAmount(donations), donations.length];
 

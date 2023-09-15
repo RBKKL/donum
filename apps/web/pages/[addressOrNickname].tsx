@@ -14,11 +14,11 @@ import {
   formatAddress,
   formatTokenAmount,
   isNumber,
+  isEthAddress,
 } from "@donum/shared/helpers";
 import { DonationModal } from "@components/DonationModal";
 import { Address, useAccount, useBalance } from "wagmi";
 import { Balance } from "@components/Balance";
-import { formatEther, parseUnits } from "ethers/lib/utils";
 import { Button } from "@components/Button";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ethers } from "ethers";
@@ -51,7 +51,7 @@ const SendDonationPage: NextPage<ProfileProps> = ({ profile }) => {
 
   const [senderNickname, setSenderNickname] = useState("");
   const [donationAmount, setDonationAmount] = useState(
-    formatEther(profile?.minShowAmount ?? DEFAULT_SHOW_AMOUNT)
+    ethers.formatEther(profile?.minShowAmount ?? DEFAULT_SHOW_AMOUNT)
   );
   const [message, setMessage] = useState("");
 
@@ -62,10 +62,15 @@ const SendDonationPage: NextPage<ProfileProps> = ({ profile }) => {
     message
   );
 
+  const donationAmountBigInt = ethers.parseUnits(
+    donationAmount,
+    balanceData?.decimals
+  );
   const isValidDonationAmount =
     isNumber(donationAmount) &&
-    balanceData?.value?.gt(parseUnits(donationAmount, balanceData.decimals)) &&
-    parseUnits(donationAmount, balanceData.decimals).gt(0);
+    balanceData?.value &&
+    balanceData.value > donationAmountBigInt &&
+    donationAmountBigInt > 0n;
 
   const onDonationMessageChange = (message: string) => {
     setMessage(message);
@@ -163,7 +168,7 @@ const SendDonationPage: NextPage<ProfileProps> = ({ profile }) => {
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const addressOrNickname = (await context.query.addressOrNickname) as string;
-  const isAddress = ethers.utils.isAddress(addressOrNickname);
+  const isAddress = isEthAddress(addressOrNickname);
 
   const searchBy = isAddress ? "address" : "nickname";
   const prismaProfile = await prisma.profile.findFirst({

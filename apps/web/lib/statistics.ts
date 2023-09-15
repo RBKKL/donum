@@ -1,11 +1,10 @@
-import { NewDonationEventObject } from "@donum/contracts/types/DonationsStore";
+import { NewDonationEvent } from "@donum/contracts/types/DonationsStore";
 import { formatTokenAmount } from "@donum/shared/helpers";
-import { BigNumber } from "ethers";
 
 export const getDonationsStatsByPeriod = (
-  donations: NewDonationEventObject[],
-  periodStart: BigNumber,
-  periodEnd: BigNumber
+  donations: NewDonationEvent.OutputObject[],
+  periodStart: bigint,
+  periodEnd: bigint
 ): [string, number] => {
   const donationsByPeriod = donations.filter(
     (donation) =>
@@ -13,9 +12,7 @@ export const getDonationsStatsByPeriod = (
   );
 
   return [
-    formatTokenAmount(
-      donationsByPeriod.reduce((a, b) => b.amount.add(a), BigNumber.from(0))
-    ),
+    formatTokenAmount(donationsByPeriod.reduce((acc, d) => acc + d.amount, 0n)),
     donationsByPeriod.length,
   ];
 };

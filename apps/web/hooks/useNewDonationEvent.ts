@@ -1,13 +1,12 @@
-import { NewDonationEventObject } from "@donum/contracts/types/DonationsStore";
-import { Address, useContractEvent, useNetwork } from "wagmi";
-import { BigNumber } from "ethers";
-import {
-  castToDonationObject,
-  getContractAddressByChainId,
-} from "@donum/contracts/helpers";
+import { NewDonationEvent } from "@donum/contracts/types/DonationsStore";
+import { useContractEvent, useNetwork } from "wagmi";
+import { getContractAddressByChainId } from "@donum/contracts/helpers";
 import { DonationsStoreABI } from "@donum/contracts/abi";
+import { RemoveUndefined } from "@donum/shared/helpers";
 
-type NewDonationEventListener = (donation: NewDonationEventObject) => void;
+type NewDonationEventListener = (
+  donation: NewDonationEvent.OutputObject
+) => void;
 
 export const useNewDonationEvent = (listener: NewDonationEventListener) => {
   const { chain } = useNetwork();
@@ -15,17 +14,10 @@ export const useNewDonationEvent = (listener: NewDonationEventListener) => {
     address: getContractAddressByChainId(chain?.id),
     abi: DonationsStoreABI,
     eventName: "NewDonation",
-    listener(
-      ...newDonationArray: [
-        Address,
-        string,
-        Address,
-        BigNumber,
-        BigNumber,
-        string,
-      ]
-    ) {
-      listener(castToDonationObject(newDonationArray));
+    listener(logs) {
+      const { args } = logs[0];
+      const newDonation = args as RemoveUndefined<typeof args>;
+      listener(newDonation);
     },
   });
 };

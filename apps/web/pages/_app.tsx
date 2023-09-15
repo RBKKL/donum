@@ -5,7 +5,8 @@ import type { NextPage } from "next";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { WagmiConfig, configureChains, createClient } from "wagmi";
+// import { injectedWallet } from "@rainbow-me/rainbowkit/wallets"; // For local development
+import { WagmiConfig, configureChains, createConfig } from "wagmi";
 import { goerli } from "wagmi/chains";
 import { infuraProvider } from "wagmi/providers/infura";
 import { publicProvider } from "wagmi/providers/public";
@@ -22,20 +23,21 @@ const usedChains = [
   goerli, // Ethereum's Goerli Testnet
 ];
 
-const { chains, provider } = configureChains(usedChains, [
+const { chains, publicClient } = configureChains(usedChains, [
   infuraProvider({ apiKey: browserEnv.INFURA_ID }),
   publicProvider(),
 ]);
 
 const { connectors } = getDefaultWallets({
   appName: APP_NAME,
+  projectId: browserEnv.WALLETCONNECT_PROJECT_ID,
   chains,
 });
 
-const wagmiClient = createClient({
+const wagmiConfig = createConfig({
   autoConnect: true,
   connectors,
-  provider,
+  publicClient,
 });
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -50,7 +52,7 @@ type ExtendedAppProps = AppProps & {
 
 const MyApp = ({ Component, pageProps }: ExtendedAppProps) => {
   return (
-    <WagmiConfig client={wagmiClient}>
+    <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider chains={chains}>
         <SessionProvider session={pageProps.session}>
           <Layout>

@@ -1,21 +1,17 @@
 import { useEffect, useState } from "react";
-import { useContract, useNetwork, useProvider } from "wagmi";
-import type { NewDonationEventObject } from "@donum/contracts/types/DonationsStore";
-import { ethers } from "ethers";
+import { Address, useNetwork, usePublicClient } from "wagmi";
+import type { NewDonationEvent } from "@donum/contracts/types/DonationsStore";
 import { getContractAddressByChainId } from "@donum/contracts/helpers";
 import { DonationsStoreABI } from "@donum/contracts/abi";
+import { RemoveUndefined, isEthAddress } from "@donum/shared/helpers";
 
 export const useDonationsHistory = (recipientAddress: string) => {
   const { chain } = useNetwork();
-  const provider = useProvider({ chainId: chain?.id });
+  const publicClient = usePublicClient();
 
-  const donationsStore = useContract({
-    address: getContractAddressByChainId(chain?.id),
-    abi: DonationsStoreABI,
-    signerOrProvider: provider,
-  });
-
-  const [donations, setDonations] = useState<NewDonationEventObject[]>([]);
+  const [donations, setDonations] = useState<NewDonationEvent.OutputObject[]>(
+    []
+  );
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [error, setError] = useState<unknown>(undefined);
@@ -31,42 +27,43 @@ export const useDonationsHistory = (recipientAddress: string) => {
     setIsError(false);
     setError(undefined);
 
-    if (!donationsStore) {
-      return;
-    }
-
     if (!recipientAddress) {
       setIsLoading(false);
       return;
     }
 
-    try {
-      if (!ethers.utils.isAddress(recipientAddress)) {
-        throw new Error("Invalid address");
-      }
-
-      const donationsFilter = donationsStore.filters.NewDonation(
-        null,
-        null,
-        recipientAddress,
-        null,
-        null,
-        null
-      );
-
-      donationsStore
-        .queryFilter(donationsFilter)
-        .then((events) => {
-          const donations = events.map(
-            (event) => event.args as unknown as NewDonationEventObject
-          );
-          setDonations(donations);
-          setIsLoading(false);
-        })
-        .catch(onError);
-    } catch (error) {
-      onError(error);
+    if (!chain) {
+      setIsLoading(false);
+      return;
     }
+
+    if (!isEthAddress(recipientAddress)) {
+      onError(new Error("Invalid address"));
+      return;
+    }
+
+    publicClient
+      .createContractEventFilter({
+        address: getContractAddressByChainId(chain.id)!,
+        abi: DonationsStoreABI,
+        eventName: "NewDonation",
+        args: {
+          to: recipientAddress as Address,
+        },
+        fromBlock: 0n,
+        toBlock: "latest",
+      })
+      .then((filter) => publicClient.getFilterLogs({ filter }))
+      .then((logs) => {
+        const newDonations = logs.map((log) => {
+          const { args } = log;
+          return args as RemoveUndefined<typeof args>;
+        });
+
+        setDonations([...donations, ...newDonations]);
+        setIsLoading(false);
+      })
+      .catch(onError);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recipientAddress]);
 

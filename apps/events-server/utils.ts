@@ -1,6 +1,8 @@
-import { NewDonationEventObject } from "@donum/contracts/types/DonationsStore";
+import { NewDonationEvent } from "@donum/contracts/types/DonationsStore";
 
-export const toDonationObjectForWidget = (donation: NewDonationEventObject) => {
+export const toDonationObjectForWidget = (
+  donation: NewDonationEvent.OutputObject
+) => {
   return {
     from: donation.from,
     nickname: donation.nickname,

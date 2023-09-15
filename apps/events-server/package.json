@@ -13,12 +13,12 @@
     "@donum/shared": "workspace:*",
     "@fastify/cors": "^8.3.0",
     "envsafe": "^2.0.3",
-    "ethers": "^5.7.2",
-    "fastify": "^4.23.0",
+    "ethers": "^6.7.1",
+    "fastify": "^4.23.1",
     "fastify-socket.io": "^4.0.0",
     "mnemonist": "^0.39.5",
     "socket.io": "^4.7.2",
-    "tsx": "^3.12.8"
+    "tsx": "^3.12.9"
   },
   "devDependencies": {
     "@donum/eslint-config-custom": "workspace:*",

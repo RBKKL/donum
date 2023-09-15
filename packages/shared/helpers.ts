@@ -1,7 +1,12 @@
 import { format } from "date-fns";
-import { BigNumber, BigNumberish } from "ethers";
-import { formatUnits } from "ethers/lib/utils";
+import { type BigNumberish, formatUnits } from "ethers";
 import { NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH } from "./constants";
+import { ethers } from "ethers";
+
+// utility type to remove "| undefined" from all properties of a type
+export type RemoveUndefined<T> = {
+  [K in keyof T]-?: Exclude<T[K], undefined>;
+};
 
 // TODO: check for optimal
 export const isNumber = (value: string): boolean =>
@@ -14,8 +19,8 @@ export const reverseArray = <T>(arr: T[] | undefined): T[] => {
   return [...arr].reverse();
 };
 
-export const formatTimestamp = (timestamp: BigNumber): string => {
-  return format(timestamp.mul(1000).toNumber(), "d MMMM yy  kk:mm");
+export const formatTimestamp = (timestamp: bigint): string => {
+  return format(Number(timestamp * 1000n), "d MMMM yy  kk:mm");
 };
 
 export const formatAddress = (address?: string): string => {
@@ -56,4 +61,9 @@ export const formatNickname = (nickname: string) => {
   return nickname.length > NICKNAME_MAX_LENGTH
     ? `${nickname.slice(0, NICKNAME_MAX_LENGTH)}\u2026`
     : nickname;
+};
+
+// check if string is a valid ethereum address
+export const isEthAddress = (address: string): address is `0x${string}` => {
+  return ethers.isAddress(address);
 };

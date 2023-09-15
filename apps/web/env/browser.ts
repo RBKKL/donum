@@ -8,6 +8,9 @@ export const browserEnv = envsafe({
   INFURA_ID: str({
     input: process.env.NEXT_PUBLIC_INFURA_ID,
   }),
+  WALLETCONNECT_PROJECT_ID: str({
+    input: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
+  }),
   WEBAPP_BASE_URL: url({
     devDefault: "http://localhost:3000",
     input: (() => {

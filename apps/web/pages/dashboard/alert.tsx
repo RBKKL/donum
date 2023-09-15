@@ -98,7 +98,7 @@ const CustomTestDonationPage: ExtendedNextPage = () => {
             onClick={() =>
               sendTestDonation.mutate({
                 from: senderNickname,
-                amount: ethers.utils.parseUnits(amount, "ether").toString(),
+                amount: ethers.parseUnits(amount, "ether").toString(),
                 message,
               })
             }

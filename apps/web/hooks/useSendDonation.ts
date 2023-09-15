@@ -25,9 +25,7 @@ export const useSendDonation = (
     abi: DonationsStoreABI,
     functionName: "donate",
     args: [senderNickname, recipientAddress, message],
-    overrides: {
-      value: ethers.utils.parseEther(donationAmount || "0"),
-    },
+    value: ethers.parseEther(donationAmount || "0"),
   });
 
   const { write, data, isLoading, isError, error } = useContractWrite(config);

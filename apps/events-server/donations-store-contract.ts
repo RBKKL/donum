@@ -1,12 +1,12 @@
-import { ethers } from "ethers";
+import { ethers, InfuraProvider } from "ethers";
 import DonationsStoreDeployment from "@donum/contracts/deployments/goerli/DonationsStore.json";
-import { DonationsStore } from "@donum/contracts/types/DonationsStore";
+import { DonationsStore } from "@donum/contracts/types";
 import { env } from "./env";
 
-const provider = new ethers.providers.InfuraProvider("goerli", env.INFURA_ID);
+const provider = new InfuraProvider("goerli", env.INFURA_ID);
 
 export const DonationsStoreContract = new ethers.Contract(
   DonationsStoreDeployment.address,
   DonationsStoreDeployment.abi,
   provider
-) as DonationsStore;
+) as unknown as DonationsStore;

@@ -19,13 +19,12 @@ import {
   subHours,
   subMonths,
 } from "date-fns";
-import { NewDonationEventObject } from "@donum/contracts/types/DonationsStore";
-import { formatEther } from "ethers/lib/utils";
-import { BigNumber } from "ethers";
+import { NewDonationEvent } from "@donum/contracts/types/DonationsStore";
+import { formatEther } from "ethers";
 import { Periods } from "@donum/shared/constants";
 
 interface ChartProps {
-  donations: NewDonationEventObject[];
+  donations: NewDonationEvent.OutputObject[];
   period: string;
   amountMode?: boolean;
 }
@@ -72,20 +71,18 @@ export const Chart: FC<ChartProps> = ({ donations, period, amountMode }) => {
   const getData = () => {
     const params = paramsByPeriod[period as keyof typeof paramsByPeriod];
 
-    const range: { [key: number]: BigNumber } = [
-      ...new Array(params.rangeLength),
-    ]
+    const range: { [key: number]: bigint } = [...new Array(params.rangeLength)]
       .map((i, idx) => params.sub(params.start(Date.now()), idx).getTime())
       .reverse()
-      .reduce((a, timestamp) => ({ ...a, [timestamp]: BigNumber.from(0) }), {});
+      .reduce((a, timestamp) => ({ ...a, [timestamp]: 0n }), {});
 
     donations.forEach((donation) => {
       const key = params
-        .start(donation.timestamp.mul(1000).toNumber())
+        .start(Number(donation.timestamp * 1000n))
         .getTime() as keyof typeof range;
 
       if (range[key] !== undefined) {
-        range[key] = range[key].add(amountMode ? donation.amount : 1);
+        range[key] = range[key] + (amountMode ? donation.amount : 1n);
       }
     });
 
@@ -94,7 +91,7 @@ export const Chart: FC<ChartProps> = ({ donations, period, amountMode }) => {
       const amount = range[key as keyof typeof range];
       return {
         date: format(key, params.formatString),
-        amount: amountMode ? Number(formatEther(amount)) : amount.toNumber(),
+        amount: amountMode ? Number(formatEther(amount)) : Number(amount),
       };
     });
   };
