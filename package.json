@@ -23,7 +23,7 @@
   "dependencies": {
     "@donum/eslint-config-custom": "workspace:*",
     "@manypkg/cli": "^0.21.0",
-    "@playwright/test": "^1.37.1",
+    "@playwright/test": "^1.38.0",
     "@types/node": "20.6.0",
     "dotenv-cli": "^7.3.0",
     "eslint": "^8.49.0",
