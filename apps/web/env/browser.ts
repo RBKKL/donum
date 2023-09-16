@@ -21,4 +21,11 @@ export const browserEnv = envsafe({
       return process.env.NEXT_PUBLIC_WEBAPP_BASE_URL;
     })(),
   }),
+  SUPABASE_URL: url({
+    devDefault: "http://localhost:54321",
+    input: process.env.NEXT_PUBLIC_SUPABASE_URL,
+  }),
+  SUPABASE_ANON_KEY: str({
+    input: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  }),
 });

@@ -12,17 +12,18 @@ export const serverEnv = {
       devDefault: "development",
       choices: ["development", "test", "production"],
     }),
-    SUPABASE_STORAGE_URL: url({
+    SUPABASE_URL: url({
       devDefault: "http://localhost:54321/storage/v1",
+      input: process.env.NEXT_PUBLIC_SUPABASE_URL,
     }),
-    SUPABASE_SERVICE_KEY: str({
+    SUPABASE_SERVICE_ROLE_KEY: str({
       devDefault:
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSJ9.vI9obAHOGyVVKa3pD--kJlyxp-Z2zV9UUMAhKpNLAc",
     }),
     NEXTAUTH_SECRET: str({
       devDefault: "secret",
     }),
-    DATABASE_URL: url({
+    POSTGRES_PRISMA_URL: url({
       devDefault: "postgresql://postgres:postgres@localhost:54322/postgres",
     }),
     EVENTS_SERVER_URL: url({
@@ -31,9 +32,6 @@ export const serverEnv = {
     }),
     EVENTS_SERVER_AUTH_TOKEN: str({
       devDefault: "secret-auth-token",
-    }),
-    KEYV_URL: url({
-      devDefault: "postgresql://postgres:postgres@localhost:54322/postgres",
     }),
   }),
 } as const;
