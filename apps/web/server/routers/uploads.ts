@@ -1,15 +1,19 @@
 import { z } from "zod";
 import { router, protectedProcedure } from "@server/trpc";
-import { UploadTypes } from "@server/uploads";
-import { serverEnv } from "@env/server";
+import { UploadTypes, uploadConfig } from "@lib/storage";
 import { v4 as uuidv4 } from "uuid";
 
 export const uploadsRouter = router({
   createUploadUrl: protectedProcedure
     .input(z.object({ type: z.enum(UploadTypes) }))
     .mutation(async ({ ctx, input }) => {
-      const id = uuidv4();
-      await ctx.uploadsStore.set(id, input.type); // store the upload type for generated id in keyv store
-      return `${serverEnv.WEBAPP_BASE_URL}/api/files/upload?id=${id}`;
+      const bucketName = uploadConfig[input.type].bucketName;
+      const bucket = await ctx.storage.createBucketIfAbsent(bucketName);
+      const { data, error } = await bucket.createSignedUploadUrl(uuidv4()); // TODO: change naming convention so we can delete previous uploads
+      if (error) {
+        throw error; // TODO: handle error
+      }
+
+      return { bucket: bucketName, path: data.path, token: data.token };
     }),
 });
