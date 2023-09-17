@@ -1,5 +1,6 @@
 import { trpc } from "@lib/trpc";
-import type { UploadType } from "@server/uploads";
+import { type UploadType } from "@lib/storage";
+import { browserStorageClient } from "@lib/storage/browser";
 
 type UploadData = {
   type: UploadType;
@@ -11,17 +12,25 @@ export const useUploadFiles = () => {
 
   const uploadFiles = async (uploads: UploadData[]): Promise<string[]> => {
     const urls = uploads.map(async (upload) => {
-      const uploadUrl = await utils.client.uploads.createUploadUrl.mutate({
+      const data = await utils.client.uploads.createUploadUrl.mutate({
         type: upload.type,
       });
-      const form = new FormData();
-      form.append("file", upload.file); // this should be the same as the name in the server
-      const uploadRes = await fetch(uploadUrl, {
-        method: "POST",
-        body: form,
-      });
-      const uploadedFileUrl = await uploadRes.text();
-      return uploadedFileUrl;
+
+      const bucket = browserStorageClient.from(data.bucket);
+      const uploadRes = await bucket.uploadToSignedUrl(
+        data.path,
+        data.token,
+        upload.file
+      );
+
+      if (uploadRes.error) {
+        throw uploadRes.error; // TODO: handle error?
+      }
+
+      const {
+        data: { publicUrl },
+      } = bucket.getPublicUrl(uploadRes.data!.path);
+      return publicUrl; // TODO: can it be vulnerability to send url instead of path to server?
     });
 
     return await Promise.all(urls);
