@@ -13,7 +13,7 @@ export const serverEnv = {
       choices: ["development", "test", "production"],
     }),
     SUPABASE_URL: url({
-      devDefault: "http://localhost:54321/storage/v1",
+      devDefault: "http://localhost:54321",
       input: process.env.NEXT_PUBLIC_SUPABASE_URL,
     }),
     SUPABASE_SERVICE_ROLE_KEY: str({
