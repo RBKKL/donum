@@ -3,7 +3,7 @@ import {
   DESCRIPTION_MAX_LENGTH,
   MESSAGE_MAX_LENGTH,
 } from "@donum/shared/constants";
-import { BN } from "bn.js";
+import { BN } from "bn.js"; // TODO: remove and use native BigInt
 import { isCorrectNickname, isEthAddress } from "@donum/shared/helpers";
 
 export const NicknameFormat = z
