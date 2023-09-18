@@ -1,0 +1,11 @@
+{
+    "extends": "@donum/tsconfig/base.json",
+    "compilerOptions": {
+      "target": "ESNext",
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+      "lib": ["ESNext"],
+    },
+    "include": ["**/*.ts"]
+  }
+  
