@@ -1,11 +1,11 @@
 import { Component } from "solid-js";
 import { formatAddress, formatTokenAmount } from "@donum/shared/helpers";
-import { DonationInfoWithMetadata } from "@/lib/types";
+import { NewDonationWithMetadata } from "@donum/shared/events";
 import { DonationImage } from "./image";
 import "./index.css";
 
 interface DonationAlertProps {
-  donation: DonationInfoWithMetadata;
+  donation: NewDonationWithMetadata;
 }
 
 export const DonationAlert: Component<DonationAlertProps> = (props) => {

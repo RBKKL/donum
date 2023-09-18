@@ -22,4 +22,4 @@ export const MessageFormat = z.string().max(MESSAGE_MAX_LENGTH);
 export const NotificationDurationFormat = z.number().int();
 export const AvatarUrlFormat = z.string().url();
 export const SoundUrlFormat = z.string().url();
-export const AmountFormat = z.bigint().gte(0n);
+export const AmountFormat = z.bigint().gt(0n);

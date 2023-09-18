@@ -1,5 +1,5 @@
 import { Component, Match, Switch } from "solid-js";
-import { DonationMetadata } from "@/lib/types";
+import { DonationMetadata } from "@donum/shared/events";
 import "./index.css";
 
 type DonationImageProps = Pick<DonationMetadata, "imageSrc" | "imageType">;

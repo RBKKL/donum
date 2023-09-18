@@ -1,15 +1,15 @@
-import { DonationInfoWithMetadata } from "./types";
+import { NewDonationWithMetadata } from "@donum/shared/events";
 import { assign, createMachine } from "xstate";
 import { DEFAULT_PAUSE_BETWEEN_ALERTS_DURATION } from "@donum/shared/constants";
 import { waitSeconds } from "./utils";
 
 export type QueueMachineEvent = {
   type: "ADD_TO_QUEUE";
-  item: DonationInfoWithMetadata;
+  item: NewDonationWithMetadata;
 };
 
 export interface QueueMachineContext {
-  queue: DonationInfoWithMetadata[];
+  queue: NewDonationWithMetadata[];
 }
 
 export const donationQueueMachine = createMachine<

@@ -1,5 +1,5 @@
 import { createStore } from "solid-js/store";
-import { DonationMetadata } from "./types";
+import { DonationMetadata } from "@donum/shared/events";
 import {
   DEFAULT_ALERT_DURATION,
   DEFAULT_DONATION_IMAGE_URL,

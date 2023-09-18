@@ -2,21 +2,22 @@ import Fastify from "fastify";
 import socketioServer from "fastify-socket.io";
 import corsPlugin from "@fastify/cors";
 import { BiMap } from "mnemonist";
-import { NewDonationEvent } from "@donum/contracts/types/DonationsStore";
+import superJSON from "superjson";
+import { NewDonationEvent as NewDonationContractEvent } from "@donum/contracts/types/DonationsStore";
 import { castToDonationObject } from "@donum/contracts/helpers";
 import { DonationsStoreContract } from "./donations-store-contract";
-import { toDonationObjectForWidget } from "./utils";
 import { prisma } from "@donum/prisma";
 import { DEFAULT_SHOW_AMOUNT } from "@donum/shared/constants";
+import type {
+  ChangeSettingsEvent,
+  NewDonationEvent,
+} from "@donum/shared/events";
 import { env } from "./env";
 
 const clients = new BiMap<string, string>(); // address <-> socketId
 
-const logDonationMsg = (donation: NewDonationEvent.OutputObject) => {
-  return `New donation: ${JSON.stringify(
-    donation,
-    (_, value) => (typeof value === "bigint" ? value.toString() : value) // bigints are not supported by JSON.stringify
-  )}`;
+const logDonationMsg = (donation: NewDonationContractEvent.OutputObject) => {
+  return `New donation: ${superJSON.serialize(donation).json}`;
 };
 
 const app = Fastify({ logger: true });
@@ -43,14 +44,11 @@ app.ready((err) => {
     const profile = await prisma.profile.findFirst({
       where: { address: socket.handshake.auth.address }, // TODO: add authentification with JWT
     });
-    app.io
-      .to(socket.id)
-      .emit(
-        "change-settings",
-        profile?.notificationImageUrl,
-        profile?.notificationSoundUrl,
-        profile?.notificationDuration
-      );
+    app.io.to(socket.id).emit("changeSettings", {
+      notificationDuration: profile?.notificationDuration,
+      notificationImageUrl: profile?.notificationImageUrl,
+      notificationSoundUrl: profile?.notificationSoundUrl,
+    });
 
     socket.on("disconnect", () => {
       app.log.info(`Client with id: ${socket.id} disconnected`);
@@ -60,7 +58,7 @@ app.ready((err) => {
 });
 
 const emitNewDonationEvent = async (
-  donation: NewDonationEvent.OutputObject
+  donation: NewDonationContractEvent.OutputObject
 ) => {
   app.log.info(logDonationMsg(donation));
 
@@ -75,9 +73,12 @@ const emitNewDonationEvent = async (
   });
   const minShowAmount = profile?.minShowAmount || DEFAULT_SHOW_AMOUNT;
   if (donation.amount >= minShowAmount) {
-    app.io
-      .to(socketId)
-      .emit("new-donation", toDonationObjectForWidget(donation));
+    app.io.to(socketId).emit("newDonation", {
+      from: donation.from,
+      nickname: donation.nickname,
+      message: donation.message,
+      amount: donation.amount.toString(),
+    });
   }
 };
 
@@ -87,10 +88,13 @@ app.post("/test", (req, res) => {
     return;
   }
 
-  const testDonation = JSON.parse(req.body as string);
+  const testDonation = superJSON.parse<NewDonationEvent>(req.body as string);
   emitNewDonationEvent({
-    ...testDonation,
-    amount: BigInt(testDonation.amount),
+    ...testDonation.data,
+    to: testDonation.to,
+    from: "", // dummy value for test donation
+    amount: BigInt(testDonation.data.amount),
+    timestamp: BigInt(Date.now()),
   });
   res.status(200).send();
 });
@@ -101,28 +105,15 @@ app.post("/change-settings", async (req, res) => {
     return;
   }
 
-  const {
-    address,
-    notificationImageUrl,
-    notificationSoundUrl,
-    notificationDuration,
-  } = JSON.parse(req.body as string);
+  const { to, data } = superJSON.parse<ChangeSettingsEvent>(req.body as string);
 
-  const clientSocketId = clients.get(address);
+  const clientSocketId = clients.get(to);
   if (!clientSocketId) {
     res.status(404).send("Client not found");
     return;
   }
 
-  app.io
-    .to(clientSocketId)
-    .emit(
-      "change-settings",
-      notificationImageUrl,
-      notificationSoundUrl,
-      notificationDuration
-    );
-
+  app.io.to(clientSocketId).emit("changeSettings", data);
   res.status(200).send();
 });
 

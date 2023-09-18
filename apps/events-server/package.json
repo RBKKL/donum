@@ -18,6 +18,7 @@
     "fastify-socket.io": "^4.0.0",
     "mnemonist": "^0.39.5",
     "socket.io": "^4.7.2",
+    "superjson": "^1.13.1",
     "tsx": "^3.12.9"
   },
   "devDependencies": {

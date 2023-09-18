@@ -14,9 +14,13 @@ import {
 } from "@donum/shared/constants";
 import { DonationAlert } from "@/components/donation-alert";
 import { useDonationQueueMachine } from "@/hooks/useDonationQueueMachine";
-import { DonationInfo } from "@/lib/types";
 import { store, setStore } from "@/lib/store";
 import { env } from "@/lib/env";
+import {
+  ClientToServerEvents,
+  NewDonationEventData,
+  ServerToClientEvents,
+} from "@donum/shared/events";
 
 export const Widget = () => {
   const [error, setError] = createSignal<Error>();
@@ -26,7 +30,9 @@ export const Widget = () => {
     console.log(`Connected to ${socket.id}!`);
   };
 
-  const onNewDonation = (donation: DonationInfo) => {
+  const onNewDonation: ServerToClientEvents["newDonation"] = (
+    donation: NewDonationEventData
+  ) => {
     addToQueue({
       ...donation,
       duration: store.duration,
@@ -36,11 +42,11 @@ export const Widget = () => {
     });
   };
 
-  const onSettingsChange = (
-    notificationImageUrl: string,
-    notificationSoundUrl: string,
-    notificationDuration: number
-  ) => {
+  const onSettingsChange: ServerToClientEvents["changeSettings"] = ({
+    notificationDuration,
+    notificationImageUrl,
+    notificationSoundUrl,
+  }) => {
     const imageSrc = notificationImageUrl || DEFAULT_DONATION_IMAGE_URL;
     const soundSrc = notificationSoundUrl || DEFAULT_DONATION_SOUND_URL;
     const duration = notificationDuration || DEFAULT_ALERT_DURATION;
@@ -65,18 +71,21 @@ export const Widget = () => {
         throw new Error("No address was provided in search params");
       }
 
-      const socket = io(env.EVENTS_SERVER_URL, {
-        auth: {
-          address,
-        },
-      });
+      const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
+        env.EVENTS_SERVER_URL,
+        {
+          auth: {
+            address,
+          },
+        }
+      );
       onCleanup(() => {
         socket.disconnect();
       });
 
       socket.on("connect", onSocketConnect(socket));
-      socket.on("change-settings", onSettingsChange);
-      socket.on("new-donation", onNewDonation);
+      socket.on("changeSettings", onSettingsChange);
+      socket.on("newDonation", onNewDonation);
     }, setError);
   });
 

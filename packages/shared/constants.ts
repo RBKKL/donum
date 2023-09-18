@@ -1,3 +1,5 @@
+import { NewDonationEventData } from "./events";
+
 export const APP_NAME = "Donum";
 export const CONTRACT_NAME = "DonationsStore";
 export const SIGN_IN_MESSAGE =
@@ -45,8 +47,9 @@ export enum SessionStatus {
 
 export const DEFAULT_ADDRESS = "0xAC0772000aa52CbF8a8dB501cC8caC03cDF01bf6";
 
-export const DEFAULT_TEST_DONATION = {
-  from: "Test user",
+export const DEFAULT_TEST_DONATION: NewDonationEventData = {
+  from: "", // address
+  nickname: "Test user",
   amount: "1234567890000000000", // 1.23456789 ETH,
   message: "This is a test donation",
 };
