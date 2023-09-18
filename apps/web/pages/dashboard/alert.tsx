@@ -98,7 +98,7 @@ const CustomTestDonationPage: ExtendedNextPage = () => {
             text="Send test donation"
             onClick={() =>
               sendTestDonation.mutate({
-                from: senderNickname,
+                nickname: senderNickname,
                 amount: parseEther(amount),
                 message,
               })

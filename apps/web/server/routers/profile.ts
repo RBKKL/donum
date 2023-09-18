@@ -1,4 +1,6 @@
 import { z } from "zod";
+import SuperJSON from "superjson";
+import type { ChangeSettingsEvent } from "@donum/shared/events";
 import { protectedProcedure, publicProcedure, router } from "@server/trpc";
 import {
   AddressFormat,
@@ -126,6 +128,15 @@ export const profileRouter = router({
         },
       });
 
+      const data: ChangeSettingsEvent = {
+        to: input.address,
+        data: {
+          notificationImageUrl: profile.notificationImageUrl,
+          notificationSoundUrl: profile.notificationSoundUrl,
+          notificationDuration: profile.notificationDuration,
+        },
+      };
+
       const response = await fetch(
         `${serverEnv.EVENTS_SERVER_URL}/change-settings`,
         {
@@ -133,12 +144,7 @@ export const profileRouter = router({
           headers: {
             Authorization: serverEnv.EVENTS_SERVER_AUTH_TOKEN,
           },
-          body: JSON.stringify({
-            address: input.address,
-            notificationImageUrl: profile.notificationImageUrl,
-            notificationSoundUrl: profile.notificationSoundUrl,
-            notificationDuration: profile.notificationDuration,
-          }),
+          body: SuperJSON.stringify(data),
         }
       );
 

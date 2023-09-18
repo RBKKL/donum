@@ -6,6 +6,9 @@
     "lib": ["ESNext", "DOM"],
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
-    "types": ["vite/client"]
+    "types": ["vite/client"],
+    "paths": {
+      "@/*": ["./src/*"],
+    }
   },
 }

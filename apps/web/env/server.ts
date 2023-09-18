@@ -12,10 +12,6 @@ export const serverEnv = {
       devDefault: "development",
       choices: ["development", "test", "production"],
     }),
-    SUPABASE_URL: url({
-      devDefault: "http://localhost:54321",
-      input: process.env.NEXT_PUBLIC_SUPABASE_URL,
-    }),
     SUPABASE_SERVICE_ROLE_KEY: str({
       devDefault:
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSJ9.vI9obAHOGyVVKa3pD--kJlyxp-Z2zV9UUMAhKpNLAc",

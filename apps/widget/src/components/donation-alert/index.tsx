@@ -1,16 +1,14 @@
 import { Component } from "solid-js";
 import { formatAddress, formatTokenAmount } from "@donum/shared/helpers";
-import { DonationImage } from "./donation-image";
-import { DonationInfoWithMetadata } from "./types";
-import "./donation-alert.css";
+import { NewDonationWithMetadata } from "@donum/shared/events";
+import { DonationImage } from "./image";
+import "./index.css";
 
 interface DonationAlertProps {
-  donation: DonationInfoWithMetadata;
+  donation: NewDonationWithMetadata;
 }
 
 export const DonationAlert: Component<DonationAlertProps> = (props) => {
-  console.log(props.donation);
-
   return (
     <div class="donation">
       <audio src={props.donation.soundSrc} autoplay />
