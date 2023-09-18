@@ -1,5 +1,6 @@
 /// <reference types="vite/client" />
 
+import { fileURLToPath, URL } from "url";
 import { defineConfig } from "vite";
 import solidPlugin from "vite-plugin-solid";
 
@@ -10,5 +11,11 @@ export default defineConfig({
   },
   resolve: {
     conditions: ["development", "browser"],
+    alias: [
+      {
+        find: "@",
+        replacement: fileURLToPath(new URL("./src", import.meta.url)),
+      },
+    ],
   },
 });

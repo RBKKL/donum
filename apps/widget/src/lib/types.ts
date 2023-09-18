@@ -1,5 +1,3 @@
-import { Socket } from "socket.io-client";
-
 export interface DonationInfo {
   from: string;
   nickname: string;
@@ -17,8 +15,3 @@ export interface DonationMetadata {
 export interface DonationInfoWithMetadata
   extends DonationInfo,
     DonationMetadata {}
-
-export interface WidgetStore extends DonationMetadata {
-  socket?: Socket;
-  error?: Error;
-}

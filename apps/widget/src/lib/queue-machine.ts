@@ -19,6 +19,7 @@ export const donationQueueMachine = createMachine<
   {
     id: "donationQueue",
     initial: "checkingIfThereAreMoreDonations",
+    predictableActionArguments: true,
     context: {
       queue: [],
     },

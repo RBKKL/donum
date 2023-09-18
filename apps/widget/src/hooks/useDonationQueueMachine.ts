@@ -1,6 +1,6 @@
 import { useMachine } from "@xstate/solid";
-import { donationQueueMachine } from "../queue-machine";
-import { DonationInfoWithMetadata } from "../types";
+import { donationQueueMachine } from "@/lib/queue-machine";
+import { DonationInfoWithMetadata } from "@/lib/types";
 
 export const useDonationQueueMachine = () => {
   const [state, send] = useMachine(donationQueueMachine);
