@@ -10,7 +10,6 @@ import {
   NotificationDurationFormat,
 } from "@server/input-formats";
 import { TRPCError } from "@trpc/server";
-import { Prisma } from "@donum/prisma";
 import { populateProfileWithDefaultValues, Profile } from "@lib/profile";
 import { serverEnv } from "@env/server";
 
@@ -97,7 +96,7 @@ export const profileRouter = router({
       }
 
       if (input.minShowAmount) {
-        updatedData.minShowAmount = new Prisma.Decimal(input.minShowAmount);
+        updatedData.minShowAmount = input.minShowAmount;
       }
 
       if (input.notificationDuration) {

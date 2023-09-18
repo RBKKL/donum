@@ -21,7 +21,7 @@ import { Address, useAccount, useBalance } from "wagmi";
 import { Balance } from "@components/Balance";
 import { Button } from "@components/Button";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { ethers } from "ethers";
+import { parseUnits, formatUnits } from "viem";
 import {
   PopulatedProfile,
   populateProfileWithDefaultValues,
@@ -46,26 +46,25 @@ const SendDonationPage: NextPage<ProfileProps> = ({ profile }) => {
     address,
     watch: true,
   });
+  const decimals = balanceData?.decimals || 18;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [senderNickname, setSenderNickname] = useState("");
-  const [donationAmount, setDonationAmount] = useState(
-    ethers.formatEther(profile?.minShowAmount ?? DEFAULT_SHOW_AMOUNT)
-  );
   const [message, setMessage] = useState("");
+  // TODO: abstract amount handling to custom hook
+  const [donationAmount, setDonationAmount] = useState(
+    formatUnits(profile?.minShowAmount ?? DEFAULT_SHOW_AMOUNT, decimals)
+  );
+  const donationAmountBigInt = parseUnits(donationAmount, decimals);
 
   const { donate, isAvailable, isLoading, isError } = useSendDonation(
     senderNickname,
     recipientAddress,
-    donationAmount,
+    donationAmountBigInt,
     message
   );
 
-  const donationAmountBigInt = ethers.parseUnits(
-    donationAmount,
-    balanceData?.decimals
-  );
   const isValidDonationAmount =
     isNumber(donationAmount) &&
     balanceData?.value &&
@@ -159,7 +158,7 @@ const SendDonationPage: NextPage<ProfileProps> = ({ profile }) => {
         setIsOpen={setIsModalOpen}
         isError={isError}
         isLoading={isLoading}
-        donationAmount={donationAmount}
+        donationAmount={donationAmountBigInt}
         nickname={profile.nickname || formatAddress(profile.address)}
       />
     </div>

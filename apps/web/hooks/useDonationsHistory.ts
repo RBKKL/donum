@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Address, useNetwork, usePublicClient } from "wagmi";
-import type { NewDonationEvent } from "@donum/contracts/types/DonationsStore";
+import { type NewDonationEvent } from "@donum/contracts/types/DonationsStore";
 import { getContractAddressByChainId } from "@donum/contracts/helpers";
 import { DonationsStoreABI } from "@donum/contracts/abi";
-import { RemoveUndefined, isEthAddress } from "@donum/shared/helpers";
+import { type RemoveUndefined, isEthAddress } from "@donum/shared/helpers";
 
 export const useDonationsHistory = (recipientAddress: string) => {
   const { chain } = useNetwork();

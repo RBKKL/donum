@@ -1,4 +1,4 @@
-import { prisma, Prisma } from ".";
+import { prisma } from ".";
 
 async function main() {
   await prisma.reservedWords.createMany({
@@ -52,7 +52,7 @@ async function main() {
       address: "0xAC0772000aa52CbF8a8dB501cC8caC03cDF01bf6",
       nickname: "AverageNixEnjoyer",
       description: "Da da ya",
-      minShowAmount: new Prisma.Decimal(2000000000000000), // 0.002 ETH
+      minShowAmount: 2000000000000000n, // 0.002 ETH
     },
   });
   const user2 = await prisma.profile.upsert({
@@ -62,7 +62,7 @@ async function main() {
       address: "0xA5aDE7Ae4f38C4CF674A7FC0D6C53EE12986Ed56",
       nickname: "OhManILovePhysics",
       description: "always learning",
-      minShowAmount: new Prisma.Decimal(1500000000000000), // 0.0015 ETH
+      minShowAmount: 1500000000000000n, // 0.0015 ETH
     },
   });
   const user3 = await prisma.profile.upsert({

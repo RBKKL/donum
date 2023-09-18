@@ -3,7 +3,6 @@ import {
   DESCRIPTION_MAX_LENGTH,
   MESSAGE_MAX_LENGTH,
 } from "@donum/shared/constants";
-import { BN } from "bn.js"; // TODO: remove and use native BigInt
 import { isCorrectNickname, isEthAddress } from "@donum/shared/helpers";
 
 export const NicknameFormat = z
@@ -23,19 +22,4 @@ export const MessageFormat = z.string().max(MESSAGE_MAX_LENGTH);
 export const NotificationDurationFormat = z.number().int();
 export const AvatarUrlFormat = z.string().url();
 export const SoundUrlFormat = z.string().url();
-
-export const AmountFormat = z.string().transform((val, ctx) => {
-  try {
-    const valBN = new BN(val);
-    if (valBN.isNeg()) {
-      throw new Error("Value should not be negative");
-    }
-    return valBN.toString(10, 78);
-  } catch (e) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: (e as Error).message,
-    });
-    return z.NEVER;
-  }
-});
+export const AmountFormat = z.bigint().gte(0n);
