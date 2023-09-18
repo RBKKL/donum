@@ -41,7 +41,7 @@ app.ready((err) => {
     clients.set(socket.handshake.auth.address, socket.id);
 
     const profile = await prisma.profile.findFirst({
-      where: { address: socket.handshake.auth.address }, // TODO: add authentification
+      where: { address: socket.handshake.auth.address }, // TODO: add authentification with JWT
     });
     app.io
       .to(socket.id)
@@ -63,18 +63,18 @@ const emitNewDonationEvent = async (
   donation: NewDonationEvent.OutputObject
 ) => {
   app.log.info(logDonationMsg(donation));
+
   const socketId = clients.get(donation.to);
+  if (!socketId) {
+    app.log.warn(`Client with address ${donation.to} not connected`);
+    return;
+  }
+
   const profile = await prisma.profile.findFirst({
     where: { address: donation.to },
   });
-
-  const minShowAmount = BigInt(
-    profile?.minShowAmount?.toString() || DEFAULT_SHOW_AMOUNT
-  );
-  console.log("minShowAmount", minShowAmount.toString());
-  console.log("donation.amount", donation.amount.toString());
-
-  if (socketId && donation.amount >= minShowAmount) {
+  const minShowAmount = profile?.minShowAmount || DEFAULT_SHOW_AMOUNT;
+  if (donation.amount >= minShowAmount) {
     app.io
       .to(socketId)
       .emit("new-donation", toDonationObjectForWidget(donation));
@@ -86,8 +86,8 @@ app.post("/test", (req, res) => {
     res.status(403).send("Wrong secret");
     return;
   }
-  const testDonation = JSON.parse(req.body as string);
 
+  const testDonation = JSON.parse(req.body as string);
   emitNewDonationEvent({
     ...testDonation,
     amount: BigInt(testDonation.amount),
@@ -100,6 +100,7 @@ app.post("/change-settings", async (req, res) => {
     res.status(403).send("Wrong secret");
     return;
   }
+
   const {
     address,
     notificationImageUrl,
@@ -108,15 +109,19 @@ app.post("/change-settings", async (req, res) => {
   } = JSON.parse(req.body as string);
 
   const clientSocketId = clients.get(address);
-  clientSocketId &&
-    app.io
-      .to(clientSocketId)
-      .emit(
-        "change-settings",
-        notificationImageUrl,
-        notificationSoundUrl,
-        notificationDuration
-      );
+  if (!clientSocketId) {
+    res.status(404).send("Client not found");
+    return;
+  }
+
+  app.io
+    .to(clientSocketId)
+    .emit(
+      "change-settings",
+      notificationImageUrl,
+      notificationSoundUrl,
+      notificationDuration
+    );
 
   res.status(200).send();
 });
