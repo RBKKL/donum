@@ -23,8 +23,11 @@ export const serverEnv = {
     NEXTAUTH_SECRET: str({
       devDefault: "secret",
     }),
-    POSTGRES_PRISMA_URL: url({
-      devDefault: "postgresql://postgres:postgres@localhost:54322/postgres",
+    POSTGRES_URL: url({
+      devDefault: "postgres://postgres:postgres@localhost:54322/postgres",
+    }),
+    POSTGRES_URL_NON_POOLING: url({
+      devDefault: "postgres://postgres:postgres@localhost:54322/postgres",
     }),
     EVENTS_SERVER_URL: url({
       devDefault: "http://localhost:8000",
