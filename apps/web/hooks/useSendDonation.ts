@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { ethers } from "ethers";
 import {
   Address,
   useContractWrite,
@@ -12,12 +11,12 @@ import { DonationsStoreABI } from "@donum/contracts/abi";
 export const useSendDonation = (
   senderNickname: string,
   recipientAddress: Address,
-  donationAmount: string,
+  amount: bigint,
   message: string
 ) => {
   const { chain } = useNetwork();
 
-  const isValidAmount = !!donationAmount;
+  const isValidAmount = !!amount;
 
   const { config, error: prepareError } = usePrepareContractWrite({
     enabled: isValidAmount,
@@ -25,11 +24,11 @@ export const useSendDonation = (
     abi: DonationsStoreABI,
     functionName: "donate",
     args: [senderNickname, recipientAddress, message],
-    value: ethers.parseEther(donationAmount || "0"),
+    value: amount,
   });
 
   const { write, data, isLoading, isError, error } = useContractWrite(config);
-  const isAvailable = !!write && Number(donationAmount) !== 0;
+  const isAvailable = !!write && amount !== 0n;
   const donate = () => {
     write?.();
   };

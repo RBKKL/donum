@@ -1,5 +1,4 @@
 import { Button } from "@components/Button";
-import { ethers } from "ethers";
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import { MESSAGE_MAX_LENGTH } from "@donum/shared/constants";
@@ -11,6 +10,7 @@ import { TextField } from "@components/TextField";
 import { trpc } from "@lib/trpc";
 import { Loader } from "@components/Loader";
 import type { ExtendedNextPage } from "pages/_app";
+import { parseEther } from "viem";
 
 const CustomTestDonationPage: ExtendedNextPage = () => {
   const { data: session } = useSession();
@@ -20,7 +20,6 @@ const CustomTestDonationPage: ExtendedNextPage = () => {
   const address = session!.user!.address!;
 
   const [senderNickname, setSenderNickname] = useState("");
-  const [amount, setAmount] = useState("0.01");
   const [message, setMessage] = useState("");
   const {
     data: profile,
@@ -30,13 +29,15 @@ const CustomTestDonationPage: ExtendedNextPage = () => {
   } = trpc.profile.byAddress.useQuery({
     address,
   });
+  // TODO: abstract amount handling to custom hook
+  const [amount, setAmount] = useState("0.01");
 
   const sendTestDonation = trpc.donation.sendTestDonation.useMutation();
 
   if (isLoading) return <Loader />;
 
   if (isError) {
-    console.log(error);
+    console.error(`Error while fetching profile: ${error}`);
     return <div>Error!</div>;
   }
 
@@ -98,7 +99,7 @@ const CustomTestDonationPage: ExtendedNextPage = () => {
             onClick={() =>
               sendTestDonation.mutate({
                 from: senderNickname,
-                amount: ethers.parseUnits(amount, "ether").toString(),
+                amount: parseEther(amount),
                 message,
               })
             }

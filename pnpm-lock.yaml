@@ -207,9 +207,6 @@ importers:
       '@trpc/server':
         specifier: ^10.38.3
         version: 10.38.3
-      bn.js:
-        specifier: ^5.2.1
-        version: 5.2.1
       classnames:
         specifier: ^2.3.2
         version: 2.3.2
@@ -274,9 +271,6 @@ importers:
       '@donum/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
-      '@types/bn.js':
-        specifier: ^5.1.1
-        version: 5.1.1
       '@types/node':
         specifier: 20.6.0
         version: 20.6.0
@@ -3202,6 +3196,7 @@ packages:
     resolution: {integrity: sha512-qNrYbZqMx0uJAfKnKclPh+dTwK33KfLHYqtyODwd5HnXOjnkhc4qgn3BrK6RWyGZm5+sIFE7Q7Vz6QQtJB7w7g==}
     dependencies:
       '@types/node': 20.6.0
+    dev: false
 
   /@types/chai-as-promised@7.1.6:
     resolution: {integrity: sha512-cQLhk8fFarRVZAXUQV1xEnZgMoPxqKojBvRkqPCKPQCzEhpbbSKl1Uu75kDng7k5Ln6LQLUmNBjLlFthCgm1NA==}

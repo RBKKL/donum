@@ -6,8 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("POSTGRES_PRISMA_URL")
+  provider  = "postgresql"
+  url       = env("POSTGRES_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 model Profile {
@@ -19,7 +20,7 @@ model Profile {
   // this type represents uint256
   // default value - 0.001 ETH
   // values are stored in WEI
-  minShowAmount        Decimal @default(1000000000000000) @db.Decimal(78, 0)
+  minShowAmount        BigInt  @default(1000000000000000)
   notificationDuration Int     @default(5)
   notificationImageUrl String?
   notificationSoundUrl String?

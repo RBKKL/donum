@@ -11,8 +11,11 @@ export const env = envsafe({
     desc: "The port the app is running on",
     example: 8000,
   }),
-  POSTGRES_PRISMA_URL: url({
-    devDefault: "postgres://postgres:postgres@localhost:5432/postgres",
+  POSTGRES_URL: url({
+    devDefault: "postgres://postgres:postgres@localhost:54322/postgres",
+  }),
+  POSTGRES_URL_NON_POOLING: url({
+    devDefault: "postgres://postgres:postgres@localhost:54322/postgres",
   }),
   EVENTS_SERVER_AUTH_TOKEN: str({
     devDefault: "secret-auth-token",

@@ -12,7 +12,6 @@ import {
 } from "@donum/shared/constants";
 import React, { useState, useEffect } from "react";
 import { isCorrectNickname, isNumber } from "@donum/shared/helpers";
-import { ethers } from "ethers";
 import { Loader } from "@components/Loader";
 import { routes } from "@lib/routes";
 import { Input } from "@components/Input";
@@ -22,6 +21,7 @@ import { useUploadFiles } from "@hooks/useUploadFiles";
 import { useSession } from "next-auth/react";
 import { useDebounce } from "react-use";
 import type { ExtendedNextPage } from "pages/_app";
+import { formatEther, parseEther } from "viem";
 
 const EditDonationPage: ExtendedNextPage = () => {
   const router = useRouter();
@@ -29,6 +29,7 @@ const EditDonationPage: ExtendedNextPage = () => {
   const [avatarUrl, setAvatarUrl] = useState(""); // empty string is for typescript
   const [avatarFile, setAvatarFile] = useState<File>();
   const [newDescription, setNewDescription] = useState("");
+  // TODO: abstract amount handling to custom hook
   const [newMinShowAmount, setNewMinShowAmount] = useState("");
   const [availableNickname, setAvailableNickname] = useState(false);
   const [notificationDuration, setNotificationDuration] = useState("");
@@ -123,9 +124,7 @@ const EditDonationPage: ExtendedNextPage = () => {
         avatarUrl,
         description: newDescription,
         minShowAmount:
-          newMinShowAmount !== ""
-            ? ethers.parseUnits(newMinShowAmount, "ether").toString()
-            : undefined,
+          newMinShowAmount !== "" ? parseEther(newMinShowAmount) : undefined,
         notificationDuration: donateDuration,
         notificationImageUrl,
         notificationSoundUrl,
@@ -205,7 +204,7 @@ const EditDonationPage: ExtendedNextPage = () => {
         <Input
           value={newMinShowAmount}
           onChange={setNewMinShowAmount}
-          placeholder={ethers.formatEther(profile.data.minShowAmount)}
+          placeholder={formatEther(profile.data.minShowAmount)}
           textSize="small"
           rightCorner={
             <div className="flex flex-col items-end">
