@@ -3,24 +3,23 @@
  * @link https://www.prisma.io/docs/support/help-articles/nextjs-prisma-client-dev-practices
  */
 import { PrismaClient } from "@prisma/client";
-
-declare global {
-  // allow global `var` declarations
-  // eslint-disable-next-line no-var
-  var prisma: PrismaClient | undefined;
-}
-
-export const prisma =
-  global.prisma ||
-  new PrismaClient({
-    log:
-      process.env.NODE_ENV === "development"
-        ? ["query", "error", "warn"]
-        : ["error"],
-  });
-
 export * from "@prisma/client";
 
+function createPrismaClient() {
+  return new PrismaClient({
+    log:
+      process.env.NODE_ENV === "development"
+        ? ["query", "info", "warn", "error"]
+        : ["error"],
+  });
+}
+
+const globalForPrisma = global as unknown as {
+  prisma?: ReturnType<typeof createPrismaClient>;
+};
+
+export const prisma = globalForPrisma.prisma ?? createPrismaClient();
+
 if (process.env.NODE_ENV !== "production") {
-  global.prisma = prisma;
+  globalForPrisma.prisma = createPrismaClient();
 }
