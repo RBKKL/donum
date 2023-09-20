@@ -1,5 +1,4 @@
 import { protectedProcedure, router } from "@server/trpc";
-import { serverEnv } from "@env/server";
 import {
   MessageFormat,
   AmountFormat,
@@ -33,10 +32,10 @@ export const donationRouter = router({
         },
       };
 
-      const response = await fetch(`${serverEnv.EVENTS_SERVER_URL}/test`, {
+      const response = await fetch(`${ctx.env.EVENTS_SERVER_URL}/test`, {
         method: "POST",
         headers: {
-          Authorization: serverEnv.EVENTS_SERVER_AUTH_TOKEN,
+          Authorization: ctx.env.EVENTS_SERVER_AUTH_TOKEN,
         },
         body: SuperJSON.stringify(donation),
       });

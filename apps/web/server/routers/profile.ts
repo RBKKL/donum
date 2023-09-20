@@ -13,7 +13,6 @@ import {
 } from "@server/input-formats";
 import { TRPCError } from "@trpc/server";
 import { populateProfileWithDefaultValues, Profile } from "@lib/profile";
-import { serverEnv } from "@env/server";
 
 export const profileRouter = router({
   me: protectedProcedure.query(async ({ ctx }) => {
@@ -138,11 +137,11 @@ export const profileRouter = router({
       };
 
       const response = await fetch(
-        `${serverEnv.EVENTS_SERVER_URL}/change-settings`,
+        `${ctx.env.EVENTS_SERVER_URL}/change-settings`,
         {
           method: "POST",
           headers: {
-            Authorization: serverEnv.EVENTS_SERVER_AUTH_TOKEN,
+            Authorization: ctx.env.EVENTS_SERVER_AUTH_TOKEN,
           },
           body: SuperJSON.stringify(data),
         }

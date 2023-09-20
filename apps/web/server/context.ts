@@ -5,6 +5,7 @@ import { prisma } from "@donum/prisma";
 import { serverStorageClient } from "@lib/storage/server";
 import { Session, getServerSession } from "next-auth";
 import { getAuthOptions } from "../pages/api/auth/[...nextauth]";
+import { serverEnv } from "@env/server";
 
 /**
  * Replace this with an object if you want to pass things to createContextInner
@@ -23,6 +24,7 @@ export const createContextInner = async ({ session }: CreateContextOptions) => {
     session,
     prisma,
     storage: serverStorageClient,
+    env: serverEnv,
   };
 };
 
