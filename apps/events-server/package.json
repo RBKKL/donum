@@ -10,7 +10,7 @@
   "dependencies": {
     "@donum/contracts": "workspace:*",
     "@donum/shared": "workspace:*",
-    "@donum/web": "workspace:*",
+    "@donum/trpc": "workspace:*",
     "@fastify/cors": "^8.3.0",
     "@trpc/client": "^10.38.3",
     "@trpc/server": "^10.38.3",

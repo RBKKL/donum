@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { createRouter, protectedProcedure } from "@server/trpc";
 import { UploadTypes, uploadConfig } from "@donum/storage";
 import { v4 as uuidv4 } from "uuid";
+import { createRouter, protectedProcedure } from "../trpc";
 
 export const uploadsRouter = createRouter({
   createUploadUrl: protectedProcedure

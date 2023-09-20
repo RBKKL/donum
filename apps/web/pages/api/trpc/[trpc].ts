@@ -1,6 +1,5 @@
 import * as trpcNext from "@trpc/server/adapters/next";
-import { appRouter } from "@server/root";
-import { createContext } from "@server/trpc";
+import { appRouter, createContext } from "@donum/trpc/server";
 import { serverEnv } from "@env/server";
 
 // export API handler

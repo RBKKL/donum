@@ -8,13 +8,12 @@
  */
 import { initTRPC, TRPCError } from "@trpc/server";
 import type { CreateNextContextOptions } from "@trpc/server/adapters/next";
-import type { Session } from "next-auth";
 import superjson from "superjson";
 import { ZodError } from "zod";
 import { prisma } from "@donum/prisma";
-import { getServerAuthSession } from "@donum/auth";
+import { getServerAuthSession, type Session } from "@donum/auth";
 import { serverStorageClient } from "@donum/storage/server";
-import { serverEnv } from "@env/server";
+import { serverEnv } from "./env";
 
 /**
  * 1. CONTEXT
@@ -41,7 +40,7 @@ const createInnerContext = async ({ session }: CreateContextOptions) => {
     session,
     prisma,
     storage: serverStorageClient,
-    env: serverEnv,
+    env: serverEnv, // TODO: inject env from server
   };
 };
 

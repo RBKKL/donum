@@ -131,9 +131,9 @@ importers:
       '@donum/shared':
         specifier: workspace:*
         version: link:../../packages/shared
-      '@donum/web':
+      '@donum/trpc':
         specifier: workspace:*
-        version: link:../web
+        version: link:../../packages/trpc
       '@fastify/cors':
         specifier: ^8.3.0
         version: 8.3.0
@@ -196,8 +196,11 @@ importers:
         specifier: workspace:*
         version: link:../../packages/shared
       '@donum/storage':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/storage
+      '@donum/trpc':
+        specifier: workspace:*
+        version: link:../../packages/trpc
       '@radix-ui/react-select':
         specifier: ^1.2.2
         version: 1.2.2(@types/react-dom@18.2.7)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)
@@ -460,6 +463,58 @@ importers:
       '@types/node':
         specifier: 20.6.0
         version: 20.6.0
+      typescript:
+        specifier: 5.2.2
+        version: 5.2.2
+
+  packages/trpc:
+    dependencies:
+      '@donum/auth':
+        specifier: workspace:*
+        version: link:../auth
+      '@donum/prisma':
+        specifier: workspace:*
+        version: link:../prisma
+      '@donum/shared':
+        specifier: workspace:*
+        version: link:../shared
+      '@donum/storage':
+        specifier: workspace:*
+        version: link:../storage
+      '@trpc/client':
+        specifier: ^10.38.3
+        version: 10.38.3(@trpc/server@10.38.3)
+      '@trpc/server':
+        specifier: ^10.38.3
+        version: 10.38.3
+      date-fns:
+        specifier: ^2.30.0
+        version: 2.30.0
+      envsafe:
+        specifier: ^2.0.3
+        version: 2.0.3
+      ethers:
+        specifier: ^6.7.1
+        version: 6.7.1
+      superjson:
+        specifier: ^1.13.1
+        version: 1.13.1
+      uuid:
+        specifier: ^9.0.1
+        version: 9.0.1
+      zod:
+        specifier: ^3.22.2
+        version: 3.22.2
+    devDependencies:
+      '@donum/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@types/node':
+        specifier: 20.6.0
+        version: 20.6.0
+      '@types/uuid':
+        specifier: ^9.0.4
+        version: 9.0.4
       typescript:
         specifier: 5.2.2
         version: 5.2.2

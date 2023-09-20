@@ -1,12 +1,9 @@
 {
   "extends": "@donum/tsconfig/base.json",
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "CommonJS",
+    "target": "ES2020",
     "lib": ["ESNext", "DOM"],
-    "rootDir": ".",
-    "noEmit": false,
-    "outDir": "dist"
+    "module": "ESNext"
   },
   "include": ["**/*.ts"]
 }

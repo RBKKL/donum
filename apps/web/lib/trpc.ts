@@ -1,7 +1,7 @@
 import { httpBatchLink, loggerLink } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
 import superjson from "superjson";
-import type { AppRouter } from "@server/root";
+import type { AppRouter } from "@donum/trpc";
 import { browserEnv } from "@env/browser";
 
 const getBaseUrl = () => {

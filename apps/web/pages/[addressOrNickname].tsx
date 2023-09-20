@@ -26,7 +26,7 @@ import { AmountInput } from "@components/AmountInput";
 import {
   getPopulatedProfileByAddressOrNickname,
   type PopulatedProfile,
-} from "@server/routers/profile";
+} from "@donum/trpc/server/routers/profile";
 import { useMountedState } from "react-use";
 
 const Balance = dynamic(

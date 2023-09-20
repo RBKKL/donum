@@ -4,20 +4,6 @@ import type {
   ChangeSettingsEvent,
   ChangeSettingsEventData,
 } from "@donum/shared/events";
-import {
-  protectedProcedure,
-  publicProcedure,
-  createRouter,
-} from "@server/trpc";
-import {
-  AddressFormat,
-  DescriptionFormat,
-  NicknameFormat,
-  AvatarUrlFormat,
-  AmountFormat,
-  SoundUrlFormat,
-  NotificationDurationFormat,
-} from "@server/input-formats";
 import { TRPCError } from "@trpc/server";
 import type { Prisma, Profile as ProfileDb } from "@donum/prisma";
 import { isEthAddress } from "@donum/shared/helpers";
@@ -32,6 +18,16 @@ import {
   DEFAULT_NOTIFICATION_SOUND_URL,
   DEFAULT_MIN_SHOW_AMOUNT,
 } from "@donum/shared/default-values";
+import { protectedProcedure, publicProcedure, createRouter } from "../trpc";
+import {
+  AddressFormat,
+  DescriptionFormat,
+  NicknameFormat,
+  AvatarUrlFormat,
+  AmountFormat,
+  SoundUrlFormat,
+  NotificationDurationFormat,
+} from "../input-formats";
 
 export type Profile = PartialExcept<Omit<ProfileDb, "id">, "address">;
 export type PopulatedProfile = RemoveUndefinedOrNull<Profile>;
@@ -235,48 +231,35 @@ export const profileRouter = createRouter({
           notificationSoundUrl: input.notificationSoundUrl,
         },
       });
-      const profile = populateProfileWithDefaultValues(profileDb);
 
-      // Send change-settings event to events server if any of the notification settings changed
-      if (
-        input.notificationDuration ||
-        input.notificationImageUrl ||
-        input.notificationSoundUrl
-      ) {
-        const data: ChangeSettingsEvent = {
-          to: input.address,
-          data: {
-            notificationImageUrl: profile.notificationImageUrl,
-            notificationSoundUrl: profile.notificationSoundUrl,
-            notificationDuration: profile.notificationDuration,
+      const data: ChangeSettingsEvent = {
+        to: input.address,
+        data: {
+          notificationImageUrl: profileDb.notificationImageUrl,
+          notificationSoundUrl: profileDb.notificationSoundUrl,
+          notificationDuration: profileDb.notificationDuration,
+        },
+      };
+
+      const response = await fetch(
+        `${ctx.env.EVENTS_SERVER_URL}/change-settings`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: ctx.env.EVENTS_SERVER_AUTH_TOKEN,
           },
-        };
-
-        try {
-          const response = await fetch(
-            `${ctx.env.EVENTS_SERVER_URL}/change-settings`,
-            {
-              method: "POST",
-              headers: {
-                Authorization: ctx.env.EVENTS_SERVER_AUTH_TOKEN,
-              },
-              body: SuperJSON.stringify(data),
-            }
-          );
-
-          if (response.status !== 200) {
-            console.error(
-              `Failed to send change-settings event to events server: ${response.status} ${response.statusText}`
-            );
-          }
-        } catch (error) {
-          console.error(
-            `Failed to send change-settings event to events server: ${error}`
-          );
+          body: SuperJSON.stringify(data),
         }
+      );
+
+      if (response.status !== 200) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Wrong secret",
+        });
       }
 
-      return profile;
+      return populateProfileWithDefaultValues(profileDb);
     }),
   isNicknameAvailable: publicProcedure
     .input(z.object({ address: AddressFormat, nickname: NicknameFormat }))

@@ -1,14 +1,10 @@
-import { protectedProcedure, createRouter } from "@server/trpc";
-import {
-  MessageFormat,
-  AmountFormat,
-  NicknameFormat,
-} from "@server/input-formats";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { DEFAULT_TEST_DONATION } from "@donum/shared/default-values";
 import type { NewDonationEvent } from "@donum/shared/events";
 import SuperJSON from "superjson";
+import { protectedProcedure, createRouter } from "../trpc";
+import { MessageFormat, AmountFormat, NicknameFormat } from "../input-formats";
 
 export const donationRouter = createRouter({
   sendTestDonation: protectedProcedure
