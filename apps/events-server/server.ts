@@ -94,7 +94,7 @@ app.post("/test", (req, res) => {
     to: testDonation.to,
     from: "", // dummy value for test donation
     amount: BigInt(testDonation.data.amount),
-    timestamp: BigInt(Date.now()),
+    timestamp: BigInt(Date.now()) / 1000n, // convert ms to s (real timestamp is in seconds)
   });
   res.status(200).send();
 });

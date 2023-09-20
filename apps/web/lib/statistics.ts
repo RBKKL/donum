@@ -6,10 +6,10 @@ export const getDonationsStatsByPeriod = (
   periodStart: bigint,
   periodEnd: bigint
 ): [string, number] => {
-  const donationsByPeriod = donations.filter(
-    (donation) =>
-      donation.timestamp >= periodStart && donation.timestamp <= periodEnd
-  );
+  const donationsByPeriod = donations.filter((donation) => {
+    const timestamp = donation.timestamp * 1000n; // convert to ms
+    return timestamp >= periodStart && timestamp <= periodEnd;
+  });
 
   return [
     formatTokenAmount(donationsByPeriod.reduce((acc, d) => acc + d.amount, 0n)),

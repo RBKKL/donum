@@ -90,13 +90,14 @@ const DashboardPage: ExtendedNextPage = () => {
     if (isDonationsError) return <div>Error!</div>;
     if (!donations) return <div>No donations yet!</div>;
 
-    const [donationsAmount, donationsCount] = +currentStatsPeriod
-      ? getDonationsStatsByPeriod(
-          donations,
-          BigInt(Date.now() - +currentStatsPeriod),
-          BigInt(Date.now())
-        )
-      : [getTotalDonationsAmount(donations), donations.length];
+    const [donationsAmount, donationsCount] =
+      currentStatsPeriod === StatFramePeriod.ALLTIME
+        ? getDonationsStatsByPeriod(
+            donations,
+            BigInt(Date.now() - +currentStatsPeriod), // currentStatsPeriod is period in ms as string
+            BigInt(Date.now())
+          )
+        : [getTotalDonationsAmount(donations), donations.length];
 
     const data = [
       {

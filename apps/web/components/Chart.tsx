@@ -78,7 +78,7 @@ export const Chart: FC<ChartProps> = ({ donations, period, amountMode }) => {
 
     donations.forEach((donation) => {
       const key = params
-        .start(Number(donation.timestamp * 1000n))
+        .start(Number(donation.timestamp * 1000n)) // convert to ms
         .getTime() as keyof typeof range;
 
       if (range[key] !== undefined) {

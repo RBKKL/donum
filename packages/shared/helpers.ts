@@ -15,7 +15,7 @@ export const reverseArray = <T>(arr: T[] | undefined): T[] => {
 };
 
 export const formatTimestamp = (timestamp: bigint): string => {
-  return format(Number(timestamp * 1000n), "d MMMM yy  kk:mm");
+  return format(Number(timestamp * 1000n), "d MMMM yy  kk:mm"); // convert to ms
 };
 
 export const formatAddress = (address?: string): string => {
