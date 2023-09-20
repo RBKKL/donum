@@ -14,6 +14,7 @@ import {
 import { TRPCError } from "@trpc/server";
 import { populateProfileWithDefaultValues, Profile } from "@lib/profile";
 import type { Prisma } from "@donum/prisma";
+import { isEthAddress } from "@donum/shared/helpers";
 
 const isNicknameAvailable = async (
   prisma: Prisma,
@@ -22,6 +23,10 @@ const isNicknameAvailable = async (
     nickname: string;
   }
 ) => {
+  if (isEthAddress(input.nickname)) {
+    return false;
+  }
+
   const isReservedWord = await prisma.reservedWords.findUnique({
     where: { word: input.nickname },
   });
