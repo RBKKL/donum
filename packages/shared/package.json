@@ -10,6 +10,7 @@
         "@types/node": "20.6.0",
         "date-fns": "^2.30.0",
         "ethers": "^6.7.1",
+        "type-fest": "^4.3.1",
         "typescript": "5.2.2"
     }
 }

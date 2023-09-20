@@ -3,7 +3,8 @@ import { Address, useNetwork, usePublicClient } from "wagmi";
 import { type NewDonationEvent } from "@donum/contracts/types/DonationsStore";
 import { getContractAddressByChainId } from "@donum/contracts/helpers";
 import { DonationsStoreABI } from "@donum/contracts/abi";
-import { type RemoveUndefined, isEthAddress } from "@donum/shared/helpers";
+import { isEthAddress } from "@donum/shared/helpers";
+import type { RemoveUndefined } from "@donum/shared/type-utils";
 
 export const useDonationsHistory = (recipientAddress: string) => {
   const { chain } = useNetwork();

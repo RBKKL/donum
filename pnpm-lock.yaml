@@ -401,6 +401,9 @@ importers:
       ethers:
         specifier: ^6.7.1
         version: 6.7.1
+      type-fest:
+        specifier: ^4.3.1
+        version: 4.3.1
       typescript:
         specifier: 5.2.2
         version: 5.2.2
@@ -11964,6 +11967,11 @@ packages:
   /type-fest@3.13.1:
     resolution: {integrity: sha512-tLq3bSNx+xSpwvAJnzrK0Ep5CLNWjvFTOp71URMaAEWBfRb9nnJiBoUe0tF8bI4ZFO3omgBR6NvnbzVUT3Ly4g==}
     engines: {node: '>=14.16'}
+    dev: false
+
+  /type-fest@4.3.1:
+    resolution: {integrity: sha512-pphNW/msgOUSkJbH58x8sqpq8uQj6b0ZKGxEsLKMUnGorRcDjrUaLS+39+/ub41JNTwrrMyJcUB8+YZs3mbwqw==}
+    engines: {node: '>=16'}
     dev: false
 
   /typechain@8.3.1(typescript@5.2.2):
