@@ -7,7 +7,6 @@ import { TextField } from "@components/TextField";
 import { EthIcon } from "@components/icons/EthIcon";
 import { useSendDonation } from "@hooks/useSendDonation";
 import {
-  DEFAULT_SHOW_AMOUNT,
   MESSAGE_MAX_LENGTH,
   NICKNAME_MAX_LENGTH,
 } from "@donum/shared/constants";
@@ -17,10 +16,10 @@ import {
   isNumber,
 } from "@donum/shared/helpers";
 import { DonationModal } from "@components/DonationModal";
-import { Address, useAccount, useBalance } from "wagmi";
+import { useAccount, useBalance } from "wagmi";
 import { Button } from "@components/Button";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { parseUnits, formatUnits } from "viem";
+import { parseUnits, formatUnits, Address } from "viem";
 import { prisma } from "@donum/prisma";
 import type { GetServerSidePropsContext, NextPage } from "next";
 import { AmountInput } from "@components/AmountInput";
@@ -38,7 +37,7 @@ const Balance = dynamic(
 );
 
 interface ProfileProps {
-  profile: PopulatedProfile | null;
+  profile: PopulatedProfile;
 }
 
 const getParam = (param: string | string[] | undefined): string | undefined => {
@@ -49,8 +48,8 @@ const SendDonationPage: NextPage<ProfileProps> = ({ profile }) => {
   const router = useRouter();
   const addressOrNickname = getParam(router.query.addressOrNickname) as string; // wont be undefined because of the route
 
-  const recipientAddress = (profile?.address || addressOrNickname) as Address;
-  const minShowAmount = profile?.minShowAmount || "0";
+  const recipientAddress = profile.address as Address;
+  const minShowAmount = profile.minShowAmount || "0";
 
   const isMounted = useMountedState();
   const { address, isConnected: isConnectedOnClient } = useAccount();
@@ -67,7 +66,7 @@ const SendDonationPage: NextPage<ProfileProps> = ({ profile }) => {
   const [message, setMessage] = useState("");
   // TODO: abstract amount handling to custom hook
   const [donationAmount, setDonationAmount] = useState(
-    formatUnits(profile?.minShowAmount ?? DEFAULT_SHOW_AMOUNT, decimals)
+    formatUnits(profile.minShowAmount, decimals)
   );
   const donationAmountBigInt = parseUnits(donationAmount, decimals);
 
@@ -186,6 +185,12 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const profile = await getPopulatedProfileByAddressOrNickname(prisma, {
     addressOrNickname,
   });
+
+  if (!profile) {
+    return {
+      notFound: true,
+    };
+  }
 
   return {
     props: {
