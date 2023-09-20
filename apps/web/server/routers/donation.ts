@@ -1,4 +1,4 @@
-import { protectedProcedure, router } from "@server/trpc";
+import { protectedProcedure, createRouter } from "@server/trpc";
 import {
   MessageFormat,
   AmountFormat,
@@ -10,7 +10,7 @@ import { DEFAULT_TEST_DONATION } from "@donum/shared/default-values";
 import type { NewDonationEvent } from "@donum/shared/events";
 import SuperJSON from "superjson";
 
-export const donationRouter = router({
+export const donationRouter = createRouter({
   sendTestDonation: protectedProcedure
     .input(
       z

@@ -4,7 +4,11 @@ import type {
   ChangeSettingsEvent,
   ChangeSettingsEventData,
 } from "@donum/shared/events";
-import { protectedProcedure, publicProcedure, router } from "@server/trpc";
+import {
+  protectedProcedure,
+  publicProcedure,
+  createRouter,
+} from "@server/trpc";
 import {
   AddressFormat,
   DescriptionFormat,
@@ -131,7 +135,7 @@ export const getPopulatedProfileByAddressOrNickname = async (
   return profile;
 };
 
-export const profileRouter = router({
+export const profileRouter = createRouter({
   me: protectedProcedure.query(async ({ ctx }) => {
     return getPopulatedProfileByAddress(ctx.prisma, {
       address: ctx.session.user.address,
