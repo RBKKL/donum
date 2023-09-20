@@ -3,7 +3,7 @@ import type { inferAsyncReturnType } from "@trpc/server";
 import type { CreateNextContextOptions } from "@trpc/server/adapters/next";
 import { prisma } from "@donum/prisma";
 import { serverStorageClient } from "@lib/storage/server";
-import { Session, unstable_getServerSession } from "next-auth";
+import { Session, getServerSession } from "next-auth";
 import { getAuthOptions } from "../pages/api/auth/[...nextauth]";
 
 /**
@@ -32,11 +32,7 @@ export const createContextInner = async ({ session }: CreateContextOptions) => {
  **/
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const createContext = async ({ req, res }: CreateNextContextOptions) => {
-  const session = await unstable_getServerSession(
-    req,
-    res,
-    getAuthOptions(req)
-  );
+  const session = await getServerSession(req, res, getAuthOptions(req));
 
   return await createContextInner({
     session,
