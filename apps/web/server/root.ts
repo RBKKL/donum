@@ -1,7 +1,7 @@
 import { router } from "@server/trpc";
-import { profileRouter } from "./profile";
-import { uploadsRouter } from "./uploads";
-import { donationRouter } from "./donation";
+import { profileRouter } from "./routers/profile";
+import { uploadsRouter } from "./routers/uploads";
+import { donationRouter } from "./routers/donation";
 
 export const appRouter = router({
   profile: profileRouter,
