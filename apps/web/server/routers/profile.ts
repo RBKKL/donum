@@ -12,9 +12,31 @@ import {
   NotificationDurationFormat,
 } from "@server/input-formats";
 import { TRPCError } from "@trpc/server";
-import { populateProfileWithDefaultValues, Profile } from "@lib/profile";
-import type { Prisma } from "@donum/prisma";
+import type { Prisma, Profile as ProfileDb } from "@donum/prisma";
 import { isEthAddress } from "@donum/shared/helpers";
+import type {
+  PartialExcept,
+  RemoveUndefinedOrNull,
+} from "@donum/shared/type-utils";
+import { parseEther } from "viem";
+
+export type Profile = PartialExcept<Omit<ProfileDb, "id">, "address">;
+export type PopulatedProfile = RemoveUndefinedOrNull<Profile>;
+
+const populateProfileWithDefaultValues = (
+  profile: Profile
+): PopulatedProfile => {
+  return {
+    address: profile.address,
+    nickname: profile.nickname ?? "",
+    avatarUrl: profile.avatarUrl || "/default_avatar.gif",
+    description: profile.description ?? "",
+    minShowAmount: profile.minShowAmount ?? parseEther("0.001"), // in wei
+    notificationDuration: profile.notificationDuration ?? 5, // in seconds
+    notificationImageUrl: profile.notificationImageUrl || "",
+    notificationSoundUrl: profile.notificationSoundUrl || "",
+  };
+};
 
 const isNicknameAvailable = async (
   prisma: Prisma,
@@ -45,46 +67,85 @@ const isNicknameAvailable = async (
   return isAvailable;
 };
 
+const getPopulatedProfileByAddress = async (
+  prisma: Prisma,
+  input: {
+    address: string;
+  }
+): Promise<PopulatedProfile> => {
+  const profileDb = await prisma.profile.findFirst({
+    where: { address: input.address },
+  });
+
+  if (!profileDb) {
+    return populateProfileWithDefaultValues({ address: input.address });
+  }
+
+  return populateProfileWithDefaultValues(profileDb);
+};
+
+const getPopulatedProfileByNickname = async (
+  prisma: Prisma,
+  input: {
+    nickname: string;
+  }
+): Promise<PopulatedProfile | null> => {
+  const profileDb = await prisma.profile.findFirst({
+    where: { nickname: input.nickname },
+  });
+
+  if (!profileDb) {
+    return null;
+  }
+
+  return populateProfileWithDefaultValues(profileDb);
+};
+
+export const getPopulatedProfileByAddressOrNickname = async (
+  prisma: Prisma,
+  input: {
+    addressOrNickname: string;
+  }
+): Promise<PopulatedProfile | null> => {
+  const isAddress = isEthAddress(input.addressOrNickname);
+  const profile = isAddress
+    ? await getPopulatedProfileByAddress(prisma, {
+        address: input.addressOrNickname,
+      })
+    : await getPopulatedProfileByNickname(prisma, {
+        nickname: input.addressOrNickname,
+      });
+
+  return profile;
+};
+
 export const profileRouter = router({
   me: protectedProcedure.query(async ({ ctx }) => {
-    const address = ctx.session.user.address;
-    const profile = await ctx.prisma.profile.findFirst({
-      where: { address },
+    return getPopulatedProfileByAddress(ctx.prisma, {
+      address: ctx.session.user.address,
     });
-
-    if (!profile) {
-      return populateProfileWithDefaultValues({ address });
-    }
-
-    return populateProfileWithDefaultValues(profile);
   }),
   byNickname: publicProcedure
     .input(z.object({ nickname: NicknameFormat }))
     .query(async ({ ctx, input }) => {
-      const profile = await ctx.prisma.profile.findFirst({
-        where: { nickname: input.nickname },
-      });
+      const populatedProfile = await getPopulatedProfileByNickname(
+        ctx.prisma,
+        input
+      );
 
-      if (!profile) {
+      if (!populatedProfile) {
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: "No such nickname",
         });
       }
 
-      return populateProfileWithDefaultValues(profile);
+      return populatedProfile;
     }),
   byAddress: publicProcedure
     .input(z.object({ address: AddressFormat }))
     .query(async ({ ctx, input }) => {
-      const profile = await ctx.prisma.profile.findFirst({
-        where: { address: input.address },
-      });
-      if (!profile) {
-        return populateProfileWithDefaultValues({ address: input.address });
-      }
-
-      return populateProfileWithDefaultValues(profile);
+      return getPopulatedProfileByAddress(ctx.prisma, input);
     }),
   edit: protectedProcedure
     .input(
@@ -100,11 +161,11 @@ export const profileRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      let profile = await ctx.prisma.profile.findFirst({
+      let profileDb = await ctx.prisma.profile.findFirst({
         where: { address: input.address },
       });
 
-      const updatedData = profile ?? ({} as Profile);
+      const updatedData = profileDb ?? ({} as Profile);
 
       if (input.nickname === "") {
         updatedData.nickname = null;
@@ -136,7 +197,7 @@ export const profileRouter = router({
         updatedData.notificationDuration = input.notificationDuration;
       }
 
-      profile = await ctx.prisma.profile.upsert({
+      profileDb = await ctx.prisma.profile.upsert({
         where: { address: input.address },
         update: {
           nickname: updatedData.nickname,
@@ -162,9 +223,9 @@ export const profileRouter = router({
       const data: ChangeSettingsEvent = {
         to: input.address,
         data: {
-          notificationImageUrl: profile.notificationImageUrl,
-          notificationSoundUrl: profile.notificationSoundUrl,
-          notificationDuration: profile.notificationDuration,
+          notificationImageUrl: profileDb.notificationImageUrl,
+          notificationSoundUrl: profileDb.notificationSoundUrl,
+          notificationDuration: profileDb.notificationDuration,
         },
       };
 
@@ -186,7 +247,7 @@ export const profileRouter = router({
         });
       }
 
-      return populateProfileWithDefaultValues(profile);
+      return populateProfileWithDefaultValues(profileDb);
     }),
   isNicknameAvailable: publicProcedure
     .input(z.object({ address: AddressFormat, nickname: NicknameFormat }))

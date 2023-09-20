@@ -41,13 +41,13 @@ app.ready((err) => {
     );
     clients.set(socket.handshake.auth.address, socket.id);
 
-    const profile = await prisma.profile.findFirst({
+    const profileDb = await prisma.profile.findFirst({
       where: { address: socket.handshake.auth.address }, // TODO: add authentification with JWT
     });
     app.io.to(socket.id).emit("changeSettings", {
-      notificationDuration: profile?.notificationDuration,
-      notificationImageUrl: profile?.notificationImageUrl,
-      notificationSoundUrl: profile?.notificationSoundUrl,
+      notificationDuration: profileDb?.notificationDuration,
+      notificationImageUrl: profileDb?.notificationImageUrl,
+      notificationSoundUrl: profileDb?.notificationSoundUrl,
     });
 
     socket.on("disconnect", () => {
@@ -68,10 +68,10 @@ const emitNewDonationEvent = async (
     return;
   }
 
-  const profile = await prisma.profile.findFirst({
+  const profileDb = await prisma.profile.findFirst({
     where: { address: donation.to },
   });
-  const minShowAmount = profile?.minShowAmount || DEFAULT_SHOW_AMOUNT;
+  const minShowAmount = profileDb?.minShowAmount || DEFAULT_SHOW_AMOUNT;
   if (donation.amount >= minShowAmount) {
     app.io.to(socketId).emit("newDonation", {
       from: donation.from,
