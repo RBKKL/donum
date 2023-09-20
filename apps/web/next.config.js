@@ -18,4 +18,14 @@ module.exports = {
     config.resolve.fallback = { fs: false, net: false, tls: false };
     return config;
   },
+  experimental: {
+    swcPlugins: [
+      [
+        "next-superjson-plugin",
+        {
+          excluded: [],
+        },
+      ],
+    ],
+  },
 };
