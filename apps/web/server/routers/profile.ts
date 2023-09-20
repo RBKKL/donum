@@ -13,6 +13,32 @@ import {
 } from "@server/input-formats";
 import { TRPCError } from "@trpc/server";
 import { populateProfileWithDefaultValues, Profile } from "@lib/profile";
+import type { Prisma } from "@donum/prisma";
+
+const isNicknameAvailable = async (
+  prisma: Prisma,
+  input: {
+    address: string;
+    nickname: string;
+  }
+) => {
+  const isReservedWord = await prisma.reservedWords.findUnique({
+    where: { word: input.nickname },
+  });
+  if (isReservedWord) {
+    return false;
+  }
+
+  const profileWithSameNickname = await prisma.profile.findFirst({
+    where: { nickname: input.nickname },
+  });
+
+  const isAvailable =
+    !profileWithSameNickname ||
+    profileWithSameNickname.address === input.address;
+
+  return isAvailable;
+};
 
 export const profileRouter = router({
   me: protectedProcedure.query(async ({ ctx }) => {
@@ -79,10 +105,11 @@ export const profileRouter = router({
         updatedData.nickname = null;
       }
       if (input.nickname) {
-        const sameNicknameCheck = await ctx.prisma.profile.findFirst({
-          where: { nickname: input.nickname },
+        const isAvailable = await isNicknameAvailable(ctx.prisma, {
+          address: input.address,
+          nickname: input.nickname,
         });
-        if (sameNicknameCheck && sameNicknameCheck.address !== input.address) {
+        if (!isAvailable) {
           throw new TRPCError({
             code: "BAD_REQUEST",
             message: "This nickname is already used",
@@ -156,19 +183,9 @@ export const profileRouter = router({
 
       return populateProfileWithDefaultValues(profile);
     }),
-  availableNickname: publicProcedure
-    .input(z.object({ nickname: NicknameFormat }))
+  isNicknameAvailable: publicProcedure
+    .input(z.object({ address: AddressFormat, nickname: NicknameFormat }))
     .query(async ({ ctx, input }) => {
-      const isReservedWord = await ctx.prisma.reservedWords.findUnique({
-        where: { word: input.nickname },
-      });
-      if (isReservedWord) {
-        return false;
-      }
-
-      const profile = await ctx.prisma.profile.findFirst({
-        where: { nickname: input.nickname },
-      });
-      return !profile;
+      return isNicknameAvailable(ctx.prisma, input);
     }),
 });
