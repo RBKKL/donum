@@ -1,7 +1,6 @@
 import { useAccount, useNetwork, useSignMessage } from "wagmi";
 import { getCsrfToken, signIn } from "next-auth/react";
 import { SiweMessage } from "siwe";
-import { SIGN_IN_MESSAGE } from "@donum/shared/constants";
 import { useRouter } from "next/router";
 
 export const useLogin = () => {
@@ -16,7 +15,8 @@ export const useLogin = () => {
       const message = new SiweMessage({
         domain: window.location.host,
         address,
-        statement: SIGN_IN_MESSAGE,
+        statement:
+          "This will cost you nothing\nBelow is the technical information",
         uri: window.location.origin,
         version: "1",
         chainId: chain?.id,
@@ -34,7 +34,7 @@ export const useLogin = () => {
           : callbackUrl || "/",
       });
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 

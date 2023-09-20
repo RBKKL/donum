@@ -21,7 +21,7 @@ import {
 } from "date-fns";
 import { NewDonationEvent } from "@donum/contracts/types/DonationsStore";
 import { formatEther } from "ethers";
-import { Periods } from "@donum/shared/constants";
+import { StatFramePeriod } from "@donum/shared/constants";
 
 interface ChartProps {
   donations: NewDonationEvent.OutputObject[];
@@ -30,25 +30,25 @@ interface ChartProps {
 }
 
 const paramsByPeriod = {
-  [Periods.DAY]: {
+  [StatFramePeriod.DAY]: {
     rangeLength: 24,
     sub: subHours,
     start: startOfHour,
     formatString: "hh:mm",
   },
-  [Periods.WEEK]: {
+  [StatFramePeriod.WEEK]: {
     rangeLength: 7,
     sub: subDays,
     start: startOfDay,
     formatString: "d.MM",
   },
-  [Periods.MONTH]: {
+  [StatFramePeriod.MONTH]: {
     rangeLength: 30,
     sub: subDays,
     start: startOfDay,
     formatString: "d.MM",
   },
-  [Periods.YEAR]: {
+  [StatFramePeriod.YEAR]: {
     rangeLength: 12,
     sub: subMonths,
     start: startOfMonth,

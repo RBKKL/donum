@@ -11,15 +11,23 @@ import { useSession } from "next-auth/react";
 import { trpc } from "@lib/trpc";
 import { routes } from "@lib/routes";
 import { getDonationsStatsByPeriod } from "@lib/statistics";
-import {
-  DONATION_CHARTS_PERIOD_OPTIONS,
-  DONATION_STATS_PERIOD_OPTIONS,
-  Periods,
-} from "@donum/shared/constants";
+import { StatFramePeriod } from "@donum/shared/constants";
 import { Select } from "@components/Select";
 import { useState } from "react";
 import { Chart } from "@components/Chart";
 import type { ExtendedNextPage } from "pages/_app";
+
+const DONATION_CHARTS_PERIOD_OPTIONS = [
+  { value: StatFramePeriod.DAY, text: "24 hours" },
+  { value: StatFramePeriod.WEEK, text: "7 days" },
+  { value: StatFramePeriod.MONTH, text: "30 days" },
+  { value: StatFramePeriod.YEAR, text: "year" },
+];
+
+const DONATION_STATS_PERIOD_OPTIONS = [
+  ...DONATION_CHARTS_PERIOD_OPTIONS,
+  { value: StatFramePeriod.ALLTIME, text: "all time" },
+];
 
 const DashboardPage: ExtendedNextPage = () => {
   const { data: session } = useSession();
@@ -28,10 +36,10 @@ const DashboardPage: ExtendedNextPage = () => {
   const recipientAddress = session!.user.address;
 
   const [currentStatsPeriod, setCurrentStatsPeriod] = useState<string>(
-    Periods.ALLTIME
+    StatFramePeriod.ALLTIME
   );
   const [currentChartsPeriod, setCurrentChartsPeriod] = useState<string>(
-    Periods.DAY
+    StatFramePeriod.DAY
   );
 
   const sendTestDonation = trpc.donation.sendTestDonation.useMutation();
