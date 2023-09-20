@@ -1,10 +1,10 @@
 import type { GetServerSidePropsContext, NextApiRequest } from "next";
-import { getServerSession } from "next-auth";
+import { getServerSession, type Session } from "next-auth";
 import type { DefaultSession, NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { getCsrfToken } from "next-auth/react";
 import { SiweMessage } from "siwe";
-import { serverEnv } from "@env/server";
+// import { serverEnv } from "@env/server";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -24,6 +24,13 @@ declare module "next-auth" {
       };
   }
 }
+export type { Session };
+
+// TODO: replace this with the real env
+const serverEnv = {
+  NEXTAUTH_SECRET: "secret",
+  WEBAPP_BASE_URL: "http://localhost:3000",
+} as const;
 
 /**
  * Function to create options for NextAuth.js, which used to configure adapters, providers, callbacks, etc.

@@ -10,6 +10,7 @@
         "clean": "rimraf .next .turbo .vercel .cache node_modules tsconfig.tsbuildinfo"
     },
     "dependencies": {
+        "@donum/auth": "workspace:*",
         "@donum/contracts": "workspace:*",
         "@donum/prisma": "workspace:*",
         "@donum/shared": "workspace:*",

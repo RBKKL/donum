@@ -12,9 +12,9 @@ import type { Session } from "next-auth";
 import superjson from "superjson";
 import { ZodError } from "zod";
 import { prisma } from "@donum/prisma";
+import { getServerAuthSession } from "@donum/auth";
 import { serverStorageClient } from "@lib/storage/server";
 import { serverEnv } from "@env/server";
-import { getServerAuthSession } from "./auth";
 
 /**
  * 1. CONTEXT

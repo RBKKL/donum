@@ -183,6 +183,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@donum/auth':
+        specifier: workspace:*
+        version: link:../../packages/auth
       '@donum/contracts':
         specifier: workspace:*
         version: link:../contracts
@@ -356,6 +359,28 @@ importers:
       vite-plugin-solid:
         specifier: ^2.7.0
         version: 2.7.0(solid-js@1.7.11)(vite@4.4.9)
+
+  packages/auth:
+    dependencies:
+      next:
+        specifier: ^13.4.19
+        version: 13.4.19(react-dom@18.2.0)(react@18.2.0)
+      next-auth:
+        specifier: ^4.23.1
+        version: 4.23.1(next@13.4.19)(react-dom@18.2.0)(react@18.2.0)
+      siwe:
+        specifier: ^2.1.4
+        version: 2.1.4(ethers@6.7.1)
+    devDependencies:
+      '@donum/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@types/node':
+        specifier: 20.6.0
+        version: 20.6.0
+      typescript:
+        specifier: 5.2.2
+        version: 5.2.2
 
   packages/eslint-config-custom:
     dependencies:
