@@ -11,7 +11,7 @@ import {
   DEFAULT_ALERT_DURATION,
   DEFAULT_DONATION_IMAGE_URL,
   DEFAULT_DONATION_SOUND_URL,
-} from "@donum/shared/constants";
+} from "@donum/shared/default-values";
 import { DonationAlert } from "@/components/donation-alert";
 import { useDonationQueueMachine } from "@/hooks/useDonationQueueMachine";
 import { store, setStore } from "@/lib/store";

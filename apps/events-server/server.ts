@@ -7,7 +7,7 @@ import { NewDonationEvent as NewDonationContractEvent } from "@donum/contracts/t
 import { castToDonationObject } from "@donum/contracts/helpers";
 import { DonationsStoreContract } from "./donations-store-contract";
 import { prisma } from "@donum/prisma";
-import { DEFAULT_SHOW_AMOUNT } from "@donum/shared/constants";
+import { DEFAULT_SHOW_AMOUNT } from "@donum/shared/default-values";
 import type {
   ChangeSettingsEvent,
   NewDonationEvent,

@@ -4,7 +4,7 @@ import {
   DEFAULT_ALERT_DURATION,
   DEFAULT_DONATION_IMAGE_URL,
   DEFAULT_DONATION_SOUND_URL,
-} from "@donum/shared/constants";
+} from "@donum/shared/default-values";
 
 interface WidgetStore extends DonationMetadata {}
 

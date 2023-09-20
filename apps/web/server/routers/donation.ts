@@ -6,7 +6,7 @@ import {
 } from "@server/input-formats";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import { DEFAULT_TEST_DONATION } from "@donum/shared/constants";
+import { DEFAULT_TEST_DONATION } from "@donum/shared/default-values";
 import type { NewDonationEvent } from "@donum/shared/events";
 import SuperJSON from "superjson";
 
