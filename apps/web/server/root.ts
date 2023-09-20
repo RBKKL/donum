@@ -1,4 +1,4 @@
-import { router } from "@server/trpc";
+import { router } from "./trpc";
 import { profileRouter } from "./routers/profile";
 import { uploadsRouter } from "./routers/uploads";
 import { donationRouter } from "./routers/donation";

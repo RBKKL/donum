@@ -6,13 +6,11 @@ import superJSON from "superjson";
 import { NewDonationEvent as NewDonationContractEvent } from "@donum/contracts/types/DonationsStore";
 import { castToDonationObject } from "@donum/contracts/helpers";
 import { DonationsStoreContract } from "./donations-store-contract";
-import { prisma } from "@donum/prisma";
-import { DEFAULT_MIN_SHOW_AMOUNT } from "@donum/shared/default-values";
 import type {
   ChangeSettingsEvent,
-  ChangeSettingsEventData,
   NewDonationEvent,
 } from "@donum/shared/events";
+import { apiClient } from "./api-client";
 import { env } from "./env";
 
 const clients = new BiMap<string, string>(); // address <-> socketId
@@ -37,26 +35,19 @@ app.ready((err) => {
   }
 
   app.io.on("connection", async (socket) => {
-    app.log.info(
-      `Connected to server with id: ${socket.id}, address: ${socket.handshake.auth.address}`
-    );
-    clients.set(socket.handshake.auth.address, socket.id);
+    const address = socket.handshake.auth.address; // ethereum address
+    app.log.info(`Client with id: ${socket.id}, address: ${address} connected`);
+    clients.set(address, socket.id);
 
     socket.on("disconnect", () => {
       app.log.info(`Client with id: ${socket.id} disconnected`);
       clients.inverse.delete(socket.id);
     });
 
-    // TODO: replace with API call
-    const profileDb = await prisma.profile.findFirst({
-      where: { address: socket.handshake.auth.address }, // TODO: add authentification with JWT
-    });
-
-    const notificationSettings: ChangeSettingsEventData = {
-      notificationDuration: profileDb?.notificationDuration,
-      notificationImageUrl: profileDb?.notificationImageUrl,
-      notificationSoundUrl: profileDb?.notificationSoundUrl,
-    };
+    const notificationSettings =
+      await apiClient.profile.getNotificationSettings.query({
+        address,
+      });
 
     app.io.to(socket.id).emit("changeSettings", notificationSettings);
   });
@@ -73,12 +64,10 @@ const emitNewDonationEvent = async (
     return;
   }
 
-  // TODO: replace with API call
-  const profileDb = await prisma.profile.findFirst({
-    where: { address: donation.to },
+  // TODO: optimize this
+  const minShowAmount = await apiClient.profile.getMinShowAmount.query({
+    address: donation.to,
   });
-
-  const minShowAmount = profileDb?.minShowAmount || DEFAULT_MIN_SHOW_AMOUNT;
 
   if (donation.amount >= minShowAmount) {
     app.io.to(socketId).emit("newDonation", {

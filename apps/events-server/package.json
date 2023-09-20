@@ -9,9 +9,11 @@
   },
   "dependencies": {
     "@donum/contracts": "workspace:*",
-    "@donum/prisma": "workspace:*",
     "@donum/shared": "workspace:*",
+    "@donum/web": "workspace:*",
     "@fastify/cors": "^8.3.0",
+    "@trpc/client": "^10.38.3",
+    "@trpc/server": "^10.38.3",
     "envsafe": "^2.0.3",
     "ethers": "^6.7.1",
     "fastify": "^4.23.2",

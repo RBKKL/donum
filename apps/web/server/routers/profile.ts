@@ -1,6 +1,9 @@
 import { z } from "zod";
 import SuperJSON from "superjson";
-import type { ChangeSettingsEvent } from "@donum/shared/events";
+import type {
+  ChangeSettingsEvent,
+  ChangeSettingsEventData,
+} from "@donum/shared/events";
 import { protectedProcedure, publicProcedure, router } from "@server/trpc";
 import {
   AddressFormat,
@@ -262,5 +265,25 @@ export const profileRouter = router({
     .input(z.object({ address: AddressFormat, nickname: NicknameFormat }))
     .query(async ({ ctx, input }) => {
       return isNicknameAvailable(ctx.prisma, input);
+    }),
+  getNotificationSettings: publicProcedure
+    .input(z.object({ address: AddressFormat }))
+    .query(async ({ ctx, input }) => {
+      const profile = await getPopulatedProfileByAddress(ctx.prisma, input);
+
+      const notificationSettings: ChangeSettingsEventData = {
+        notificationDuration: profile.notificationDuration,
+        notificationImageUrl: profile.notificationImageUrl,
+        notificationSoundUrl: profile.notificationSoundUrl,
+      };
+
+      return notificationSettings;
+    }),
+  getMinShowAmount: publicProcedure
+    .input(z.object({ address: AddressFormat }))
+    .query(async ({ ctx, input }) => {
+      const profile = await getPopulatedProfileByAddress(ctx.prisma, input);
+
+      return profile.minShowAmount;
     }),
 });

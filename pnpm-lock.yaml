@@ -128,15 +128,21 @@ importers:
       '@donum/contracts':
         specifier: workspace:*
         version: link:../contracts
-      '@donum/prisma':
-        specifier: workspace:*
-        version: link:../../packages/prisma
       '@donum/shared':
         specifier: workspace:*
         version: link:../../packages/shared
+      '@donum/web':
+        specifier: workspace:*
+        version: link:../web
       '@fastify/cors':
         specifier: ^8.3.0
         version: 8.3.0
+      '@trpc/client':
+        specifier: ^10.38.3
+        version: 10.38.3(@trpc/server@10.38.3)
+      '@trpc/server':
+        specifier: ^10.38.3
+        version: 10.38.3
       envsafe:
         specifier: ^2.0.3
         version: 2.0.3
