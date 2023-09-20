@@ -18,7 +18,7 @@
     "lint": "turbo run lint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "clean": "turbo run clean --parallel"
+    "clean": "turbo run clean --parallel && rimraf node_modules"
   },
   "dependencies": {
     "@donum/eslint-config-custom": "workspace:*",
