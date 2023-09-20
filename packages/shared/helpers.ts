@@ -3,19 +3,6 @@ import { type BigNumberish, formatUnits } from "ethers";
 import { NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH } from "./constants";
 import { ethers } from "ethers";
 
-// utility type to remove "| undefined" from all properties of a type
-export type RemoveUndefined<T> = {
-  [K in keyof T]-?: Exclude<T[K], undefined>;
-};
-
-// utility type to remove "| null" from all properties of a type
-export type RemoveNull<T> = {
-  [K in keyof T]: Exclude<T[K], null>;
-};
-
-// utility type to remove "| undefined" and "| null" from all properties of a type
-export type RemoveUndefinedOrNull<T> = RemoveUndefined<RemoveNull<T>>;
-
 // TODO: check for optimal
 export const isNumber = (value: string): boolean =>
   !!value.match(/^\d+\.?\d*$/);
