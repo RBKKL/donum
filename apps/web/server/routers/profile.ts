@@ -235,35 +235,48 @@ export const profileRouter = createRouter({
           notificationSoundUrl: input.notificationSoundUrl,
         },
       });
+      const profile = populateProfileWithDefaultValues(profileDb);
 
-      const data: ChangeSettingsEvent = {
-        to: input.address,
-        data: {
-          notificationImageUrl: profileDb.notificationImageUrl,
-          notificationSoundUrl: profileDb.notificationSoundUrl,
-          notificationDuration: profileDb.notificationDuration,
-        },
-      };
-
-      const response = await fetch(
-        `${ctx.env.EVENTS_SERVER_URL}/change-settings`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: ctx.env.EVENTS_SERVER_AUTH_TOKEN,
+      // Send change-settings event to events server if any of the notification settings changed
+      if (
+        input.notificationDuration ||
+        input.notificationImageUrl ||
+        input.notificationSoundUrl
+      ) {
+        const data: ChangeSettingsEvent = {
+          to: input.address,
+          data: {
+            notificationImageUrl: profile.notificationImageUrl,
+            notificationSoundUrl: profile.notificationSoundUrl,
+            notificationDuration: profile.notificationDuration,
           },
-          body: SuperJSON.stringify(data),
-        }
-      );
+        };
 
-      if (response.status !== 200) {
-        throw new TRPCError({
-          code: "FORBIDDEN",
-          message: "Wrong secret",
-        });
+        try {
+          const response = await fetch(
+            `${ctx.env.EVENTS_SERVER_URL}/change-settings`,
+            {
+              method: "POST",
+              headers: {
+                Authorization: ctx.env.EVENTS_SERVER_AUTH_TOKEN,
+              },
+              body: SuperJSON.stringify(data),
+            }
+          );
+
+          if (response.status !== 200) {
+            console.error(
+              `Failed to send change-settings event to events server: ${response.status} ${response.statusText}`
+            );
+          }
+        } catch (error) {
+          console.error(
+            `Failed to send change-settings event to events server: ${error}`
+          );
+        }
       }
 
-      return populateProfileWithDefaultValues(profileDb);
+      return profile;
     }),
   isNicknameAvailable: publicProcedure
     .input(z.object({ address: AddressFormat, nickname: NicknameFormat }))
