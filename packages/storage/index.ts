@@ -1,4 +1,5 @@
 import { StorageClient as SupabaseStorageClient } from "@supabase/storage-js";
+import type StorageFileApi from "@supabase/storage-js/dist/module/packages/StorageFileApi";
 import {
   AVATAR_ACCEPTABLE_FILE_TYPES,
   AVATAR_MAX_SIZE,
@@ -7,7 +8,6 @@ import {
   SOUND_ACCEPTABLE_FILE_TYPES,
   SOUND_MAX_SIZE,
 } from "@donum/shared/constants";
-import StorageFileApi from "@supabase/storage-js/dist/module/packages/StorageFileApi";
 
 // must contain all buckets names
 export const BUCKET_NAMES = {

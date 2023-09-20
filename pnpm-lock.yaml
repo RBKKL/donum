@@ -195,6 +195,9 @@ importers:
       '@donum/shared':
         specifier: workspace:*
         version: link:../../packages/shared
+      '@donum/storage':
+        specifier: workspace:^
+        version: link:../../packages/storage
       '@radix-ui/react-select':
         specifier: ^1.2.2
         version: 1.2.2(@types/react-dom@18.2.7)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)
@@ -438,6 +441,25 @@ importers:
       type-fest:
         specifier: ^4.3.1
         version: 4.3.1
+      typescript:
+        specifier: 5.2.2
+        version: 5.2.2
+
+  packages/storage:
+    dependencies:
+      '@donum/shared':
+        specifier: workspace:*
+        version: link:../shared
+      '@supabase/storage-js':
+        specifier: ^2.5.4
+        version: 2.5.4
+    devDependencies:
+      '@donum/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@types/node':
+        specifier: 20.6.0
+        version: 20.6.0
       typescript:
         specifier: 5.2.2
         version: 5.2.2

@@ -1,0 +1,17 @@
+{
+    "name": "@donum/storage",
+    "private": true,
+    "scripts": {
+        "lint": "tsc --noEmit && eslint .",
+        "clean": "rimraf .turbo node_modules"
+    },
+    "dependencies": {
+        "@donum/shared": "workspace:*",
+        "@supabase/storage-js": "^2.5.4"
+    },
+    "devDependencies": {
+        "@donum/tsconfig": "workspace:*",
+        "@types/node": "20.6.0",
+        "typescript": "5.2.2"
+    }
+}

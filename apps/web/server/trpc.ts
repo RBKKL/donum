@@ -13,7 +13,7 @@ import superjson from "superjson";
 import { ZodError } from "zod";
 import { prisma } from "@donum/prisma";
 import { getServerAuthSession } from "@donum/auth";
-import { serverStorageClient } from "@lib/storage/server";
+import { serverStorageClient } from "@donum/storage/server";
 import { serverEnv } from "@env/server";
 
 /**
