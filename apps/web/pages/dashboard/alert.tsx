@@ -15,9 +15,9 @@ import { parseEther } from "viem";
 const CustomTestDonationPage: ExtendedNextPage = () => {
   const { data: session } = useSession();
 
-  // session, user and name can't be null here, because it's secured page and Layout will show warning
+  // NOTE: session can't be null here, because it's secured page and Layout will show warning
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const address = session!.user!.address!;
+  const address = session!.user.address;
 
   const [senderNickname, setSenderNickname] = useState("");
   const [message, setMessage] = useState("");
@@ -40,8 +40,6 @@ const CustomTestDonationPage: ExtendedNextPage = () => {
     console.error(`Error while fetching profile: ${error}`);
     return <div>Error!</div>;
   }
-
-  if (!profile) return <div>You have no profile!</div>;
 
   const onAmountChange = (amount: string) =>
     isNumber(amount) && setAmount(amount);

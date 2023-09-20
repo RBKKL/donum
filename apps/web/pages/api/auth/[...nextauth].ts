@@ -1,4 +1,8 @@
-import NextAuth, { NextAuthOptions, Session } from "next-auth";
+import NextAuth, {
+  type DefaultSession,
+  type NextAuthOptions,
+  type Session,
+} from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { getCsrfToken } from "next-auth/react";
 import { SiweMessage } from "siwe";
@@ -16,11 +20,14 @@ type GetAuthOptionsFn = (
 
 declare module "next-auth" {
   interface User {
-    address?: string;
+    address: string; // ethereum address
   }
 
-  interface Session {
-    user: User;
+  interface Session extends DefaultSession {
+    user: DefaultSession["user"] &
+      User & {
+        id: string;
+      };
   }
 }
 
@@ -43,7 +50,9 @@ export const getAuthOptions: GetAuthOptionsFn = (req) => ({
             nonce: await getCsrfToken({ req }),
           });
 
-          return result.success ? { id: message.address } : null;
+          return result.success
+            ? { id: message.address, address: message.address }
+            : null;
         } catch (e) {
           return null;
         }

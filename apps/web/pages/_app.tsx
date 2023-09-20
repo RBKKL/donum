@@ -16,6 +16,7 @@ import { trpc } from "@lib/trpc";
 import { browserEnv } from "@env/browser";
 import { SessionProvider } from "next-auth/react";
 import { AuthGuard } from "@components/AuthGuard";
+import type { Session } from "next-auth";
 
 const usedChains = [
   // mainnet,
@@ -46,15 +47,20 @@ export type ExtendedNextPage<P = {}, IP = P> = NextPage<P, IP> & {
   requireAuth?: boolean;
 };
 
-type ExtendedAppProps = AppProps & {
+type ExtendedAppProps = AppProps<{
+  session: Session | null;
+}> & {
   Component: ExtendedNextPage;
 };
 
-const MyApp = ({ Component, pageProps }: ExtendedAppProps) => {
+const MyApp = ({
+  Component,
+  pageProps: { session, ...pageProps },
+}: ExtendedAppProps) => {
   return (
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider chains={chains}>
-        <SessionProvider session={pageProps.session}>
+        <SessionProvider session={session}>
           <Layout>
             <Head>
               <title>{APP_NAME}</title>

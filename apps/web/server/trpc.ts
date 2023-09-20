@@ -10,14 +10,12 @@ const t = initTRPC.context<Context>().create({
 });
 
 const isAuthed = t.middleware(({ ctx, next }) => {
-  if (!ctx.session || !ctx.session.user) {
-    throw new TRPCError({
-      code: "UNAUTHORIZED",
-      message: "You are not authorized",
-    });
+  if (!ctx.session?.user) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({
     ctx: {
+      // infers the `session` as non-nullable
       session: { ...ctx.session, user: ctx.session.user },
     },
   });

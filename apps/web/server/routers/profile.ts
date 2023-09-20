@@ -42,7 +42,7 @@ const isNicknameAvailable = async (
 
 export const profileRouter = router({
   me: protectedProcedure.query(async ({ ctx }) => {
-    const address = ctx.session.user.address!; // protectedProcedure always returns existing user
+    const address = ctx.session.user.address;
     const profile = await ctx.prisma.profile.findFirst({
       where: { address },
     });
