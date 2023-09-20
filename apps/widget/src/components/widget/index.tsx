@@ -7,11 +7,6 @@ import {
   catchError,
 } from "solid-js";
 import { type Socket, io } from "socket.io-client";
-import {
-  DEFAULT_ALERT_DURATION,
-  DEFAULT_DONATION_IMAGE_URL,
-  DEFAULT_DONATION_SOUND_URL,
-} from "@donum/shared/default-values";
 import { DonationAlert } from "@/components/donation-alert";
 import { useDonationQueueMachine } from "@/hooks/useDonationQueueMachine";
 import { store, setStore } from "@/lib/store";
@@ -47,9 +42,9 @@ export const Widget = () => {
     notificationImageUrl,
     notificationSoundUrl,
   }) => {
-    const imageSrc = notificationImageUrl || DEFAULT_DONATION_IMAGE_URL;
-    const soundSrc = notificationSoundUrl || DEFAULT_DONATION_SOUND_URL;
-    const duration = notificationDuration || DEFAULT_ALERT_DURATION;
+    const imageSrc = notificationImageUrl || store.imageSrc;
+    const soundSrc = notificationSoundUrl || store.soundSrc;
+    const duration = notificationDuration ?? store.duration;
 
     // determine type of notification image (TODO: maybe there is a better way to do so)
     fetch(imageSrc)

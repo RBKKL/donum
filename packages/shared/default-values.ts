@@ -1,6 +1,17 @@
 import type { NewDonationEventData } from "./events";
 
-export const DEFAULT_SHOW_AMOUNT = 1000000000000000n; // 0.001 ETH
+// TODO: use env var
+const baseStaticUrl = "http://localhost:54321/storage/v1/object/public/static";
+
+// default profile values
+export const DEFAULT_AVATAR_URL = `${baseStaticUrl}/default_avatar.gif`;
+export const DEFAULT_MIN_SHOW_AMOUNT = 1000000000000000n; // 0.001 ETH in wei
+
+// default notification settings
+export const DEFAULT_ALERT_DURATION = 5; // in seconds
+export const DEFAULT_PAUSE_BETWEEN_ALERTS_DURATION = 1; // in seconds
+export const DEFAULT_NOTIFICATION_IMAGE_URL = `${baseStaticUrl}/default_notification_image.gif`;
+export const DEFAULT_NOTIFICATION_SOUND_URL = `${baseStaticUrl}/default_notification_sound.mp3`;
 
 export const DEFAULT_TEST_DONATION: NewDonationEventData = {
   from: "0x000000000000000000000000000000000000DaDa", // dummy address
@@ -8,9 +19,3 @@ export const DEFAULT_TEST_DONATION: NewDonationEventData = {
   amount: "1234567890000000000", // 1.23456789 ETH,
   message: "This is a test donation",
 };
-
-export const DEFAULT_ALERT_DURATION = 5; // 5 seconds
-export const DEFAULT_PAUSE_BETWEEN_ALERTS_DURATION = 1; // 1 second
-export const DEFAULT_DONATION_IMAGE_URL = "/assets/default_image.gif"; // relative to widget origin (e.g. https://widget.donum.me)
-export const DEFAULT_DONATION_SOUND_URL =
-  "http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3";

@@ -7,9 +7,10 @@ import { NewDonationEvent as NewDonationContractEvent } from "@donum/contracts/t
 import { castToDonationObject } from "@donum/contracts/helpers";
 import { DonationsStoreContract } from "./donations-store-contract";
 import { prisma } from "@donum/prisma";
-import { DEFAULT_SHOW_AMOUNT } from "@donum/shared/default-values";
+import { DEFAULT_MIN_SHOW_AMOUNT } from "@donum/shared/default-values";
 import type {
   ChangeSettingsEvent,
+  ChangeSettingsEventData,
   NewDonationEvent,
 } from "@donum/shared/events";
 import { env } from "./env";
@@ -41,19 +42,23 @@ app.ready((err) => {
     );
     clients.set(socket.handshake.auth.address, socket.id);
 
-    const profileDb = await prisma.profile.findFirst({
-      where: { address: socket.handshake.auth.address }, // TODO: add authentification with JWT
-    });
-    app.io.to(socket.id).emit("changeSettings", {
-      notificationDuration: profileDb?.notificationDuration,
-      notificationImageUrl: profileDb?.notificationImageUrl,
-      notificationSoundUrl: profileDb?.notificationSoundUrl,
-    });
-
     socket.on("disconnect", () => {
       app.log.info(`Client with id: ${socket.id} disconnected`);
       clients.inverse.delete(socket.id);
     });
+
+    // TODO: replace with API call
+    const profileDb = await prisma.profile.findFirst({
+      where: { address: socket.handshake.auth.address }, // TODO: add authentification with JWT
+    });
+
+    const notificationSettings: ChangeSettingsEventData = {
+      notificationDuration: profileDb?.notificationDuration,
+      notificationImageUrl: profileDb?.notificationImageUrl,
+      notificationSoundUrl: profileDb?.notificationSoundUrl,
+    };
+
+    app.io.to(socket.id).emit("changeSettings", notificationSettings);
   });
 });
 
@@ -68,10 +73,13 @@ const emitNewDonationEvent = async (
     return;
   }
 
+  // TODO: replace with API call
   const profileDb = await prisma.profile.findFirst({
     where: { address: donation.to },
   });
-  const minShowAmount = profileDb?.minShowAmount || DEFAULT_SHOW_AMOUNT;
+
+  const minShowAmount = profileDb?.minShowAmount || DEFAULT_MIN_SHOW_AMOUNT;
+
   if (donation.amount >= minShowAmount) {
     app.io.to(socketId).emit("newDonation", {
       from: donation.from,

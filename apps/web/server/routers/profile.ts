@@ -18,7 +18,13 @@ import type {
   PartialExcept,
   RemoveUndefinedOrNull,
 } from "@donum/shared/type-utils";
-import { parseEther } from "viem";
+import {
+  DEFAULT_ALERT_DURATION,
+  DEFAULT_AVATAR_URL,
+  DEFAULT_NOTIFICATION_IMAGE_URL,
+  DEFAULT_NOTIFICATION_SOUND_URL,
+  DEFAULT_MIN_SHOW_AMOUNT,
+} from "@donum/shared/default-values";
 
 export type Profile = PartialExcept<Omit<ProfileDb, "id">, "address">;
 export type PopulatedProfile = RemoveUndefinedOrNull<Profile>;
@@ -29,12 +35,15 @@ const populateProfileWithDefaultValues = (
   return {
     address: profile.address,
     nickname: profile.nickname ?? "",
-    avatarUrl: profile.avatarUrl || "/default_avatar.gif",
+    avatarUrl: profile.avatarUrl || DEFAULT_AVATAR_URL,
     description: profile.description ?? "",
-    minShowAmount: profile.minShowAmount ?? parseEther("0.001"), // in wei
-    notificationDuration: profile.notificationDuration ?? 5, // in seconds
-    notificationImageUrl: profile.notificationImageUrl || "",
-    notificationSoundUrl: profile.notificationSoundUrl || "",
+    minShowAmount: profile.minShowAmount ?? DEFAULT_MIN_SHOW_AMOUNT,
+    notificationDuration:
+      profile.notificationDuration ?? DEFAULT_ALERT_DURATION,
+    notificationImageUrl:
+      profile.notificationImageUrl || DEFAULT_NOTIFICATION_IMAGE_URL,
+    notificationSoundUrl:
+      profile.notificationSoundUrl || DEFAULT_NOTIFICATION_SOUND_URL,
   };
 };
 
