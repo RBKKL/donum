@@ -210,9 +210,6 @@ importers:
       '@rainbow-me/rainbowkit':
         specifier: ^1.0.11
         version: 1.0.11(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)(viem@1.10.14)(wagmi@1.4.1)
-      '@supabase/storage-js':
-        specifier: ^2.5.4
-        version: 2.5.4
       '@tanstack/react-query':
         specifier: ^4.35.3
         version: 4.35.3(react-dom@18.2.0)(react@18.2.0)
@@ -237,9 +234,6 @@ importers:
       envsafe:
         specifier: ^2.0.3
         version: 2.0.3
-      ethers:
-        specifier: ^6.7.1
-        version: 6.7.1
       next:
         specifier: ^13.4.19
         version: 13.4.19(@babel/core@7.22.17)(react-dom@18.2.0)(react@18.2.0)
@@ -273,15 +267,9 @@ importers:
       sharp:
         specifier: ^0.32.5
         version: 0.32.5
-      siwe:
-        specifier: ^2.1.4
-        version: 2.1.4(ethers@6.7.1)
       superjson:
         specifier: ^1.13.1
         version: 1.13.1
-      uuid:
-        specifier: ^9.0.1
-        version: 9.0.1
       viem:
         specifier: 1.10.14
         version: 1.10.14(typescript@5.2.2)(zod@3.22.2)
@@ -307,9 +295,6 @@ importers:
       '@types/react-modal':
         specifier: ^3.16.0
         version: 3.16.0
-      '@types/uuid':
-        specifier: ^9.0.4
-        version: 9.0.4
       autoprefixer:
         specifier: ^10.4.15
         version: 10.4.15(postcss@8.4.29)
