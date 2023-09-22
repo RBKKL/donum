@@ -1,6 +1,6 @@
-import classNames from "classnames";
 import { FC } from "react";
 import Image from "next/image";
+import classNames from "classnames";
 
 interface BorderedImageProps {
   src: string;

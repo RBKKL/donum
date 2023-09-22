@@ -1,8 +1,8 @@
 // script for generating the abi as a const to be used in the frontend
 // as temporary solution for https://github.com/wagmi-dev/wagmi/issues/1090
 
-import path from "path";
 import fs from "fs";
+import path from "path";
 import { artifacts } from "hardhat";
 
 async function generateAbi() {

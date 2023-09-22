@@ -1,9 +1,9 @@
-import { StyledModal } from "~/components/Modal";
-import Image from "next/image";
-import { Button } from "~/components/Button";
 import { FC } from "react";
-import { Loader } from "./Loader";
+import Image from "next/image";
 import { formatTokenAmount } from "@donum/shared/helpers";
+import { Button } from "~/components/Button";
+import { StyledModal } from "~/components/Modal";
+import { Loader } from "./Loader";
 
 interface DonationModalProps {
   isOpen: boolean;

@@ -1,27 +1,27 @@
-import { Button } from "~/components/Button";
-import { TextField } from "~/components/TextField";
-import { trpc } from "~/lib/trpc";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import {
-  DESCRIPTION_MAX_LENGTH,
-  NICKNAME_MAX_LENGTH,
-  NICKNAME_MIN_LENGTH,
-  NICKNAME_CHECK_ALLOWANCE_DEBOUNCE,
-  SOUND_ACCEPTABLE_FILE_TYPES,
-  NOTIFICATION_IMAGE_ACCEPTABLE_FILE_TYPES,
-} from "@donum/shared/constants";
-import React, { useState, useEffect } from "react";
-import { isCorrectNickname, isNumber } from "@donum/shared/helpers";
-import { Loader } from "~/components/Loader";
-import { routes } from "~/lib/routes";
-import { Input } from "~/components/Input";
-import { EthIcon } from "~/components/icons/EthIcon";
-import { AvatarUploader } from "~/components/AvatarUploader";
-import { useUploadFiles } from "~/hooks/useUploadFiles";
 import { useSession } from "next-auth/react";
 import { useDebounce } from "react-use";
-import type { ExtendedNextPage } from "pages/_app";
 import { formatEther, parseEther } from "viem";
+import {
+  DESCRIPTION_MAX_LENGTH,
+  NICKNAME_CHECK_ALLOWANCE_DEBOUNCE,
+  NICKNAME_MAX_LENGTH,
+  NICKNAME_MIN_LENGTH,
+  NOTIFICATION_IMAGE_ACCEPTABLE_FILE_TYPES,
+  SOUND_ACCEPTABLE_FILE_TYPES,
+} from "@donum/shared/constants";
+import { isCorrectNickname, isNumber } from "@donum/shared/helpers";
+import { AvatarUploader } from "~/components/AvatarUploader";
+import { Button } from "~/components/Button";
+import { EthIcon } from "~/components/icons/EthIcon";
+import { Input } from "~/components/Input";
+import { Loader } from "~/components/Loader";
+import { TextField } from "~/components/TextField";
+import { useUploadFiles } from "~/hooks/useUploadFiles";
+import { routes } from "~/lib/routes";
+import { trpc } from "~/lib/trpc";
+import type { ExtendedNextPage } from "~/pages/_app";
 
 const EditDonationPage: ExtendedNextPage = () => {
   const router = useRouter();

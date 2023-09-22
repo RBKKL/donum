@@ -1,6 +1,6 @@
-import { trpc } from "~/lib/trpc";
 import { type UploadType } from "@donum/storage";
 import { browserStorageClient } from "@donum/storage/browser";
+import { trpc } from "~/lib/trpc";
 
 type UploadData = {
   type: UploadType;

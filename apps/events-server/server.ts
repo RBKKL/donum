@@ -1,16 +1,16 @@
+import corsPlugin from "@fastify/cors";
 import Fastify from "fastify";
 import socketioServer from "fastify-socket.io";
-import corsPlugin from "@fastify/cors";
 import { BiMap } from "mnemonist";
 import superJSON from "superjson";
-import { NewDonationEvent as NewDonationContractEvent } from "@donum/contracts/types/DonationsStore";
 import { castToDonationObject } from "@donum/contracts/helpers";
-import { DonationsStoreContract } from "./donations-store-contract";
+import { NewDonationEvent as NewDonationContractEvent } from "@donum/contracts/types/DonationsStore";
 import type {
   ChangeSettingsEvent,
   NewDonationEvent,
 } from "@donum/shared/events";
 import { apiClient } from "./api-client";
+import { DonationsStoreContract } from "./donations-store-contract";
 import { env } from "./env";
 
 const clients = new BiMap<string, string>(); // address <-> socketId

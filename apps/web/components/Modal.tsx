@@ -1,5 +1,5 @@
-import Modal from "react-modal";
 import { FC, ReactNode } from "react";
+import Modal from "react-modal";
 import { CrossIcon } from "./icons/CrossIcon";
 
 interface StyledModalProps {

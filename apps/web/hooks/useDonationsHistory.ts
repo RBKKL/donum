@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Address, useNetwork, usePublicClient } from "wagmi";
-import { type NewDonationEvent } from "@donum/contracts/types/DonationsStore";
-import { getContractAddressByChainId } from "@donum/contracts/helpers";
 import { DonationsStoreABI } from "@donum/contracts/abi";
+import { getContractAddressByChainId } from "@donum/contracts/helpers";
+import { type NewDonationEvent } from "@donum/contracts/types/DonationsStore";
 import { isEthAddress } from "@donum/shared/helpers";
 import type { RemoveUndefined } from "@donum/shared/type-utils";
 

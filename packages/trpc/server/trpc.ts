@@ -10,8 +10,8 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import type { CreateNextContextOptions } from "@trpc/server/adapters/next";
 import superjson from "superjson";
 import { ZodError } from "zod";
-import { prisma } from "@donum/prisma";
 import { getServerAuthSession, type Session } from "@donum/auth";
+import { prisma } from "@donum/prisma";
 import { serverStorageClient } from "@donum/storage/server";
 import { serverEnv } from "./env";
 

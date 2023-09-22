@@ -1,4 +1,4 @@
-import { envsafe, str, port, url } from "envsafe";
+import { envsafe, port, str, url } from "envsafe";
 
 export const env = envsafe({
   EVENTS_SERVER_HOST: str({

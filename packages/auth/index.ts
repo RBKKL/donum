@@ -1,6 +1,10 @@
 import type { GetServerSidePropsContext, NextApiRequest } from "next";
-import { getServerSession, type Session } from "next-auth";
-import type { DefaultSession, NextAuthOptions } from "next-auth";
+import {
+  getServerSession,
+  type DefaultSession,
+  type NextAuthOptions,
+  type Session,
+} from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { getCsrfToken } from "next-auth/react";
 import { SiweMessage } from "siwe";

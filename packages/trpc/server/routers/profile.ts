@@ -1,33 +1,33 @@
-import { z } from "zod";
+import { TRPCError } from "@trpc/server";
 import SuperJSON from "superjson";
+import { z } from "zod";
+import type { Prisma, Profile as ProfileDb } from "@donum/prisma";
+import {
+  DEFAULT_ALERT_DURATION,
+  DEFAULT_AVATAR_URL,
+  DEFAULT_MIN_SHOW_AMOUNT,
+  DEFAULT_NOTIFICATION_IMAGE_URL,
+  DEFAULT_NOTIFICATION_SOUND_URL,
+} from "@donum/shared/default-values";
 import type {
   ChangeSettingsEvent,
   ChangeSettingsEventData,
 } from "@donum/shared/events";
-import { TRPCError } from "@trpc/server";
-import type { Prisma, Profile as ProfileDb } from "@donum/prisma";
 import { isEthAddress } from "@donum/shared/helpers";
 import type {
   PartialExcept,
   RemoveUndefinedOrNull,
 } from "@donum/shared/type-utils";
 import {
-  DEFAULT_ALERT_DURATION,
-  DEFAULT_AVATAR_URL,
-  DEFAULT_NOTIFICATION_IMAGE_URL,
-  DEFAULT_NOTIFICATION_SOUND_URL,
-  DEFAULT_MIN_SHOW_AMOUNT,
-} from "@donum/shared/default-values";
-import { protectedProcedure, publicProcedure, createRouter } from "../trpc";
-import {
   AddressFormat,
+  AmountFormat,
+  AvatarUrlFormat,
   DescriptionFormat,
   NicknameFormat,
-  AvatarUrlFormat,
-  AmountFormat,
-  SoundUrlFormat,
   NotificationDurationFormat,
+  SoundUrlFormat,
 } from "../input-formats";
+import { createRouter, protectedProcedure, publicProcedure } from "../trpc";
 
 export type Profile = PartialExcept<Omit<ProfileDb, "id">, "address">;
 export type PopulatedProfile = RemoveUndefinedOrNull<Profile>;

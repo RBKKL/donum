@@ -1,10 +1,10 @@
-import { z } from "zod";
 import { TRPCError } from "@trpc/server";
+import SuperJSON from "superjson";
+import { z } from "zod";
 import { DEFAULT_TEST_DONATION } from "@donum/shared/default-values";
 import type { NewDonationEvent } from "@donum/shared/events";
-import SuperJSON from "superjson";
-import { protectedProcedure, createRouter } from "../trpc";
-import { MessageFormat, AmountFormat, NicknameFormat } from "../input-formats";
+import { AmountFormat, MessageFormat, NicknameFormat } from "../input-formats";
+import { createRouter, protectedProcedure } from "../trpc";
 
 export const donationRouter = createRouter({
   sendTestDonation: protectedProcedure

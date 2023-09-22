@@ -1,7 +1,6 @@
 import { format } from "date-fns";
-import { type BigNumberish, formatUnits } from "ethers";
+import { ethers, formatUnits, type BigNumberish } from "ethers";
 import { NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH } from "./constants";
-import { ethers } from "ethers";
 
 // TODO: check for optimal
 export const isNumber = (value: string): boolean =>

@@ -22,9 +22,9 @@ module.exports = {
     // project root relative packages
     "^~/",
     // relative
-    "^(?!.*.s?css$)(?!\\.\\/)(\\.\\.\\/.*$|\\.\\.$)", // Matches parent directory paths, e.g. "../Foo", or "../../Foo". or ".."
-    "^(?!.*.s?css$)(\\.\\/.*$|\\.$)", // Matches sibling directory paths, e.g. "./Foo" or ".",
-    ".*\\.s?css$", // (S)CSS imports. Note: This must be last to ensure predictable styling.
+    "^(?!.*[.]css$)[./].*$",
+    // keep css imports at the bottom
+    ".css$",
   ],
   importOrderParserPlugins: ["typescript", "jsx", "decorators-legacy"],
   importOrderTypeScriptVersion: "5.2.2",

@@ -5,18 +5,18 @@ import type { NextPage } from "next";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import type { Session } from "next-auth";
+import { SessionProvider } from "next-auth/react";
 // import { injectedWallet } from "@rainbow-me/rainbowkit/wallets"; // For local development
-import { WagmiConfig, configureChains, createConfig } from "wagmi";
+import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { goerli } from "wagmi/chains";
 import { infuraProvider } from "wagmi/providers/infura";
 import { publicProvider } from "wagmi/providers/public";
 import { APP_NAME } from "@donum/shared/constants";
-import { Layout } from "~/components/Layout";
-import { trpc } from "~/lib/trpc";
-import { browserEnv } from "~/env/browser";
-import { SessionProvider } from "next-auth/react";
 import { AuthGuard } from "~/components/AuthGuard";
-import type { Session } from "next-auth";
+import { Layout } from "~/components/Layout";
+import { browserEnv } from "~/env/browser";
+import { trpc } from "~/lib/trpc";
 
 const usedChains = [
   // mainnet,

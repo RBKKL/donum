@@ -1,21 +1,21 @@
+import { io, type Socket } from "socket.io-client";
 import {
-  onMount,
-  onCleanup,
-  Switch,
-  Match,
-  createSignal,
   catchError,
+  createSignal,
+  Match,
+  onCleanup,
+  onMount,
+  Switch,
 } from "solid-js";
-import { type Socket, io } from "socket.io-client";
-import { DonationAlert } from "~/components/donation-alert";
-import { useDonationQueueMachine } from "~/hooks/useDonationQueueMachine";
-import { metadataStore, setMetadataStore } from "~/lib/store";
-import { env } from "~/lib/env";
 import {
   ClientToServerEvents,
   NewDonationEventData,
   ServerToClientEvents,
 } from "@donum/shared/events";
+import { DonationAlert } from "~/components/donation-alert";
+import { useDonationQueueMachine } from "~/hooks/useDonationQueueMachine";
+import { env } from "~/lib/env";
+import { metadataStore, setMetadataStore } from "~/lib/store";
 
 export const Widget = () => {
   const [error, setError] = createSignal<Error>();

@@ -1,4 +1,5 @@
 import type { SetRequired, Simplify } from "type-fest";
+
 export type * from "type-fest";
 
 /** Remove "undefined" from all properties of a type */

@@ -1,4 +1,4 @@
-import { envsafe, url, str } from "envsafe";
+import { envsafe, str, url } from "envsafe";
 
 export const browserEnv = envsafe({
   WIDGET_BASE_URL: url({

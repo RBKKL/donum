@@ -1,6 +1,6 @@
-import { NewDonationWithMetadata } from "@donum/shared/events";
 import { assign, createMachine } from "xstate";
 import { DEFAULT_PAUSE_BETWEEN_ALERTS_DURATION } from "@donum/shared/default-values";
+import { NewDonationWithMetadata } from "@donum/shared/events";
 import { waitSeconds } from "./utils";
 
 export type QueueMachineEvent = {

@@ -1,7 +1,7 @@
 import { FC } from "react";
-import { BorderedImage } from "~/components/BorderedImage";
-import { formatAddress } from "@donum/shared/helpers";
 import classNames from "classnames";
+import { formatAddress } from "@donum/shared/helpers";
+import { BorderedImage } from "~/components/BorderedImage";
 
 interface RecipientProfileProps {
   avatarUrl: string;

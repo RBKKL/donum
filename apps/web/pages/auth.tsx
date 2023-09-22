@@ -1,10 +1,9 @@
 import type { NextPage } from "next";
-import { Button } from "~/components/Button";
-import { useLogin } from "~/hooks/useLogin";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { SessionStatus } from "@donum/shared/constants";
+import { Button } from "~/components/Button";
 import { Loader } from "~/components/Loader";
-import { signOut } from "next-auth/react";
+import { useLogin } from "~/hooks/useLogin";
 
 const Auth: NextPage = () => {
   const { login } = useLogin();

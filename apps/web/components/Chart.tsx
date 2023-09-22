@@ -1,5 +1,15 @@
 import React, { FC } from "react";
 import {
+  format,
+  startOfDay,
+  startOfHour,
+  startOfMonth,
+  subDays,
+  subHours,
+  subMonths,
+} from "date-fns";
+import { formatEther } from "ethers";
+import {
   Area,
   AreaChart,
   CartesianGrid,
@@ -10,17 +20,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import {
-  format,
-  startOfDay,
-  startOfHour,
-  startOfMonth,
-  subDays,
-  subHours,
-  subMonths,
-} from "date-fns";
 import { NewDonationEvent } from "@donum/contracts/types/DonationsStore";
-import { formatEther } from "ethers";
 import { StatFramePeriod } from "@donum/shared/constants";
 
 interface ChartProps {

@@ -1,6 +1,6 @@
 import { Component } from "solid-js";
-import { formatAddress, formatTokenAmount } from "@donum/shared/helpers";
 import { NewDonationWithMetadata } from "@donum/shared/events";
+import { formatAddress, formatTokenAmount } from "@donum/shared/helpers";
 import { DonationImage } from "./image";
 import "./index.css";
 
