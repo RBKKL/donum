@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { getCsrfToken, signIn } from "next-auth/react";
-import { SiweMessage } from "siwe";
 import { useAccount, useNetwork, useSignMessage } from "wagmi";
+import { SiweMessage } from "@donum/auth";
 
 export const useLogin = () => {
   const { address } = useAccount();
