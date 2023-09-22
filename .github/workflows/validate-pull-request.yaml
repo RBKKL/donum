@@ -2,7 +2,7 @@ name: Validate pull request
 
 on:
   pull_request:
-    types: [opened, edited, synchronize]
+    types: [opened, synchronize, reopened]
 
 env:
   # Supabase
