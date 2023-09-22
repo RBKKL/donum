@@ -1,9 +1,9 @@
 import type { NextPage } from "next";
-import { Button } from "@components/Button";
-import { useLogin } from "@hooks/useLogin";
+import { Button } from "~/components/Button";
+import { useLogin } from "~/hooks/useLogin";
 import { useSession } from "next-auth/react";
 import { SessionStatus } from "@donum/shared/constants";
-import { Loader } from "@components/Loader";
+import { Loader } from "~/components/Loader";
 import { signOut } from "next-auth/react";
 
 const Auth: NextPage = () => {

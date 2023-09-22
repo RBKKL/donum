@@ -1,6 +1,6 @@
-import { Button } from "@components/Button";
-import { TextField } from "@components/TextField";
-import { trpc } from "@lib/trpc";
+import { Button } from "~/components/Button";
+import { TextField } from "~/components/TextField";
+import { trpc } from "~/lib/trpc";
 import { useRouter } from "next/router";
 import {
   DESCRIPTION_MAX_LENGTH,
@@ -12,12 +12,12 @@ import {
 } from "@donum/shared/constants";
 import React, { useState, useEffect } from "react";
 import { isCorrectNickname, isNumber } from "@donum/shared/helpers";
-import { Loader } from "@components/Loader";
-import { routes } from "@lib/routes";
-import { Input } from "@components/Input";
-import { EthIcon } from "@components/icons/EthIcon";
-import { AvatarUploader } from "@components/AvatarUploader";
-import { useUploadFiles } from "@hooks/useUploadFiles";
+import { Loader } from "~/components/Loader";
+import { routes } from "~/lib/routes";
+import { Input } from "~/components/Input";
+import { EthIcon } from "~/components/icons/EthIcon";
+import { AvatarUploader } from "~/components/AvatarUploader";
+import { useUploadFiles } from "~/hooks/useUploadFiles";
 import { useSession } from "next-auth/react";
 import { useDebounce } from "react-use";
 import type { ExtendedNextPage } from "pages/_app";

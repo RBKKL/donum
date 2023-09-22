@@ -1,4 +1,4 @@
-import "@styles/globals.css";
+import "~/styles/globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
 import { type ReactElement, type ReactNode } from "react";
 import type { NextPage } from "next";
@@ -11,11 +11,11 @@ import { goerli } from "wagmi/chains";
 import { infuraProvider } from "wagmi/providers/infura";
 import { publicProvider } from "wagmi/providers/public";
 import { APP_NAME } from "@donum/shared/constants";
-import { Layout } from "@components/Layout";
-import { trpc } from "@lib/trpc";
-import { browserEnv } from "@env/browser";
+import { Layout } from "~/components/Layout";
+import { trpc } from "~/lib/trpc";
+import { browserEnv } from "~/env/browser";
 import { SessionProvider } from "next-auth/react";
-import { AuthGuard } from "@components/AuthGuard";
+import { AuthGuard } from "~/components/AuthGuard";
 import type { Session } from "next-auth";
 
 const usedChains = [

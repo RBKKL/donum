@@ -1,6 +1,6 @@
-import { StyledModal } from "@components/Modal";
+import { StyledModal } from "~/components/Modal";
 import Image from "next/image";
-import { Button } from "@components/Button";
+import { Button } from "~/components/Button";
 import { FC } from "react";
 import { Loader } from "./Loader";
 import { formatTokenAmount } from "@donum/shared/helpers";

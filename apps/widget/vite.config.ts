@@ -13,7 +13,7 @@ export default defineConfig({
     conditions: ["development", "browser"],
     alias: [
       {
-        find: "@",
+        find: "~",
         replacement: fileURLToPath(new URL("./src", import.meta.url)),
       },
     ],

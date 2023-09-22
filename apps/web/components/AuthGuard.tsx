@@ -3,9 +3,9 @@ import { useSession } from "next-auth/react";
 import { useAccount } from "wagmi";
 import { SessionStatus } from "@donum/shared/constants";
 import { Loader } from "./Loader";
-import { ConnectWalletWarning } from "@components/ConnectWalletWarning";
+import { ConnectWalletWarning } from "~/components/ConnectWalletWarning";
 import { useRouter } from "next/router";
-import { routes } from "@lib/routes";
+import { routes } from "~/lib/routes";
 
 export const AuthGuard: FC<{
   children: ReactNode;

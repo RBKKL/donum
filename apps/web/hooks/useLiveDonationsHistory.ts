@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { NewDonationEvent } from "@donum/contracts/types/DonationsStore";
-import { useDonationsHistory } from "@hooks/useDonationsHistory";
+import { useDonationsHistory } from "~/hooks/useDonationsHistory";
 import { useNewDonationEvent } from "./useNewDonationEvent";
 
 export const useLiveDonationsHistory = (recipientAddress: string) => {

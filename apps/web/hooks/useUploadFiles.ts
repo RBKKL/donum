@@ -1,4 +1,4 @@
-import { trpc } from "@lib/trpc";
+import { trpc } from "~/lib/trpc";
 import { type UploadType } from "@donum/storage";
 import { browserStorageClient } from "@donum/storage/browser";
 

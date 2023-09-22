@@ -1,4 +1,4 @@
-import { browserEnv } from "@env/browser";
+import { browserEnv } from "~/env/browser";
 
 export const routes = {
   home: "/",

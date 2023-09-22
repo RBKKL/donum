@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Link from "next/link";
-import { Button } from "@components/Button";
-import { routes } from "@lib/routes";
+import { Button } from "~/components/Button";
+import { routes } from "~/lib/routes";
 
 const Home: NextPage = () => {
   return (

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FC, type ChangeEvent } from "react";
 import { isNumber } from "@donum/shared/helpers";
-import { Input, InputProps } from "@components/Input";
+import { Input, InputProps } from "~/components/Input";
 import { MAX_DONATION_AMOUNT_LENGTH } from "@donum/shared/constants";
 
 type AmountInputProps = Omit<InputProps, "onChangeRaw">;

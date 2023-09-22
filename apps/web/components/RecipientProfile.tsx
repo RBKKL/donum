@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { BorderedImage } from "@components/BorderedImage";
+import { BorderedImage } from "~/components/BorderedImage";
 import { formatAddress } from "@donum/shared/helpers";
 import classNames from "classnames";
 

@@ -1,20 +1,20 @@
-import { DonationCard } from "@components/DonationCard";
-import { RecipientProfile } from "@components/RecipientProfile";
+import { DonationCard } from "~/components/DonationCard";
+import { RecipientProfile } from "~/components/RecipientProfile";
 import { getTotalDonationsAmount } from "@donum/contracts/helpers";
 import { formatNickname, reverseArray } from "@donum/shared/helpers";
-import { useLiveDonationsHistory } from "@hooks/useLiveDonationsHistory";
-import { Button } from "@components/Button";
-import { EditIcon } from "@components/icons/EditIcon";
+import { useLiveDonationsHistory } from "~/hooks/useLiveDonationsHistory";
+import { Button } from "~/components/Button";
+import { EditIcon } from "~/components/icons/EditIcon";
 import Link from "next/link";
-import { Loader } from "@components/Loader";
+import { Loader } from "~/components/Loader";
 import { useSession } from "next-auth/react";
-import { trpc } from "@lib/trpc";
-import { routes } from "@lib/routes";
-import { getDonationsStatsByPeriod } from "@lib/statistics";
+import { trpc } from "~/lib/trpc";
+import { routes } from "~/lib/routes";
+import { getDonationsStatsByPeriod } from "~/lib/statistics";
 import { StatFramePeriod } from "@donum/shared/constants";
-import { Select } from "@components/Select";
+import { Select } from "~/components/Select";
 import { useState } from "react";
-import { Chart } from "@components/Chart";
+import { Chart } from "~/components/Chart";
 import type { ExtendedNextPage } from "pages/_app";
 
 const DONATION_CHARTS_PERIOD_OPTIONS = [

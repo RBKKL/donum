@@ -1,14 +1,14 @@
-import { Button } from "@components/Button";
+import { Button } from "~/components/Button";
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import { MESSAGE_MAX_LENGTH } from "@donum/shared/constants";
-import { RecipientProfile } from "@components/RecipientProfile";
-import { Input } from "@components/Input";
-import { EthIcon } from "@components/icons/EthIcon";
+import { RecipientProfile } from "~/components/RecipientProfile";
+import { Input } from "~/components/Input";
+import { EthIcon } from "~/components/icons/EthIcon";
 import { isNumber } from "@donum/shared/helpers";
-import { TextField } from "@components/TextField";
-import { trpc } from "@lib/trpc";
-import { Loader } from "@components/Loader";
+import { TextField } from "~/components/TextField";
+import { trpc } from "~/lib/trpc";
+import { Loader } from "~/components/Loader";
 import type { ExtendedNextPage } from "pages/_app";
 import { parseEther } from "viem";
 

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
-import { RecipientProfile } from "@components/RecipientProfile";
-import { Input } from "@components/Input";
-import { TextField } from "@components/TextField";
-import { EthIcon } from "@components/icons/EthIcon";
-import { useSendDonation } from "@hooks/useSendDonation";
+import { RecipientProfile } from "~/components/RecipientProfile";
+import { Input } from "~/components/Input";
+import { TextField } from "~/components/TextField";
+import { EthIcon } from "~/components/icons/EthIcon";
+import { useSendDonation } from "~/hooks/useSendDonation";
 import {
   MESSAGE_MAX_LENGTH,
   NICKNAME_MAX_LENGTH,
@@ -15,14 +15,14 @@ import {
   formatTokenAmount,
   isNumber,
 } from "@donum/shared/helpers";
-import { DonationModal } from "@components/DonationModal";
+import { DonationModal } from "~/components/DonationModal";
 import { useAccount, useBalance } from "wagmi";
-import { Button } from "@components/Button";
+import { Button } from "~/components/Button";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { parseUnits, formatUnits, Address } from "viem";
 import { prisma } from "@donum/prisma";
 import type { GetServerSidePropsContext, NextPage } from "next";
-import { AmountInput } from "@components/AmountInput";
+import { AmountInput } from "~/components/AmountInput";
 import {
   getPopulatedProfileByAddressOrNickname,
   type PopulatedProfile,
@@ -30,7 +30,7 @@ import {
 import { useMountedState } from "react-use";
 
 const Balance = dynamic(
-  () => import("@components/Balance").then((mod) => mod.Balance),
+  () => import("~/components/Balance").then((mod) => mod.Balance),
   {
     ssr: false,
   }
