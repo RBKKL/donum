@@ -232,34 +232,44 @@ export const profileRouter = createRouter({
         },
       });
 
-      const data: ChangeSettingsEvent = {
-        to: input.address,
-        data: {
-          notificationImageUrl: profileDb.notificationImageUrl,
-          notificationSoundUrl: profileDb.notificationSoundUrl,
-          notificationDuration: profileDb.notificationDuration,
-        },
-      };
+      const profile = populateProfileWithDefaultValues(profileDb);
 
-      const response = await fetch(
-        `${ctx.env.EVENTS_SERVER_URL}/change-settings`,
-        {
+      if (
+        input.notificationDuration ||
+        input.notificationImageUrl ||
+        input.notificationSoundUrl
+      ) {
+        const data: ChangeSettingsEvent = {
+          to: input.address,
+          data: {
+            notificationImageUrl: profile.notificationImageUrl,
+            notificationSoundUrl: profile.notificationSoundUrl,
+            notificationDuration: profile.notificationDuration,
+          },
+        };
+
+        fetch(`${ctx.env.EVENTS_SERVER_URL}/change-settings`, {
           method: "POST",
           headers: {
             Authorization: ctx.env.EVENTS_SERVER_AUTH_TOKEN,
           },
           body: SuperJSON.stringify(data),
-        }
-      );
-
-      if (response.status !== 200) {
-        throw new TRPCError({
-          code: "FORBIDDEN",
-          message: "Wrong secret",
-        });
+        })
+          .then((res) => {
+            if (res.status !== 200) {
+              console.error(
+                `On change-settings event, events server responded with status ${res.status}, body: ${res.body}`
+              );
+            }
+          })
+          .catch((err) => {
+            console.error(
+              `Failed to send change-settings event to events server. Error: ${err}`
+            );
+          });
       }
 
-      return populateProfileWithDefaultValues(profileDb);
+      return profile;
     }),
   isNicknameAvailable: publicProcedure
     .input(z.object({ address: AddressFormat, nickname: NicknameFormat }))
