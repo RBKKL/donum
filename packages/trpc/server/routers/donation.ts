@@ -1,17 +1,12 @@
-import { protectedProcedure, router } from "@server/trpc";
-import { serverEnv } from "@env/server";
-import {
-  MessageFormat,
-  AmountFormat,
-  NicknameFormat,
-} from "@server/input-formats";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import { DEFAULT_TEST_DONATION } from "@donum/shared/constants";
+import { DEFAULT_TEST_DONATION } from "@donum/shared/default-values";
 import type { NewDonationEvent } from "@donum/shared/events";
 import SuperJSON from "superjson";
+import { protectedProcedure, createRouter } from "../trpc";
+import { MessageFormat, AmountFormat, NicknameFormat } from "../input-formats";
 
-export const donationRouter = router({
+export const donationRouter = createRouter({
   sendTestDonation: protectedProcedure
     .input(
       z
@@ -23,7 +18,7 @@ export const donationRouter = router({
         .optional()
     )
     .mutation(async ({ ctx, input }) => {
-      const address = ctx.session.user.address!; // NOTE: protectedProcedure always returns existing user
+      const address = ctx.session.user.address;
       const donation: NewDonationEvent = {
         to: address,
         data: {
@@ -33,10 +28,10 @@ export const donationRouter = router({
         },
       };
 
-      const response = await fetch(`${serverEnv.EVENTS_SERVER_URL}/test`, {
+      const response = await fetch(`${ctx.env.EVENTS_SERVER_URL}/test`, {
         method: "POST",
         headers: {
-          Authorization: serverEnv.EVENTS_SERVER_AUTH_TOKEN,
+          Authorization: ctx.env.EVENTS_SERVER_AUTH_TOKEN,
         },
         body: SuperJSON.stringify(donation),
       });

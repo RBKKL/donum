@@ -10,9 +10,12 @@
         "clean": "rimraf .next .turbo .vercel .cache node_modules tsconfig.tsbuildinfo"
     },
     "dependencies": {
+        "@donum/auth": "workspace:*",
         "@donum/contracts": "workspace:*",
         "@donum/prisma": "workspace:*",
         "@donum/shared": "workspace:*",
+        "@donum/storage": "workspace:*",
+        "@donum/trpc": "workspace:*",
         "@radix-ui/react-select": "^1.2.2",
         "@rainbow-me/rainbowkit": "^1.0.11",
         "@supabase/storage-js": "^2.5.4",
@@ -27,6 +30,7 @@
         "ethers": "^6.7.1",
         "next": "^13.4.19",
         "next-auth": "^4.23.1",
+        "next-superjson-plugin": "^0.5.9",
         "react": "18.2.0",
         "react-dom": "18.2.0",
         "react-icons": "^4.11.0",

@@ -128,15 +128,21 @@ importers:
       '@donum/contracts':
         specifier: workspace:*
         version: link:../contracts
-      '@donum/prisma':
-        specifier: workspace:*
-        version: link:../../packages/prisma
       '@donum/shared':
         specifier: workspace:*
         version: link:../../packages/shared
+      '@donum/trpc':
+        specifier: workspace:*
+        version: link:../../packages/trpc
       '@fastify/cors':
         specifier: ^8.3.0
         version: 8.3.0
+      '@trpc/client':
+        specifier: ^10.38.3
+        version: 10.38.3(@trpc/server@10.38.3)
+      '@trpc/server':
+        specifier: ^10.38.3
+        version: 10.38.3
       envsafe:
         specifier: ^2.0.3
         version: 2.0.3
@@ -177,6 +183,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@donum/auth':
+        specifier: workspace:*
+        version: link:../../packages/auth
       '@donum/contracts':
         specifier: workspace:*
         version: link:../contracts
@@ -186,6 +195,12 @@ importers:
       '@donum/shared':
         specifier: workspace:*
         version: link:../../packages/shared
+      '@donum/storage':
+        specifier: workspace:*
+        version: link:../../packages/storage
+      '@donum/trpc':
+        specifier: workspace:*
+        version: link:../../packages/trpc
       '@radix-ui/react-select':
         specifier: ^1.2.2
         version: 1.2.2(@types/react-dom@18.2.7)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)
@@ -228,6 +243,9 @@ importers:
       next-auth:
         specifier: ^4.23.1
         version: 4.23.1(next@13.4.19)(react-dom@18.2.0)(react@18.2.0)
+      next-superjson-plugin:
+        specifier: ^0.5.9
+        version: 0.5.9(next@13.4.19)(superjson@1.13.1)
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -348,6 +366,28 @@ importers:
         specifier: ^2.7.0
         version: 2.7.0(solid-js@1.7.11)(vite@4.4.9)
 
+  packages/auth:
+    dependencies:
+      next:
+        specifier: ^13.4.19
+        version: 13.4.19(react-dom@18.2.0)(react@18.2.0)
+      next-auth:
+        specifier: ^4.23.1
+        version: 4.23.1(next@13.4.19)(react-dom@18.2.0)(react@18.2.0)
+      siwe:
+        specifier: ^2.1.4
+        version: 2.1.4(ethers@6.7.1)
+    devDependencies:
+      '@donum/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@types/node':
+        specifier: 20.6.0
+        version: 20.6.0
+      typescript:
+        specifier: 5.2.2
+        version: 5.2.2
+
   packages/eslint-config-custom:
     dependencies:
       '@typescript-eslint/eslint-plugin':
@@ -401,6 +441,80 @@ importers:
       ethers:
         specifier: ^6.7.1
         version: 6.7.1
+      type-fest:
+        specifier: ^4.3.1
+        version: 4.3.1
+      typescript:
+        specifier: 5.2.2
+        version: 5.2.2
+
+  packages/storage:
+    dependencies:
+      '@donum/shared':
+        specifier: workspace:*
+        version: link:../shared
+      '@supabase/storage-js':
+        specifier: ^2.5.4
+        version: 2.5.4
+    devDependencies:
+      '@donum/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@types/node':
+        specifier: 20.6.0
+        version: 20.6.0
+      typescript:
+        specifier: 5.2.2
+        version: 5.2.2
+
+  packages/trpc:
+    dependencies:
+      '@donum/auth':
+        specifier: workspace:*
+        version: link:../auth
+      '@donum/prisma':
+        specifier: workspace:*
+        version: link:../prisma
+      '@donum/shared':
+        specifier: workspace:*
+        version: link:../shared
+      '@donum/storage':
+        specifier: workspace:*
+        version: link:../storage
+      '@trpc/client':
+        specifier: ^10.38.3
+        version: 10.38.3(@trpc/server@10.38.3)
+      '@trpc/server':
+        specifier: ^10.38.3
+        version: 10.38.3
+      date-fns:
+        specifier: ^2.30.0
+        version: 2.30.0
+      envsafe:
+        specifier: ^2.0.3
+        version: 2.0.3
+      ethers:
+        specifier: ^6.7.1
+        version: 6.7.1
+      superjson:
+        specifier: ^1.13.1
+        version: 1.13.1
+      uuid:
+        specifier: ^9.0.1
+        version: 9.0.1
+      zod:
+        specifier: ^3.22.2
+        version: 3.22.2
+    devDependencies:
+      '@donum/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@types/node':
+        specifier: 20.6.0
+        version: 20.6.0
+      '@types/uuid':
+        specifier: ^9.0.4
+        version: 9.0.4
       typescript:
         specifier: 5.2.2
         version: 5.2.2
@@ -7542,6 +7656,12 @@ packages:
       minimalistic-crypto-utils: 1.0.1
     dev: false
 
+  /hoist-non-react-statics@3.3.2:
+    resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
+    dependencies:
+      react-is: 16.13.1
+    dev: false
+
   /hosted-git-info@4.1.0:
     resolution: {integrity: sha512-kyCuEOWjJqZuDbRHzL8V93NzQhwIB71oFWSyzVo+KPZI+pnQPPxucdkrOZvkLRnrf5URsQM+IJ09Dw29cRALIA==}
     engines: {node: '>=10'}
@@ -8916,6 +9036,17 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       uuid: 8.3.2
+    dev: false
+
+  /next-superjson-plugin@0.5.9(next@13.4.19)(superjson@1.13.1):
+    resolution: {integrity: sha512-xEU+SvrSDk8PGAQ2TrJM/OhkZBcWjWWqSjpUtlxTAI9ovTjKBxxQumcFt7oXzoBLJsRtq0BWTHrcnzL/9izXPQ==}
+    peerDependencies:
+      next: ^13
+      superjson: ^1
+    dependencies:
+      hoist-non-react-statics: 3.3.2
+      next: 13.4.19(react-dom@18.2.0)(react@18.2.0)
+      superjson: 1.13.1
     dev: false
 
   /next@13.4.19(react-dom@18.2.0)(react@18.2.0):
@@ -11964,6 +12095,11 @@ packages:
   /type-fest@3.13.1:
     resolution: {integrity: sha512-tLq3bSNx+xSpwvAJnzrK0Ep5CLNWjvFTOp71URMaAEWBfRb9nnJiBoUe0tF8bI4ZFO3omgBR6NvnbzVUT3Ly4g==}
     engines: {node: '>=14.16'}
+    dev: false
+
+  /type-fest@4.3.1:
+    resolution: {integrity: sha512-pphNW/msgOUSkJbH58x8sqpq8uQj6b0ZKGxEsLKMUnGorRcDjrUaLS+39+/ub41JNTwrrMyJcUB8+YZs3mbwqw==}
+    engines: {node: '>=16'}
     dev: false
 
   /typechain@8.3.1(typescript@5.2.2):

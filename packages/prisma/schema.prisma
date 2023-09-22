@@ -13,14 +13,13 @@ datasource db {
 
 model Profile {
   id                   Int     @id @default(autoincrement())
+  address              String  @unique // ethereum address
+  // profile settings
   nickname             String? @unique
-  description          String  @default("")
-  address              String  @unique
   avatarUrl            String?
-  // this type represents uint256
-  // default value - 0.001 ETH
-  // values are stored in WEI
-  minShowAmount        BigInt  @default(1000000000000000)
+  description          String?
+  // notification settings
+  minShowAmount        BigInt  @default(1000000000000000) // 0.001 ETH in WEI
   notificationDuration Int     @default(5)
   notificationImageUrl String?
   notificationSoundUrl String?

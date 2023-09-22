@@ -6,12 +6,11 @@ import superJSON from "superjson";
 import { NewDonationEvent as NewDonationContractEvent } from "@donum/contracts/types/DonationsStore";
 import { castToDonationObject } from "@donum/contracts/helpers";
 import { DonationsStoreContract } from "./donations-store-contract";
-import { prisma } from "@donum/prisma";
-import { DEFAULT_SHOW_AMOUNT } from "@donum/shared/constants";
 import type {
   ChangeSettingsEvent,
   NewDonationEvent,
 } from "@donum/shared/events";
+import { apiClient } from "./api-client";
 import { env } from "./env";
 
 const clients = new BiMap<string, string>(); // address <-> socketId
@@ -36,24 +35,21 @@ app.ready((err) => {
   }
 
   app.io.on("connection", async (socket) => {
-    app.log.info(
-      `Connected to server with id: ${socket.id}, address: ${socket.handshake.auth.address}`
-    );
-    clients.set(socket.handshake.auth.address, socket.id);
-
-    const profile = await prisma.profile.findFirst({
-      where: { address: socket.handshake.auth.address }, // TODO: add authentification with JWT
-    });
-    app.io.to(socket.id).emit("changeSettings", {
-      notificationDuration: profile?.notificationDuration,
-      notificationImageUrl: profile?.notificationImageUrl,
-      notificationSoundUrl: profile?.notificationSoundUrl,
-    });
+    const address = socket.handshake.auth.address; // ethereum address
+    app.log.info(`Client with id: ${socket.id}, address: ${address} connected`);
+    clients.set(address, socket.id);
 
     socket.on("disconnect", () => {
       app.log.info(`Client with id: ${socket.id} disconnected`);
       clients.inverse.delete(socket.id);
     });
+
+    const notificationSettings =
+      await apiClient.profile.getNotificationSettings.query({
+        address,
+      });
+
+    app.io.to(socket.id).emit("changeSettings", notificationSettings);
   });
 });
 
@@ -68,10 +64,11 @@ const emitNewDonationEvent = async (
     return;
   }
 
-  const profile = await prisma.profile.findFirst({
-    where: { address: donation.to },
+  // TODO: optimize this
+  const minShowAmount = await apiClient.profile.getMinShowAmount.query({
+    address: donation.to,
   });
-  const minShowAmount = profile?.minShowAmount || DEFAULT_SHOW_AMOUNT;
+
   if (donation.amount >= minShowAmount) {
     app.io.to(socketId).emit("newDonation", {
       from: donation.from,
@@ -94,7 +91,7 @@ app.post("/test", (req, res) => {
     to: testDonation.to,
     from: "", // dummy value for test donation
     amount: BigInt(testDonation.data.amount),
-    timestamp: BigInt(Date.now()),
+    timestamp: BigInt(Date.now()) / 1000n, // convert ms to s (real timestamp is in seconds)
   });
   res.status(200).send();
 });

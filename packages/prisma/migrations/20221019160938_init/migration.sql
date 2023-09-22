@@ -6,3 +6,5 @@ CREATE TABLE "Profile" (
 
     CONSTRAINT "Profile_pkey" PRIMARY KEY ("id")
 );
+
+ALTER TABLE "Profile" ENABLE ROW LEVEL SECURITY;

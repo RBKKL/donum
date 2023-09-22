@@ -2,7 +2,7 @@ import { NewDonationEvent } from "@donum/contracts/types/DonationsStore";
 import { useContractEvent, useNetwork } from "wagmi";
 import { getContractAddressByChainId } from "@donum/contracts/helpers";
 import { DonationsStoreABI } from "@donum/contracts/abi";
-import { type RemoveUndefined } from "@donum/shared/helpers";
+import type { RemoveUndefined } from "@donum/shared/type-utils";
 
 type NewDonationEventListener = (
   donation: NewDonationEvent.OutputObject

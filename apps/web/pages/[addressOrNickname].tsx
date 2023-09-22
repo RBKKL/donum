@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { RecipientProfile } from "@components/RecipientProfile";
 import { Input } from "@components/Input";
@@ -6,7 +7,6 @@ import { TextField } from "@components/TextField";
 import { EthIcon } from "@components/icons/EthIcon";
 import { useSendDonation } from "@hooks/useSendDonation";
 import {
-  DEFAULT_SHOW_AMOUNT,
   MESSAGE_MAX_LENGTH,
   NICKNAME_MAX_LENGTH,
 } from "@donum/shared/constants";
@@ -14,34 +14,46 @@ import {
   formatAddress,
   formatTokenAmount,
   isNumber,
-  isEthAddress,
 } from "@donum/shared/helpers";
 import { DonationModal } from "@components/DonationModal";
-import { Address, useAccount, useBalance } from "wagmi";
-import { Balance } from "@components/Balance";
+import { useAccount, useBalance } from "wagmi";
 import { Button } from "@components/Button";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { parseUnits, formatUnits } from "viem";
-import {
-  PopulatedProfile,
-  populateProfileWithDefaultValues,
-} from "@lib/profile";
+import { parseUnits, formatUnits, Address } from "viem";
 import { prisma } from "@donum/prisma";
 import type { GetServerSidePropsContext, NextPage } from "next";
 import { AmountInput } from "@components/AmountInput";
+import {
+  getPopulatedProfileByAddressOrNickname,
+  type PopulatedProfile,
+} from "@donum/trpc/server/routers/profile";
+import { useMountedState } from "react-use";
+
+const Balance = dynamic(
+  () => import("@components/Balance").then((mod) => mod.Balance),
+  {
+    ssr: false,
+  }
+);
 
 interface ProfileProps {
-  profile?: PopulatedProfile;
+  profile: PopulatedProfile;
 }
+
+const getParam = (param: string | string[] | undefined): string | undefined => {
+  return Array.isArray(param) ? param[0] : param;
+};
 
 const SendDonationPage: NextPage<ProfileProps> = ({ profile }) => {
   const router = useRouter();
-  const addressOrNickname = router.query.addressOrNickname as string;
+  const addressOrNickname = getParam(router.query.addressOrNickname) as string; // wont be undefined because of the route
 
-  const recipientAddress = (profile?.address || addressOrNickname) as Address;
-  const minShowAmount = profile?.minShowAmount || "0";
+  const recipientAddress = profile.address as Address;
+  const minShowAmount = profile.minShowAmount || "0";
 
-  const { address, isConnected } = useAccount();
+  const isMounted = useMountedState();
+  const { address, isConnected: isConnectedOnClient } = useAccount();
+  const isConnected = isMounted() && isConnectedOnClient;
   const { data: balanceData } = useBalance({
     address,
     watch: true,
@@ -54,7 +66,7 @@ const SendDonationPage: NextPage<ProfileProps> = ({ profile }) => {
   const [message, setMessage] = useState("");
   // TODO: abstract amount handling to custom hook
   const [donationAmount, setDonationAmount] = useState(
-    formatUnits(profile?.minShowAmount ?? DEFAULT_SHOW_AMOUNT, decimals)
+    formatUnits(profile.minShowAmount, decimals)
   );
   const donationAmountBigInt = parseUnits(donationAmount, decimals);
 
@@ -166,29 +178,23 @@ const SendDonationPage: NextPage<ProfileProps> = ({ profile }) => {
 };
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const addressOrNickname = (await context.query.addressOrNickname) as string;
-  const isAddress = isEthAddress(addressOrNickname);
+  const addressOrNickname = getParam(
+    context.params?.addressOrNickname
+  ) as string; // wont be undefined because of the route
 
-  const searchBy = isAddress ? "address" : "nickname";
-  const prismaProfile = await prisma.profile.findFirst({
-    where: { [searchBy]: addressOrNickname },
+  const profile = await getPopulatedProfileByAddressOrNickname(prisma, {
+    addressOrNickname,
   });
 
-  // if nickname is provided and there is no profile with such nickname - return empty props
-  if (!prismaProfile && !isAddress) {
+  if (!profile) {
     return {
-      props: {},
+      notFound: true,
     };
   }
 
-  // else there is a profile with such nickname or address is provided, so return populated profile
   return {
     props: {
-      profile: populateProfileWithDefaultValues(
-        prismaProfile ?? {
-          address: addressOrNickname,
-        }
-      ),
+      profile,
     },
   };
 }

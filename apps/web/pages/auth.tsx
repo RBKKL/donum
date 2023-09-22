@@ -8,7 +8,7 @@ import { signOut } from "next-auth/react";
 
 const Auth: NextPage = () => {
   const { login } = useLogin();
-  const { status, data } = useSession();
+  const { status, data: session } = useSession();
 
   if (status === SessionStatus.LOADING) return <Loader />;
 
@@ -22,7 +22,7 @@ const Auth: NextPage = () => {
       ) : (
         <>
           <p className="mb-3 text-lg font-bold">
-            You are signed in as {data?.user?.name || data?.user?.address}
+            You are signed in as {session?.user.name || session?.user.address}
           </p>
           <Button onClick={signOut} text="Sign out" />
         </>

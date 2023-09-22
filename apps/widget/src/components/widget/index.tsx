@@ -7,14 +7,9 @@ import {
   catchError,
 } from "solid-js";
 import { type Socket, io } from "socket.io-client";
-import {
-  DEFAULT_ALERT_DURATION,
-  DEFAULT_DONATION_IMAGE_URL,
-  DEFAULT_DONATION_SOUND_URL,
-} from "@donum/shared/constants";
 import { DonationAlert } from "@/components/donation-alert";
 import { useDonationQueueMachine } from "@/hooks/useDonationQueueMachine";
-import { store, setStore } from "@/lib/store";
+import { metadataStore, setMetadataStore } from "@/lib/store";
 import { env } from "@/lib/env";
 import {
   ClientToServerEvents,
@@ -33,12 +28,17 @@ export const Widget = () => {
   const onNewDonation: ServerToClientEvents["newDonation"] = (
     donation: NewDonationEventData
   ) => {
+    if (!metadataStore.isFilled) {
+      setError(new Error("Metadata store was not filled"));
+      return;
+    }
+
     addToQueue({
       ...donation,
-      duration: store.duration,
-      soundSrc: store.soundSrc,
-      imageSrc: store.imageSrc,
-      imageType: store.imageType,
+      duration: metadataStore.duration,
+      soundSrc: metadataStore.soundSrc,
+      imageSrc: metadataStore.imageSrc,
+      imageType: metadataStore.imageType,
     });
   };
 
@@ -47,20 +47,29 @@ export const Widget = () => {
     notificationImageUrl,
     notificationSoundUrl,
   }) => {
-    const imageSrc = notificationImageUrl || DEFAULT_DONATION_IMAGE_URL;
-    const soundSrc = notificationSoundUrl || DEFAULT_DONATION_SOUND_URL;
-    const duration = notificationDuration || DEFAULT_ALERT_DURATION;
+    const imageSrc = notificationImageUrl;
+    const soundSrc = notificationSoundUrl;
+    const duration = notificationDuration;
 
     // determine type of notification image (TODO: maybe there is a better way to do so)
     fetch(imageSrc)
       .then((res) => {
+        let imageType: "image" | "video" = "image";
         if (res.headers.get("content-type")?.includes("video")) {
-          setStore("imageType", "video");
+          imageType = "video";
         }
+        return imageType;
       })
-      .finally(() => {
-        setStore({ imageSrc, soundSrc, duration });
-      });
+      .then((imageType) => {
+        setMetadataStore({
+          isFilled: true,
+          duration,
+          imageSrc,
+          imageType,
+          soundSrc,
+        });
+      })
+      .catch(setError);
   };
 
   onMount(() => {

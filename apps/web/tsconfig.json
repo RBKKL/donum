@@ -12,7 +12,6 @@
       "@lib/*": ["lib/*"],
       "@styles/*": ["styles/*"],
       "@hooks/*": ["hooks/*"],
-      "@server/*": ["server/*"],
       "@env/*": ["env/*"]
     }
   },

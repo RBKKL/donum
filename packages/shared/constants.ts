@@ -1,18 +1,12 @@
-import { NewDonationEventData } from "./events";
-
 export const APP_NAME = "Donum";
 export const CONTRACT_NAME = "DonationsStore";
-export const SIGN_IN_MESSAGE =
-  "This will cost you nothing\nBelow is the technical information";
 
 export const MESSAGE_MAX_LENGTH = 256;
 export const NICKNAME_MIN_LENGTH = 3;
 export const NICKNAME_MAX_LENGTH = 64;
 export const NICKNAME_CHECK_ALLOWANCE_DEBOUNCE = 500; // 0.5 seconds
 export const DESCRIPTION_MAX_LENGTH = 1024;
-
-export const DEFAULT_SHOW_AMOUNT = 1000000000000000n; // 0.001 ETH
-export const MAX_DONATION_AMOUNT_LENGTH = 79; // 79 digits
+export const MAX_DONATION_AMOUNT_LENGTH = 79; // 77 digits + "." + "-"
 
 export const AVATAR_MAX_SIZE = 1024 * 1024 * 10; // 10MB
 export const NOTIFICATION_IMAGE_MAX_SIZE = 1024 * 1024 * 10; // 10MB
@@ -45,37 +39,11 @@ export enum SessionStatus {
   LOADING = "loading",
 }
 
-export const DEFAULT_ADDRESS = "0xAC0772000aa52CbF8a8dB501cC8caC03cDF01bf6";
-
-export const DEFAULT_TEST_DONATION: NewDonationEventData = {
-  from: "", // address
-  nickname: "Test user",
-  amount: "1234567890000000000", // 1.23456789 ETH,
-  message: "This is a test donation",
-};
-
-export const DEFAULT_ALERT_DURATION = 5; // 5 seconds
-export const DEFAULT_PAUSE_BETWEEN_ALERTS_DURATION = 1; // 1 second
-export const DEFAULT_DONATION_IMAGE_URL = "/assets/default_image.gif";
-export const DEFAULT_DONATION_SOUND_URL =
-  "http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3";
-
-export enum Periods {
+export enum StatFramePeriod {
+  // NAME = "milliseconds"
   ALLTIME = "0",
   DAY = "86400000",
   WEEK = "604800000",
   MONTH = "2592000000",
   YEAR = "31449600000",
 }
-
-export const DONATION_CHARTS_PERIOD_OPTIONS = [
-  { value: Periods.DAY, text: "24 hours" },
-  { value: Periods.WEEK, text: "7 days" },
-  { value: Periods.MONTH, text: "30 days" },
-  { value: Periods.YEAR, text: "year" },
-];
-
-export const DONATION_STATS_PERIOD_OPTIONS = [
-  { value: Periods.ALLTIME, text: "all time" },
-  ...DONATION_CHARTS_PERIOD_OPTIONS,
-];

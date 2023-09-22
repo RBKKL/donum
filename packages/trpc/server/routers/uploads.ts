@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { router, protectedProcedure } from "@server/trpc";
-import { UploadTypes, uploadConfig } from "@lib/storage";
+import { UploadTypes, uploadConfig } from "@donum/storage";
 import { v4 as uuidv4 } from "uuid";
+import { createRouter, protectedProcedure } from "../trpc";
 
-export const uploadsRouter = router({
+export const uploadsRouter = createRouter({
   createUploadUrl: protectedProcedure
     .input(z.object({ type: z.enum(UploadTypes) }))
     .mutation(async ({ ctx, input }) => {

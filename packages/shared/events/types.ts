@@ -4,9 +4,9 @@ type AdressableEvent<T> = {
 };
 
 export interface ChangeSettingsEventData {
-  notificationImageUrl?: string | null;
-  notificationSoundUrl?: string | null;
-  notificationDuration?: number | null;
+  notificationImageUrl: string;
+  notificationSoundUrl: string;
+  notificationDuration: number;
 }
 
 export type ChangeSettingsEvent = AdressableEvent<ChangeSettingsEventData>;
