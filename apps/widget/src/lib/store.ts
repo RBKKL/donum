@@ -1,16 +1,11 @@
 import { createStore } from "solid-js/store";
 import { DonationMetadata } from "@donum/shared/events";
-import {
-  DEFAULT_ALERT_DURATION,
-  DEFAULT_NOTIFICATION_IMAGE_URL,
-  DEFAULT_NOTIFICATION_SOUND_URL,
-} from "@donum/shared/default-values";
+import type { Merge } from "@donum/shared/type-utils";
 
-interface WidgetStore extends DonationMetadata {}
+type MetadataStore =
+  | { isFilled: false }
+  | Merge<{ isFilled: true }, DonationMetadata>;
 
-export const [store, setStore] = createStore<WidgetStore>({
-  duration: DEFAULT_ALERT_DURATION,
-  imageSrc: DEFAULT_NOTIFICATION_IMAGE_URL,
-  imageType: "image",
-  soundSrc: DEFAULT_NOTIFICATION_SOUND_URL,
+export const [metadataStore, setMetadataStore] = createStore<MetadataStore>({
+  isFilled: false,
 });
