@@ -8,7 +8,6 @@ import {
   subHours,
   subMonths,
 } from "date-fns";
-import { formatEther } from "ethers";
 import {
   Area,
   AreaChart,
@@ -20,6 +19,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { formatEther } from "viem";
 import { NewDonationEvent } from "@donum/contracts/types/DonationsStore";
 import { StatFramePeriod } from "@donum/shared/constants";
 
